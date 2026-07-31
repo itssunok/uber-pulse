@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { margin:0; background:#F7F6F2; font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; }
+    a { color:#2E8256; }
+    a:hover { color:#23643f; }
+    ::placeholder { color:#A8A296; }
+  </style>
+</helmet>
+
+<div style="min-height:100vh; width:100%; background:#F7F6F2; color:#23211D;">
+
+  <sc-if value="{{ isLogin }}" hint-placeholder-val="{{ true }}">
+    <div style="min-height:100vh; width:100%; background:#15140F; display:flex; align-items:center; justify-content:center; padding:32px; box-sizing:border-box;">
+      <div style="width:100%; max-width:420px;">
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:28px;">
+          <div style="display:flex; align-items:flex-end; gap:3px; height:22px;">
+            <div style="width:4px; height:10px; background:#3FA66A; border-radius:2px;"></div>
+            <div style="width:4px; height:20px; background:#3FA66A; border-radius:2px;"></div>
+            <div style="width:4px; height:14px; background:#3FA66A; border-radius:2px;"></div>
+          </div>
+          <span style="font-size:22px; font-weight:800; color:#F3F1EA; letter-spacing:-0.5px;">Pulse</span>
+        </div>
+        <h1 style="font-size:30px; font-weight:700; color:#F3F1EA; margin:0 0 8px 0; letter-spacing:-0.5px;">Know your data.</h1>
+        <p style="font-size:15px; color:#9A9488; margin:0 0 32px 0; line-height:1.5;">The single source of truth for Uber's web data platform — definitions, health, and answers in one place.</p>
+
+        <form onSubmit="{{ handleLogin }}" style="display:flex; flex-direction:column; gap:14px; background:#1C1B15; border:1px solid #2C2A22; border-radius:12px; padding:24px;">
+          <div>
+            <label style="display:block; font-size:12px; color:#9A9488; margin-bottom:6px; font-weight:500;">Email</label>
+            <input type="email" value="{{ loginEmail }}" onChange="{{ onLoginEmailChange }}" placeholder="you@uber.com" style="width:100%; box-sizing:border-box; background:#15140F; border:1px solid #33312A; border-radius:8px; padding:11px 12px; color:#F3F1EA; font-size:14px; outline:none;" />
+          </div>
+          <div>
+            <label style="display:block; font-size:12px; color:#9A9488; margin-bottom:6px; font-weight:500;">Password</label>
+            <input type="password" value="{{ loginPassword }}" onChange="{{ onLoginPasswordChange }}" placeholder="••••••••" style="width:100%; box-sizing:border-box; background:#15140F; border:1px solid #33312A; border-radius:8px; padding:11px 12px; color:#F3F1EA; font-size:14px; outline:none;" />
+          </div>
+          <sc-if value="{{ loginError }}" hint-placeholder-val="{{ false }}">
+            <div style="font-size:13px; color:#E29085; background:#2A1917; border:1px solid #4A2622; border-radius:8px; padding:9px 12px;">{{ loginError }}</div>
+          </sc-if>
+          <button type="submit" style="margin-top:6px; background:#3FA66A; color:#0D1F14; border:none; border-radius:8px; padding:12px; font-size:14px; font-weight:700; cursor:pointer;">Log in</button>
+        </form>
+
+        <div style="margin-top:18px; background:#1C1B15; border:1px dashed #33312A; border-radius:12px; padding:16px 18px;">
+          <div style="font-size:11px; color:#726C63; text-transform:uppercase; letter-spacing:0.06em; font-weight:600; margin-bottom:8px;">Demo account</div>
+          <div style="font-size:13px; color:#C9C4BA; line-height:1.7;">
+            <div>pulse-demo@uber.com</div>
+            <div>Pulse2026</div>
+          </div>
+          <button onClick="{{ fillDemo }}" style="margin-top:10px; background:none; border:1px solid #33312A; color:#F3F1EA; border-radius:7px; padding:8px 12px; font-size:13px; cursor:pointer;">Use demo credentials</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isApp }}" hint-placeholder-val="{{ false }}">
+    <div style="display:flex; align-items:center; justify-content:space-between; padding:0 28px; height:64px; background:#FFFFFF; border-bottom:1px solid #E5E2DA; position:sticky; top:0; z-index:20;">
+      <div style="display:flex; align-items:center; gap:36px;">
+        <div onClick="{{ goHome }}" style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+          <div style="display:flex; align-items:flex-end; gap:2px; height:16px;">
+            <div style="width:3px; height:7px; background:#3FA66A; border-radius:1px;"></div>
+            <div style="width:3px; height:15px; background:#3FA66A; border-radius:1px;"></div>
+            <div style="width:3px; height:10px; background:#3FA66A; border-radius:1px;"></div>
+          </div>
+          <span style="font-size:16px; font-weight:800; letter-spacing:-0.3px; color:#23211D;">Pulse</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:4px;">
+          <button onClick="{{ goHome }}" style="{{ navBtnStyle_home }}">Home</button>
+          <button onClick="{{ goCatalog }}" style="{{ navBtnStyle_catalog }}">Data Catalog</button>
+          <button onClick="{{ goAssistant }}" style="{{ navBtnStyle_assistant }}">AI Assistant</button>
+          <button onClick="{{ goRoadmap }}" style="{{ navBtnStyle_roadmap }}">Roadmap</button>
+        </div>
+      </div>
+      <div style="display:flex; align-items:center; gap:10px;">
+        <button onClick="{{ openReport }}" style="background:#FFFFFF; border:1px solid #E5E2DA; color:#23211D; border-radius:7px; padding:8px 14px; font-size:13px; font-weight:600; cursor:pointer;">Report Issue</button>
+        <button onClick="{{ openContribute }}" style="background:#3FA66A; border:none; color:#FFFFFF; border-radius:7px; padding:8px 14px; font-size:13px; font-weight:700; cursor:pointer;">Contribute</button>
+        <div style="display:flex; align-items:center; gap:8px; margin-left:8px; padding-left:14px; border-left:1px solid #E5E2DA; cursor:pointer;" onClick="{{ logout }}">
+          <div style="width:30px; height:30px; border-radius:50%; background:#E7F4EA; color:#2E8256; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700;">PD</div>
+          <div style="font-size:12px; color:#77716A; line-height:1.3;">Data Consumer<div style="font-size:10px; color:#A8A296;">Click to log out</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="max-width:1180px; margin:0 auto; padding:32px 28px 80px 28px;">
+
+      <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+        <sc-if value="{{ criticalPipeline }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex; align-items:center; gap:12px; background:#FBE9E6; border:1px solid #F0C4BC; border-radius:10px; padding:13px 16px; margin-bottom:24px;">
+            <div style="width:8px; height:8px; border-radius:50%; background:#C1443A; flex-shrink:0;"></div>
+            <div style="font-size:13px; color:#8C332A; flex:1;"><strong>{{ criticalPipeline.name }}</strong> is degraded — estimated resolution in 45 min. Trip and demand metrics for {{ criticalPipeline.lob }} may be affected.</div>
+          </div>
+        </sc-if>
+
+        <h1 style="font-size:22px; font-weight:700; margin:0 0 4px 0; letter-spacing:-0.3px;">Home</h1>
+        <p style="font-size:14px; color:#77716A; margin:0 0 24px 0;">Is the platform healthy, and how is the business doing today?</p>
+
+        <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:36px;">
+          <sc-for list="{{ metrics }}" as="m" hint-placeholder-count="4">
+            <div style="background:#FFFFFF; border:1px solid #E5E2DA; border-radius:12px; padding:18px;">
+              <div style="font-size:12px; color:#77716A; font-weight:500; margin-bottom:10px;">{{ m.label }}</div>
+              <div style="font-size:24px; font-weight:700; letter-spacing:-0.4px; margin-bottom:8px;">{{ m.value }}</div>
+              <div style="display:flex; align-items:center; justify-content:space-between;">
+                <span style="{{ m.deltaStyle }}">{{ m.deltaLabel }}</span>
+              </div>
+              <svg viewBox="0 0 100 30" style="width:100%; height:30px; margin-top:10px; display:block;">
+                <polyline points="{{ m.sparkPoints }}" fill="none" stroke="{{ m.sparkColor }}" stroke-width="2"></polyline>
+              </svg>
+            </div>
+          </sc-for>
+        </div>
+
+        <h2 style="font-size:16px; font-weight:700; margin:0 0 2px 0;">Pipeline Health</h2>
+        <p style="font-size:13px; color:#77716A; margin:0 0 14px 0;">Real-time status across core web data pipelines, based on daily, weekly, and monthly validation checks.</p>
+
+        <div style="background:#FFFFFF; border:1px solid #E5E2DA; border-radius:12px; overflow:hidden;">
+          <div style="display:grid; grid-template-columns:2fr 1fr 1fr 1.4fr 1.1fr 1fr; gap:8px; padding:10px 18px; font-size:11px; color:#A8A296; font-weight:600; text-transform:uppercase; letter-spacing:0.04em; border-bottom:1px solid #EFEDE7;">
+            <div>Pipeline</div><div>LOB</div><div>Status</div><div>SLA (target / actual)</div><div>Freshness</div><div>Quality</div>
+          </div>
+          <sc-for list="{{ pipelines }}" as="p" hint-placeholder-count="9">
+            <div style="display:grid; grid-template-columns:2fr 1fr 1fr 1.4fr 1.1fr 1fr; gap:8px; padding:13px 18px; font-size:13px; border-bottom:1px solid #F3F1EC; align-items:center;">
+              <div style="font-weight:600;">{{ p.name }}</div>
+              <div style="color:#77716A;">{{ p.lob }}</div>
+              <div><span style="{{ p.statusChipStyle }}">{{ p.statusLabel }}</span></div>
+              <div style="color:#77716A;">{{ p.slaTarget }} / <span style="{{ p.slaActualStyle }}">{{ p.slaActual }}</span></div>
+              <div style="color:#77716A;">{{ p.freshness }}</div>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <span style="font-weight:600;">{{ p.quality }}</span>
+                <div style="width:44px; height:5px; background:#EFEDE7; border-radius:3px; overflow:hidden;">
+                  <div style="{{ p.qualityBarStyle }}"></div>
+                </div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isCatalog }}" hint-placeholder-val="{{ false }}">
+        <h1 style="font-size:22px; font-weight:700; margin:0 0 4px 0; letter-spacing:-0.3px;">Data Catalog</h1>
+        <p style="font-size:14px; color:#77716A; margin:0 0 20px 0;">The authoritative record of every metric, event, and dataset on the platform.</p>
+
+        <div style="display:flex; gap:10px; margin-bottom:16px; flex-wrap:wrap;">
+          <input value="{{ catalogQuery }}" onChange="{{ onCatalogQueryChange }}" placeholder="Search events, metrics, definitions…" style="flex:1; min-width:220px; box-sizing:border-box; background:#FFFFFF; border:1px solid #E5E2DA; border-radius:8px; padding:10px 12px; font-size:13px; outline:none;" />
+          <select value="{{ catalogLob }}" onChange="{{ onCatalogLobChange }}" style="background:#FFFFFF; border:1px solid #E5E2DA; border-radius:8px; padding:10px 12px; font-size:13px;">
+            <option value="All">All LOBs</option>
+            <option value="Ridesharing">Ridesharing</option>
+            <option value="Eats">Eats</option>
+            <option value="B2B">B2B</option>
+            <option value="Platform">Platform</option>
+          </select>
+          <select value="{{ catalogStatus }}" onChange="{{ onCatalogStatusChange }}" style="background:#FFFFFF; border:1px solid #E5E2DA; border-radius:8px; padding:10px 12px; font-size:13px;">
+            <option value="All">All statuses</option>
+            <option value="active">Active</option>
+            <option value="under review">Under review</option>
+            <option value="deprecated">Deprecated</option>
+          </select>
+        </div>
+        <div style="font-size:12px; color:#A8A296; margin-bottom:10px;">{{ catalogCountLabel }}</div>
+
+        <div style="background:#FFFFFF; border:1px solid #E5E2DA; border-radius:12px; overflow:hidden;">
+          <sc-for list="{{ filteredCatalog }}" as="e" hint-placeholder-count="6">
+            <div onClick="{{ e.onSelect }}" style="display:grid; grid-template-columns:2fr 1fr 1fr 1.6fr 1fr; gap:10px; padding:14px 18px; font-size:13px; border-bottom:1px solid #F3F1EC; align-items:center; cursor:pointer;">
+              <div style="display:flex; align-items:center; gap:8px;">
+                <sc-if value="{{ e.warning }}" hint-placeholder-val="{{ false }}"><span style="width:6px; height:6px; border-radius:50%; background:#C1443A; flex-shrink:0;"></span></sc-if>
+                <span style="font-weight:600; font-family:ui-monospace,monospace;">{{ e.name }}</span>
+              </div>
+              <div style="color:#77716A;">{{ e.lob }}</div>
+              <div><span style="{{ e.statusChipStyle }}">{{ e.statusLabel }}</span></div>
+              <div style="color:#77716A;">{{ e.definitionOwner }}</div>
+              <div style="color:#A8A296;">{{ e.lastUpdated }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isAssistant }}" hint-placeholder-val="{{ false }}">
+        <h1 style="font-size:22px; font-weight:700; margin:0 0 4px 0; letter-spacing:-0.3px;">AI Assistant</h1>
+        <p style="font-size:14px; color:#77716A; margin:0 0 20px 0;">Ask about data availability and definitions, or describe a feature to get a draft measurement plan.</p>
+
+        <div style="background:#FFFFFF; border:1px solid #E5E2DA; border-radius:12px; display:flex; flex-direction:column; height:560px;">
+          <div style="flex:1; overflow-y:auto; padding:20px; display:flex; flex-direction:column; gap:14px;">
+            <sc-for list="{{ chatMessages }}" as="msg" hint-placeholder-count="1">
+              <div style="{{ msg.rowStyle }}">
+                <div style="{{ msg.bubbleStyle }}">
+                  <div>{{ msg.text }}</div>
+                  <sc-if value="{{ msg.catalogRefLabel }}" hint-placeholder-val="{{ false }}">
+                    <div onClick="{{ msg.onViewCatalog }}" style="margin-top:10px; display:inline-flex; align-items:center; gap:6px; background:#F7F6F2; border:1px solid #E5E2DA; border-radius:7px; padding:6px 10px; font-size:12px; font-family:ui-monospace,monospace; cursor:pointer;">📇 {{ msg.catalogRefLabel }} → open in catalog</div>
+                  </sc-if>
+                  <sc-if value="{{ msg.csv }}" hint-placeholder-val="{{ false }}">
+                    <button onClick="{{ msg.onDownloadCsv }}" style="margin-top:10px; background:#23211D; color:#FFF; border:none; border-radius:7px; padding:8px 12px; font-size:12px; font-weight:600; cursor:pointer;">Download CSV</button>
+                  </sc-if>
+                  <sc-if value="{{ msg.plan }}" hint-placeholder-val="{{ false }}">
+                    <div style="margin-top:12px; background:#F7F6F2; border:1px solid #E5E2DA; border-radius:10px; padding:14px;">
+                      <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#77716A; margin-bottom:8px;">Draft Measurement Plan — {{ msg.plan.featureName }}</div>
+                      <div style="font-size:12px; color:#77716A; font-weight:600; margin-bottom:4px;">Suggested events</div>
+                      <sc-for list="{{ msg.plan.events }}" as="ev" hint-placeholder-count="3">
+                        <div style="font-family:ui-monospace,monospace; font-size:12px; margin-bottom:2px;">• {{ ev }}</div>
+                      </sc-for>
+                      <div style="font-size:12px; color:#77716A; font-weight:600; margin:8px 0 4px 0;">Success metrics</div>
+                      <sc-for list="{{ msg.plan.metrics }}" as="me" hint-placeholder-count="3">
+                        <div style="font-size:12px; margin-bottom:2px;">• {{ me }}</div>
+                      </sc-for>
+                      <div style="font-size:11px; color:#A8A296; margin-top:8px;">{{ msg.plan.similarNote }}</div>
+                      <button onClick="{{ msg.onSubmitPlan }}" style="margin-top:10px; background:#3FA66A; color:#FFF; border:none; border-radius:7px; padding:8px 12px; font-size:12px; font-weight:700; cursor:pointer;">Submit for review</button>
+                    </div>
+                  </sc-if>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+
+          <sc-if value="{{ showSuggestions }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex; gap:8px; flex-wrap:wrap; padding:0 20px 14px 20px;">
+              <sc-for list="{{ suggestions }}" as="sg" hint-placeholder-count="4">
+                <button onClick="{{ sg.onClick }}" style="background:#F7F6F2; border:1px solid #E5E2DA; border-radius:20px; padding:7px 13px; font-size:12px; cursor:pointer; color:#23211D;">{{ sg.label }}</button>
+              </sc-for>
+            </div>
+          </sc-if>
+
+          <div style="display:flex; gap:10px; padding:14px 20px; border-top:1px solid #EFEDE7;">
+            <input value="{{ chatInput }}" onChange="{{ onChatInputChange }}" onKeyDown="{{ onChatKeyDown }}" placeholder="Ask a question about data…" style="flex:1; box-sizing:border-box; background:#F7F6F2; border:1px solid #E5E2DA; border-radius:8px; padding:11px 12px; font-size:13px; outline:none;" />
+            <button onClick="{{ sendChat }}" style="background:#3FA66A; color:#FFF; border:none; border-radius:8px; padding:11px 18px; font-size:13px; font-weight:700; cursor:pointer;">Send</button>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isRoadmap }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:20px;">
+          <div>
+            <h1 style="font-size:22px; font-weight:700; margin:0 0 4px 0; letter-spacing:-0.3px;">Roadmap</h1>
+            <p style="font-size:14px; color:#77716A; margin:0;">What the data team is working on, and what's coming next.</p>
+          </div>
+          <a href="#" style="font-size:13px; font-weight:600; background:#FFFFFF; border:1px solid #E5E2DA; border-radius:7px; padding:8px 14px; text-decoration:none;">View full roadmap in Jira ↗</a>
+        </div>
+
+        <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:16px;">
+          <sc-for list="{{ roadmapColumns }}" as="col" hint-placeholder-count="3">
+            <div>
+              <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:#77716A; margin-bottom:10px;">{{ col.title }} · {{ col.count }}</div>
+              <div style="display:flex; flex-direction:column; gap:10px;">
+                <sc-for list="{{ col.items }}" as="it" hint-placeholder-count="2">
+                  <div style="{{ it.cardStyle }}">
+                    <div style="display:flex; align-items:center; justify-content:between; gap:8px;">
+                      <span style="font-weight:600; font-size:13px; font-family:ui-monospace,monospace;">{{ it.name }}</span>
+                      <sc-if value="{{ it.isNew }}" hint-placeholder-val="{{ false }}"><span style="background:#E7F4EA; color:#2E8256; font-size:10px; font-weight:700; padding:2px 6px; border-radius:5px; margin-left:6px;">NEW</span></sc-if>
+                    </div>
+                    <div style="font-size:12px; color:#77716A; margin-top:6px;">{{ it.lob }} · {{ it.team }}</div>
+                    <div style="font-size:11px; color:#A8A296; margin-top:8px;">{{ it.dateLabel }}</div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+    </div>
+
+    <sc-if value="{{ selectedEntry }}" hint-placeholder-val="{{ false }}">
+      <div style="position:fixed; inset:0; background:rgba(20,19,15,0.35); z-index:30;" onClick="{{ closeEntry }}"></div>
+      <div style="position:fixed; top:0; right:0; bottom:0; width:440px; background:#FFFFFF; box-shadow:-8px 0 30px rgba(0,0,0,0.12); z-index:31; overflow-y:auto; padding:28px;">
+        <div style="display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:16px;">
+          <div style="font-size:16px; font-weight:700; font-family:ui-monospace,monospace;">{{ selectedEntry.name }}</div>
+          <button onClick="{{ closeEntry }}" style="background:none; border:none; font-size:18px; cursor:pointer; color:#A8A296;">✕</button>
+        </div>
+        <div style="display:flex; gap:8px; margin-bottom:16px;">
+          <span style="{{ selectedEntry.statusChipStyle }}">{{ selectedEntry.statusLabel }}</span>
+          <span style="font-size:12px; color:#77716A; background:#F7F6F2; border-radius:6px; padding:3px 8px;">{{ selectedEntry.lob }}</span>
+          <span style="font-size:12px; color:#77716A; background:#F7F6F2; border-radius:6px; padding:3px 8px;">{{ selectedEntry.version }}</span>
+        </div>
+        <sc-if value="{{ selectedEntry.warning }}" hint-placeholder-val="{{ false }}">
+          <div style="background:#FBE9E6; border:1px solid #F0C4BC; color:#8C332A; font-size:12px; border-radius:8px; padding:10px 12px; margin-bottom:16px;">⚠ {{ selectedEntry.warningText }}</div>
+        </sc-if>
+        <div style="font-size:13px; line-height:1.6; color:#23211D; margin-bottom:18px;">{{ selectedEntry.definition }}</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:20px;">
+          <div><div style="font-size:11px; color:#A8A296; font-weight:600; text-transform:uppercase; margin-bottom:3px;">Implementing team</div><div style="font-size:13px;">{{ selectedEntry.implementingTeam }}</div></div>
+          <div><div style="font-size:11px; color:#A8A296; font-weight:600; text-transform:uppercase; margin-bottom:3px;">Definition owner</div><div style="font-size:13px;">{{ selectedEntry.definitionOwner }}</div></div>
+          <div><div style="font-size:11px; color:#A8A296; font-weight:600; text-transform:uppercase; margin-bottom:3px;">Last updated</div><div style="font-size:13px;">{{ selectedEntry.lastUpdated }}</div></div>
+        </div>
+        <button onClick="{{ selectedEntry.onDownload }}" style="width:100%; box-sizing:border-box; background:#23211D; color:#FFF; border:none; border-radius:8px; padding:11px; font-size:13px; font-weight:600; cursor:pointer; margin-bottom:22px;">Download sample CSV</button>
+
+        <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#77716A; margin-bottom:10px;">Version history</div>
+        <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:22px;">
+          <sc-for list="{{ selectedEntry.changelog }}" as="c" hint-placeholder-count="3">
+            <div style="border-left:2px solid #E5E2DA; padding-left:12px;">
+              <div style="font-size:12px; font-weight:600;">{{ c.version }} · <span style="color:#A8A296; font-weight:400;">{{ c.date }}</span></div>
+              <div style="font-size:12px; color:#77716A; margin-top:2px;">{{ c.change }}</div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#77716A; margin-bottom:10px;">Sample payload</div>
+        <div style="background:#F7F6F2; border-radius:8px; padding:12px; font-family:ui-monospace,monospace; font-size:12px; line-height:1.7;">
+          <sc-for list="{{ selectedEntry.payload }}" as="f" hint-placeholder-count="4">
+            <div><span style="color:#77716A;">{{ f.field }}:</span> {{ f.value }}</div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ contributeOpen }}" hint-placeholder-val="{{ false }}">
+      <div style="position:fixed; inset:0; background:rgba(20,19,15,0.4); z-index:40; display:flex; align-items:center; justify-content:center;" onClick="{{ closeContribute }}">
+        <div style="background:#FFFFFF; border-radius:14px; width:520px; max-width:92vw; padding:28px; box-shadow:0 20px 60px rgba(0,0,0,0.2);" onClick="{{ stopClick }}">
+          <div style="font-size:17px; font-weight:700; margin-bottom:4px;">Contribute a schema</div>
+          <div style="font-size:13px; color:#77716A; margin-bottom:20px;">Step {{ contributeStep }} of 2</div>
+
+          <sc-if value="{{ isContributeStep1 }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex; flex-direction:column; gap:14px;">
+              <div>
+                <label style="display:block; font-size:12px; font-weight:600; color:#77716A; margin-bottom:6px;">Event / schema name</label>
+                <input value="{{ contributeForm.name }}" onChange="{{ onContributeNameChange }}" placeholder="e.g. scheduled_ride_requested" style="width:100%; box-sizing:border-box; border:1px solid #E5E2DA; border-radius:8px; padding:10px 12px; font-size:13px; font-family:ui-monospace,monospace;" />
+              </div>
+              <div>
+                <label style="display:block; font-size:12px; font-weight:600; color:#77716A; margin-bottom:6px;">Line of business</label>
+                <select value="{{ contributeForm.lob }}" onChange="{{ onContributeLobChange }}" style="width:100%; box-sizing:border-box; border:1px solid #E5E2DA; border-radius:8px; padding:10px 12px; font-size:13px;">
+                  <option value="Ridesharing">Ridesharing</option>
+                  <option value="Eats">Eats</option>
+                  <option value="B2B">B2B</option>
+                  <option value="Platform">Platform</option>
+                </select>
+              </div>
+              <div>
+                <label style="display:block; font-size:12px; font-weight:600; color:#77716A; margin-bottom:6px;">What does this event capture?</label>
+                <textarea value="{{ contributeForm.description }}" onChange="{{ onContributeDescChange }}" placeholder="Describe when this event fires and why it's needed…" rows="3" style="width:100%; box-sizing:border-box; border:1px solid #E5E2DA; border-radius:8px; padding:10px 12px; font-size:13px; font-family:inherit; resize:vertical;"></textarea>
+              </div>
+            </div>
+            <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:22px;">
+              <button onClick="{{ closeContribute }}" style="background:none; border:1px solid #E5E2DA; border-radius:8px; padding:10px 16px; font-size:13px; cursor:pointer;">Cancel</button>
+              <button onClick="{{ contributeNext }}" style="background:#3FA66A; color:#FFF; border:none; border-radius:8px; padding:10px 18px; font-size:13px; font-weight:700; cursor:pointer;">Next</button>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ isContributeStep2 }}" hint-placeholder-val="{{ false }}">
+            <div style="background:#F7F6F2; border-radius:10px; padding:16px; font-size:13px; line-height:1.8;">
+              <div><strong>Name:</strong> {{ contributeForm.name }}</div>
+              <div><strong>LOB:</strong> {{ contributeForm.lob }}</div>
+              <div><strong>Description:</strong> {{ contributeForm.description }}</div>
+              <div style="margin-top:8px; color:#77716A;">Estimated review date: {{ estimatedReviewDate }}</div>
+            </div>
+            <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:22px;">
+              <button onClick="{{ contributeBack }}" style="background:none; border:1px solid #E5E2DA; border-radius:8px; padding:10px 16px; font-size:13px; cursor:pointer;">Back</button>
+              <button onClick="{{ submitContribute }}" style="background:#3FA66A; color:#FFF; border:none; border-radius:8px; padding:10px 18px; font-size:13px; font-weight:700; cursor:pointer;">Submit for review</button>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ reportOpen }}" hint-placeholder-val="{{ false }}">
+      <div style="position:fixed; inset:0; background:rgba(20,19,15,0.4); z-index:40; display:flex; align-items:center; justify-content:center;" onClick="{{ closeReport }}">
+        <div style="background:#FFFFFF; border-radius:14px; width:480px; max-width:92vw; padding:28px; box-shadow:0 20px 60px rgba(0,0,0,0.2);" onClick="{{ stopClick }}">
+          <div style="font-size:17px; font-weight:700; margin-bottom:20px;">Report an issue</div>
+          <div style="display:flex; flex-direction:column; gap:14px;">
+            <div>
+              <label style="display:block; font-size:12px; font-weight:600; color:#77716A; margin-bottom:6px;">Title</label>
+              <input value="{{ reportForm.title }}" onChange="{{ onReportTitleChange }}" placeholder="e.g. Quality score looks wrong for eats_order_placed" style="width:100%; box-sizing:border-box; border:1px solid #E5E2DA; border-radius:8px; padding:10px 12px; font-size:13px;" />
+            </div>
+            <div>
+              <label style="display:block; font-size:12px; font-weight:600; color:#77716A; margin-bottom:6px;">Severity</label>
+              <select value="{{ reportForm.severity }}" onChange="{{ onReportSeverityChange }}" style="width:100%; box-sizing:border-box; border:1px solid #E5E2DA; border-radius:8px; padding:10px 12px; font-size:13px;">
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+              </select>
+            </div>
+            <div>
+              <label style="display:block; font-size:12px; font-weight:600; color:#77716A; margin-bottom:6px;">Description</label>
+              <textarea value="{{ reportForm.description }}" onChange="{{ onReportDescChange }}" rows="3" placeholder="What did you see, and what did you expect?" style="width:100%; box-sizing:border-box; border:1px solid #E5E2DA; border-radius:8px; padding:10px 12px; font-size:13px; font-family:inherit; resize:vertical;"></textarea>
+            </div>
+          </div>
+          <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:22px;">
+            <button onClick="{{ closeReport }}" style="background:none; border:1px solid #E5E2DA; border-radius:8px; padding:10px 16px; font-size:13px; cursor:pointer;">Cancel</button>
+            <button onClick="{{ submitReport }}" style="background:#23211D; color:#FFF; border:none; border-radius:8px; padding:10px 18px; font-size:13px; font-weight:700; cursor:pointer;">Submit</button>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+      <div style="position:fixed; bottom:24px; right:24px; background:#23211D; color:#FFF; font-size:13px; padding:12px 18px; border-radius:9px; box-shadow:0 10px 30px rgba(0,0,0,0.25); z-index:50; max-width:320px;">{{ toast }}</div>
+    </sc-if>
+  </sc-if>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const LOB_COLORS = {};
+
+const PIPELINES = [
+  { id:'p1', name:'Trip Completion Events', lob:'Ridesharing', health:'green', slaTarget:'99.9%', slaActual:'99.94%', freshness:'4 min ago', quality:98 },
+  { id:'p2', name:'Marketing Attribution', lob:'Eats', health:'amber', slaTarget:'99.5%', slaActual:'97.1%', freshness:'22 min ago', quality:84 },
+  { id:'p3', name:'Surge Pricing Events', lob:'Ridesharing', health:'green', slaTarget:'99.9%', slaActual:'99.97%', freshness:'2 min ago', quality:99 },
+  { id:'p4', name:'Eats Order Funnel', lob:'Eats', health:'green', slaTarget:'99.5%', slaActual:'99.8%', freshness:'6 min ago', quality:95 },
+  { id:'p5', name:'B2B Freight Transactions', lob:'B2B', health:'green', slaTarget:'99.0%', slaActual:'99.4%', freshness:'12 min ago', quality:91 },
+  { id:'p6', name:'Driver Supply Events', lob:'Ridesharing', health:'red', slaTarget:'99.9%', slaActual:'94.2%', freshness:'3 hrs ago', quality:61 },
+  { id:'p7', name:'Session & Auth Events', lob:'Platform', health:'green', slaTarget:'99.9%', slaActual:'99.95%', freshness:'1 min ago', quality:97 },
+  { id:'p8', name:'Payments & Refunds', lob:'B2B', health:'amber', slaTarget:'99.5%', slaActual:'98.0%', freshness:'18 min ago', quality:88 },
+  { id:'p9', name:'Eats Delivery Tracking', lob:'Eats', health:'green', slaTarget:'99.0%', slaActual:'99.3%', freshness:'5 min ago', quality:93 }
+];
+
+const CATALOG = [
+  { id:'completed_trip', name:'completed_trip', lob:'Ridesharing', status:'active',
+    definition:'A trip is marked completed when the rider is dropped off at the confirmed destination and payment is captured successfully.',
+    implementingTeam:'Rides Platform Engineering', definitionOwner:'Maya Chen (Data Science)', version:'v3.2', lastUpdated:'2026-07-18',
+    warning:true, warningText:'Duplicate completion events observed in EU region since 07/15.',
+    changelog:[{version:'v3.2',date:'2026-07-18',change:'Added dedup guidance for EU region duplicate events'},{version:'v3.1',date:'2026-05-02',change:'Clarified payment capture timing requirement'},{version:'v3.0',date:'2026-02-14',change:'Split from legacy trip_completed_legacy event'}],
+    payload:[{field:'trip_id',value:'8f3a2e91-...'},{field:'rider_id',value:'r_48213'},{field:'driver_id',value:'d_90271'},{field:'completed_at',value:'2026-07-29T14:32:11Z'},{field:'fare_amount',value:'18.42'},{field:'city',value:'Amsterdam'}] },
+  { id:'surge_multiplier_applied', name:'surge_multiplier_applied', lob:'Ridesharing', status:'active',
+    definition:'Fires when a surge multiplier greater than 1.0x is applied to a rider\'s fare quote at request time.',
+    implementingTeam:'Pricing Engineering', definitionOwner:'Pricing Data Science', version:'v2.1', lastUpdated:'2026-06-30', warning:false,
+    changelog:[{version:'v2.1',date:'2026-06-30',change:'Added zone-level granularity'},{version:'v2.0',date:'2026-03-11',change:'Renamed from surge_applied'}],
+    payload:[{field:'request_id',value:'q_10293'},{field:'zone_id',value:'ams-central'},{field:'multiplier',value:'1.8'},{field:'applied_at',value:'2026-07-29T18:02:44Z'}] },
+  { id:'eats_conversion', name:'eats_campaign_conversion', lob:'Eats', status:'active',
+    definition:'The official definition of "conversion" for Eats campaigns: an order placed within 7 days of an attributed ad click or impression.',
+    implementingTeam:'Eats Growth Engineering', definitionOwner:'Marketing Analytics', version:'v4.0', lastUpdated:'2026-07-05', warning:false,
+    changelog:[{version:'v4.0',date:'2026-07-05',change:'Attribution window extended from 3 to 7 days'},{version:'v3.0',date:'2026-01-20',change:'Excluded refunded orders from conversion count'}],
+    payload:[{field:'order_id',value:'o_55210'},{field:'campaign_id',value:'c_eats_summer'},{field:'attribution_window_days',value:'7'},{field:'converted_at',value:'2026-07-28T09:14:02Z'}] },
+  { id:'eats_order_placed', name:'eats_order_placed', lob:'Eats', status:'active',
+    definition:'Fires when an Eats order is successfully submitted and a restaurant confirmation is received.',
+    implementingTeam:'Eats Checkout Engineering', definitionOwner:'Eats Analytics', version:'v1.6', lastUpdated:'2026-06-12', warning:false,
+    changelog:[{version:'v1.6',date:'2026-06-12',change:'Added group order flag'}],
+    payload:[{field:'order_id',value:'o_55210'},{field:'restaurant_id',value:'rst_4471'},{field:'total_amount',value:'34.20'}] },
+  { id:'b2b_shipment_confirmed', name:'b2b_shipment_confirmed', lob:'B2B', status:'active',
+    definition:'Fires when a freight shipment is confirmed by both shipper and carrier.',
+    implementingTeam:'Freight Engineering', definitionOwner:'B2B Analytics', version:'v1.2', lastUpdated:'2026-05-22', warning:false,
+    changelog:[{version:'v1.2',date:'2026-05-22',change:'Added multi-stop shipment support'}],
+    payload:[{field:'shipment_id',value:'s_88213'},{field:'shipper_id',value:'sh_221'},{field:'carrier_id',value:'cr_015'}] },
+  { id:'session_started', name:'session_started', lob:'Platform', status:'active',
+    definition:'Fires on the first interaction of a new web session, defined as 30+ minutes of inactivity since the last event.',
+    implementingTeam:'Web Infrastructure', definitionOwner:'Web Data Engineering', version:'v4.1', lastUpdated:'2026-07-10', warning:false,
+    changelog:[{version:'v4.1',date:'2026-07-10',change:'Session timeout aligned to 30 minutes across all LOBs'}],
+    payload:[{field:'session_id',value:'sess_3312'},{field:'platform',value:'web'},{field:'started_at',value:'2026-07-29T08:00:00Z'}] },
+  { id:'attribution_touch', name:'attribution_touch', lob:'Eats', status:'under review',
+    definition:'Records a single attribution touchpoint (impression or click) tied to a marketing campaign, pending finalized dedup logic.',
+    implementingTeam:'Eats Growth Engineering', definitionOwner:'Marketing Analytics', version:'v0.9', lastUpdated:'2026-07-22',
+    warning:true, warningText:'Definition under active revision — cross-channel dedup rules not finalized.',
+    changelog:[{version:'v0.9',date:'2026-07-22',change:'Draft definition opened for review'}],
+    payload:[{field:'touch_id',value:'t_9021'},{field:'channel',value:'paid_social'},{field:'campaign_id',value:'c_eats_summer'}] },
+  { id:'scheduled_ride_booked', name:'scheduled_ride_booked', lob:'Ridesharing', status:'under review',
+    definition:'Fires when a rider confirms a scheduled ride booking for a future pickup time (up to 30 days out).',
+    implementingTeam:'Rides Growth Engineering', definitionOwner:'Priya Patel (Product)', version:'v0.1', lastUpdated:'2026-07-27', warning:false,
+    changelog:[{version:'v0.1',date:'2026-07-27',change:'Initial draft submitted via AI measurement plan generator'}],
+    payload:[{field:'booking_id',value:'b_7710'},{field:'lead_time_days',value:'12'},{field:'requested_pickup_time',value:'2026-08-10T09:00:00Z'}] },
+  { id:'driver_supply_available', name:'driver_supply_available', lob:'Ridesharing', status:'deprecated',
+    definition:'Legacy event tracking driver availability in a zone. Replaced by driver_supply_v2 for improved zone granularity.',
+    implementingTeam:'Rides Platform Engineering', definitionOwner:'Rides Analytics', version:'v1.0', lastUpdated:'2026-04-01', warning:false,
+    changelog:[{version:'v1.0',date:'2026-04-01',change:'Marked deprecated in favor of driver_supply_v2'}],
+    payload:[{field:'zone_id',value:'ams-central'},{field:'available_drivers',value:'42'}] }
+];
+
+const ROADMAP_BASE = {
+  defining:[ {id:'r1',name:'b2b_bulk_shipment_event',lob:'B2B',team:'Freight Engineering',dateLabel:'Est. Aug 22'} ],
+  next:[ {id:'r2',name:'eats_group_order_conversion',lob:'Eats',team:'Eats Growth',dateLabel:'Est. Sep 5'}, {id:'r3',name:'driver_supply_v2 migration',lob:'Ridesharing',team:'Platform Engineering',dateLabel:'Est. Sep 12'} ],
+  shipped:[ {id:'r4',name:'attribution_touch_v2',lob:'Eats',team:'Marketing Analytics',dateLabel:'Shipped Jul 20'}, {id:'r5',name:'session_started_v4',lob:'Platform',team:'Web Infrastructure',dateLabel:'Shipped Jul 10'} ]
+};
+
+const METRICS_BASE = [
+  { id:'gtv', label:'Gross Trip Value (GTV)', value:'$482.6M', delta:'+4.2% WoW', positive:true, points:[410,422,418,435,440,455,468,483] },
+  { id:'trips', label:'Weekly Trips', value:'187.3M', delta:'+2.8% WoW', positive:true, points:[165,170,172,178,180,182,184,187] },
+  { id:'eats', label:'Eats Deliveries', value:'64.1M', delta:'+6.1% WoW', positive:true, points:[52,54,55,57,58,60,62,64] },
+  { id:'b2b', label:'B2B Transactions', value:'3.42M', delta:'-1.3% WoW', positive:false, points:[3.6,3.58,3.55,3.5,3.48,3.45,3.43,3.42] }
+];
+
+function sparkPoints(nums){
+  const max = Math.max(...nums), min = Math.min(...nums), range = (max-min)||1;
+  return nums.map((n,i)=>{
+    const x = (i/(nums.length-1))*100;
+    const y = 28 - ((n-min)/range)*24 - 2;
+    return x.toFixed(1)+','+y.toFixed(1);
+  }).join(' ');
+}
+
+function statusChipStyle(status){
+  const map = {
+    green:'background:#E7F4EA;color:#2E8256;', amber:'background:#FBEFDD;color:#B4740F;', red:'background:#FBE9E6;color:#C1443A;',
+    active:'background:#E7F4EA;color:#2E8256;', 'under review':'background:#FBEFDD;color:#B4740F;', deprecated:'background:#EFEDE7;color:#77716A;'
+  };
+  return 'font-size:11px;font-weight:700;text-transform:capitalize;padding:3px 9px;border-radius:6px;display:inline-block;' + (map[status]||map.active);
+}
+function statusLabel(status){
+  if(status==='green') return 'Healthy';
+  if(status==='amber') return 'Degraded';
+  if(status==='red') return 'Critical';
+  return status.charAt(0).toUpperCase()+status.slice(1);
+}
+
+function downloadCSV(filename, headerRow, rows){
+  const csv = [headerRow, ...rows].map(r=>r.join(',')).join('\n');
+  const blob = new Blob([csv], {type:'text/csv'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove();
+  URL.revokeObjectURL(url);
+}
+
+class Component extends DCLogic {
+  state = {
+    screen:'login', loginEmail:'', loginPassword:'', loginError:'',
+    appScreen:'home',
+    catalogQuery:'', catalogLob:'All', catalogStatus:'All', selectedEntryId:null,
+    chatMessages:[{role:'assistant', text:"Hi, I'm the Pulse assistant. Ask me about any event or metric, request a quick data pull, or describe a feature to get a draft measurement plan."}],
+    chatInput:'',
+    contributeOpen:false, contributeStep:1, contributeForm:{name:'',lob:'Ridesharing',description:''},
+    reportOpen:false, reportForm:{title:'',description:'',severity:'Medium'},
+    extraSubmissions:[],
+    toast:null
+  };
+
+  onLoginEmailChange = (e) => this.setState({loginEmail:e.target.value});
+  onLoginPasswordChange = (e) => this.setState({loginPassword:e.target.value});
+  fillDemo = () => this.setState({loginEmail:'pulse-demo@uber.com', loginPassword:'Pulse2026', loginError:''});
+  handleLogin = (e) => {
+    e.preventDefault();
+    if(this.state.loginEmail === 'pulse-demo@uber.com' && this.state.loginPassword === 'Pulse2026'){
+      this.setState({screen:'app', appScreen:'home', loginError:''});
+    } else {
+      this.setState({loginError:'Invalid email or password. Use the demo credentials below.'});
+    }
+  };
+  logout = () => this.setState({screen:'login', loginEmail:'', loginPassword:'', loginError:''});
+
+  goHome = () => this.setState({appScreen:'home', selectedEntryId:null});
+  goCatalog = () => this.setState({appScreen:'catalog', selectedEntryId:null});
+  goAssistant = () => this.setState({appScreen:'assistant', selectedEntryId:null});
+  goRoadmap = () => this.setState({appScreen:'roadmap', selectedEntryId:null});
+
+  onCatalogQueryChange = (e) => this.setState({catalogQuery:e.target.value});
+  onCatalogLobChange = (e) => this.setState({catalogLob:e.target.value});
+  onCatalogStatusChange = (e) => this.setState({catalogStatus:e.target.value});
+  selectEntry = (id) => this.setState({selectedEntryId:id});
+  closeEntry = () => this.setState({selectedEntryId:null});
+  viewCatalogRef = (id) => this.setState({appScreen:'catalog', catalogQuery:'', catalogLob:'All', catalogStatus:'All', selectedEntryId:id});
+
+  downloadSample = (entry) => {
+    downloadCSV(entry.id+'_sample.csv', ['field','value'], entry.payload.map(p=>[p.field,p.value]));
+    this.showToast('Sample CSV downloaded.');
+  };
+
+  showToast = (msg) => {
+    this.setState({toast:msg});
+    clearTimeout(this._toastTimer);
+    this._toastTimer = setTimeout(()=>this.setState({toast:null}), 3500);
+  };
+
+  onChatInputChange = (e) => this.setState({chatInput:e.target.value});
+  onChatKeyDown = (e) => { if(e.key === 'Enter'){ this.sendChat(); } };
+
+  getAssistantResponse = (text) => {
+    const lower = text.toLowerCase();
+    if(lower.includes('completed_trip') || (lower.includes('completed') && lower.includes('trip'))){
+      return { text:'A completed_trip fires when the rider is dropped off at the confirmed destination and payment is captured successfully. Owned by Maya Chen (Data Science); currently v3.2. Note: it has an active data quality flag for duplicate events in the EU region.', catalogRefLabel:'completed_trip', catalogRefId:'completed_trip' };
+    }
+    if((lower.includes('netherlands') || lower.includes('amsterdam')) && (lower.includes('rid') || lower.includes('trip'))){
+      return { text:'Completed rides in the Netherlands, last 7 days: 1,284,930 rides — up 3.1% week-over-week. Sourced from completed_trip, filtered to country=NL.', csv:true, csvData:{ header:['date','city','completed_rides'], rows:[['2026-07-23','Amsterdam',201422],['2026-07-24','Amsterdam',198310],['2026-07-25','Rotterdam',94211],['2026-07-26','Amsterdam',205993],['2026-07-27','The Hague',61204],['2026-07-28','Amsterdam',210881],['2026-07-29','Amsterdam',312899]] } };
+    }
+    if(lower.includes('surge')){
+      return { text:'Surge pricing is tracked via surge_multiplier_applied, implemented by Pricing Engineering. Table location: web_data.pricing.surge_multiplier_applied.', catalogRefLabel:'surge_multiplier_applied', catalogRefId:'surge_multiplier_applied' };
+    }
+    if(lower.includes('scheduled') || lower.includes('30 days') || lower.includes('advance') || lower.includes('book a ride')){
+      return { text:"Here's a draft measurement plan for scheduled rides, aligned to existing naming conventions:",
+        plan:{ featureName:'Scheduled Rides', events:['scheduled_ride_requested','scheduled_ride_confirmed','scheduled_ride_cancelled'], metrics:['Scheduled Ride Booking Rate','GTV from Scheduled Rides','Pre-pickup Cancellation Rate'], similarNote:'Similar events found: completed_trip, surge_multiplier_applied — naming aligned to existing conventions.' } };
+    }
+    return { text:"I can help with data definitions, quick metric pulls, or measurement plans. Try asking about a specific event, or describe a new feature you're building." };
+  };
+
+  sendChat = () => {
+    const text = this.state.chatInput.trim();
+    if(!text) return;
+    const response = this.getAssistantResponse(text);
+    this.setState(s => ({ chatMessages:[...s.chatMessages, {role:'user', text}, {role:'assistant', ...response}], chatInput:'' }));
+  };
+
+  sendSuggestion = (text) => {
+    const response = this.getAssistantResponse(text);
+    this.setState(s => ({ chatMessages:[...s.chatMessages, {role:'user', text}, {role:'assistant', ...response}] }));
+  };
+
+  downloadChatCsv = (csvData) => { downloadCSV('query_result.csv', csvData.header, csvData.rows); this.showToast('CSV downloaded.'); };
+
+  estimateReviewDate = () => { const d = new Date(); d.setDate(d.getDate()+10); return d.toLocaleDateString('en-US',{month:'short',day:'numeric'}); };
+
+  openContribute = () => this.setState({contributeOpen:true, contributeStep:1, contributeForm:{name:'',lob:'Ridesharing',description:''}});
+  closeContribute = () => this.setState({contributeOpen:false});
+  contributeNext = () => this.setState({contributeStep:2});
+  contributeBack = () => this.setState({contributeStep:1});
+  onContributeNameChange = (e) => this.setState(s=>({contributeForm:{...s.contributeForm, name:e.target.value}}));
+  onContributeLobChange = (e) => this.setState(s=>({contributeForm:{...s.contributeForm, lob:e.target.value}}));
+  onContributeDescChange = (e) => this.setState(s=>({contributeForm:{...s.contributeForm, description:e.target.value}}));
+  submitContribute = () => {
+    const f = this.state.contributeForm;
+    const newItem = { id:'sub-'+Date.now(), name:f.name || 'Untitled schema', lob:f.lob, team:'Your submission', dateLabel:'Est. '+this.estimateReviewDate(), isNew:true };
+    this.setState(s => ({ extraSubmissions:[newItem, ...s.extraSubmissions], contributeOpen:false, appScreen:'roadmap', selectedEntryId:null }));
+    this.showToast('Submitted for review — track status on the Roadmap.');
+  };
+
+  submitPlanForReview = (plan) => {
+    const newItem = { id:'sub-'+Date.now(), name:plan.events[0], lob:'Ridesharing', team:'Your submission (AI-assisted)', dateLabel:'Est. '+this.estimateReviewDate(), isNew:true };
+    this.setState(s => ({ extraSubmissions:[newItem, ...s.extraSubmissions], appScreen:'roadmap', selectedEntryId:null }));
+    this.showToast('Measurement plan submitted for review.');
+  };
+
+  openReport = () => this.setState({reportOpen:true, reportForm:{title:'',description:'',severity:'Medium'}});
+  closeReport = () => this.setState({reportOpen:false});
+  onReportTitleChange = (e) => this.setState(s=>({reportForm:{...s.reportForm, title:e.target.value}}));
+  onReportSeverityChange = (e) => this.setState(s=>({reportForm:{...s.reportForm, severity:e.target.value}}));
+  onReportDescChange = (e) => this.setState(s=>({reportForm:{...s.reportForm, description:e.target.value}}));
+  submitReport = () => { this.setState({reportOpen:false}); this.showToast('Issue reported — tracked as PULSE-'+Math.floor(1000+Math.random()*9000)+'.'); };
+
+  stopClick = (e) => e.stopPropagation();
+
+  renderVals() {
+    const s = this.state;
+    const navStyle = (active) => 'background:'+(active?'#F7F6F2':'none')+';border:none;color:'+(active?'#23211D':'#77716A')+';font-weight:'+(active?'700':'500')+';border-radius:7px;padding:8px 12px;font-size:13px;cursor:pointer;';
+
+    const criticalPipeline = PIPELINES.find(p => p.health === 'red') || null;
+
+    const metrics = METRICS_BASE.map(m => ({
+      ...m,
+      deltaLabel: m.delta,
+      deltaStyle: 'font-size:12px;font-weight:600;color:'+(m.positive?'#2E8256':'#C1443A')+';',
+      sparkPoints: sparkPoints(m.points),
+      sparkColor: m.positive ? '#3FA66A' : '#C1443A'
+    }));
+
+    const pipelines = PIPELINES.map(p => ({
+      ...p,
+      statusLabel: statusLabel(p.health),
+      statusChipStyle: statusChipStyle(p.health),
+      slaActualStyle: 'font-weight:600;color:'+(p.health==='green' ? '#2E8256' : p.health==='amber' ? '#B4740F' : '#C1443A')+';',
+      qualityBarStyle: 'height:100%;border-radius:3px;width:'+p.quality+'%;background:'+(p.quality>=95?'#3FA66A':p.quality>=80?'#E0A93F':'#C1443A')+';'
+    }));
+
+    const q = s.catalogQuery.trim().toLowerCase();
+    const filteredCatalog = CATALOG.filter(e =>
+      (s.catalogLob === 'All' || e.lob === s.catalogLob) &&
+      (s.catalogStatus === 'All' || e.status === s.catalogStatus) &&
+      (q === '' || e.name.toLowerCase().includes(q) || e.definition.toLowerCase().includes(q))
+    ).map(e => ({
+      ...e,
+      statusLabel: e.status.charAt(0).toUpperCase()+e.status.slice(1),
+      statusChipStyle: statusChipStyle(e.status),
+      onSelect: () => this.selectEntry(e.id)
+    }));
+
+    const rawSelected = CATALOG.find(e => e.id === s.selectedEntryId) || null;
+    const selectedEntry = rawSelected ? {
+      ...rawSelected,
+      statusLabel: rawSelected.status.charAt(0).toUpperCase()+rawSelected.status.slice(1),
+      statusChipStyle: statusChipStyle(rawSelected.status),
+      onDownload: () => this.downloadSample(rawSelected)
+    } : null;
+
+    const chatMessages = s.chatMessages.map(m => ({
+      ...m,
+      rowStyle: 'display:flex;'+(m.role==='user' ? 'justify-content:flex-end;' : 'justify-content:flex-start;'),
+      bubbleStyle: 'max-width:78%;padding:12px 14px;border-radius:12px;font-size:13px;line-height:1.55;'+(m.role==='user' ? 'background:#3FA66A;color:#FFFFFF;' : 'background:#F7F6F2;color:#23211D;'),
+      catalogRefLabel: m.catalogRefLabel || null,
+      onViewCatalog: m.catalogRefId ? (() => this.viewCatalogRef(m.catalogRefId)) : null,
+      onDownloadCsv: m.csv ? (() => this.downloadChatCsv(m.csvData)) : null,
+      plan: m.plan || null,
+      onSubmitPlan: m.plan ? (() => this.submitPlanForReview(m.plan)) : null
+    }));
+
+    const suggestionTexts = ['What is completed_trip?', 'How many rides did we complete last week in the Netherlands?', "Where do I find surge pricing event data?", "We're launching scheduled rides up to 30 days in advance — what should we track?"];
+    const suggestions = suggestionTexts.map(t => ({ label:t, onClick: () => this.sendSuggestion(t) }));
+
+    const allDefining = [...s.extraSubmissions, ...ROADMAP_BASE.defining];
+    const roadmapColumns = [
+      { title:'Currently Being Defined', count:allDefining.length, items:allDefining },
+      { title:'Coming Next', count:ROADMAP_BASE.next.length, items:ROADMAP_BASE.next },
+      { title:'Recently Shipped', count:ROADMAP_BASE.shipped.length, items:ROADMAP_BASE.shipped }
+    ].map(col => ({
+      ...col,
+      items: col.items.map(it => ({
+        ...it,
+        isNew: !!it.isNew,
+        cardStyle: 'background:#FFFFFF;border:1px solid '+(it.isNew ? '#3FA66A' : '#E5E2DA')+';border-radius:10px;padding:14px;'
+      }))
+    }));
+
+    return {
+      isLogin: s.screen === 'login',
+      isApp: s.screen === 'app',
+      isHome: s.appScreen === 'home',
+      isCatalog: s.appScreen === 'catalog',
+      isAssistant: s.appScreen === 'assistant',
+      isRoadmap: s.appScreen === 'roadmap',
+      loginEmail: s.loginEmail, loginPassword: s.loginPassword, loginError: s.loginError,
+      onLoginEmailChange: this.onLoginEmailChange, onLoginPasswordChange: this.onLoginPasswordChange,
+      handleLogin: this.handleLogin, fillDemo: this.fillDemo, logout: this.logout,
+      goHome: this.goHome, goCatalog: this.goCatalog, goAssistant: this.goAssistant, goRoadmap: this.goRoadmap,
+      navBtnStyle_home: navStyle(s.appScreen==='home'), navBtnStyle_catalog: navStyle(s.appScreen==='catalog'),
+      navBtnStyle_assistant: navStyle(s.appScreen==='assistant'), navBtnStyle_roadmap: navStyle(s.appScreen==='roadmap'),
+      openReport: this.openReport, openContribute: this.openContribute,
+      criticalPipeline, metrics, pipelines,
+      catalogQuery: s.catalogQuery, catalogLob: s.catalogLob, catalogStatus: s.catalogStatus,
+      onCatalogQueryChange: this.onCatalogQueryChange, onCatalogLobChange: this.onCatalogLobChange, onCatalogStatusChange: this.onCatalogStatusChange,
+      catalogCountLabel: filteredCatalog.length + (filteredCatalog.length===1 ? ' result' : ' results'),
+      filteredCatalog, selectedEntry, closeEntry: this.closeEntry,
+      chatMessages, chatInput: s.chatInput, onChatInputChange: this.onChatInputChange, onChatKeyDown: this.onChatKeyDown, sendChat: this.sendChat,
+      showSuggestions: s.chatMessages.length <= 1, suggestions,
+      roadmapColumns,
+      contributeOpen: s.contributeOpen, contributeStep: s.contributeStep,
+      isContributeStep1: s.contributeStep === 1, isContributeStep2: s.contributeStep === 2,
+      contributeForm: s.contributeForm, estimatedReviewDate: this.estimateReviewDate(),
+      onContributeNameChange: this.onContributeNameChange, onContributeLobChange: this.onContributeLobChange, onContributeDescChange: this.onContributeDescChange,
+      closeContribute: this.closeContribute, contributeNext: this.contributeNext, contributeBack: this.contributeBack, submitContribute: this.submitContribute,
+      reportOpen: s.reportOpen, reportForm: s.reportForm,
+      onReportTitleChange: this.onReportTitleChange, onReportSeverityChange: this.onReportSeverityChange, onReportDescChange: this.onReportDescChange,
+      closeReport: this.closeReport, submitReport: this.submitReport,
+      toast: s.toast,
+      stopClick: this.stopClick
+    };
+  }
+}
+
+</script>
+</body>
+</html>
