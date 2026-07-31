@@ -7,6 +7,7 @@
 - The PRD is the source of truth for product requirements and scope. Check it before adding or changing functionality.
 - It's fine to add non-functional/decorative elements for visual completeness (e.g. extra auth provider buttons) when the user explicitly scopes them that way — don't wire them up unless asked.
 - If a task from the backlog.txt file is done, remove it from the list. 
+- If asked "why" something is a certain way, answer the why question directly first — don't jump straight to implementing a fix. Only make a change afterward if the user then asks for one.
 
 ## Visual identity
 Uber Pulse must look cohesive with Uber's real internal product ecosystem (Base from Uber) (Uber Direct, Uber for Business, Uber Central) — not like a generic/templated AI-generated dashboard. Concretely:
