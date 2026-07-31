@@ -237,7 +237,6 @@
                   <div onClick="{{ e.onSelect }}" style="display:grid; grid-template-columns:0.3fr 2fr 0.9fr 1fr 1fr 1.6fr 1fr; gap:10px; padding:14px 18px; font-size:13px; border-bottom:1px solid #F0F0F0; align-items:center; cursor:pointer;">
                     <div style="color:#9B9B9B;">{{ e.rowNumber }}</div>
                     <div style="display:flex; align-items:center; gap:8px;">
-                      <sc-if value="{{ e.warning }}" hint-placeholder-val="{{ false }}"><span style="width:6px; height:6px; border-radius:50%; background:#A93327; flex-shrink:0;"></span></sc-if>
                       <span style="font-weight:600; font-family:ui-monospace,monospace;">{{ e.name }}</span>
                     </div>
                     <div style="color:#6B6B6B;">{{ e.weeklyVolumeLabel }}</div>
@@ -804,7 +803,6 @@
           <sc-for list="{{ selectedPipeline.events }}" as="e" hint-placeholder-count="4">
             <div onClick="{{ e.onSelect }}" style="display:flex; align-items:center; justify-content:space-between; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; cursor:pointer;">
               <div style="display:flex; align-items:center; gap:8px; min-width:0;">
-                <sc-if value="{{ e.warning }}" hint-placeholder-val="{{ false }}"><span style="width:6px; height:6px; border-radius:50%; background:#A93327; flex-shrink:0;"></span></sc-if>
                 <span style="font-size:12.5px; font-family:ui-monospace,monospace; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ e.name }}</span>
               </div>
               <div style="display:flex; align-items:center; gap:8px; flex-shrink:0;">
