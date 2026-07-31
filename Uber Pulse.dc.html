@@ -16,6 +16,10 @@
     a:hover { color:#04562B; }
     ::placeholder { color:#9B9B9B; }
     button { font-family:inherit; }
+    .pulse-tt { position:relative; display:inline-flex; align-items:center; }
+    .pulse-tt .pulse-tt-icon { width:14px; height:14px; border-radius:50%; background:#EFEFEF; color:#6B6B6B; font-size:9.5px; font-weight:700; display:inline-flex; align-items:center; justify-content:center; cursor:help; margin-left:5px; flex-shrink:0; line-height:1; }
+    .pulse-tt .pulse-tt-bubble { visibility:hidden; opacity:0; position:absolute; bottom:calc(100% + 8px); left:0; background:#0A0A0A; color:#FFFFFF; font-size:11.5px; font-weight:500; line-height:1.4; padding:8px 10px; border-radius:8px; width:200px; z-index:20; transition:opacity 0.12s ease; pointer-events:none; }
+    .pulse-tt:hover .pulse-tt-bubble { visibility:visible; opacity:1; }
   </style>
 </helmet>
 
@@ -137,7 +141,7 @@
               <sc-for list="{{ metrics }}" as="m" hint-placeholder-count="4">
                 <div style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; padding:18px;">
                   <div style="display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:12px;">
-                    <div style="font-size:12px; color:#6B6B6B; font-weight:500;">{{ m.label }}</div>
+                    <div class="pulse-tt" style="font-size:12px; color:#6B6B6B; font-weight:500;">{{ m.label }}<span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble">{{ m.tooltip }}</span></div>
                     <div style="width:30px; height:30px; border-radius:50%; background:{{ m.iconBg }}; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
                       <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="{{ m.iconColor }}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16l6-6 4 4 6-9"/><path d="M14 5h6v6"/></svg>
                     </div>
@@ -158,7 +162,12 @@
 
             <div style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; overflow:hidden;">
               <div style="display:grid; grid-template-columns:2fr 1fr 1fr 1.4fr 1.1fr 1fr; gap:8px; padding:10px 18px; font-size:11px; color:#9B9B9B; font-weight:600; text-transform:uppercase; letter-spacing:0.04em; border-bottom:1px solid #EFEFEF;">
-                <div>Pipeline</div><div>LOB</div><div>Status</div><div>SLA (target / actual)</div><div>Freshness</div><div>Quality</div>
+                <div>Pipeline<span class="pulse-tt" style="display:inline-flex;"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; left:0; text-transform:none; letter-spacing:normal; font-weight:500;">The name of the data pipeline processing this event stream.</span></span></div>
+                <div>LOB<span class="pulse-tt" style="display:inline-flex;"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; left:0; text-transform:none; letter-spacing:normal; font-weight:500;">Line of business this pipeline's data belongs to.</span></span></div>
+                <div>Status<span class="pulse-tt" style="display:inline-flex;"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; left:0; text-transform:none; letter-spacing:normal; font-weight:500;">Overall pipeline health, derived from current SLA attainment and data freshness.</span></span></div>
+                <div>SLA (target / actual)<span class="pulse-tt" style="display:inline-flex;"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; left:0; text-transform:none; letter-spacing:normal; font-weight:500;">Target delivery reliability for this pipeline vs. the actual rate observed this week.</span></span></div>
+                <div>Freshness<span class="pulse-tt" style="display:inline-flex;"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; right:0; left:auto; text-transform:none; letter-spacing:normal; font-weight:500;">Time since the most recent successful data load for this pipeline.</span></span></div>
+                <div>Quality<span class="pulse-tt" style="display:inline-flex;"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; right:0; left:auto; text-transform:none; letter-spacing:normal; font-weight:500;">Composite score (0-100) from schema, completeness, and duplication checks.</span></span></div>
               </div>
               <sc-for list="{{ pipelines }}" as="p" hint-placeholder-count="9">
                 <div style="display:grid; grid-template-columns:2fr 1fr 1fr 1.4fr 1.1fr 1fr; gap:8px; padding:13px 18px; font-size:13px; border-bottom:1px solid #F0F0F0; align-items:center;">
@@ -531,10 +540,14 @@ const ROADMAP_BASE = {
 };
 
 const METRICS_BASE = [
-  { id:'gtv', label:'Gross Trip Value (GTV)', value:'$3.85B', delta:'+4.2% WoW', positive:true, points:[3280,3320,3380,3410,3460,3600,3720,3850], iconBg:'#DFF3E6', iconColor:'#067A3E' },
-  { id:'trips', label:'Weekly Trips', value:'98.4M', delta:'+2.8% WoW', positive:true, points:[88.9,90.5,92.0,93.5,95.0,96.2,97.3,98.4], iconBg:'#DCEBF7', iconColor:'#1D6FA5' },
-  { id:'eats', label:'Eats Deliveries', value:'81.6M', delta:'+6.1% WoW', positive:true, points:[70.5,72.8,74.9,76.5,78.0,79.2,80.4,81.6], iconBg:'#FBE8D8', iconColor:'#B45F06' },
-  { id:'b2b', label:'B2B Transactions', value:'3.42M', delta:'-1.3% WoW', positive:false, points:[3.6,3.58,3.55,3.5,3.48,3.45,3.43,3.42], iconBg:'#EDE3F7', iconColor:'#6B3FA0' }
+  { id:'gtv', label:'Gross Trip Value (GTV)', value:'$3.85B', delta:'+4.2% WoW', positive:true, points:[3280,3320,3380,3410,3460,3600,3720,3850], iconBg:'#DFF3E6', iconColor:'#067A3E',
+    tooltip:'Total value of completed trips, deliveries, and B2B/Freight transactions across all lines of business in the trailing 7 days, before deductions.' },
+  { id:'trips', label:'Weekly Trips', value:'98.4M', delta:'+2.8% WoW', positive:true, points:[88.9,90.5,92.0,93.5,95.0,96.2,97.3,98.4], iconBg:'#DCEBF7', iconColor:'#1D6FA5',
+    tooltip:'Completed Mobility (rideshare) trips in the trailing 7 days, sourced from the completed_trip event.' },
+  { id:'eats', label:'Eats Deliveries', value:'81.6M', delta:'+6.1% WoW', positive:true, points:[70.5,72.8,74.9,76.5,78.0,79.2,80.4,81.6], iconBg:'#FBE8D8', iconColor:'#B45F06',
+    tooltip:'Completed Eats orders in the trailing 7 days, sourced from the eats_order_placed event.' },
+  { id:'b2b', label:'B2B Transactions', value:'3.42M', delta:'-1.3% WoW', positive:false, points:[3.6,3.58,3.55,3.5,3.48,3.45,3.43,3.42], iconBg:'#EDE3F7', iconColor:'#6B3FA0',
+    tooltip:'Confirmed B2B/Freight shipment transactions in the trailing 7 days, sourced from the b2b_shipment_confirmed event.' }
 ];
 
 function sparkPoints(nums){
