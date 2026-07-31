@@ -1,0 +1,31 @@
+UBER PULSE — BACKLOG
+Format: [status] Title — notes
+Status values: open, in progress, done
+
+
+HIGH PRIORITY
+-------------
+[done] Adopt Uber Base visual identity — left sidebar nav, true black/white/green tokens, pill buttons, pastel icon-badge KPI cards
+[open] Wire real SSO — login screen currently only accepts the hardcoded demo credentials (pulse-demo@uber.com / Pulse2026); PRD calls for Uber's internal identity provider
+[open] Visual QA pass on the new sidebar shell — check spacing/wrapping on Data Catalog table and AI Assistant panel now that content width lost ~232px to the sidebar; verify all four screens + both modals against the new tokens
+[open] Define AI Assistant data access scope for v1 (catalog metadata only vs. live query) — PRD open question, owner Alex + Data Engineering
+[open] Catalog seeding — replace the 9 hardcoded CATALOG entries with real pipeline metadata; PRD flags existing metadata quality as a high-likelihood/high-impact risk
+
+
+MEDIUM PRIORITY
+----------------
+[open] Slack/email notifications when a pipeline's quality score drops below threshold (Tom's persona story)
+[open] Contribution review workflow backend — submissions currently just appear in local state under "Under Review," no real review/approval path or reviewer notification
+[open] Report Issue — currently only shows a toast with a fake ticket number; needs to create a tracked, visible issue per PRD
+[open] Roadmap "View full roadmap in Jira" — currently a dead link; wire to the real Jira board
+[open] Confirm which pipelines are included in v1 monitoring table — all 24+ app teams or a prioritized subset (PRD open question, owner Alex)
+[open] Confirm schema contribution review SLA commitment (PRD open question, owner Alex)
+[open] Expand icon set for KPI badges / nav so new LOBs or metric types don't reuse the same trend-arrow glyph indefinitely
+
+
+LOW PRIORITY
+------------
+[open] Dark mode for the app shell (login already dark; rest of app is light-only)
+[open] Micro-interactions / motion pass (hover states, panel transitions) once core visual direction is validated
+[open] Mobile support — explicitly out of scope for v1 per PRD, desktop-only work context
+[open] Data serving API — deferred to v2 per PRD, dependent on v1 catalog trust layer being established
