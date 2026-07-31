@@ -158,10 +158,11 @@
             </div>
 
             <h2 style="font-size:16px; font-weight:700; margin:0 0 2px 0;">Pipeline Health</h2>
-            <p style="font-size:13px; color:#6B6B6B; margin:0 0 14px 0;">Real-time status across core web data pipelines, based on daily, weekly, and monthly validation checks.</p>
+            <p style="font-size:13px; color:#6B6B6B; margin:0 0 14px 0;">Top 10 pipelines by weekly volume. See the full list in Data Catalog → Pipeline Log.</p>
 
             <div style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; overflow:hidden;">
-              <div style="display:grid; grid-template-columns:2fr 0.9fr 1fr 1fr 1.4fr 1.1fr 1fr; gap:8px; padding:10px 18px; font-size:11px; color:#9B9B9B; font-weight:600; text-transform:uppercase; letter-spacing:0.04em; border-bottom:1px solid #EFEFEF;">
+              <div style="display:grid; grid-template-columns:0.3fr 2fr 0.9fr 1fr 1fr 1.4fr 1.1fr 1fr; gap:8px; padding:10px 18px; font-size:11px; color:#9B9B9B; font-weight:600; text-transform:uppercase; letter-spacing:0.04em; border-bottom:1px solid #EFEFEF;">
+                <div>#</div>
                 <div>Pipeline<span class="pulse-tt" style="display:inline-flex;"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; left:0; text-transform:none; letter-spacing:normal; font-weight:500;">The name of the data pipeline processing this event stream.</span></span></div>
                 <div>Weekly Volume<span class="pulse-tt" style="display:inline-flex;"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; left:0; text-transform:none; letter-spacing:normal; font-weight:500;">Records processed by this pipeline in the trailing 7 days.</span></span></div>
                 <div>LOB<span class="pulse-tt" style="display:inline-flex;"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; left:0; text-transform:none; letter-spacing:normal; font-weight:500;">Line of business this pipeline's data belongs to.</span></span></div>
@@ -170,8 +171,9 @@
                 <div>Freshness<span class="pulse-tt" style="display:inline-flex;"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; right:0; left:auto; text-transform:none; letter-spacing:normal; font-weight:500;">Time since the most recent successful data load for this pipeline.</span></span></div>
                 <div>Quality<span class="pulse-tt" style="display:inline-flex;"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; right:0; left:auto; text-transform:none; letter-spacing:normal; font-weight:500;">Composite score (0-100) from schema, completeness, and duplication checks.</span></span></div>
               </div>
-              <sc-for list="{{ pipelines }}" as="p" hint-placeholder-count="9">
-                <div style="display:grid; grid-template-columns:2fr 0.9fr 1fr 1fr 1.4fr 1.1fr 1fr; gap:8px; padding:13px 18px; font-size:13px; border-bottom:1px solid #F0F0F0; align-items:center;">
+              <sc-for list="{{ homePipelines }}" as="p" hint-placeholder-count="10">
+                <div style="display:grid; grid-template-columns:0.3fr 2fr 0.9fr 1fr 1fr 1.4fr 1.1fr 1fr; gap:8px; padding:13px 18px; font-size:13px; border-bottom:1px solid #F0F0F0; align-items:center; cursor:pointer;" onClick="{{ p.onSelect }}">
+                  <div style="color:#9B9B9B;">{{ p.rowNumber }}</div>
                   <div style="font-weight:600;">{{ p.name }}</div>
                   <div style="color:#6B6B6B;">{{ p.weeklyVolumeLabel }}</div>
                   <div style="color:#6B6B6B;">{{ p.lob }}</div>
@@ -220,7 +222,8 @@
               <div style="font-size:12px; color:#9B9B9B; margin-bottom:10px;">{{ catalogCountLabel }}</div>
 
               <div style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; overflow:hidden;">
-                <div style="display:grid; grid-template-columns:2fr 0.9fr 1fr 1fr 1.6fr 1fr; gap:10px; padding:10px 18px; font-size:11px; color:#9B9B9B; font-weight:600; text-transform:uppercase; letter-spacing:0.04em; border-bottom:1px solid #EFEFEF;">
+                <div style="display:grid; grid-template-columns:0.3fr 2fr 0.9fr 1fr 1fr 1.6fr 1fr; gap:10px; padding:10px 18px; font-size:11px; color:#9B9B9B; font-weight:600; text-transform:uppercase; letter-spacing:0.04em; border-bottom:1px solid #EFEFEF;">
+                  <div>#</div>
                   <div>Event Name<span class="pulse-tt" style="display:inline-flex;"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; left:0; text-transform:none; letter-spacing:normal; font-weight:500;">The unique event or metric name, as it appears in the data warehouse. A dot indicates an active data quality warning.</span></span></div>
                   <div>Weekly Volume<span class="pulse-tt" style="display:inline-flex;"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; left:0; text-transform:none; letter-spacing:normal; font-weight:500;">Times this event fired in the trailing 7 days.</span></span></div>
                   <div>LOB<span class="pulse-tt" style="display:inline-flex;"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; left:0; text-transform:none; letter-spacing:normal; font-weight:500;">Line of business this event or metric belongs to.</span></span></div>
@@ -228,8 +231,9 @@
                   <div>Definition Owner<span class="pulse-tt" style="display:inline-flex;"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; left:0; text-transform:none; letter-spacing:normal; font-weight:500;">The person or team accountable for this definition's accuracy — contact them with definition questions.</span></span></div>
                   <div>Last Updated<span class="pulse-tt" style="display:inline-flex;"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; right:0; left:auto; text-transform:none; letter-spacing:normal; font-weight:500;">Date this definition's payload or logic was last changed.</span></span></div>
                 </div>
-                <sc-for list="{{ filteredCatalog }}" as="e" hint-placeholder-count="6">
-                  <div onClick="{{ e.onSelect }}" style="display:grid; grid-template-columns:2fr 0.9fr 1fr 1fr 1.6fr 1fr; gap:10px; padding:14px 18px; font-size:13px; border-bottom:1px solid #F0F0F0; align-items:center; cursor:pointer;">
+                <sc-for list="{{ pagedCatalog }}" as="e" hint-placeholder-count="30">
+                  <div onClick="{{ e.onSelect }}" style="display:grid; grid-template-columns:0.3fr 2fr 0.9fr 1fr 1fr 1.6fr 1fr; gap:10px; padding:14px 18px; font-size:13px; border-bottom:1px solid #F0F0F0; align-items:center; cursor:pointer;">
+                    <div style="color:#9B9B9B;">{{ e.rowNumber }}</div>
                     <div style="display:flex; align-items:center; gap:8px;">
                       <sc-if value="{{ e.warning }}" hint-placeholder-val="{{ false }}"><span style="width:6px; height:6px; border-radius:50%; background:#A93327; flex-shrink:0;"></span></sc-if>
                       <span style="font-weight:600; font-family:ui-monospace,monospace;">{{ e.name }}</span>
@@ -241,6 +245,11 @@
                     <div style="color:#9B9B9B;">{{ e.lastUpdated }}</div>
                   </div>
                 </sc-for>
+              </div>
+              <div style="display:flex; align-items:center; justify-content:flex-end; gap:12px; margin-top:14px;">
+                <span style="font-size:12px; color:#9B9B9B;">{{ catalogPageLabel }}</span>
+                <button onClick="{{ onCatalogPrevPage }}" disabled="{{ catalogPrevDisabled }}" style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:999px; padding:7px 16px; font-size:12px; font-weight:600; cursor:pointer; opacity:{{ catalogPrevDisabled ? 0.4 : 1 }};">Previous</button>
+                <button onClick="{{ onCatalogNextPage }}" disabled="{{ catalogNextDisabled }}" style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:999px; padding:7px 16px; font-size:12px; font-weight:600; cursor:pointer; opacity:{{ catalogNextDisabled ? 0.4 : 1 }};">Next</button>
               </div>
             </sc-if>
 
@@ -266,8 +275,9 @@
               <div style="font-size:12px; color:#9B9B9B; margin-bottom:10px;">{{ pipelineCountLabel }}</div>
 
               <div style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; overflow:hidden;">
-                <div style="display:grid; grid-template-columns:2fr 0.9fr 1fr 1fr 1.4fr 1.1fr 1fr; gap:8px; padding:10px 18px; font-size:11px; color:#9B9B9B; font-weight:600; text-transform:uppercase; letter-spacing:0.04em; border-bottom:1px solid #EFEFEF;">
-                  <div>Pipeline<span class="pulse-tt" style="display:inline-flex;"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; left:0; text-transform:none; letter-spacing:normal; font-weight:500;">The name of the data pipeline processing this event stream.</span></span></div>
+                <div style="display:grid; grid-template-columns:0.3fr 2fr 0.9fr 1fr 1fr 1.4fr 1.1fr 1fr; gap:8px; padding:10px 18px; font-size:11px; color:#9B9B9B; font-weight:600; text-transform:uppercase; letter-spacing:0.04em; border-bottom:1px solid #EFEFEF;">
+                  <div>#</div>
+                <div>Pipeline<span class="pulse-tt" style="display:inline-flex;"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; left:0; text-transform:none; letter-spacing:normal; font-weight:500;">The name of the data pipeline processing this event stream.</span></span></div>
                 <div>Weekly Volume<span class="pulse-tt" style="display:inline-flex;"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; left:0; text-transform:none; letter-spacing:normal; font-weight:500;">Records processed by this pipeline in the trailing 7 days.</span></span></div>
                   <div>LOB<span class="pulse-tt" style="display:inline-flex;"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; left:0; text-transform:none; letter-spacing:normal; font-weight:500;">Line of business this pipeline's data belongs to.</span></span></div>
                   <div>Status<span class="pulse-tt" style="display:inline-flex;"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; left:0; text-transform:none; letter-spacing:normal; font-weight:500;">Overall pipeline health, derived from current SLA attainment and data freshness.</span></span></div>
@@ -275,8 +285,9 @@
                   <div>Freshness<span class="pulse-tt" style="display:inline-flex;"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; right:0; left:auto; text-transform:none; letter-spacing:normal; font-weight:500;">Time since the most recent successful data load for this pipeline.</span></span></div>
                   <div>Quality<span class="pulse-tt" style="display:inline-flex;"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; right:0; left:auto; text-transform:none; letter-spacing:normal; font-weight:500;">Composite score (0-100) from schema, completeness, and duplication checks.</span></span></div>
                 </div>
-                <sc-for list="{{ filteredPipelines }}" as="p" hint-placeholder-count="9">
-                  <div style="display:grid; grid-template-columns:2fr 0.9fr 1fr 1fr 1.4fr 1.1fr 1fr; gap:8px; padding:13px 18px; font-size:13px; border-bottom:1px solid #F0F0F0; align-items:center;">
+                <sc-for list="{{ pagedPipelines }}" as="p" hint-placeholder-count="30">
+                  <div style="display:grid; grid-template-columns:0.3fr 2fr 0.9fr 1fr 1fr 1.4fr 1.1fr 1fr; gap:8px; padding:13px 18px; font-size:13px; border-bottom:1px solid #F0F0F0; align-items:center; cursor:pointer;" onClick="{{ p.onSelect }}">
+                    <div style="color:#9B9B9B;">{{ p.rowNumber }}</div>
                     <div style="font-weight:600;">{{ p.name }}</div>
                     <div style="color:#6B6B6B;">{{ p.weeklyVolumeLabel }}</div>
                     <div style="color:#6B6B6B;">{{ p.lob }}</div>
@@ -291,6 +302,11 @@
                     </div>
                   </div>
                 </sc-for>
+              </div>
+              <div style="display:flex; align-items:center; justify-content:flex-end; gap:12px; margin-top:14px;">
+                <span style="font-size:12px; color:#9B9B9B;">{{ pipelineLogPageLabel }}</span>
+                <button onClick="{{ onPipelineLogPrevPage }}" disabled="{{ pipelineLogPrevDisabled }}" style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:999px; padding:7px 16px; font-size:12px; font-weight:600; cursor:pointer; opacity:{{ pipelineLogPrevDisabled ? 0.4 : 1 }};">Previous</button>
+                <button onClick="{{ onPipelineLogNextPage }}" disabled="{{ pipelineLogNextDisabled }}" style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:999px; padding:7px 16px; font-size:12px; font-weight:600; cursor:pointer; opacity:{{ pipelineLogNextDisabled ? 0.4 : 1 }};">Next</button>
               </div>
             </sc-if>
           </sc-if>
@@ -422,6 +438,54 @@
       </div>
     </sc-if>
 
+    <sc-if value="{{ selectedPipeline }}" hint-placeholder-val="{{ false }}">
+      <div style="position:fixed; inset:0; background:rgba(10,10,10,0.35); z-index:30;" onClick="{{ closePipeline }}"></div>
+      <div style="position:fixed; top:0; right:0; bottom:0; width:440px; background:#FFFFFF; box-shadow:-8px 0 30px rgba(0,0,0,0.12); z-index:31; overflow-y:auto; padding:28px;">
+        <div style="display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:16px;">
+          <div style="font-size:16px; font-weight:700;">{{ selectedPipeline.name }}</div>
+          <button onClick="{{ closePipeline }}" style="background:none; border:none; font-size:18px; cursor:pointer; color:#9B9B9B;">✕</button>
+        </div>
+        <div style="display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap;">
+          <span style="{{ selectedPipeline.statusChipStyle }}">{{ selectedPipeline.statusLabel }}</span>
+          <span style="font-size:12px; color:#6B6B6B; background:#F6F6F6; border-radius:6px; padding:3px 8px;">{{ selectedPipeline.lob }}</span>
+          <span style="font-size:12px; color:#6B6B6B; background:#F6F6F6; border-radius:6px; padding:3px 8px;">{{ selectedPipeline.weeklyVolumeLabel }}/wk</span>
+        </div>
+        <div style="font-size:13px; line-height:1.6; color:#0A0A0A; margin-bottom:18px;">{{ selectedPipeline.description }}</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:20px;">
+          <div><div style="font-size:11px; color:#9B9B9B; font-weight:600; text-transform:uppercase; margin-bottom:3px;">Owning team</div><div style="font-size:13px;">{{ selectedPipeline.owningTeam }}</div></div>
+          <div><div style="font-size:11px; color:#9B9B9B; font-weight:600; text-transform:uppercase; margin-bottom:3px;">Freshness</div><div style="font-size:13px;">{{ selectedPipeline.freshness }}</div></div>
+          <div><div style="font-size:11px; color:#9B9B9B; font-weight:600; text-transform:uppercase; margin-bottom:3px;">SLA target / actual</div><div style="font-size:13px;">{{ selectedPipeline.slaTarget }} / <span style="{{ selectedPipeline.slaActualStyle }}">{{ selectedPipeline.slaActual }}</span></div></div>
+          <div><div style="font-size:11px; color:#9B9B9B; font-weight:600; text-transform:uppercase; margin-bottom:3px;">Quality score</div><div style="font-size:13px;">{{ selectedPipeline.quality }} / 100</div></div>
+        </div>
+
+        <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#6B6B6B; margin-bottom:10px;">Quality checks</div>
+        <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:22px;">
+          <sc-for list="{{ selectedPipeline.checks }}" as="c" hint-placeholder-count="3">
+            <div style="display:flex; align-items:center; justify-content:space-between; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px;">
+              <div style="font-size:13px;">{{ c.name }}</div>
+              <span style="{{ c.chipStyle }}">{{ c.status }}</span>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#6B6B6B; margin-bottom:10px;">Events in this pipeline</div>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <sc-for list="{{ selectedPipeline.events }}" as="e" hint-placeholder-count="4">
+            <div onClick="{{ e.onSelect }}" style="display:flex; align-items:center; justify-content:space-between; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; cursor:pointer;">
+              <div style="display:flex; align-items:center; gap:8px; min-width:0;">
+                <sc-if value="{{ e.warning }}" hint-placeholder-val="{{ false }}"><span style="width:6px; height:6px; border-radius:50%; background:#A93327; flex-shrink:0;"></span></sc-if>
+                <span style="font-size:12.5px; font-family:ui-monospace,monospace; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ e.name }}</span>
+              </div>
+              <div style="display:flex; align-items:center; gap:8px; flex-shrink:0;">
+                <span style="font-size:12px; color:#6B6B6B;">{{ e.weeklyVolumeLabel }}</span>
+                <span style="{{ e.statusChipStyle }}">{{ e.statusLabel }}</span>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
     <sc-if value="{{ contributeOpen }}" hint-placeholder-val="{{ false }}">
       <div style="position:fixed; inset:0; background:rgba(10,10,10,0.4); z-index:40; display:flex; align-items:center; justify-content:center;" onClick="{{ closeContribute }}">
         <div style="background:#FFFFFF; border-radius:14px; width:520px; max-width:92vw; padding:28px; box-shadow:0 20px 60px rgba(0,0,0,0.2);" onClick="{{ stopClick }}">
@@ -511,79 +575,592 @@
 const LOB_COLORS = {};
 
 const PIPELINES = [
-  { id:'p1', name:'Trip Completion Events', lob:'Ridesharing', health:'green', slaTarget:'99.9%', slaActual:'99.94%', freshness:'4 min ago', quality:98, weeklyVolume:99.1 },
-  { id:'p2', name:'Marketing Attribution', lob:'Eats', health:'amber', slaTarget:'99.5%', slaActual:'97.1%', freshness:'22 min ago', quality:84, weeklyVolume:615.3 },
-  { id:'p3', name:'Surge Pricing Events', lob:'Ridesharing', health:'green', slaTarget:'99.9%', slaActual:'99.97%', freshness:'2 min ago', quality:99, weeklyVolume:34.6 },
-  { id:'p4', name:'Eats Order Funnel', lob:'Eats', health:'green', slaTarget:'99.5%', slaActual:'99.8%', freshness:'6 min ago', quality:95, weeklyVolume:164.0 },
-  { id:'p5', name:'B2B Freight Transactions', lob:'B2B', health:'green', slaTarget:'99.0%', slaActual:'99.4%', freshness:'12 min ago', quality:91, weeklyVolume:3.44 },
-  { id:'p6', name:'Driver Supply Events', lob:'Ridesharing', health:'red', slaTarget:'99.9%', slaActual:'94.2%', freshness:'3 hrs ago', quality:61, weeklyVolume:118.0 },
-  { id:'p7', name:'Session & Auth Events', lob:'Platform', health:'green', slaTarget:'99.9%', slaActual:'99.95%', freshness:'1 min ago', quality:97, weeklyVolume:214.5 },
-  { id:'p8', name:'Payments & Refunds', lob:'Platform', health:'amber', slaTarget:'99.5%', slaActual:'98.0%', freshness:'18 min ago', quality:88, weeklyVolume:183.2 },
-  { id:'p9', name:'Eats Delivery Tracking', lob:'Eats', health:'green', slaTarget:'99.0%', slaActual:'99.3%', freshness:'5 min ago', quality:93, weeklyVolume:145.0 }
+  { id:'p1', name:'Trip Completion Events', lob:'Ridesharing', health:'green', slaTarget:'99.9%', slaActual:'99.94%', freshness:'4 min ago', quality:98,
+    owningTeam:'Rides Platform Engineering', description:'Ingests the full trip lifecycle from reservation through completion and receipt.' },
+  { id:'p2', name:'Marketing Attribution', lob:'Eats', health:'amber', slaTarget:'99.5%', slaActual:'97.1%', freshness:'22 min ago', quality:84,
+    owningTeam:'Eats Growth Engineering', description:'Processes ad touches and campaign conversions for marketing measurement.' },
+  { id:'p3', name:'Surge Pricing Events', lob:'Ridesharing', health:'green', slaTarget:'99.9%', slaActual:'99.97%', freshness:'2 min ago', quality:99,
+    owningTeam:'Pricing Engineering', description:'Streams surge zone activation, multiplier, and expiry events used for dynamic pricing analysis.' },
+  { id:'p4', name:'Eats Order Funnel', lob:'Eats', health:'green', slaTarget:'99.5%', slaActual:'99.8%', freshness:'6 min ago', quality:95,
+    owningTeam:'Eats Checkout Engineering', description:'Tracks the full Eats checkout funnel from start through order placement or error.' },
+  { id:'p5', name:'B2B Freight Transactions', lob:'B2B', health:'green', slaTarget:'99.0%', slaActual:'99.4%', freshness:'12 min ago', quality:91,
+    owningTeam:'Freight Engineering', description:'Processes freight shipment requests, confirmations, and deliveries for enterprise billing and reporting.' },
+  { id:'p6', name:'Driver Supply Events', lob:'Ridesharing', health:'red', slaTarget:'99.9%', slaActual:'94.2%', freshness:'3 hrs ago', quality:61,
+    owningTeam:'Rides Platform Engineering', description:'Streams real-time driver availability signals used for supply/demand balancing. Currently degraded.' },
+  { id:'p7', name:'Session & Auth Events', lob:'Platform', health:'green', slaTarget:'99.9%', slaActual:'99.95%', freshness:'1 min ago', quality:97,
+    owningTeam:'Web Infrastructure', description:'Ingests session start, logout, timeout, and login-failure events across all web surfaces.' },
+  { id:'p8', name:'Payments & Refunds', lob:'Platform', health:'amber', slaTarget:'99.5%', slaActual:'98.0%', freshness:'18 min ago', quality:88,
+    owningTeam:'Payments Engineering', description:'Processes payment captures, failures, refunds, and discounts across Mobility, Eats, and B2B.' },
+  { id:'p9', name:'Eats Delivery Tracking', lob:'Eats', health:'green', slaTarget:'99.0%', slaActual:'99.3%', freshness:'5 min ago', quality:93,
+    owningTeam:'Eats Logistics Engineering', description:'Streams real-time delivery tracking and courier handoff events for in-progress Eats orders.' },
+  { id:'p10', name:'Fare Estimate Requests', lob:'Ridesharing', health:'green', slaTarget:'99.5%', slaActual:'99.7%', freshness:'3 min ago', quality:96,
+    owningTeam:'Pricing Engineering', description:'Streams fare preview, expiry, and price-lock events generated before a rider books a trip.' },
+  { id:'p11', name:'ETA & Routing Events', lob:'Ridesharing', health:'amber', slaTarget:'99.5%', slaActual:'97.8%', freshness:'15 min ago', quality:85,
+    owningTeam:'Rides Platform Engineering', description:'Processes live ETA calculation and route recalculation events used for dispatch and rider display.' },
+  { id:'p12', name:'Rider Ratings & Feedback', lob:'Ridesharing', health:'green', slaTarget:'99.0%', slaActual:'99.3%', freshness:'8 min ago', quality:92,
+    owningTeam:'Rides Growth Engineering', description:'Ingests post-trip ratings, feedback comments, and low-rating review flags.' },
+  { id:'p13', name:'Ride Cancellation Events', lob:'Ridesharing', health:'green', slaTarget:'99.5%', slaActual:'99.6%', freshness:'4 min ago', quality:95,
+    owningTeam:'Rides Platform Engineering', description:'Streams trip cancellations by reason and initiator for cancellation-rate monitoring.' },
+  { id:'p14', name:'Restaurant Menu Views', lob:'Eats', health:'green', slaTarget:'99.5%', slaActual:'99.8%', freshness:'2 min ago', quality:97,
+    owningTeam:'Eats Discovery Engineering', description:'Ingests menu views, search clicks, and filter events — the top of the Eats browsing funnel.' },
+  { id:'p15', name:'Restaurant Rating Events', lob:'Eats', health:'green', slaTarget:'99.0%', slaActual:'99.2%', freshness:'10 min ago', quality:90,
+    owningTeam:'Eats Growth Engineering', description:'Processes restaurant rating submissions, photo attachments, and flagged reviews.' },
+  { id:'p16', name:'Cart Abandonment Events', lob:'Eats', health:'amber', slaTarget:'99.0%', slaActual:'96.5%', freshness:'25 min ago', quality:79,
+    owningTeam:'Eats Checkout Engineering', description:'Streams cart abandonment, recovery-email, and cart-recovery events.' },
+  { id:'p17', name:'Eats Refund Events', lob:'Eats', health:'green', slaTarget:'99.5%', slaActual:'99.6%', freshness:'9 min ago', quality:94,
+    owningTeam:'Payments Engineering', description:'Processes refund requests, issuances, and disputes for Eats orders.' },
+  { id:'p18', name:'B2B Invoice Generation', lob:'B2B', health:'green', slaTarget:'99.0%', slaActual:'99.1%', freshness:'20 min ago', quality:90,
+    owningTeam:'B2B Finance Engineering', description:'Streams invoice generation, payment, and dispute events for enterprise billing reconciliation.' },
+  { id:'p19', name:'Uber for Business Trip Bookings', lob:'B2B', health:'green', slaTarget:'99.0%', slaActual:'99.3%', freshness:'11 min ago', quality:93,
+    owningTeam:'Uber for Business Engineering', description:'Processes enterprise-managed trip bookings, policy-violation flags, and expensing events.' },
+  { id:'p20', name:'B2B Expense Report Submissions', lob:'B2B', health:'amber', slaTarget:'98.5%', slaActual:'96.0%', freshness:'35 min ago', quality:80,
+    owningTeam:'B2B Finance Engineering', description:'Ingests expense report submission, approval, and rejection events from the newly launched workflow.' },
+  { id:'p21', name:'Freight Carrier Bidding Events', lob:'B2B', health:'green', slaTarget:'98.5%', slaActual:'98.7%', freshness:'19 min ago', quality:88,
+    owningTeam:'Freight Engineering', description:'Streams carrier bid submission, acceptance, and withdrawal events from the marketplace pilot.' },
+  { id:'p23', name:'Push Notification Delivery', lob:'Platform', health:'amber', slaTarget:'99.5%', slaActual:'97.9%', freshness:'14 min ago', quality:86,
+    owningTeam:'Growth Engineering', description:'Processes notification delivery, failure, and open events for engagement measurement.' },
+  { id:'p24', name:'Search & Autocomplete Events', lob:'Platform', health:'green', slaTarget:'99.5%', slaActual:'99.6%', freshness:'3 min ago', quality:94,
+    owningTeam:'Web Infrastructure', description:'Streams search queries, autocomplete suggestions shown, and zero-result events.' },
+  { id:'p25', name:'App Crash & Error Events', lob:'Platform', health:'red', slaTarget:'99.9%', slaActual:'91.5%', freshness:'2 hrs ago', quality:58,
+    owningTeam:'Reliability Engineering', description:'Ingests client error, crash, and recovery events. Currently degraded.' }
 ];
 
 const CATALOG = [
-  { id:'completed_trip', name:'completed_trip', lob:'Ridesharing', status:'active', weeklyVolume:98.4,
+  { id:'completed_trip', name:'completed_trip', lob:'Ridesharing', status:'active', weeklyVolume:255.0, pipelineId:'p1',
     definition:'A trip is marked completed when the rider is dropped off at the confirmed destination and payment is captured successfully.',
-    implementingTeam:'Rides Platform Engineering', definitionOwner:'Maya Chen (Data Science)', version:'v3.2', lastUpdated:'2026-07-18',
-    warning:true, warningText:'Duplicate completion events observed in EU region since 07/15.',
-    changelog:[{version:'v3.2',date:'2026-07-18',change:'Added dedup guidance for EU region duplicate events'},{version:'v3.1',date:'2026-05-02',change:'Clarified payment capture timing requirement'},{version:'v3.0',date:'2026-02-14',change:'Split from legacy trip_completed_legacy event'}],
+    implementingTeam:'Rides Platform Engineering', definitionOwner:'Maya Chen (Data Science)', version:'v3.2', lastUpdated:'2026-07-18', warning:true,
+    warningText:'Duplicate completion events observed in EU region since 07/15.',
+    changelog:[{version:'v3.2',date:'2026-07-18',change:'Initial release'}],
     payload:[{field:'trip_id',value:'8f3a2e91-...'},{field:'rider_id',value:'r_48213'},{field:'driver_id',value:'d_90271'},{field:'completed_at',value:'2026-07-29T14:32:11Z'},{field:'fare_amount',value:'18.42'},{field:'city',value:'Amsterdam'}] },
-  { id:'surge_multiplier_applied', name:'surge_multiplier_applied', lob:'Ridesharing', status:'active', weeklyVolume:34.6,
-    definition:'Fires when a surge multiplier greater than 1.0x is applied to a rider\'s fare quote at request time.',
-    implementingTeam:'Pricing Engineering', definitionOwner:'Pricing Data Science', version:'v2.1', lastUpdated:'2026-06-30', warning:false,
-    changelog:[{version:'v2.1',date:'2026-06-30',change:'Added zone-level granularity'},{version:'v2.0',date:'2026-03-11',change:'Renamed from surge_applied'}],
-    payload:[{field:'request_id',value:'q_10293'},{field:'zone_id',value:'ams-central'},{field:'multiplier',value:'1.8'},{field:'applied_at',value:'2026-07-29T18:02:44Z'}] },
-  { id:'eats_campaign_conversion', name:'eats_campaign_conversion', lob:'Eats', status:'active', weeklyVolume:5.8,
+  { id:'trip_reservation_started', name:'trip_reservation_started', lob:'Ridesharing', status:'active', weeklyVolume:12.4, pipelineId:'p1',
+    definition:'Fires when a trip reservation is opened, before a driver is matched.',
+    implementingTeam:'Rides Platform Engineering', definitionOwner:'Rides Analytics', version:'v1.0', lastUpdated:'2026-06-10', warning:false,
+    changelog:[{version:'v1.0',date:'2026-06-10',change:'Initial release'}],
+    payload:[{field:'reservation_id',value:'res_7710'},{field:'rider_id',value:'r_48213'}] },
+  { id:'trip_ongoing_status_update', name:'trip_ongoing_status_update', lob:'Ridesharing', status:'active', weeklyVolume:8.0, pipelineId:'p1',
+    definition:'Fires on periodic mid-trip status heartbeats while a trip is in progress.',
+    implementingTeam:'Rides Platform Engineering', definitionOwner:'Rides Analytics', version:'v1.0', lastUpdated:'2026-05-14', warning:false,
+    changelog:[{version:'v1.0',date:'2026-05-14',change:'Initial release'}],
+    payload:[{field:'trip_id',value:'8f3a2e91-...'},{field:'status',value:'en_route'}] },
+  { id:'trip_receipt_generated', name:'trip_receipt_generated', lob:'Ridesharing', status:'active', weeklyVolume:4.9, pipelineId:'p1',
+    definition:'Fires when a post-completion trip receipt is generated and sent to the rider.',
+    implementingTeam:'Rides Platform Engineering', definitionOwner:'Rides Analytics', version:'v1.0', lastUpdated:'2026-04-02', warning:false,
+    changelog:[{version:'v1.0',date:'2026-04-02',change:'Initial release'}],
+    payload:[{field:'trip_id',value:'8f3a2e91-...'},{field:'receipt_id',value:'rcpt_2210'}] },
+  { id:'trip_completion_retry', name:'trip_completion_retry', lob:'Ridesharing', status:'active', weeklyVolume:0.8, pipelineId:'p1',
+    definition:'Fires when a completed_trip record is retried after the EU duplicate-events issue triggers a reconciliation pass.',
+    implementingTeam:'Rides Platform Engineering', definitionOwner:'Maya Chen (Data Science)', version:'v1.0', lastUpdated:'2026-07-19', warning:true,
+    warningText:'Directly tied to the completed_trip duplicate-events warning.',
+    changelog:[{version:'v1.0',date:'2026-07-19',change:'Initial release'}],
+    payload:[{field:'trip_id',value:'8f3a2e91-...'},{field:'retry_reason',value:'dedup_reconciliation'}] },
+  { id:'campaign_started', name:'campaign_started', lob:'Eats', status:'active', weeklyVolume:480.0, pipelineId:'p2',
+    definition:'Fires when a marketing campaign serves an ad impression or offer to a user (paid social, display, or in-app placement).',
+    implementingTeam:'Eats Growth Engineering', definitionOwner:'Marketing Analytics', version:'v1.0', lastUpdated:'2026-07-22', warning:false,
+    changelog:[{version:'v1.0',date:'2026-07-22',change:'Initial release, replacing the deprecated attribution_touch definition'}],
+    payload:[{field:'impression_id',value:'imp_9021'},{field:'channel',value:'paid_social'},{field:'campaign_id',value:'c_eats_summer'}] },
+  { id:'ad_clicked', name:'ad_clicked', lob:'Eats', status:'active', weeklyVolume:95.0, pipelineId:'p2',
+    definition:'Fires when a user clicks a served ad or promotional placement.',
+    implementingTeam:'Eats Growth Engineering', definitionOwner:'Marketing Analytics', version:'v1.0', lastUpdated:'2026-07-22', warning:false,
+    changelog:[{version:'v1.0',date:'2026-07-22',change:'Initial release'}],
+    payload:[{field:'impression_id',value:'imp_9021'},{field:'campaign_id',value:'c_eats_summer'},{field:'clicked_at',value:'2026-07-29T18:02:00Z'}] },
+  { id:'offer_applied', name:'offer_applied', lob:'Eats', status:'active', weeklyVolume:22.0, pipelineId:'p2',
+    definition:'Fires when a customer applies a marketing offer or promo code sourced from a campaign.',
+    implementingTeam:'Eats Growth Engineering', definitionOwner:'Marketing Analytics', version:'v1.0', lastUpdated:'2026-06-30', warning:false,
+    changelog:[{version:'v1.0',date:'2026-06-30',change:'Initial release'}],
+    payload:[{field:'campaign_id',value:'c_eats_summer'},{field:'offer_code',value:'EATS15'}] },
+  { id:'eats_campaign_conversion', name:'eats_campaign_conversion', lob:'Eats', status:'active', weeklyVolume:5.8, pipelineId:'p2',
     definition:'The official definition of "conversion" for Eats campaigns: an order placed within 7 days of an attributed ad click or impression.',
     implementingTeam:'Eats Growth Engineering', definitionOwner:'Marketing Analytics', version:'v4.0', lastUpdated:'2026-07-05', warning:false,
-    changelog:[{version:'v4.0',date:'2026-07-05',change:'Attribution window extended from 3 to 7 days'},{version:'v3.0',date:'2026-01-20',change:'Excluded refunded orders from conversion count'}],
+    changelog:[{version:'v4.0',date:'2026-07-05',change:'Initial release'}],
     payload:[{field:'order_id',value:'o_55210'},{field:'campaign_id',value:'c_eats_summer'},{field:'attribution_window_days',value:'7'},{field:'converted_at',value:'2026-07-28T09:14:02Z'}] },
-  { id:'eats_order_placed', name:'eats_order_placed', lob:'Eats', status:'active', weeklyVolume:81.6,
+  { id:'suspicious_click_flagged', name:'suspicious_click_flagged', lob:'Eats', status:'active', weeklyVolume:1.2, pipelineId:'p2',
+    definition:'Fires when an ad click is flagged as likely fraudulent by the click-fraud model.',
+    implementingTeam:'Eats Growth Engineering', definitionOwner:'Marketing Analytics', version:'v1.0', lastUpdated:'2026-06-18', warning:false,
+    changelog:[{version:'v1.0',date:'2026-06-18',change:'Initial release'}],
+    payload:[{field:'touch_id',value:'t_9021'},{field:'fraud_score',value:'0.94'}] },
+  { id:'surge_multiplier_applied', name:'surge_multiplier_applied', lob:'Ridesharing', status:'active', weeklyVolume:28.4, pipelineId:'p3',
+    definition:'Fires when a surge multiplier greater than 1.0x is applied to a rider\'s fare quote at request time.',
+    implementingTeam:'Pricing Engineering', definitionOwner:'Pricing Data Science', version:'v2.1', lastUpdated:'2026-06-30', warning:false,
+    changelog:[{version:'v2.1',date:'2026-06-30',change:'Initial release'}],
+    payload:[{field:'request_id',value:'q_10293'},{field:'zone_id',value:'ams-central'},{field:'multiplier',value:'1.8'},{field:'applied_at',value:'2026-07-29T18:02:44Z'}] },
+  { id:'surge_zone_activated', name:'surge_zone_activated', lob:'Ridesharing', status:'active', weeklyVolume:4.9, pipelineId:'p3',
+    definition:'Fires when a geographic zone enters surge pricing due to a supply/demand imbalance.',
+    implementingTeam:'Pricing Engineering', definitionOwner:'Pricing Data Science', version:'v1.0', lastUpdated:'2026-05-20', warning:false,
+    changelog:[{version:'v1.0',date:'2026-05-20',change:'Initial release'}],
+    payload:[{field:'zone_id',value:'ams-central'},{field:'activated_at',value:'2026-07-29T17:55:00Z'}] },
+  { id:'surge_multiplier_expired', name:'surge_multiplier_expired', lob:'Ridesharing', status:'active', weeklyVolume:3.8, pipelineId:'p3',
+    definition:'Fires when a zone\'s surge multiplier returns to 1.0x as demand normalizes.',
+    implementingTeam:'Pricing Engineering', definitionOwner:'Pricing Data Science', version:'v1.0', lastUpdated:'2026-05-20', warning:false,
+    changelog:[{version:'v1.0',date:'2026-05-20',change:'Initial release'}],
+    payload:[{field:'zone_id',value:'ams-central'},{field:'expired_at',value:'2026-07-29T19:10:00Z'}] },
+  { id:'eats_checkout_started', name:'eats_checkout_started', lob:'Eats', status:'active', weeklyVolume:51.5, pipelineId:'p4',
+    definition:'Fires when a rider begins checkout after adding items to their Eats cart — the entry point of the order funnel.',
+    implementingTeam:'Eats Checkout Engineering', definitionOwner:'Eats Analytics', version:'v1.0', lastUpdated:'2026-06-20', warning:false,
+    changelog:[{version:'v1.0',date:'2026-06-20',change:'Initial release'}],
+    payload:[{field:'checkout_id',value:'chk_33012'},{field:'cart_id',value:'cart_88213'},{field:'item_count',value:'3'},{field:'started_at',value:'2026-07-29T18:40:02Z'}] },
+  { id:'eats_order_placed', name:'eats_order_placed', lob:'Eats', status:'active', weeklyVolume:35.0, pipelineId:'p4',
     definition:'Fires when an Eats order is successfully submitted and a restaurant confirmation is received.',
     implementingTeam:'Eats Checkout Engineering', definitionOwner:'Eats Analytics', version:'v1.6', lastUpdated:'2026-06-12', warning:false,
-    changelog:[{version:'v1.6',date:'2026-06-12',change:'Added group order flag'}],
+    changelog:[{version:'v1.6',date:'2026-06-12',change:'Initial release'}],
     payload:[{field:'order_id',value:'o_55210'},{field:'restaurant_id',value:'rst_4471'},{field:'total_amount',value:'34.20'}] },
-  { id:'b2b_shipment_confirmed', name:'b2b_shipment_confirmed', lob:'B2B', status:'active', weeklyVolume:3.42,
+  { id:'eats_checkout_error', name:'eats_checkout_error', lob:'Eats', status:'active', weeklyVolume:7.9, pipelineId:'p4',
+    definition:'Fires when checkout fails due to a payment, inventory, or delivery-zone error.',
+    implementingTeam:'Eats Checkout Engineering', definitionOwner:'Eats Analytics', version:'v1.0', lastUpdated:'2026-06-20', warning:false,
+    changelog:[{version:'v1.0',date:'2026-06-20',change:'Initial release'}],
+    payload:[{field:'checkout_id',value:'chk_33012'},{field:'error_type',value:'payment_declined'}] },
+  { id:'eats_payment_method_updated', name:'eats_payment_method_updated', lob:'Eats', status:'active', weeklyVolume:4.1, pipelineId:'p4',
+    definition:'Fires when a customer changes their selected payment method during checkout.',
+    implementingTeam:'Eats Checkout Engineering', definitionOwner:'Eats Analytics', version:'v1.0', lastUpdated:'2026-05-29', warning:false,
+    changelog:[{version:'v1.0',date:'2026-05-29',change:'Initial release'}],
+    payload:[{field:'checkout_id',value:'chk_33012'},{field:'payment_method',value:'credit_card'}] },
+  { id:'b2b_shipment_confirmed', name:'b2b_shipment_confirmed', lob:'B2B', status:'active', weeklyVolume:3.42, pipelineId:'p5',
     definition:'Fires when a freight shipment is confirmed by both shipper and carrier.',
     implementingTeam:'Freight Engineering', definitionOwner:'B2B Analytics', version:'v1.2', lastUpdated:'2026-05-22', warning:false,
-    changelog:[{version:'v1.2',date:'2026-05-22',change:'Added multi-stop shipment support'}],
+    changelog:[{version:'v1.2',date:'2026-05-22',change:'Initial release'}],
     payload:[{field:'shipment_id',value:'s_88213'},{field:'shipper_id',value:'sh_221'},{field:'carrier_id',value:'cr_015'}] },
-  { id:'session_started', name:'session_started', lob:'Platform', status:'active', weeklyVolume:214.0,
+  { id:'b2b_shipment_requested', name:'b2b_shipment_requested', lob:'B2B', status:'active', weeklyVolume:4.1, pipelineId:'p5',
+    definition:'Fires when a shipper submits a new freight shipment request.',
+    implementingTeam:'Freight Engineering', definitionOwner:'B2B Analytics', version:'v1.0', lastUpdated:'2026-04-18', warning:false,
+    changelog:[{version:'v1.0',date:'2026-04-18',change:'Initial release'}],
+    payload:[{field:'shipment_id',value:'s_88213'},{field:'shipper_id',value:'sh_221'}] },
+  { id:'b2b_shipment_delivered', name:'b2b_shipment_delivered', lob:'B2B', status:'active', weeklyVolume:3.05, pipelineId:'p5',
+    definition:'Fires when a confirmed freight shipment is marked delivered by the carrier.',
+    implementingTeam:'Freight Engineering', definitionOwner:'B2B Analytics', version:'v1.0', lastUpdated:'2026-04-18', warning:false,
+    changelog:[{version:'v1.0',date:'2026-04-18',change:'Initial release'}],
+    payload:[{field:'shipment_id',value:'s_88213'},{field:'delivered_at',value:'2026-07-28T16:00:00Z'}] },
+  { id:'freight_shipment_delayed', name:'freight_shipment_delayed', lob:'B2B', status:'active', weeklyVolume:0.21, pipelineId:'p5',
+    definition:'Fires when a confirmed freight shipment misses its scheduled pickup or delivery window.',
+    implementingTeam:'Freight Engineering', definitionOwner:'B2B Analytics', version:'v1.0', lastUpdated:'2026-05-30', warning:true,
+    warningText:'Delay reason codes are inconsistently populated by some carrier integrations.',
+    changelog:[{version:'v1.0',date:'2026-05-30',change:'Initial release'}],
+    payload:[{field:'shipment_id',value:'s_88213'},{field:'delay_minutes',value:'95'}] },
+  { id:'driver_supply_available', name:'driver_supply_available', lob:'Ridesharing', status:'deprecated', weeklyVolume:118.0, pipelineId:'p6',
+    definition:'Legacy event tracking driver availability in a zone. Replaced by driver_supply_v2 for improved zone granularity.',
+    implementingTeam:'Rides Platform Engineering', definitionOwner:'Rides Analytics', version:'v1.0', lastUpdated:'2026-04-01', warning:true,
+    warningText:'Still the sole source for the Driver Supply Events pipeline pending the driver_supply_v2 migration — this is the root cause of that pipeline\'s current SLA miss.',
+    changelog:[{version:'v1.0',date:'2026-04-01',change:'Initial release'}],
+    payload:[{field:'zone_id',value:'ams-central'},{field:'available_drivers',value:'42'}] },
+  { id:'driver_supply_v2_partial_rollout', name:'driver_supply_v2_partial_rollout', lob:'Ridesharing', status:'under review', weeklyVolume:6.5, pipelineId:'p6',
+    definition:'The replacement for driver_supply_available, currently rolling out to a limited set of zones.',
+    implementingTeam:'Rides Platform Engineering', definitionOwner:'Rides Analytics', version:'v2.0', lastUpdated:'2026-07-26', warning:true,
+    warningText:'Limited pilot — full cutover blocked on driver_supply_available\'s EU dedup fix.',
+    changelog:[{version:'v2.0',date:'2026-07-26',change:'Initial release'}],
+    payload:[{field:'zone_id',value:'ams-central'},{field:'available_drivers',value:'44'},{field:'zone_granularity',value:'block_level'}] },
+  { id:'driver_offline_event', name:'driver_offline_event', lob:'Ridesharing', status:'active', weeklyVolume:9.2, pipelineId:'p6',
+    definition:'Fires when a driver goes offline, ending their active supply window.',
+    implementingTeam:'Rides Platform Engineering', definitionOwner:'Rides Analytics', version:'v1.0', lastUpdated:'2026-03-11', warning:false,
+    changelog:[{version:'v1.0',date:'2026-03-11',change:'Initial release'}],
+    payload:[{field:'driver_id',value:'d_90271'},{field:'zone_id',value:'ams-central'}] },
+  { id:'session_started', name:'session_started', lob:'Platform', status:'active', weeklyVolume:180.0, pipelineId:'p7',
     definition:'Fires on the first interaction of a new web session, defined as 30+ minutes of inactivity since the last event.',
     implementingTeam:'Web Infrastructure', definitionOwner:'Web Data Engineering', version:'v4.1', lastUpdated:'2026-07-10', warning:false,
-    changelog:[{version:'v4.1',date:'2026-07-10',change:'Session timeout aligned to 30 minutes across all LOBs'}],
+    changelog:[{version:'v4.1',date:'2026-07-10',change:'Initial release'}],
     payload:[{field:'session_id',value:'sess_3312'},{field:'platform',value:'web'},{field:'started_at',value:'2026-07-29T08:00:00Z'}] },
-  { id:'attribution_touch', name:'attribution_touch', lob:'Eats', status:'under review', weeklyVolume:612.0,
-    definition:'Records a single attribution touchpoint (impression or click) tied to a marketing campaign, pending finalized dedup logic.',
-    implementingTeam:'Eats Growth Engineering', definitionOwner:'Marketing Analytics', version:'v0.9', lastUpdated:'2026-07-22',
-    warning:true, warningText:'Definition under active revision — cross-channel dedup rules not finalized.',
-    changelog:[{version:'v0.9',date:'2026-07-22',change:'Draft definition opened for review'}],
-    payload:[{field:'touch_id',value:'t_9021'},{field:'channel',value:'paid_social'},{field:'campaign_id',value:'c_eats_summer'}] },
-  { id:'scheduled_ride_booked', name:'scheduled_ride_booked', lob:'Ridesharing', status:'under review', weeklyVolume:1.2,
+  { id:'session_logout', name:'session_logout', lob:'Platform', status:'active', weeklyVolume:24.5, pipelineId:'p7',
+    definition:'Fires when a user explicitly logs out, as opposed to a session timing out.',
+    implementingTeam:'Web Infrastructure', definitionOwner:'Web Data Engineering', version:'v1.0', lastUpdated:'2026-06-14', warning:false,
+    changelog:[{version:'v1.0',date:'2026-06-14',change:'Initial release'}],
+    payload:[{field:'session_id',value:'sess_3312'},{field:'logged_out_at',value:'2026-07-29T09:40:00Z'}] },
+  { id:'session_timeout_expired', name:'session_timeout_expired', lob:'Platform', status:'active', weeklyVolume:9.8, pipelineId:'p7',
+    definition:'Fires when a session is auto-closed after 30 minutes of inactivity.',
+    implementingTeam:'Web Infrastructure', definitionOwner:'Web Data Engineering', version:'v1.0', lastUpdated:'2026-06-14', warning:false,
+    changelog:[{version:'v1.0',date:'2026-06-14',change:'Initial release'}],
+    payload:[{field:'session_id',value:'sess_3312'},{field:'last_active_at',value:'2026-07-29T09:05:00Z'}] },
+  { id:'login_failed', name:'login_failed', lob:'Platform', status:'active', weeklyVolume:3.2, pipelineId:'p7',
+    definition:'Fires when a login attempt fails due to invalid credentials.',
+    implementingTeam:'Web Infrastructure', definitionOwner:'Web Data Engineering', version:'v1.0', lastUpdated:'2026-04-19', warning:false,
+    changelog:[{version:'v1.0',date:'2026-04-19',change:'Initial release'}],
+    payload:[{field:'account_id',value:'acct_9021'},{field:'reason',value:'invalid_password'}] },
+  { id:'payment_captured', name:'payment_captured', lob:'Platform', status:'active', weeklyVolume:150.0, pipelineId:'p8',
+    definition:'Fires when a payment is successfully captured for a completed trip, Eats order, or B2B shipment.',
+    implementingTeam:'Payments Engineering', definitionOwner:'Payments Analytics', version:'v2.0', lastUpdated:'2026-07-14', warning:false,
+    changelog:[{version:'v2.0',date:'2026-07-14',change:'Initial release'}],
+    payload:[{field:'payment_id',value:'pay_71029'},{field:'source_type',value:'trip'},{field:'source_id',value:'8f3a2e91-...'},{field:'amount',value:'18.42'},{field:'currency',value:'EUR'},{field:'captured_at',value:'2026-07-29T14:32:12Z'}] },
+  { id:'payment_failed', name:'payment_failed', lob:'Platform', status:'active', weeklyVolume:12.4, pipelineId:'p8',
+    definition:'Fires when a payment capture attempt fails (declined card, insufficient funds, etc).',
+    implementingTeam:'Payments Engineering', definitionOwner:'Payments Analytics', version:'v1.0', lastUpdated:'2026-06-01', warning:false,
+    changelog:[{version:'v1.0',date:'2026-06-01',change:'Initial release'}],
+    payload:[{field:'payment_id',value:'pay_71030'},{field:'reason',value:'card_declined'}] },
+  { id:'refund_requested', name:'refund_requested', lob:'Platform', status:'active', weeklyVolume:9.8, pipelineId:'p8',
+    definition:'Fires when a customer initiates a refund request.',
+    implementingTeam:'Payments Engineering', definitionOwner:'Payments Analytics', version:'v1.0', lastUpdated:'2026-06-01', warning:false,
+    changelog:[{version:'v1.0',date:'2026-06-01',change:'Initial release'}],
+    payload:[{field:'payment_id',value:'pay_71029'},{field:'reason',value:'missing_item'}] },
+  { id:'refund_issued', name:'refund_issued', lob:'Platform', status:'active', weeklyVolume:8.2, pipelineId:'p8',
+    definition:'Fires when a refund is successfully issued back to the original payment method.',
+    implementingTeam:'Payments Engineering', definitionOwner:'Payments Analytics', version:'v1.0', lastUpdated:'2026-06-01', warning:false,
+    changelog:[{version:'v1.0',date:'2026-06-01',change:'Initial release'}],
+    payload:[{field:'payment_id',value:'pay_71029'},{field:'refund_amount',value:'12.00'}] },
+  { id:'discount_applied', name:'discount_applied', lob:'Platform', status:'active', weeklyVolume:14.6, pipelineId:'p8',
+    definition:'Fires when a promo, credit, or discount is applied at payment time.',
+    implementingTeam:'Payments Engineering', definitionOwner:'Payments Analytics', version:'v1.0', lastUpdated:'2026-05-08', warning:false,
+    changelog:[{version:'v1.0',date:'2026-05-08',change:'Initial release'}],
+    payload:[{field:'payment_id',value:'pay_71029'},{field:'discount_amount',value:'3.50'}] },
+  { id:'eats_delivery_tracking_updated', name:'eats_delivery_tracking_updated', lob:'Eats', status:'active', weeklyVolume:40.7, pipelineId:'p9',
+    definition:'Fires on each real-time location/status update for an in-progress Eats delivery, from restaurant handoff through drop-off.',
+    implementingTeam:'Eats Logistics Engineering', definitionOwner:'Eats Analytics', version:'v1.3', lastUpdated:'2026-07-01', warning:false,
+    changelog:[{version:'v1.3',date:'2026-07-01',change:'Initial release'}],
+    payload:[{field:'order_id',value:'o_55210'},{field:'status',value:'in_transit'},{field:'courier_id',value:'c_20144'},{field:'eta_minutes',value:'12'},{field:'updated_at',value:'2026-07-29T19:05:11Z'}] },
+  { id:'order_handed_to_courier', name:'order_handed_to_courier', lob:'Eats', status:'active', weeklyVolume:10.5, pipelineId:'p9',
+    definition:'Fires when a restaurant hands a completed order off to the delivery courier.',
+    implementingTeam:'Eats Logistics Engineering', definitionOwner:'Eats Analytics', version:'v1.0', lastUpdated:'2026-05-19', warning:false,
+    changelog:[{version:'v1.0',date:'2026-05-19',change:'Initial release'}],
+    payload:[{field:'order_id',value:'o_55210'},{field:'courier_id',value:'c_20144'}] },
+  { id:'order_out_for_delivery', name:'order_out_for_delivery', lob:'Eats', status:'active', weeklyVolume:7.8, pipelineId:'p9',
+    definition:'Fires when a courier departs the restaurant with the order.',
+    implementingTeam:'Eats Logistics Engineering', definitionOwner:'Eats Analytics', version:'v1.0', lastUpdated:'2026-05-19', warning:false,
+    changelog:[{version:'v1.0',date:'2026-05-19',change:'Initial release'}],
+    payload:[{field:'order_id',value:'o_55210'},{field:'departed_at',value:'2026-07-29T19:00:00Z'}] },
+  { id:'order_delivered', name:'order_delivered', lob:'Eats', status:'active', weeklyVolume:33.5, pipelineId:'p9',
+    definition:'Fires when a courier confirms drop-off of the order to the customer.',
+    implementingTeam:'Eats Logistics Engineering', definitionOwner:'Eats Analytics', version:'v1.0', lastUpdated:'2026-05-19', warning:false,
+    changelog:[{version:'v1.0',date:'2026-05-19',change:'Initial release'}],
+    payload:[{field:'order_id',value:'o_55210'},{field:'delivered_at',value:'2026-07-29T19:22:00Z'}] },
+  { id:'fare_estimate_requested', name:'fare_estimate_requested', lob:'Ridesharing', status:'active', weeklyVolume:165.0, pipelineId:'p10',
+    definition:'Fires when a rider previews a fare quote before requesting a trip.',
+    implementingTeam:'Pricing Engineering', definitionOwner:'Pricing Data Science', version:'v1.0', lastUpdated:'2026-06-05', warning:false,
+    changelog:[{version:'v1.0',date:'2026-06-05',change:'Initial release'}],
+    payload:[{field:'estimate_id',value:'est_44012'},{field:'zone_id',value:'ams-central'},{field:'estimated_fare',value:'16.80'}] },
+  { id:'fare_estimate_expired', name:'fare_estimate_expired', lob:'Ridesharing', status:'active', weeklyVolume:28.0, pipelineId:'p10',
+    definition:'Fires when a previewed fare estimate expires unused after its quoted validity window.',
+    implementingTeam:'Pricing Engineering', definitionOwner:'Pricing Data Science', version:'v1.0', lastUpdated:'2026-06-05', warning:false,
+    changelog:[{version:'v1.0',date:'2026-06-05',change:'Initial release'}],
+    payload:[{field:'estimate_id',value:'est_44012'},{field:'expired_at',value:'2026-07-29T18:50:00Z'}] },
+  { id:'fare_estimate_price_locked', name:'fare_estimate_price_locked', lob:'Ridesharing', status:'active', weeklyVolume:12.5, pipelineId:'p10',
+    definition:'Fires when a rider locks in a previewed fare estimate ahead of booking.',
+    implementingTeam:'Pricing Engineering', definitionOwner:'Pricing Data Science', version:'v1.0', lastUpdated:'2026-06-05', warning:false,
+    changelog:[{version:'v1.0',date:'2026-06-05',change:'Initial release'}],
+    payload:[{field:'estimate_id',value:'est_44012'},{field:'locked_until',value:'2026-07-29T19:10:00Z'}] },
+  { id:'route_eta_calculated', name:'route_eta_calculated', lob:'Ridesharing', status:'active', weeklyVolume:72.0, pipelineId:'p11',
+    definition:'Fires each time a live ETA is calculated for a trip in progress or during driver matching.',
+    implementingTeam:'Rides Platform Engineering', definitionOwner:'Rides Analytics', version:'v1.1', lastUpdated:'2026-05-18', warning:false,
+    changelog:[{version:'v1.1',date:'2026-05-18',change:'Initial release'}],
+    payload:[{field:'trip_id',value:'8f3a2e91-...'},{field:'eta_minutes',value:'6'}] },
+  { id:'route_recalculated_traffic', name:'route_recalculated_traffic', lob:'Ridesharing', status:'active', weeklyVolume:18.5, pipelineId:'p11',
+    definition:'Fires when a route is recalculated mid-trip due to a traffic change.',
+    implementingTeam:'Rides Platform Engineering', definitionOwner:'Rides Analytics', version:'v1.0', lastUpdated:'2026-05-18', warning:false,
+    changelog:[{version:'v1.0',date:'2026-05-18',change:'Initial release'}],
+    payload:[{field:'trip_id',value:'8f3a2e91-...'},{field:'delay_minutes',value:'4'}] },
+  { id:'route_eta_missed_threshold', name:'route_eta_missed_threshold', lob:'Ridesharing', status:'active', weeklyVolume:4.8, pipelineId:'p11',
+    definition:'Fires when the actual arrival time misses the last-calculated ETA by more than 5 minutes.',
+    implementingTeam:'Rides Platform Engineering', definitionOwner:'Rides Analytics', version:'v1.0', lastUpdated:'2026-06-30', warning:true,
+    warningText:'Elevated volume this week — correlates with the pipeline\'s SLA miss.',
+    changelog:[{version:'v1.0',date:'2026-06-30',change:'Initial release'}],
+    payload:[{field:'trip_id',value:'8f3a2e91-...'},{field:'miss_minutes',value:'8'}] },
+  { id:'trip_rating_submitted', name:'trip_rating_submitted', lob:'Ridesharing', status:'active', weeklyVolume:68.0, pipelineId:'p12',
+    definition:'Fires when a rider or driver submits a post-trip rating.',
+    implementingTeam:'Rides Growth Engineering', definitionOwner:'Rides Analytics', version:'v1.0', lastUpdated:'2026-04-22', warning:false,
+    changelog:[{version:'v1.0',date:'2026-04-22',change:'Initial release'}],
+    payload:[{field:'trip_id',value:'8f3a2e91-...'},{field:'rating',value:'5'},{field:'submitted_by',value:'rider'}] },
+  { id:'trip_feedback_comment_added', name:'trip_feedback_comment_added', lob:'Ridesharing', status:'active', weeklyVolume:14.2, pipelineId:'p12',
+    definition:'Fires when a rider adds a free-text comment alongside their trip rating.',
+    implementingTeam:'Rides Growth Engineering', definitionOwner:'Rides Analytics', version:'v1.0', lastUpdated:'2026-04-22', warning:false,
+    changelog:[{version:'v1.0',date:'2026-04-22',change:'Initial release'}],
+    payload:[{field:'trip_id',value:'8f3a2e91-...'},{field:'comment_length',value:'42'}] },
+  { id:'low_rating_flagged_for_review', name:'low_rating_flagged_for_review', lob:'Ridesharing', status:'active', weeklyVolume:4.1, pipelineId:'p12',
+    definition:'Fires when a submitted rating falls below 3 stars and is routed for trust & safety review.',
+    implementingTeam:'Rides Growth Engineering', definitionOwner:'Rides Analytics', version:'v1.0', lastUpdated:'2026-04-22', warning:false,
+    changelog:[{version:'v1.0',date:'2026-04-22',change:'Initial release'}],
+    payload:[{field:'trip_id',value:'8f3a2e91-...'},{field:'rating',value:'2'}] },
+  { id:'trip_cancelled_by_rider', name:'trip_cancelled_by_rider', lob:'Ridesharing', status:'active', weeklyVolume:13.8, pipelineId:'p13',
+    definition:'Fires when a rider cancels a trip request or an assigned trip before pickup.',
+    implementingTeam:'Rides Platform Engineering', definitionOwner:'Rides Analytics', version:'v1.0', lastUpdated:'2026-06-28', warning:false,
+    changelog:[{version:'v1.0',date:'2026-06-28',change:'Initial release'}],
+    payload:[{field:'trip_id',value:'8f3a2e91-...'},{field:'cancellation_stage',value:'pre_pickup'}] },
+  { id:'trip_cancelled_by_driver', name:'trip_cancelled_by_driver', lob:'Ridesharing', status:'active', weeklyVolume:5.4, pipelineId:'p13',
+    definition:'Fires when a driver cancels an assigned trip before pickup.',
+    implementingTeam:'Rides Platform Engineering', definitionOwner:'Rides Analytics', version:'v1.0', lastUpdated:'2026-06-28', warning:false,
+    changelog:[{version:'v1.0',date:'2026-06-28',change:'Initial release'}],
+    payload:[{field:'trip_id',value:'8f3a2e91-...'},{field:'cancellation_stage',value:'pre_pickup'}] },
+  { id:'trip_cancelled_system_timeout', name:'trip_cancelled_system_timeout', lob:'Ridesharing', status:'active', weeklyVolume:2.1, pipelineId:'p13',
+    definition:'Fires when a trip request auto-cancels after no driver could be matched within the timeout window.',
+    implementingTeam:'Rides Platform Engineering', definitionOwner:'Rides Analytics', version:'v1.0', lastUpdated:'2026-06-28', warning:false,
+    changelog:[{version:'v1.0',date:'2026-06-28',change:'Initial release'}],
+    payload:[{field:'trip_id',value:'8f3a2e91-...'},{field:'timeout_seconds',value:'120'}] },
+  { id:'restaurant_menu_viewed', name:'restaurant_menu_viewed', lob:'Eats', status:'active', weeklyVolume:280.0, pipelineId:'p14',
+    definition:'Fires when a rider opens a restaurant menu — the top of the Eats browsing funnel.',
+    implementingTeam:'Eats Discovery Engineering', definitionOwner:'Eats Analytics', version:'v1.1', lastUpdated:'2026-06-25', warning:false,
+    changelog:[{version:'v1.1',date:'2026-06-25',change:'Initial release'}],
+    payload:[{field:'restaurant_id',value:'rst_4471'},{field:'viewed_at',value:'2026-07-29T18:20:11Z'}] },
+  { id:'restaurant_search_result_clicked', name:'restaurant_search_result_clicked', lob:'Eats', status:'active', weeklyVolume:52.0, pipelineId:'p14',
+    definition:'Fires when a customer clicks a restaurant from search results.',
+    implementingTeam:'Eats Discovery Engineering', definitionOwner:'Eats Analytics', version:'v1.0', lastUpdated:'2026-05-06', warning:false,
+    changelog:[{version:'v1.0',date:'2026-05-06',change:'Initial release'}],
+    payload:[{field:'restaurant_id',value:'rst_4471'},{field:'query_id',value:'q_71029'}] },
+  { id:'restaurant_filter_applied', name:'restaurant_filter_applied', lob:'Eats', status:'active', weeklyVolume:21.4, pipelineId:'p14',
+    definition:'Fires when a customer applies a cuisine, price, or dietary filter while browsing.',
+    implementingTeam:'Eats Discovery Engineering', definitionOwner:'Eats Analytics', version:'v1.0', lastUpdated:'2026-05-06', warning:false,
+    changelog:[{version:'v1.0',date:'2026-05-06',change:'Initial release'}],
+    payload:[{field:'filter_type',value:'cuisine'},{field:'filter_value',value:'thai'}] },
+  { id:'restaurant_rating_submitted', name:'restaurant_rating_submitted', lob:'Eats', status:'active', weeklyVolume:48.0, pipelineId:'p15',
+    definition:'Fires when a customer submits a post-delivery restaurant rating.',
+    implementingTeam:'Eats Growth Engineering', definitionOwner:'Eats Analytics', version:'v1.0', lastUpdated:'2026-04-30', warning:false,
+    changelog:[{version:'v1.0',date:'2026-04-30',change:'Initial release'}],
+    payload:[{field:'order_id',value:'o_55210'},{field:'restaurant_id',value:'rst_4471'},{field:'rating',value:'4'}] },
+  { id:'restaurant_rating_photo_added', name:'restaurant_rating_photo_added', lob:'Eats', status:'active', weeklyVolume:9.2, pipelineId:'p15',
+    definition:'Fires when a customer attaches a photo to their restaurant rating.',
+    implementingTeam:'Eats Growth Engineering', definitionOwner:'Eats Analytics', version:'v1.0', lastUpdated:'2026-04-30', warning:false,
+    changelog:[{version:'v1.0',date:'2026-04-30',change:'Initial release'}],
+    payload:[{field:'order_id',value:'o_55210'},{field:'photo_count',value:'2'}] },
+  { id:'restaurant_rating_flagged', name:'restaurant_rating_flagged', lob:'Eats', status:'active', weeklyVolume:2.1, pipelineId:'p15',
+    definition:'Fires when a submitted rating is flagged for policy review (e.g. suspected fake review).',
+    implementingTeam:'Eats Growth Engineering', definitionOwner:'Eats Analytics', version:'v1.0', lastUpdated:'2026-04-30', warning:false,
+    changelog:[{version:'v1.0',date:'2026-04-30',change:'Initial release'}],
+    payload:[{field:'order_id',value:'o_55210'},{field:'flag_reason',value:'suspected_fake'}] },
+  { id:'eats_cart_abandoned', name:'eats_cart_abandoned', lob:'Eats', status:'active', weeklyVolume:41.0, pipelineId:'p16',
+    definition:'Fires when a checkout session is left inactive for 15+ minutes without completing the order.',
+    implementingTeam:'Eats Checkout Engineering', definitionOwner:'Eats Analytics', version:'v1.0', lastUpdated:'2026-06-20', warning:false,
+    changelog:[{version:'v1.0',date:'2026-06-20',change:'Initial release'}],
+    payload:[{field:'checkout_id',value:'chk_33012'},{field:'cart_value',value:'28.50'}] },
+  { id:'eats_cart_recovery_email_sent', name:'eats_cart_recovery_email_sent', lob:'Eats', status:'active', weeklyVolume:38.5, pipelineId:'p16',
+    definition:'Fires when a cart-recovery marketing email is sent for an abandoned checkout.',
+    implementingTeam:'Eats Growth Engineering', definitionOwner:'Marketing Analytics', version:'v1.0', lastUpdated:'2026-06-21', warning:false,
+    changelog:[{version:'v1.0',date:'2026-06-21',change:'Initial release'}],
+    payload:[{field:'checkout_id',value:'chk_33012'},{field:'email_id',value:'em_2210'}] },
+  { id:'eats_cart_recovered', name:'eats_cart_recovered', lob:'Eats', status:'active', weeklyVolume:9.8, pipelineId:'p16',
+    definition:'Fires when a customer completes checkout after receiving a cart-recovery email.',
+    implementingTeam:'Eats Growth Engineering', definitionOwner:'Marketing Analytics', version:'v1.0', lastUpdated:'2026-06-21', warning:false,
+    changelog:[{version:'v1.0',date:'2026-06-21',change:'Initial release'}],
+    payload:[{field:'checkout_id',value:'chk_33012'},{field:'recovered_at',value:'2026-07-29T20:00:00Z'}] },
+  { id:'eats_refund_issued', name:'eats_refund_issued', lob:'Eats', status:'active', weeklyVolume:3.1, pipelineId:'p17',
+    definition:'Fires when a full or partial refund is issued for an Eats order.',
+    implementingTeam:'Payments Engineering', definitionOwner:'Payments Analytics', version:'v1.0', lastUpdated:'2026-06-01', warning:false,
+    changelog:[{version:'v1.0',date:'2026-06-01',change:'Initial release'}],
+    payload:[{field:'order_id',value:'o_55210'},{field:'refund_amount',value:'12.00'},{field:'reason',value:'missing_item'}] },
+  { id:'eats_refund_requested', name:'eats_refund_requested', lob:'Eats', status:'active', weeklyVolume:4.8, pipelineId:'p17',
+    definition:'Fires when a customer submits a refund request for an Eats order.',
+    implementingTeam:'Payments Engineering', definitionOwner:'Payments Analytics', version:'v1.0', lastUpdated:'2026-06-01', warning:false,
+    changelog:[{version:'v1.0',date:'2026-06-01',change:'Initial release'}],
+    payload:[{field:'order_id',value:'o_55210'},{field:'reason',value:'missing_item'}] },
+  { id:'eats_refund_disputed', name:'eats_refund_disputed', lob:'Eats', status:'active', weeklyVolume:0.6, pipelineId:'p17',
+    definition:'Fires when a restaurant disputes a customer-requested refund.',
+    implementingTeam:'Payments Engineering', definitionOwner:'Payments Analytics', version:'v1.0', lastUpdated:'2026-06-01', warning:false,
+    changelog:[{version:'v1.0',date:'2026-06-01',change:'Initial release'}],
+    payload:[{field:'order_id',value:'o_55210'},{field:'dispute_reason',value:'item_confirmed_delivered'}] },
+  { id:'b2b_invoice_generated', name:'b2b_invoice_generated', lob:'B2B', status:'active', weeklyVolume:2.4, pipelineId:'p18',
+    definition:'Fires when a monthly or per-shipment invoice is generated for an enterprise account.',
+    implementingTeam:'B2B Finance Engineering', definitionOwner:'B2B Analytics', version:'v1.0', lastUpdated:'2026-06-08', warning:false,
+    changelog:[{version:'v1.0',date:'2026-06-08',change:'Initial release'}],
+    payload:[{field:'invoice_id',value:'inv_3310'},{field:'account_id',value:'acct_9021'},{field:'amount',value:'4820.00'}] },
+  { id:'b2b_invoice_paid', name:'b2b_invoice_paid', lob:'B2B', status:'active', weeklyVolume:2.1, pipelineId:'p18',
+    definition:'Fires when an enterprise account settles an invoice.',
+    implementingTeam:'B2B Finance Engineering', definitionOwner:'B2B Analytics', version:'v1.0', lastUpdated:'2026-06-08', warning:false,
+    changelog:[{version:'v1.0',date:'2026-06-08',change:'Initial release'}],
+    payload:[{field:'invoice_id',value:'inv_3310'},{field:'paid_at',value:'2026-07-20T10:00:00Z'}] },
+  { id:'b2b_invoice_disputed', name:'b2b_invoice_disputed', lob:'B2B', status:'active', weeklyVolume:0.15, pipelineId:'p18',
+    definition:'Fires when an enterprise account disputes a line item on an invoice.',
+    implementingTeam:'B2B Finance Engineering', definitionOwner:'B2B Analytics', version:'v1.0', lastUpdated:'2026-06-08', warning:false,
+    changelog:[{version:'v1.0',date:'2026-06-08',change:'Initial release'}],
+    payload:[{field:'invoice_id',value:'inv_3310'},{field:'dispute_reason',value:'duplicate_charge'}] },
+  { id:'u4b_trip_booked', name:'u4b_trip_booked', lob:'B2B', status:'active', weeklyVolume:2.2, pipelineId:'p19',
+    definition:'Fires when a trip is booked under an Uber for Business managed account.',
+    implementingTeam:'Uber for Business Engineering', definitionOwner:'B2B Analytics', version:'v1.0', lastUpdated:'2026-05-27', warning:false,
+    changelog:[{version:'v1.0',date:'2026-05-27',change:'Initial release'}],
+    payload:[{field:'trip_id',value:'8f3a2e91-...'},{field:'account_id',value:'acct_9021'},{field:'policy_id',value:'pol_442'}] },
+  { id:'u4b_trip_policy_violation_flagged', name:'u4b_trip_policy_violation_flagged', lob:'B2B', status:'active', weeklyVolume:0.31, pipelineId:'p19',
+    definition:'Fires when a booked trip violates the account\'s configured travel policy.',
+    implementingTeam:'Uber for Business Engineering', definitionOwner:'B2B Analytics', version:'v1.0', lastUpdated:'2026-05-27', warning:false,
+    changelog:[{version:'v1.0',date:'2026-05-27',change:'Initial release'}],
+    payload:[{field:'trip_id',value:'8f3a2e91-...'},{field:'policy_id',value:'pol_442'},{field:'violation',value:'after_hours'}] },
+  { id:'u4b_trip_expensed', name:'u4b_trip_expensed', lob:'B2B', status:'active', weeklyVolume:1.9, pipelineId:'p19',
+    definition:'Fires when a completed U4B trip is submitted to the account\'s expense integration.',
+    implementingTeam:'Uber for Business Engineering', definitionOwner:'B2B Analytics', version:'v1.0', lastUpdated:'2026-05-27', warning:false,
+    changelog:[{version:'v1.0',date:'2026-05-27',change:'Initial release'}],
+    payload:[{field:'trip_id',value:'8f3a2e91-...'},{field:'account_id',value:'acct_9021'}] },
+  { id:'b2b_expense_report_submitted', name:'b2b_expense_report_submitted', lob:'B2B', status:'under review', weeklyVolume:1.75, pipelineId:'p20',
+    definition:'Fires when an employee submits an expense report through the new B2B expense workflow, pending finalized approval routing.',
+    implementingTeam:'B2B Finance Engineering', definitionOwner:'B2B Analytics', version:'v0.4', lastUpdated:'2026-07-21', warning:true,
+    warningText:'Approval routing logic not yet finalized — volume expected to grow once launched broadly.',
+    changelog:[{version:'v0.4',date:'2026-07-21',change:'Initial release'}],
+    payload:[{field:'report_id',value:'exp_771'},{field:'account_id',value:'acct_9021'},{field:'amount',value:'214.50'}] },
+  { id:'b2b_expense_report_approved', name:'b2b_expense_report_approved', lob:'B2B', status:'active', weeklyVolume:1.2, pipelineId:'p20',
+    definition:'Fires when an expense report is approved by an account administrator.',
+    implementingTeam:'B2B Finance Engineering', definitionOwner:'B2B Analytics', version:'v0.4', lastUpdated:'2026-07-21', warning:false,
+    changelog:[{version:'v0.4',date:'2026-07-21',change:'Initial release'}],
+    payload:[{field:'report_id',value:'exp_771'},{field:'approved_by',value:'adm_310'}] },
+  { id:'b2b_expense_report_rejected', name:'b2b_expense_report_rejected', lob:'B2B', status:'active', weeklyVolume:0.18, pipelineId:'p20',
+    definition:'Fires when an expense report is rejected and returned to the submitter.',
+    implementingTeam:'B2B Finance Engineering', definitionOwner:'B2B Analytics', version:'v0.4', lastUpdated:'2026-07-21', warning:false,
+    changelog:[{version:'v0.4',date:'2026-07-21',change:'Initial release'}],
+    payload:[{field:'report_id',value:'exp_771'},{field:'rejection_reason',value:'missing_receipt'}] },
+  { id:'freight_carrier_bid_submitted', name:'freight_carrier_bid_submitted', lob:'B2B', status:'under review', weeklyVolume:0.6, pipelineId:'p21',
+    definition:'Fires when a carrier submits a bid on a freight shipment in the carrier marketplace, pending finalized marketplace launch.',
+    implementingTeam:'Freight Engineering', definitionOwner:'B2B Analytics', version:'v0.3', lastUpdated:'2026-07-25', warning:true,
+    warningText:'Marketplace still in limited pilot — dedup logic for repeat bids not finalized.',
+    changelog:[{version:'v0.3',date:'2026-07-25',change:'Initial release'}],
+    payload:[{field:'bid_id',value:'bid_512'},{field:'shipment_id',value:'s_88213'},{field:'carrier_id',value:'cr_015'}] },
+  { id:'freight_carrier_bid_accepted', name:'freight_carrier_bid_accepted', lob:'B2B', status:'under review', weeklyVolume:0.22, pipelineId:'p21',
+    definition:'Fires when a shipper accepts a carrier\'s bid.',
+    implementingTeam:'Freight Engineering', definitionOwner:'B2B Analytics', version:'v0.3', lastUpdated:'2026-07-25', warning:false,
+    changelog:[{version:'v0.3',date:'2026-07-25',change:'Initial release'}],
+    payload:[{field:'bid_id',value:'bid_512'},{field:'accepted_at',value:'2026-07-28T12:00:00Z'}] },
+  { id:'freight_carrier_bid_withdrawn', name:'freight_carrier_bid_withdrawn', lob:'B2B', status:'under review', weeklyVolume:0.09, pipelineId:'p21',
+    definition:'Fires when a carrier withdraws a submitted bid before acceptance.',
+    implementingTeam:'Freight Engineering', definitionOwner:'B2B Analytics', version:'v0.3', lastUpdated:'2026-07-25', warning:false,
+    changelog:[{version:'v0.3',date:'2026-07-25',change:'Initial release'}],
+    payload:[{field:'bid_id',value:'bid_512'},{field:'withdrawn_at',value:'2026-07-27T09:00:00Z'}] },
+  { id:'push_notification_delivered', name:'push_notification_delivered', lob:'Platform', status:'active', weeklyVolume:410.0, pipelineId:'p23',
+    definition:'Fires when a push notification is successfully delivered to a rider or customer device.',
+    implementingTeam:'Growth Engineering', definitionOwner:'Marketing Analytics', version:'v1.1', lastUpdated:'2026-06-16', warning:false,
+    changelog:[{version:'v1.1',date:'2026-06-16',change:'Initial release'}],
+    payload:[{field:'notification_id',value:'ntf_98211'},{field:'campaign_id',value:'c_eats_summer'}] },
+  { id:'push_notification_failed', name:'push_notification_failed', lob:'Platform', status:'active', weeklyVolume:28.5, pipelineId:'p23',
+    definition:'Fires when a push notification fails to deliver (e.g. stale device token).',
+    implementingTeam:'Growth Engineering', definitionOwner:'Marketing Analytics', version:'v1.1', lastUpdated:'2026-06-16', warning:false,
+    changelog:[{version:'v1.1',date:'2026-06-16',change:'Initial release'}],
+    payload:[{field:'notification_id',value:'ntf_98212'},{field:'failure_reason',value:'invalid_token'}] },
+  { id:'push_notification_opened', name:'push_notification_opened', lob:'Platform', status:'active', weeklyVolume:62.0, pipelineId:'p23',
+    definition:'Fires when a user opens a delivered push notification.',
+    implementingTeam:'Growth Engineering', definitionOwner:'Marketing Analytics', version:'v1.1', lastUpdated:'2026-06-16', warning:false,
+    changelog:[{version:'v1.1',date:'2026-06-16',change:'Initial release'}],
+    payload:[{field:'notification_id',value:'ntf_98211'},{field:'opened_at',value:'2026-07-29T20:05:00Z'}] },
+  { id:'search_query_submitted', name:'search_query_submitted', lob:'Platform', status:'active', weeklyVolume:210.0, pipelineId:'p24',
+    definition:'Fires when a user submits a search or autocomplete query in-app or on web.',
+    implementingTeam:'Web Infrastructure', definitionOwner:'Web Data Engineering', version:'v1.0', lastUpdated:'2026-05-11', warning:false,
+    changelog:[{version:'v1.0',date:'2026-05-11',change:'Initial release'}],
+    payload:[{field:'query_id',value:'q_71029'},{field:'query_text',value:'thai food'}] },
+  { id:'search_autocomplete_suggestion_shown', name:'search_autocomplete_suggestion_shown', lob:'Platform', status:'active', weeklyVolume:48.0, pipelineId:'p24',
+    definition:'Fires when an autocomplete suggestion list is rendered for a partial query.',
+    implementingTeam:'Web Infrastructure', definitionOwner:'Web Data Engineering', version:'v1.0', lastUpdated:'2026-05-11', warning:false,
+    changelog:[{version:'v1.0',date:'2026-05-11',change:'Initial release'}],
+    payload:[{field:'query_id',value:'q_71029'},{field:'suggestion_count',value:'5'}] },
+  { id:'search_zero_results', name:'search_zero_results', lob:'Platform', status:'active', weeklyVolume:9.4, pipelineId:'p24',
+    definition:'Fires when a submitted search query returns zero results.',
+    implementingTeam:'Web Infrastructure', definitionOwner:'Web Data Engineering', version:'v1.0', lastUpdated:'2026-05-11', warning:false,
+    changelog:[{version:'v1.0',date:'2026-05-11',change:'Initial release'}],
+    payload:[{field:'query_id',value:'q_71031'},{field:'query_text',value:'xyz123'}] },
+  { id:'client_error_logged', name:'client_error_logged', lob:'Platform', status:'active', weeklyVolume:8.5, pipelineId:'p25',
+    definition:'Fires when the web client logs a caught error or crash.',
+    implementingTeam:'Reliability Engineering', definitionOwner:'Web Data Engineering', version:'v1.0', lastUpdated:'2026-06-22', warning:true,
+    warningText:'Elevated volume this week — correlates with the Driver Supply Events pipeline degradation.',
+    changelog:[{version:'v1.0',date:'2026-06-22',change:'Initial release'}],
+    payload:[{field:'error_id',value:'err_5521'},{field:'error_type',value:'network_timeout'}] },
+  { id:'client_crash_reported', name:'client_crash_reported', lob:'Platform', status:'active', weeklyVolume:2.8, pipelineId:'p25',
+    definition:'Fires when the web client reports an unrecoverable crash.',
+    implementingTeam:'Reliability Engineering', definitionOwner:'Web Data Engineering', version:'v1.0', lastUpdated:'2026-06-22', warning:false,
+    changelog:[{version:'v1.0',date:'2026-06-22',change:'Initial release'}],
+    payload:[{field:'error_id',value:'err_5522'},{field:'stack_hash',value:'a1b2c3'}] },
+  { id:'client_error_recovered', name:'client_error_recovered', lob:'Platform', status:'active', weeklyVolume:1.4, pipelineId:'p25',
+    definition:'Fires when the client automatically recovers from a logged error without a full crash.',
+    implementingTeam:'Reliability Engineering', definitionOwner:'Web Data Engineering', version:'v1.0', lastUpdated:'2026-06-22', warning:false,
+    changelog:[{version:'v1.0',date:'2026-06-22',change:'Initial release'}],
+    payload:[{field:'error_id',value:'err_5521'},{field:'recovery_method',value:'auto_retry'}] },
+  { id:'scheduled_ride_booked', name:'scheduled_ride_booked', lob:'Ridesharing', status:'under review', weeklyVolume:1.2, pipelineId:null,
     definition:'Fires when a rider confirms a scheduled ride booking for a future pickup time (up to 30 days out).',
     implementingTeam:'Rides Growth Engineering', definitionOwner:'Priya Patel (Product)', version:'v0.1', lastUpdated:'2026-07-27', warning:false,
-    changelog:[{version:'v0.1',date:'2026-07-27',change:'Initial draft submitted via AI measurement plan generator'}],
+    changelog:[{version:'v0.1',date:'2026-07-27',change:'Initial release'}],
     payload:[{field:'booking_id',value:'b_7710'},{field:'lead_time_days',value:'12'},{field:'requested_pickup_time',value:'2026-08-10T09:00:00Z'}] },
-  { id:'driver_supply_available', name:'driver_supply_available', lob:'Ridesharing', status:'deprecated', weeklyVolume:0,
-    definition:'Legacy event tracking driver availability in a zone. Replaced by driver_supply_v2 for improved zone granularity.',
-    implementingTeam:'Rides Platform Engineering', definitionOwner:'Rides Analytics', version:'v1.0', lastUpdated:'2026-04-01', warning:false,
-    changelog:[{version:'v1.0',date:'2026-04-01',change:'Marked deprecated in favor of driver_supply_v2'}],
-    payload:[{field:'zone_id',value:'ams-central'},{field:'available_drivers',value:'42'}] }
+  { id:'promo_code_applied', name:'promo_code_applied', lob:'Ridesharing', status:'active', weeklyVolume:14.2, pipelineId:null,
+    definition:'Fires when a rider applies a promo code at checkout.',
+    implementingTeam:'Rides Growth Engineering', definitionOwner:'Marketing Analytics', version:'v1.0', lastUpdated:'2026-05-02', warning:false,
+    changelog:[{version:'v1.0',date:'2026-05-02',change:'Initial release'}],
+    payload:[{field:'trip_id',value:'8f3a2e91-...'},{field:'promo_code',value:'RIDE10'}] },
+  { id:'rider_referral_completed', name:'rider_referral_completed', lob:'Ridesharing', status:'active', weeklyVolume:3.6, pipelineId:null,
+    definition:'Fires when a referred rider completes their first trip.',
+    implementingTeam:'Rides Growth Engineering', definitionOwner:'Marketing Analytics', version:'v1.0', lastUpdated:'2026-04-10', warning:false,
+    changelog:[{version:'v1.0',date:'2026-04-10',change:'Initial release'}],
+    payload:[{field:'referral_id',value:'ref_2210'},{field:'new_rider_id',value:'r_48213'}] },
+  { id:'accessibility_request_flagged', name:'accessibility_request_flagged', lob:'Ridesharing', status:'under review', weeklyVolume:0.31, pipelineId:null,
+    definition:'Fires when a rider flags an accessibility need for their trip request, pending formalized routing logic.',
+    implementingTeam:'Rides Platform Engineering', definitionOwner:'Rides Analytics', version:'v0.2', lastUpdated:'2026-07-20', warning:true,
+    warningText:'Routing behavior for flagged requests is still under active design review.',
+    changelog:[{version:'v0.2',date:'2026-07-20',change:'Initial release'}],
+    payload:[{field:'trip_id',value:'8f3a2e91-...'},{field:'need_type',value:'wheelchair_accessible'}] },
+  { id:'legacy_fare_calculated', name:'legacy_fare_calculated', lob:'Ridesharing', status:'deprecated', weeklyVolume:0, pipelineId:null,
+    definition:'Legacy fare calculation event, fully replaced by fare_estimate_requested.',
+    implementingTeam:'Pricing Engineering', definitionOwner:'Pricing Data Science', version:'v1.0', lastUpdated:'2026-06-05', warning:false,
+    changelog:[{version:'v1.0',date:'2026-06-05',change:'Initial release'}],
+    payload:[{field:'estimate_id',value:'est_legacy_001'},{field:'fare',value:'15.00'}] },
+  { id:'eats_group_order_created', name:'eats_group_order_created', lob:'Eats', status:'active', weeklyVolume:9.4, pipelineId:null,
+    definition:'Fires when a rider starts a group order and invites others to join.',
+    implementingTeam:'Eats Checkout Engineering', definitionOwner:'Eats Analytics', version:'v1.0', lastUpdated:'2026-06-12', warning:false,
+    changelog:[{version:'v1.0',date:'2026-06-12',change:'Initial release'}],
+    payload:[{field:'group_order_id',value:'go_1183'},{field:'host_rider_id',value:'r_48213'}] },
+  { id:'eats_tip_added', name:'eats_tip_added', lob:'Eats', status:'active', weeklyVolume:68.0, pipelineId:null,
+    definition:'Fires when a customer adds a tip to a completed Eats order.',
+    implementingTeam:'Eats Checkout Engineering', definitionOwner:'Eats Analytics', version:'v1.0', lastUpdated:'2026-05-08', warning:false,
+    changelog:[{version:'v1.0',date:'2026-05-08',change:'Initial release'}],
+    payload:[{field:'order_id',value:'o_55210'},{field:'tip_amount',value:'3.50'}] },
+  { id:'eats_promo_applied', name:'eats_promo_applied', lob:'Eats', status:'active', weeklyVolume:19.5, pipelineId:null,
+    definition:'Fires when a customer applies a promo code during Eats checkout.',
+    implementingTeam:'Eats Growth Engineering', definitionOwner:'Marketing Analytics', version:'v1.0', lastUpdated:'2026-05-15', warning:false,
+    changelog:[{version:'v1.0',date:'2026-05-15',change:'Initial release'}],
+    payload:[{field:'checkout_id',value:'chk_33012'},{field:'promo_code',value:'EATS15'}] },
+  { id:'eats_favorite_added', name:'eats_favorite_added', lob:'Eats', status:'active', weeklyVolume:27.0, pipelineId:null,
+    definition:'Fires when a customer saves a restaurant to their favorites list.',
+    implementingTeam:'Eats Discovery Engineering', definitionOwner:'Eats Analytics', version:'v1.0', lastUpdated:'2026-05-22', warning:false,
+    changelog:[{version:'v1.0',date:'2026-05-22',change:'Initial release'}],
+    payload:[{field:'restaurant_id',value:'rst_4471'},{field:'rider_id',value:'r_48213'}] },
+  { id:'restaurant_onboarded', name:'restaurant_onboarded', lob:'Eats', status:'active', weeklyVolume:0.18, pipelineId:null,
+    definition:'Fires when a new restaurant partner completes onboarding and goes live on the platform.',
+    implementingTeam:'Eats Growth Engineering', definitionOwner:'Eats Analytics', version:'v1.0', lastUpdated:'2026-03-30', warning:false,
+    changelog:[{version:'v1.0',date:'2026-03-30',change:'Initial release'}],
+    payload:[{field:'restaurant_id',value:'rst_4471'},{field:'onboarded_at',value:'2026-07-25T10:00:00Z'}] },
+  { id:'eats_order_placed_legacy', name:'eats_order_placed_legacy', lob:'Eats', status:'deprecated', weeklyVolume:0, pipelineId:null,
+    definition:'Legacy order-placed event, fully replaced by eats_order_placed v1.6.',
+    implementingTeam:'Eats Checkout Engineering', definitionOwner:'Eats Analytics', version:'v1.0', lastUpdated:'2026-06-12', warning:false,
+    changelog:[{version:'v1.0',date:'2026-06-12',change:'Initial release'}],
+    payload:[{field:'order_id',value:'o_legacy_001'}] },
+  { id:'b2b_seat_provisioned', name:'b2b_seat_provisioned', lob:'B2B', status:'active', weeklyVolume:0.44, pipelineId:null,
+    definition:'Fires when a new employee seat is provisioned on an enterprise account.',
+    implementingTeam:'Uber for Business Engineering', definitionOwner:'B2B Analytics', version:'v1.0', lastUpdated:'2026-04-14', warning:false,
+    changelog:[{version:'v1.0',date:'2026-04-14',change:'Initial release'}],
+    payload:[{field:'account_id',value:'acct_9021'},{field:'employee_id',value:'emp_2201'}] },
+  { id:'b2b_admin_login', name:'b2b_admin_login', lob:'B2B', status:'active', weeklyVolume:1.1, pipelineId:null,
+    definition:'Fires when an enterprise account administrator logs into the B2B admin console.',
+    implementingTeam:'Uber for Business Engineering', definitionOwner:'B2B Analytics', version:'v1.0', lastUpdated:'2026-03-20', warning:false,
+    changelog:[{version:'v1.0',date:'2026-03-20',change:'Initial release'}],
+    payload:[{field:'account_id',value:'acct_9021'},{field:'admin_id',value:'adm_310'}] },
+  { id:'b2b_budget_policy_updated', name:'b2b_budget_policy_updated', lob:'B2B', status:'active', weeklyVolume:0.09, pipelineId:null,
+    definition:'Fires when an enterprise account administrator updates a travel budget policy.',
+    implementingTeam:'Uber for Business Engineering', definitionOwner:'B2B Analytics', version:'v1.0', lastUpdated:'2026-02-18', warning:false,
+    changelog:[{version:'v1.0',date:'2026-02-18',change:'Initial release'}],
+    payload:[{field:'account_id',value:'acct_9021'},{field:'policy_id',value:'pol_442'}] },
+  { id:'b2b_shipment_confirmed_v0_draft', name:'b2b_shipment_confirmed_v0_draft', lob:'B2B', status:'deprecated', weeklyVolume:0, pipelineId:null,
+    definition:'Early draft of the shipment confirmation event, superseded before launch by b2b_shipment_confirmed v1.0.',
+    implementingTeam:'Freight Engineering', definitionOwner:'B2B Analytics', version:'v0.1', lastUpdated:'2026-04-01', warning:false,
+    changelog:[{version:'v0.1',date:'2026-04-01',change:'Initial release'}],
+    payload:[{field:'shipment_id',value:'s_draft_001'}] },
+  { id:'password_reset_requested', name:'password_reset_requested', lob:'Platform', status:'active', weeklyVolume:6.8, pipelineId:null,
+    definition:'Fires when a user requests a password reset.',
+    implementingTeam:'Web Infrastructure', definitionOwner:'Web Data Engineering', version:'v1.0', lastUpdated:'2026-03-08', warning:false,
+    changelog:[{version:'v1.0',date:'2026-03-08',change:'Initial release'}],
+    payload:[{field:'account_id',value:'acct_9021'},{field:'requested_at',value:'2026-07-28T11:00:00Z'}] },
+  { id:'account_locked_security', name:'account_locked_security', lob:'Platform', status:'active', weeklyVolume:0.54, pipelineId:null,
+    definition:'Fires when an account is automatically locked after repeated failed login attempts.',
+    implementingTeam:'Reliability Engineering', definitionOwner:'Web Data Engineering', version:'v1.0', lastUpdated:'2026-04-19', warning:true,
+    warningText:'Spike under investigation — may indicate credential-stuffing activity.',
+    changelog:[{version:'v1.0',date:'2026-04-19',change:'Initial release'}],
+    payload:[{field:'account_id',value:'acct_9021'},{field:'failed_attempts',value:'6'}] },
+  { id:'consent_preference_updated', name:'consent_preference_updated', lob:'Platform', status:'active', weeklyVolume:15.3, pipelineId:null,
+    definition:'Fires when a user updates their data/marketing consent preferences.',
+    implementingTeam:'Web Infrastructure', definitionOwner:'Web Data Engineering', version:'v1.0', lastUpdated:'2026-05-05', warning:false,
+    changelog:[{version:'v1.0',date:'2026-05-05',change:'Initial release'}],
+    payload:[{field:'account_id',value:'acct_9021'},{field:'consent_type',value:'marketing_email'},{field:'value',value:'false'}] },
+  { id:'api_key_generated', name:'api_key_generated', lob:'Platform', status:'active', weeklyVolume:2.2, pipelineId:null,
+    definition:'Fires when a developer generates a new API key from the Pulse API landing page.',
+    implementingTeam:'Web Infrastructure', definitionOwner:'Web Data Engineering', version:'v1.0', lastUpdated:'2026-07-02', warning:false,
+    changelog:[{version:'v1.0',date:'2026-07-02',change:'Initial release'}],
+    payload:[{field:'key_id',value:'key_4402'},{field:'account_id',value:'acct_9021'}] },
+  { id:'session_started_v3_legacy', name:'session_started_v3_legacy', lob:'Platform', status:'deprecated', weeklyVolume:0, pipelineId:null,
+    definition:'Legacy v3 session event, fully replaced by session_started v4.1.',
+    implementingTeam:'Web Infrastructure', definitionOwner:'Web Data Engineering', version:'v3.0', lastUpdated:'2026-07-10', warning:false,
+    changelog:[{version:'v3.0',date:'2026-07-10',change:'Initial release'}],
+    payload:[{field:'session_id',value:'sess_legacy_001'}] }
 ];
 
 const ROADMAP_BASE = {
   defining:[ {id:'r1',name:'b2b_bulk_shipment_event',lob:'B2B',team:'Freight Engineering',dateLabel:'Est. Aug 22'} ],
   next:[ {id:'r2',name:'eats_group_order_conversion',lob:'Eats',team:'Eats Growth',dateLabel:'Est. Sep 5'}, {id:'r3',name:'driver_supply_v2 migration',lob:'Ridesharing',team:'Platform Engineering',dateLabel:'Est. Sep 12'} ],
-  shipped:[ {id:'r4',name:'attribution_touch_v2',lob:'Eats',team:'Marketing Analytics',dateLabel:'Shipped Jul 20'}, {id:'r5',name:'session_started_v4',lob:'Platform',team:'Web Infrastructure',dateLabel:'Shipped Jul 10'} ]
+  shipped:[ {id:'r4',name:'campaign_started_v1',lob:'Eats',team:'Marketing Analytics',dateLabel:'Shipped Jul 20'}, {id:'r5',name:'session_started_v4',lob:'Platform',team:'Web Infrastructure',dateLabel:'Shipped Jul 10'} ]
 };
 
 const METRICS_BASE = [
   { id:'gtv', label:'Gross Trip Value (GTV)', value:'$3.85B', delta:'+4.2% WoW', positive:true, points:[3280,3320,3380,3410,3460,3600,3720,3850], iconBg:'#DFF3E6', iconColor:'#067A3E',
     tooltip:'Total value of completed trips, deliveries, and B2B/Freight transactions across all lines of business in the trailing 7 days, before deductions.' },
-  { id:'trips', label:'Weekly Trips', value:'98.4M', delta:'+2.8% WoW', positive:true, points:[88.9,90.5,92.0,93.5,95.0,96.2,97.3,98.4], iconBg:'#DCEBF7', iconColor:'#1D6FA5',
+  { id:'trips', label:'Weekly Trips', value:'255.0M', delta:'+2.8% WoW', positive:true, points:[230.3,234.4,238.3,242.2,246.1,249.3,252.1,255.0], iconBg:'#DCEBF7', iconColor:'#1D6FA5',
     tooltip:'Completed Mobility (rideshare) trips in the trailing 7 days, sourced from the completed_trip event.' },
-  { id:'eats', label:'Eats Deliveries', value:'81.6M', delta:'+6.1% WoW', positive:true, points:[70.5,72.8,74.9,76.5,78.0,79.2,80.4,81.6], iconBg:'#FBE8D8', iconColor:'#B45F06',
+  { id:'eats', label:'Eats Deliveries', value:'35.0M', delta:'+6.1% WoW', positive:true, points:[30.2,31.2,32.1,32.8,33.5,34.0,34.5,35.0], iconBg:'#FBE8D8', iconColor:'#B45F06',
     tooltip:'Completed Eats orders in the trailing 7 days, sourced from the eats_order_placed event.' },
   { id:'b2b', label:'B2B Transactions', value:'3.42M', delta:'-1.3% WoW', positive:false, points:[3.6,3.58,3.55,3.5,3.48,3.45,3.43,3.42], iconBg:'#EDE3F7', iconColor:'#6B3FA0',
     tooltip:'Confirmed B2B/Freight shipment transactions in the trailing 7 days, sourced from the b2b_shipment_confirmed event.' }
@@ -625,7 +1202,8 @@ class Component extends DCLogic {
     screen:'login', loginEmail:'', loginPassword:'', loginError:'',
     appScreen:'home',
     catalogQuery:'', catalogLob:'All', catalogStatus:'All', selectedEntryId:null, catalogTab:'data',
-    pipelineQuery:'', pipelineLob:'All', pipelineHealth:'All',
+    pipelineQuery:'', pipelineLob:'All', pipelineHealth:'All', selectedPipelineId:null,
+    catalogPage:1, pipelineLogPage:1,
     chatMessages:[{role:'assistant', text:"Hi, I'm the Pulse assistant. Ask me about any event or metric, request a quick data pull, or describe a feature to get a draft measurement plan."}],
     chatInput:'',
     contributeOpen:false, contributeStep:1, contributeForm:{name:'',lob:'Ridesharing',description:''},
@@ -647,21 +1225,26 @@ class Component extends DCLogic {
   };
   logout = () => this.setState({screen:'login', loginEmail:'', loginPassword:'', loginError:''});
 
-  goHome = () => this.setState({appScreen:'home', selectedEntryId:null});
-  goCatalog = () => this.setState({appScreen:'catalog', selectedEntryId:null, catalogTab:'data'});
-  goAssistant = () => this.setState({appScreen:'assistant', selectedEntryId:null});
-  goRoadmap = () => this.setState({appScreen:'roadmap', selectedEntryId:null});
+  goHome = () => this.setState({appScreen:'home', selectedEntryId:null, selectedPipelineId:null});
+  goCatalog = () => this.setState({appScreen:'catalog', selectedEntryId:null, selectedPipelineId:null, catalogTab:'data', catalogPage:1, pipelineLogPage:1});
+  goAssistant = () => this.setState({appScreen:'assistant', selectedEntryId:null, selectedPipelineId:null});
+  goRoadmap = () => this.setState({appScreen:'roadmap', selectedEntryId:null, selectedPipelineId:null});
 
-  setCatalogTab = (tab) => this.setState({catalogTab:tab});
-  onCatalogQueryChange = (e) => this.setState({catalogQuery:e.target.value});
-  onCatalogLobChange = (e) => this.setState({catalogLob:e.target.value});
-  onCatalogStatusChange = (e) => this.setState({catalogStatus:e.target.value});
-  onPipelineQueryChange = (e) => this.setState({pipelineQuery:e.target.value});
-  onPipelineLobChange = (e) => this.setState({pipelineLob:e.target.value});
-  onPipelineHealthChange = (e) => this.setState({pipelineHealth:e.target.value});
+  setCatalogTab = (tab) => this.setState({catalogTab:tab, catalogPage:1, pipelineLogPage:1});
+  onCatalogQueryChange = (e) => this.setState({catalogQuery:e.target.value, catalogPage:1});
+  onCatalogLobChange = (e) => this.setState({catalogLob:e.target.value, catalogPage:1});
+  onCatalogStatusChange = (e) => this.setState({catalogStatus:e.target.value, catalogPage:1});
+  onPipelineQueryChange = (e) => this.setState({pipelineQuery:e.target.value, pipelineLogPage:1});
+  onPipelineLobChange = (e) => this.setState({pipelineLob:e.target.value, pipelineLogPage:1});
+  onPipelineHealthChange = (e) => this.setState({pipelineHealth:e.target.value, pipelineLogPage:1});
+  setCatalogPage = (page) => this.setState({catalogPage:page});
+  setPipelineLogPage = (page) => this.setState({pipelineLogPage:page});
   selectEntry = (id) => this.setState({selectedEntryId:id});
   closeEntry = () => this.setState({selectedEntryId:null});
+  selectPipeline = (id) => this.setState({selectedPipelineId:id});
+  closePipeline = () => this.setState({selectedPipelineId:null});
   viewCatalogRef = (id) => this.setState({appScreen:'catalog', catalogQuery:'', catalogLob:'All', catalogStatus:'All', selectedEntryId:id, catalogTab:'data'});
+  viewCatalogEntryFromPipeline = (id) => this.setState({appScreen:'catalog', catalogQuery:'', catalogLob:'All', catalogStatus:'All', selectedEntryId:id, catalogTab:'data', selectedPipelineId:null});
 
   downloadSample = (entry) => {
     downloadCSV(entry.id+'_sample.csv', ['field','value'], entry.payload.map(p=>[p.field,p.value]));
@@ -754,14 +1337,49 @@ class Component extends DCLogic {
       sparkColor: m.positive ? '#06C167' : '#A93327'
     }));
 
-    const pipelines = PIPELINES.map(p => ({
-      ...p,
-      statusLabel: statusLabel(p.health),
-      statusChipStyle: statusChipStyle(p.health),
-      slaActualStyle: 'font-weight:600;color:'+(p.health==='green' ? '#067A3E' : p.health==='amber' ? '#96530A' : '#A93327')+';',
-      qualityBarStyle: 'height:100%;border-radius:3px;width:'+p.quality+'%;background:'+(p.quality>=95?'#06C167':p.quality>=80?'#C98A1E':'#A93327')+';',
-      weeklyVolumeLabel: p.weeklyVolume.toFixed(1)+'M'
-    })).sort((a,b) => b.weeklyVolume - a.weeklyVolume);
+    const pipelineVolume = (pid) => CATALOG.filter(e => e.pipelineId === pid).reduce((sum,e) => sum + e.weeklyVolume, 0);
+    const pipelineEvents = (pid) => CATALOG.filter(e => e.pipelineId === pid).sort((a,b) => b.weeklyVolume - a.weeklyVolume);
+
+    const pipelines = PIPELINES.map(p => {
+      const weeklyVolume = pipelineVolume(p.id);
+      return {
+        ...p,
+        weeklyVolume,
+        statusLabel: statusLabel(p.health),
+        statusChipStyle: statusChipStyle(p.health),
+        slaActualStyle: 'font-weight:600;color:'+(p.health==='green' ? '#067A3E' : p.health==='amber' ? '#96530A' : '#A93327')+';',
+        qualityBarStyle: 'height:100%;border-radius:3px;width:'+p.quality+'%;background:'+(p.quality>=95?'#06C167':p.quality>=80?'#C98A1E':'#A93327')+';',
+        weeklyVolumeLabel: weeklyVolume.toFixed(1)+'M',
+        onSelect: () => this.selectPipeline(p.id)
+      };
+    }).sort((a,b) => b.weeklyVolume - a.weeklyVolume);
+
+    const homePipelines = pipelines.slice(0, 10).map((p,i) => ({ ...p, rowNumber: i+1 }));
+
+    const pipelineChecks = (health) => ([
+      { name:'Schema validation', status: health==='red' ? 'fail' : 'pass' },
+      { name:'Duplicate detection', status: health==='red' ? 'warn' : (health==='amber' ? 'warn' : 'pass') },
+      { name:'Completeness', status: health==='red' ? 'warn' : 'pass' }
+    ]);
+    const checkStyle = (status) => 'font-size:11px;font-weight:700;text-transform:capitalize;padding:3px 9px;border-radius:6px;display:inline-block;' +
+      (status==='pass' ? 'background:#DFF3E6;color:#067A3E;' : status==='warn' ? 'background:#FCEFDC;color:#96530A;' : 'background:#FBE9E6;color:#A93327;');
+
+    const rawSelectedPipeline = PIPELINES.find(p => p.id === s.selectedPipelineId) || null;
+    const selectedPipeline = rawSelectedPipeline ? {
+      ...rawSelectedPipeline,
+      statusLabel: statusLabel(rawSelectedPipeline.health),
+      statusChipStyle: statusChipStyle(rawSelectedPipeline.health),
+      slaActualStyle: 'font-weight:600;color:'+(rawSelectedPipeline.health==='green' ? '#067A3E' : rawSelectedPipeline.health==='amber' ? '#96530A' : '#A93327')+';',
+      weeklyVolumeLabel: pipelineVolume(rawSelectedPipeline.id).toFixed(1)+'M',
+      events: pipelineEvents(rawSelectedPipeline.id).map(e => ({
+        ...e,
+        weeklyVolumeLabel: e.weeklyVolume.toFixed(1)+'M',
+        statusChipStyle: statusChipStyle(e.status),
+        statusLabel: e.status.charAt(0).toUpperCase()+e.status.slice(1),
+        onSelect: () => this.viewCatalogEntryFromPipeline(e.id)
+      })),
+      checks: pipelineChecks(rawSelectedPipeline.health).map(c => ({ ...c, chipStyle: checkStyle(c.status) }))
+    } : null;
 
     const catalogTabStyle = (active) => 'background:none;border:none;border-bottom:2px solid '+(active?'#0A0A0A':'transparent')+';color:'+(active?'#0A0A0A':'#6B6B6B')+';font-weight:'+(active?'700':'500')+';font-size:13.5px;padding:10px 4px;margin-right:24px;cursor:pointer;';
     const isCatalogDataTab = s.catalogTab === 'data';
@@ -778,6 +1396,16 @@ class Component extends DCLogic {
       (pq === '' || p.name.toLowerCase().includes(pq))
     );
     const pipelineCountLabel = filteredPipelines.length + (filteredPipelines.length===1 ? ' result' : ' results');
+    const PAGE_SIZE = 30;
+    const pipelineLogTotalPages = Math.max(1, Math.ceil(filteredPipelines.length / PAGE_SIZE));
+    const pipelineLogPageClamped = Math.min(s.pipelineLogPage, pipelineLogTotalPages);
+    const pipelineLogRowOffset = (pipelineLogPageClamped-1)*PAGE_SIZE;
+    const pagedPipelines = filteredPipelines.slice(pipelineLogRowOffset, pipelineLogRowOffset+PAGE_SIZE).map((p,i) => ({ ...p, rowNumber: pipelineLogRowOffset+i+1 }));
+    const pipelineLogPageLabel = 'Page '+pipelineLogPageClamped+' of '+pipelineLogTotalPages;
+    const onPipelineLogPrevPage = () => this.setPipelineLogPage(Math.max(1, pipelineLogPageClamped-1));
+    const onPipelineLogNextPage = () => this.setPipelineLogPage(Math.min(pipelineLogTotalPages, pipelineLogPageClamped+1));
+    const pipelineLogPrevDisabled = pipelineLogPageClamped<=1;
+    const pipelineLogNextDisabled = pipelineLogPageClamped>=pipelineLogTotalPages;
 
     const q = s.catalogQuery.trim().toLowerCase();
     const filteredCatalog = CATALOG.filter(e =>
@@ -791,6 +1419,16 @@ class Component extends DCLogic {
       weeklyVolumeLabel: e.weeklyVolume.toFixed(1)+'M',
       onSelect: () => this.selectEntry(e.id)
     })).sort((a,b) => b.weeklyVolume - a.weeklyVolume);
+
+    const catalogTotalPages = Math.max(1, Math.ceil(filteredCatalog.length / PAGE_SIZE));
+    const catalogPageClamped = Math.min(s.catalogPage, catalogTotalPages);
+    const catalogRowOffset = (catalogPageClamped-1)*PAGE_SIZE;
+    const pagedCatalog = filteredCatalog.slice(catalogRowOffset, catalogRowOffset+PAGE_SIZE).map((e,i) => ({ ...e, rowNumber: catalogRowOffset+i+1 }));
+    const catalogPageLabel = 'Page '+catalogPageClamped+' of '+catalogTotalPages;
+    const onCatalogPrevPage = () => this.setCatalogPage(Math.max(1, catalogPageClamped-1));
+    const onCatalogNextPage = () => this.setCatalogPage(Math.min(catalogTotalPages, catalogPageClamped+1));
+    const catalogPrevDisabled = catalogPageClamped<=1;
+    const catalogNextDisabled = catalogPageClamped>=catalogTotalPages;
 
     const rawSelected = CATALOG.find(e => e.id === s.selectedEntryId) || null;
     const selectedEntry = rawSelected ? {
@@ -843,10 +1481,12 @@ class Component extends DCLogic {
       navBtnStyle_assistant: navStyle(s.appScreen==='assistant'), navBtnStyle_roadmap: navStyle(s.appScreen==='roadmap'),
       navBtnStyle_plain: navStyle(false),
       openReport: this.openReport, openContribute: this.openContribute,
-      criticalPipeline, metrics, pipelines,
+      criticalPipeline, metrics, pipelines, homePipelines, selectedPipeline, closePipeline: this.closePipeline,
       pipelineQuery: s.pipelineQuery, pipelineLob: s.pipelineLob, pipelineHealth: s.pipelineHealth,
       onPipelineQueryChange: this.onPipelineQueryChange, onPipelineLobChange: this.onPipelineLobChange, onPipelineHealthChange: this.onPipelineHealthChange,
       filteredPipelines, pipelineCountLabel,
+      pagedPipelines, pipelineLogPageLabel, onPipelineLogPrevPage, onPipelineLogNextPage, pipelineLogPrevDisabled, pipelineLogNextDisabled,
+      pagedCatalog, catalogPageLabel, onCatalogPrevPage, onCatalogNextPage, catalogPrevDisabled, catalogNextDisabled,
       catalogQuery: s.catalogQuery, catalogLob: s.catalogLob, catalogStatus: s.catalogStatus,
       isCatalogDataTab, isCatalogPipelineTab, catalogTabDataStyle, catalogTabPipelineStyle,
       onCatalogTabData, onCatalogTabPipeline,
