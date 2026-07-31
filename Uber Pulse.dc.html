@@ -371,8 +371,8 @@
               <a href="#" style="font-size:13px; font-weight:600; background:#FFFFFF; border:1px solid #E5E5E5; border-radius:999px; padding:8px 16px; text-decoration:none;">View full roadmap in Jira ↗</a>
             </div>
 
-            <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:16px;">
-              <sc-for list="{{ roadmapColumns }}" as="col" hint-placeholder-count="3">
+            <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:14px;">
+              <sc-for list="{{ roadmapColumns }}" as="col" hint-placeholder-count="4">
                 <div>
                   <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:#6B6B6B; margin-bottom:10px;">{{ col.title }} · {{ col.count }}</div>
                   <div style="display:flex; flex-direction:column; gap:10px;">
@@ -394,27 +394,81 @@
 
           <sc-if value="{{ isContribute }}" hint-placeholder-val="{{ false }}">
             <h1 style="font-size:24px; font-weight:800; margin:0 0 4px 0; letter-spacing:-0.5px;">Contribute a schema</h1>
-            <p style="font-size:14px; color:#6B6B6B; margin:0 0 24px 0;">Propose a new event or metric for review by the data team. Step {{ contributeStep }} of 2.</p>
+            <p style="font-size:14px; color:#6B6B6B; margin:0 0 14px 0;">Propose a new event or metric for review by the data team.</p>
 
-            <div style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; padding:28px; max-width:560px;">
+            <div style="display:flex; align-items:center; margin-bottom:14px;">
+              <sc-for list="{{ contributeStepChips }}" as="st" hint-placeholder-count="2">
+                <div style="display:flex; align-items:center; cursor:{{ st.cursorStyle }};" onClick="{{ st.onClick }}">
+                  <div style="{{ st.circleStyle }}">{{ st.index }}</div>
+                  <div style="{{ st.labelStyle }}">{{ st.label }}</div>
+                </div>
+                <sc-if value="{{ st.showConnector }}" hint-placeholder-val="{{ true }}">
+                  <div style="{{ st.connectorStyle }}"></div>
+                </sc-if>
+              </sc-for>
+            </div>
+
+            <div style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; padding:26px 32px; width:100%; box-sizing:border-box; height:calc(100vh - 290px); display:flex; flex-direction:column; overflow:hidden;">
               <sc-if value="{{ isContributeStep1 }}" hint-placeholder-val="{{ true }}">
-                <div style="display:flex; flex-direction:column; gap:14px;">
-                  <div>
-                    <label style="display:block; font-size:12px; font-weight:600; color:#6B6B6B; margin-bottom:6px;">Event / schema name</label>
-                    <input value="{{ contributeForm.name }}" onChange="{{ onContributeNameChange }}" placeholder="e.g. driver_rating_submitted" style="width:100%; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:13px; font-family:ui-monospace,monospace;" />
-                  </div>
-                  <div>
-                    <label style="display:block; font-size:12px; font-weight:600; color:#6B6B6B; margin-bottom:6px;">Line of business</label>
-                    <select value="{{ contributeForm.lob }}" onChange="{{ onContributeLobChange }}" style="width:100%; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:13px;">
-                      <option value="Ridesharing">Ridesharing</option>
-                      <option value="Eats">Eats</option>
-                      <option value="B2B">B2B</option>
-                      <option value="Platform">Platform</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label style="display:block; font-size:12px; font-weight:600; color:#6B6B6B; margin-bottom:6px;">What does this event capture?</label>
-                    <textarea value="{{ contributeForm.description }}" onChange="{{ onContributeDescChange }}" placeholder="Describe when this event fires and why it's needed…" rows="3" style="width:100%; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:13px; font-family:inherit; resize:vertical;"></textarea>
+                <div style="flex:1; min-height:0; overflow-y:auto; padding-right:4px;">
+                  <div style="font-size:15px; font-weight:700; margin-bottom:14px;">Details</div>
+                  <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px; align-items:start;">
+                    <div style="display:flex; flex-direction:column; gap:12px; min-width:0;">
+                      <div>
+                        <label style="display:block; font-size:12px; font-weight:600; color:#6B6B6B; margin-bottom:6px;">Event / schema name</label>
+                        <input value="{{ contributeForm.name }}" onChange="{{ onContributeNameChange }}" placeholder="e.g. driver_rating_submitted" style="width:100%; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:13px; font-family:ui-monospace,monospace;" />
+                      </div>
+                      <div>
+                        <label style="display:block; font-size:12px; font-weight:600; color:#6B6B6B; margin-bottom:6px;">What does this event capture?</label>
+                        <textarea value="{{ contributeForm.description }}" onChange="{{ onContributeDescChange }}" placeholder="Describe when this event fires and why it's needed…" rows="3" style="width:100%; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:13px; font-family:inherit; resize:vertical;"></textarea>
+                      </div>
+                      <div>
+                        <label style="display:block; font-size:12px; font-weight:600; color:#6B6B6B; margin-bottom:6px;">Source repo (optional)</label>
+                        <input value="{{ contributeForm.repoLink }}" onChange="{{ onContributeRepoLinkChange }}" placeholder="https://github.com/uber/…" style="width:100%; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:13px;" />
+                      </div>
+                      <div>
+                        <label style="display:block; font-size:12px; font-weight:600; color:#6B6B6B; margin-bottom:6px;">Related Jira epic (optional)</label>
+                        <input value="{{ contributeForm.jiraLink }}" onChange="{{ onContributeJiraLinkChange }}" placeholder="https://uber.atlassian.net/browse/…" style="width:100%; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:13px;" />
+                      </div>
+                    </div>
+                    <div style="display:flex; flex-direction:column; gap:12px; min-width:0;">
+                      <div>
+                        <label style="display:block; font-size:12px; font-weight:600; color:#6B6B6B; margin-bottom:6px;">Line of business</label>
+                        <select value="{{ contributeForm.lob }}" onChange="{{ onContributeLobChange }}" style="width:100%; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:13px;">
+                          <option value="Ridesharing">Ridesharing</option>
+                          <option value="Eats">Eats</option>
+                          <option value="B2B">B2B</option>
+                          <option value="Platform">Platform</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label style="display:block; font-size:12px; font-weight:600; color:#6B6B6B; margin-bottom:6px;">Owning team</label>
+                        <select value="{{ contributeForm.owningTeam }}" onChange="{{ onContributeOwningTeamChange }}" style="width:100%; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:13px;">
+                          <sc-for list="{{ owningTeamOptions }}" as="team" hint-placeholder-count="5">
+                            <option value="{{ team }}">{{ team }}</option>
+                          </sc-for>
+                        </select>
+                      </div>
+                      <div>
+                        <label style="display:block; font-size:12px; font-weight:600; color:#6B6B6B; margin-bottom:6px;">Expected weekly volume (optional)</label>
+                        <input value="{{ contributeForm.expectedVolume }}" onChange="{{ onContributeVolumeChange }}" placeholder="e.g. 12.5M" style="width:100%; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:13px;" />
+                      </div>
+                      <div>
+                        <label style="display:block; font-size:12px; font-weight:600; color:#6B6B6B; margin-bottom:6px;">Sample payload (optional)</label>
+                        <div style="display:flex; flex-direction:column; gap:8px;">
+                          <sc-for list="{{ payloadRowsView }}" as="row" hint-placeholder-count="1">
+                            <div style="display:flex; gap:8px; align-items:center;">
+                              <input value="{{ row.field }}" onChange="{{ row.onFieldChange }}" placeholder="field_name" style="flex:1; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:8px 10px; font-size:12.5px; font-family:ui-monospace,monospace;" />
+                              <input value="{{ row.value }}" onChange="{{ row.onValueChange }}" placeholder="example value" style="flex:1; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:8px 10px; font-size:12.5px;" />
+                              <sc-if value="{{ row.canRemove }}" hint-placeholder-val="{{ true }}">
+                                <button onClick="{{ row.onRemove }}" style="background:none; border:none; color:#9B9B9B; cursor:pointer; font-size:15px; padding:4px 6px; flex-shrink:0;">✕</button>
+                              </sc-if>
+                            </div>
+                          </sc-for>
+                        </div>
+                        <button onClick="{{ addPayloadRow }}" style="margin-top:8px; background:none; border:1px dashed #D0D0D0; border-radius:8px; padding:8px 12px; font-size:12px; color:#6B6B6B; cursor:pointer;">+ Add field</button>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:22px;">
@@ -424,11 +478,30 @@
               </sc-if>
 
               <sc-if value="{{ isContributeStep2 }}" hint-placeholder-val="{{ false }}">
-                <div style="background:#F6F6F6; border-radius:10px; padding:16px; font-size:13px; line-height:1.8;">
-                  <div><strong>Name:</strong> {{ contributeForm.name }}</div>
-                  <div><strong>LOB:</strong> {{ contributeForm.lob }}</div>
-                  <div><strong>Description:</strong> {{ contributeForm.description }}</div>
-                  <div style="margin-top:8px; color:#6B6B6B;">Estimated review date: {{ estimatedReviewDate }}</div>
+                <div style="flex:1; min-height:0; overflow-y:auto; padding-right:4px;">
+                  <div style="font-size:15px; font-weight:700; margin-bottom:14px;">Review & submit</div>
+                  <div style="background:#F6F6F6; border-radius:10px; padding:20px; font-size:13px; line-height:2; max-width:720px;">
+                    <div><strong>Name:</strong> {{ contributeForm.name }}</div>
+                    <div><strong>LOB:</strong> {{ contributeForm.lob }}</div>
+                    <div><strong>Owning team:</strong> {{ contributeForm.owningTeam }}</div>
+                    <div><strong>Description:</strong> {{ contributeForm.descriptionSummary }}</div>
+                    <div><strong>Repo:</strong> {{ contributeForm.repoLinkSummary }}</div>
+                    <div><strong>Jira epic:</strong> {{ contributeForm.jiraLinkSummary }}</div>
+                    <div><strong>Expected weekly volume:</strong> {{ contributeForm.expectedVolumeSummary }}</div>
+                    <div style="margin-top:8px;"><strong>Sample payload:</strong></div>
+                    <sc-if value="{{ hasPayloadRows }}" hint-placeholder-val="{{ false }}">
+                      <sc-for list="{{ payloadRowsSummary }}" as="pr" hint-placeholder-count="2">
+                        <div style="font-family:ui-monospace,monospace; font-size:12px; color:#6B6B6B;">{{ pr.field }}: {{ pr.value }}</div>
+                      </sc-for>
+                    </sc-if>
+                    <sc-if value="{{ noPayloadRows }}" hint-placeholder-val="{{ true }}">
+                      <div style="font-size:12px; color:#9B9B9B;">None added</div>
+                    </sc-if>
+                    <div style="margin-top:14px; padding-top:14px; border-top:1px solid #E5E5E5;">
+                      <div><strong>Next planning meeting:</strong> {{ nextPlanningMeetingLabel }} — this submission will be discussed then.</div>
+                      <div style="margin-top:4px; color:#6B6B6B;">Estimated decision: {{ estimatedReviewDate }} (~2 weeks out)</div>
+                    </div>
+                  </div>
                 </div>
                 <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:22px;">
                   <button onClick="{{ contributeBack }}" style="background:none; border:1px solid #E5E5E5; border-radius:999px; padding:10px 18px; font-size:13px; cursor:pointer;">Back</button>
@@ -440,31 +513,123 @@
 
           <sc-if value="{{ isReport }}" hint-placeholder-val="{{ false }}">
             <h1 style="font-size:24px; font-weight:800; margin:0 0 4px 0; letter-spacing:-0.5px;">Report an issue</h1>
-            <p style="font-size:14px; color:#6B6B6B; margin:0 0 24px 0;">Flag a data quality, freshness, or platform issue to the data team.</p>
+            <p style="font-size:14px; color:#6B6B6B; margin:0 0 14px 0;">Flag a data quality, freshness, or platform issue to the data team.</p>
 
-            <div style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; padding:28px; max-width:520px;">
-              <div style="display:flex; flex-direction:column; gap:14px;">
-                <div>
-                  <label style="display:block; font-size:12px; font-weight:600; color:#6B6B6B; margin-bottom:6px;">Title</label>
-                  <input value="{{ reportForm.title }}" onChange="{{ onReportTitleChange }}" placeholder="e.g. Quality score looks wrong for eats_order_placed" style="width:100%; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:13px;" />
+            <div style="display:flex; align-items:center; margin-bottom:14px;">
+              <sc-for list="{{ reportStepChips }}" as="st" hint-placeholder-count="2">
+                <div style="display:flex; align-items:center; cursor:{{ st.cursorStyle }};" onClick="{{ st.onClick }}">
+                  <div style="{{ st.circleStyle }}">{{ st.index }}</div>
+                  <div style="{{ st.labelStyle }}">{{ st.label }}</div>
                 </div>
-                <div>
-                  <label style="display:block; font-size:12px; font-weight:600; color:#6B6B6B; margin-bottom:6px;">Severity</label>
-                  <select value="{{ reportForm.severity }}" onChange="{{ onReportSeverityChange }}" style="width:100%; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:13px;">
-                    <option value="Low">Low</option>
-                    <option value="Medium">Medium</option>
-                    <option value="High">High</option>
-                  </select>
+                <sc-if value="{{ st.showConnector }}" hint-placeholder-val="{{ true }}">
+                  <div style="{{ st.connectorStyle }}"></div>
+                </sc-if>
+              </sc-for>
+            </div>
+
+            <div style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; padding:26px 32px; width:100%; box-sizing:border-box; height:calc(100vh - 290px); display:flex; flex-direction:column; overflow:hidden;">
+              <sc-if value="{{ isReportStep1 }}" hint-placeholder-val="{{ true }}">
+                <div style="flex:1; min-height:0; overflow-y:auto; padding-right:4px;">
+                  <div style="font-size:15px; font-weight:700; margin-bottom:14px;">Details</div>
+                  <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px; align-items:start;">
+                    <div style="display:flex; flex-direction:column; gap:12px; min-width:0;">
+                      <div>
+                        <label style="display:block; font-size:12px; font-weight:600; color:#6B6B6B; margin-bottom:6px;">What is this about?</label>
+
+                        <sc-if value="{{ showReportSelectedChip }}" hint-placeholder-val="{{ false }}">
+                          <div style="display:flex; align-items:center; justify-content:space-between; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px;">
+                            <div style="font-size:13px;"><span style="font-size:10px; font-weight:700; text-transform:uppercase; color:#9B9B9B; margin-right:8px;">{{ reportSelectedDataPointTypeLabel }}</span><span style="font-family:ui-monospace,monospace; font-weight:600;">{{ reportSelectedDataPointName }}</span></div>
+                            <button onClick="{{ clearReportDataPoint }}" style="background:none; border:none; color:#9B9B9B; cursor:pointer; font-size:13px;">Change</button>
+                          </div>
+                        </sc-if>
+
+                        <sc-if value="{{ showReportGeneralChip }}" hint-placeholder-val="{{ false }}">
+                          <div style="display:flex; align-items:center; justify-content:space-between; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px;">
+                            <div style="font-size:13px; font-weight:600;">General / platform issue</div>
+                          </div>
+                        </sc-if>
+
+                        <sc-if value="{{ showReportPicker }}" hint-placeholder-val="{{ true }}">
+                          <input value="{{ reportDataPointQuery }}" onChange="{{ onReportDataPointQueryChange }}" placeholder="Search events, metrics, or pipelines…" style="width:100%; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:13px;" />
+                          <sc-if value="{{ reportHasResults }}" hint-placeholder-val="{{ false }}">
+                            <div style="border:1px solid #E5E5E5; border-radius:8px; margin-top:6px; overflow:hidden;">
+                              <sc-for list="{{ reportDataPointResults }}" as="dp" hint-placeholder-count="3">
+                                <div onClick="{{ dp.onSelect }}" style="display:flex; align-items:center; gap:8px; padding:9px 12px; font-size:13px; cursor:pointer; border-bottom:1px solid #F0F0F0;">
+                                  <span style="font-size:10px; font-weight:700; text-transform:uppercase; color:#9B9B9B;">{{ dp.typeLabel }}</span>
+                                  <span style="font-family:ui-monospace,monospace; font-weight:600;">{{ dp.name }}</span>
+                                </div>
+                              </sc-for>
+                            </div>
+                          </sc-if>
+                        </sc-if>
+
+                        <button onClick="{{ toggleReportGeneral }}" style="{{ reportGeneralToggleStyle }}">
+                          <span style="{{ reportGeneralCheckStyle }}"></span>
+                          This isn't about a specific data point
+                        </button>
+                      </div>
+                      <div>
+                        <label style="display:block; font-size:12px; font-weight:600; color:#6B6B6B; margin-bottom:6px;">Title</label>
+                        <input value="{{ reportForm.title }}" onChange="{{ onReportTitleChange }}" placeholder="e.g. Quality score looks wrong for eats_order_placed" style="width:100%; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:13px;" />
+                      </div>
+                      <div>
+                        <label style="display:block; font-size:12px; font-weight:600; color:#6B6B6B; margin-bottom:6px;">Description</label>
+                        <textarea value="{{ reportForm.description }}" onChange="{{ onReportDescChange }}" rows="3" placeholder="What did you see, and what did you expect?" style="width:100%; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:13px; font-family:inherit; resize:vertical;"></textarea>
+                      </div>
+                      <div>
+                        <label style="display:block; font-size:12px; font-weight:600; color:#6B6B6B; margin-bottom:6px;">Related Jira ticket (optional)</label>
+                        <input value="{{ reportForm.jiraLink }}" onChange="{{ onReportJiraLinkChange }}" placeholder="https://uber.atlassian.net/browse/…" style="width:100%; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:13px;" />
+                      </div>
+                      <div>
+                        <label style="display:block; font-size:12px; font-weight:600; color:#6B6B6B; margin-bottom:6px;">Related PR (optional)</label>
+                        <input value="{{ reportForm.prLink }}" onChange="{{ onReportPrLinkChange }}" placeholder="https://github.com/uber/…" style="width:100%; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:13px;" />
+                      </div>
+                    </div>
+                    <div style="display:flex; flex-direction:column; gap:12px; min-width:0;">
+                      <div>
+                        <label style="display:block; font-size:12px; font-weight:600; color:#6B6B6B; margin-bottom:6px;">Category</label>
+                        <select value="{{ reportForm.category }}" onChange="{{ onReportCategoryChange }}" style="width:100%; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:13px;">
+                          <option value="Data Quality">Data Quality</option>
+                          <option value="Scalability">Scalability</option>
+                          <option value="Definition / Documentation">Definition / Documentation</option>
+                          <option value="Missing Data">Missing Data</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label style="display:block; font-size:12px; font-weight:600; color:#6B6B6B; margin-bottom:6px;">Severity</label>
+                        <select value="{{ reportForm.severity }}" onChange="{{ onReportSeverityChange }}" style="width:100%; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:13px;">
+                          <option value="Low">Low</option>
+                          <option value="Medium">Medium</option>
+                          <option value="High">High</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <label style="display:block; font-size:12px; font-weight:600; color:#6B6B6B; margin-bottom:6px;">Description</label>
-                  <textarea value="{{ reportForm.description }}" onChange="{{ onReportDescChange }}" rows="3" placeholder="What did you see, and what did you expect?" style="width:100%; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:13px; font-family:inherit; resize:vertical;"></textarea>
+                <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:22px;">
+                  <button onClick="{{ goHome }}" style="background:none; border:1px solid #E5E5E5; border-radius:999px; padding:10px 18px; font-size:13px; cursor:pointer;">Cancel</button>
+                  <button onClick="{{ reportNext }}" style="background:#0A0A0A; color:#FFF; border:none; border-radius:999px; padding:10px 20px; font-size:13px; font-weight:700; cursor:pointer;">Next</button>
                 </div>
-              </div>
-              <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:22px;">
-                <button onClick="{{ goHome }}" style="background:none; border:1px solid #E5E5E5; border-radius:999px; padding:10px 18px; font-size:13px; cursor:pointer;">Cancel</button>
-                <button onClick="{{ submitReport }}" style="background:#0A0A0A; color:#FFF; border:none; border-radius:999px; padding:10px 20px; font-size:13px; font-weight:700; cursor:pointer;">Submit</button>
-              </div>
+              </sc-if>
+
+              <sc-if value="{{ isReportStep2 }}" hint-placeholder-val="{{ false }}">
+                <div style="flex:1; min-height:0; overflow-y:auto; padding-right:4px;">
+                  <div style="font-size:15px; font-weight:700; margin-bottom:14px;">Review & submit</div>
+                  <div style="background:#F6F6F6; border-radius:10px; padding:20px; font-size:13px; line-height:2; max-width:720px;">
+                    <div><strong>About:</strong> {{ reportSummaryLabel }}</div>
+                    <div><strong>Category:</strong> {{ reportForm.category }}</div>
+                    <div><strong>Severity:</strong> {{ reportForm.severity }}</div>
+                    <div><strong>Title:</strong> {{ reportForm.titleSummary }}</div>
+                    <div><strong>Description:</strong> {{ reportForm.descriptionSummary }}</div>
+                    <div><strong>Jira ticket:</strong> {{ reportForm.jiraLinkSummary }}</div>
+                    <div><strong>PR:</strong> {{ reportForm.prLinkSummary }}</div>
+                  </div>
+                </div>
+                <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:22px;">
+                  <button onClick="{{ reportBack }}" style="background:none; border:1px solid #E5E5E5; border-radius:999px; padding:10px 18px; font-size:13px; cursor:pointer;">Back</button>
+                  <button onClick="{{ submitReport }}" style="background:#0A0A0A; color:#FFF; border:none; border-radius:999px; padding:10px 20px; font-size:13px; font-weight:700; cursor:pointer;">Submit</button>
+                </div>
+              </sc-if>
             </div>
           </sc-if>
         </div>
@@ -1147,6 +1312,8 @@ const CATALOG = [
     payload:[{field:'session_id',value:'sess_legacy_001'}] }
 ];
 
+const OWNING_TEAMS = [...new Set(PIPELINES.map(p => p.owningTeam))].sort().concat('Other');
+
 const ROADMAP_BASE = {
   defining:[ {id:'r1',name:'b2b_bulk_shipment_event',lob:'B2B',team:'Freight Engineering',dateLabel:'Est. Aug 22'} ],
   next:[ {id:'r2',name:'eats_group_order_conversion',lob:'Eats',team:'Eats Growth',dateLabel:'Est. Sep 5'}, {id:'r3',name:'driver_supply_v2 migration',lob:'Ridesharing',team:'Platform Engineering',dateLabel:'Est. Sep 12'} ],
@@ -1204,8 +1371,10 @@ class Component extends DCLogic {
     catalogPage:1, pipelineLogPage:1,
     chatMessages:[{role:'assistant', text:"Hi, I'm the Pulse assistant. Ask me about any event or metric, request a quick data pull, or describe a feature to get a draft measurement plan."}],
     chatInput:'',
-    contributeStep:1, contributeForm:{name:'',lob:'Ridesharing',description:''},
-    reportForm:{title:'',description:'',severity:'Medium'},
+    contributeStep:1,
+    contributeForm:{name:'',lob:'Ridesharing',owningTeam:OWNING_TEAMS[0],description:'',repoLink:'',jiraLink:'',expectedVolume:'',payloadRows:[{field:'',value:''}]},
+    reportStep:1, reportDataPointQuery:'',
+    reportForm:{title:'',description:'',severity:'Medium',category:'Data Quality',generalIssue:false,linkedDataPointId:null,linkedDataPointType:null,jiraLink:'',prLink:''},
     extraSubmissions:[],
     toast:null
   };
@@ -1227,8 +1396,14 @@ class Component extends DCLogic {
   goCatalog = () => this.setState({appScreen:'catalog', selectedEntryId:null, selectedPipelineId:null, catalogTab:'data', catalogPage:1, pipelineLogPage:1});
   goAssistant = () => this.setState({appScreen:'assistant', selectedEntryId:null, selectedPipelineId:null});
   goRoadmap = () => this.setState({appScreen:'roadmap', selectedEntryId:null, selectedPipelineId:null});
-  goReport = () => this.setState({appScreen:'report', selectedEntryId:null, selectedPipelineId:null, reportForm:{title:'',description:'',severity:'Medium'}});
-  goContribute = () => this.setState({appScreen:'contribute', selectedEntryId:null, selectedPipelineId:null, contributeStep:1, contributeForm:{name:'',lob:'Ridesharing',description:''}});
+  goReport = () => this.setState({
+    appScreen:'report', selectedEntryId:null, selectedPipelineId:null, reportStep:1, reportDataPointQuery:'',
+    reportForm:{title:'',description:'',severity:'Medium',category:'Data Quality',generalIssue:false,linkedDataPointId:null,linkedDataPointType:null,jiraLink:'',prLink:''}
+  });
+  goContribute = () => this.setState({
+    appScreen:'contribute', selectedEntryId:null, selectedPipelineId:null, contributeStep:1,
+    contributeForm:{name:'',lob:'Ridesharing',owningTeam:OWNING_TEAMS[0],description:'',repoLink:'',jiraLink:'',expectedVolume:'',payloadRows:[{field:'',value:''}]}
+  });
 
   setCatalogTab = (tab) => this.setState({catalogTab:tab, catalogPage:1, pipelineLogPage:1});
   onCatalogQueryChange = (e) => this.setState({catalogQuery:e.target.value, catalogPage:1});
@@ -1292,16 +1467,37 @@ class Component extends DCLogic {
 
   downloadChatCsv = (csvData) => { downloadCSV('query_result.csv', csvData.header, csvData.rows); this.showToast('CSV downloaded.'); };
 
-  estimateReviewDate = () => { const d = new Date(); d.setDate(d.getDate()+10); return d.toLocaleDateString('en-US',{month:'short',day:'numeric'}); };
+  estimateReviewDate = () => { const d = new Date(); d.setDate(d.getDate()+14); return d.toLocaleDateString('en-US',{month:'short',day:'numeric'}); };
+  nextPlanningMeeting = () => {
+    // Schema Review Council meets every Tuesday.
+    const d = new Date();
+    const daysUntilTuesday = (2 - d.getDay() + 7) % 7 || 7;
+    d.setDate(d.getDate() + daysUntilTuesday);
+    return d.toLocaleDateString('en-US',{weekday:'long', month:'short', day:'numeric'});
+  };
 
-  contributeNext = () => this.setState({contributeStep:2});
-  contributeBack = () => this.setState({contributeStep:1});
+  contributeNext = () => this.setState(s => ({contributeStep: Math.min(2, s.contributeStep+1)}));
+  contributeBack = () => this.setState(s => ({contributeStep: Math.max(1, s.contributeStep-1)}));
+  setContributeStep = (step) => this.setState(s => (step <= s.contributeStep ? {contributeStep:step} : null));
   onContributeNameChange = (e) => this.setState(s=>({contributeForm:{...s.contributeForm, name:e.target.value}}));
   onContributeLobChange = (e) => this.setState(s=>({contributeForm:{...s.contributeForm, lob:e.target.value}}));
+  onContributeOwningTeamChange = (e) => this.setState(s=>({contributeForm:{...s.contributeForm, owningTeam:e.target.value}}));
   onContributeDescChange = (e) => this.setState(s=>({contributeForm:{...s.contributeForm, description:e.target.value}}));
+  onContributeRepoLinkChange = (e) => this.setState(s=>({contributeForm:{...s.contributeForm, repoLink:e.target.value}}));
+  onContributeJiraLinkChange = (e) => this.setState(s=>({contributeForm:{...s.contributeForm, jiraLink:e.target.value}}));
+  onContributeVolumeChange = (e) => this.setState(s=>({contributeForm:{...s.contributeForm, expectedVolume:e.target.value}}));
+  addPayloadRow = () => this.setState(s=>({contributeForm:{...s.contributeForm, payloadRows:[...s.contributeForm.payloadRows, {field:'',value:''}]}}));
+  removePayloadRow = (index) => this.setState(s=>({contributeForm:{...s.contributeForm, payloadRows: s.contributeForm.payloadRows.length>1 ? s.contributeForm.payloadRows.filter((r,i)=>i!==index) : s.contributeForm.payloadRows}}));
+  onPayloadFieldChange = (index, e) => this.setState(s=>({contributeForm:{...s.contributeForm, payloadRows: s.contributeForm.payloadRows.map((r,i)=> i===index ? {...r, field:e.target.value} : r)}}));
+  onPayloadValueChange = (index, e) => this.setState(s=>({contributeForm:{...s.contributeForm, payloadRows: s.contributeForm.payloadRows.map((r,i)=> i===index ? {...r, value:e.target.value} : r)}}));
   submitContribute = () => {
     const f = this.state.contributeForm;
-    const newItem = { id:'sub-'+Date.now(), name:f.name || 'Untitled schema', lob:f.lob, team:'Your submission', dateLabel:'Est. '+this.estimateReviewDate(), isNew:true };
+    const newItem = {
+      id:'sub-'+Date.now(), name:f.name || 'Untitled schema', lob:f.lob, team:f.owningTeam,
+      dateLabel:'Est. '+this.estimateReviewDate(), isNew:true,
+      description:f.description, repoLink:f.repoLink, jiraLink:f.jiraLink, expectedVolume:f.expectedVolume,
+      payloadRows: f.payloadRows.filter(r => r.field || r.value)
+    };
     this.setState(s => ({ extraSubmissions:[newItem, ...s.extraSubmissions], appScreen:'roadmap', selectedEntryId:null }));
     this.showToast('Submitted for review — track status on the Roadmap.');
   };
@@ -1312,11 +1508,27 @@ class Component extends DCLogic {
     this.showToast('Measurement plan submitted for review.');
   };
 
+  reportNext = () => this.setState(s => ({reportStep: Math.min(2, s.reportStep+1)}));
+  reportBack = () => this.setState(s => ({reportStep: Math.max(1, s.reportStep-1)}));
+  setReportStep = (step) => this.setState(s => (step <= s.reportStep ? {reportStep:step} : null));
   onReportTitleChange = (e) => this.setState(s=>({reportForm:{...s.reportForm, title:e.target.value}}));
   onReportSeverityChange = (e) => this.setState(s=>({reportForm:{...s.reportForm, severity:e.target.value}}));
+  onReportCategoryChange = (e) => this.setState(s=>({reportForm:{...s.reportForm, category:e.target.value}}));
   onReportDescChange = (e) => this.setState(s=>({reportForm:{...s.reportForm, description:e.target.value}}));
+  onReportJiraLinkChange = (e) => this.setState(s=>({reportForm:{...s.reportForm, jiraLink:e.target.value}}));
+  onReportPrLinkChange = (e) => this.setState(s=>({reportForm:{...s.reportForm, prLink:e.target.value}}));
+  onReportDataPointQueryChange = (e) => this.setState({reportDataPointQuery:e.target.value});
+  selectReportDataPoint = (type, id) => this.setState(s=>({reportForm:{...s.reportForm, linkedDataPointType:type, linkedDataPointId:id, generalIssue:false}, reportDataPointQuery:''}));
+  clearReportDataPoint = () => this.setState(s=>({reportForm:{...s.reportForm, linkedDataPointType:null, linkedDataPointId:null}}));
+  toggleReportGeneral = () => this.setState(s=>({
+    reportForm:{...s.reportForm, generalIssue:!s.reportForm.generalIssue, linkedDataPointType: !s.reportForm.generalIssue ? null : s.reportForm.linkedDataPointType, linkedDataPointId: !s.reportForm.generalIssue ? null : s.reportForm.linkedDataPointId},
+    reportDataPointQuery:''
+  }));
   submitReport = () => {
-    this.setState({appScreen:'home', reportForm:{title:'',description:'',severity:'Medium'}});
+    this.setState({
+      appScreen:'home', reportStep:1, reportDataPointQuery:'',
+      reportForm:{title:'',description:'',severity:'Medium',category:'Data Quality',generalIssue:false,linkedDataPointId:null,linkedDataPointType:null,jiraLink:'',prLink:''}
+    });
     this.showToast('Issue reported — tracked as PULSE-'+Math.floor(1000+Math.random()*9000)+'.');
   };
 
@@ -1451,9 +1663,9 @@ class Component extends DCLogic {
     const suggestionTexts = ['What is completed_trip?', 'How many rides did we complete last week in the Netherlands?', "Where do I find surge pricing event data?", "We're launching scheduled rides up to 30 days in advance — what should we track?"];
     const suggestions = suggestionTexts.map(t => ({ label:t, onClick: () => this.sendSuggestion(t) }));
 
-    const allDefining = [...s.extraSubmissions, ...ROADMAP_BASE.defining];
     const roadmapColumns = [
-      { title:'Currently Being Defined', count:allDefining.length, items:allDefining },
+      { title:'Newly Submitted', count:s.extraSubmissions.length, items:s.extraSubmissions },
+      { title:'Currently Being Defined', count:ROADMAP_BASE.defining.length, items:ROADMAP_BASE.defining },
       { title:'Coming Next', count:ROADMAP_BASE.next.length, items:ROADMAP_BASE.next },
       { title:'Recently Shipped', count:ROADMAP_BASE.shipped.length, items:ROADMAP_BASE.shipped }
     ].map(col => ({
@@ -1464,6 +1676,75 @@ class Component extends DCLogic {
         cardStyle: 'background:#FFFFFF;border:1px solid '+(it.isNew ? '#06C167' : '#E5E5E5')+';border-radius:10px;padding:14px;'
       }))
     }));
+
+    const buildStepChips = (labels, currentStep, onSelect) => labels.map((label, i) => {
+      const idx = i+1;
+      const stepState = idx < currentStep ? 'done' : idx === currentStep ? 'active' : 'future';
+      const circleBg = stepState==='active' ? '#0A0A0A' : stepState==='done' ? '#06C167' : '#EFEFEF';
+      const circleColor = stepState==='future' ? '#9B9B9B' : '#FFFFFF';
+      return {
+        index: idx, label,
+        circleStyle: 'width:24px;height:24px;border-radius:50%;background:'+circleBg+';color:'+circleColor+';display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;',
+        labelStyle: 'font-size:12.5px;font-weight:'+(stepState==='active'?'700':'500')+';color:'+(stepState==='future'?'#9B9B9B':'#0A0A0A')+';margin-left:8px;margin-right:16px;white-space:nowrap;',
+        cursorStyle: stepState==='done' ? 'pointer' : 'default',
+        onClick: stepState==='done' ? (() => onSelect(idx)) : (() => {}),
+        showConnector: idx < labels.length,
+        connectorStyle: 'flex:1;height:1px;background:'+(idx<currentStep?'#06C167':'#E5E5E5')+';margin-right:16px;'
+      };
+    });
+
+    const contributeStepChips = buildStepChips(['Details','Review & submit'], s.contributeStep, this.setContributeStep);
+    const reportStepChips = buildStepChips(['Details','Review & submit'], s.reportStep, this.setReportStep);
+
+    const owningTeamOptions = OWNING_TEAMS;
+    const orDash = (v) => (v && String(v).trim() !== '') ? v : '—';
+
+    const contributeFormView = {
+      ...s.contributeForm,
+      descriptionSummary: orDash(s.contributeForm.description),
+      repoLinkSummary: orDash(s.contributeForm.repoLink),
+      jiraLinkSummary: orDash(s.contributeForm.jiraLink),
+      expectedVolumeSummary: orDash(s.contributeForm.expectedVolume)
+    };
+
+    const payloadRowsView = s.contributeForm.payloadRows.map((r, i) => ({
+      ...r, index:i,
+      onFieldChange: (e) => this.onPayloadFieldChange(i, e),
+      onValueChange: (e) => this.onPayloadValueChange(i, e),
+      onRemove: () => this.removePayloadRow(i),
+      canRemove: s.contributeForm.payloadRows.length > 1
+    }));
+    const payloadRowsSummary = s.contributeForm.payloadRows.filter(r => r.field || r.value);
+    const hasPayloadRows = payloadRowsSummary.length > 0;
+    const noPayloadRows = !hasPayloadRows;
+    const nextPlanningMeetingLabel = this.nextPlanningMeeting();
+
+    const findDataPointName = (type, id) => type==='pipeline' ? (PIPELINES.find(p=>p.id===id)||{}).name : (CATALOG.find(e=>e.id===id)||{}).name;
+    const reportSelectedDataPointName = s.reportForm.linkedDataPointId ? findDataPointName(s.reportForm.linkedDataPointType, s.reportForm.linkedDataPointId) : null;
+    const reportSelectedDataPointTypeLabel = s.reportForm.linkedDataPointType === 'pipeline' ? 'Pipeline' : 'Catalog entry';
+    const showReportSelectedChip = !s.reportForm.generalIssue && !!s.reportForm.linkedDataPointId;
+    const showReportGeneralChip = s.reportForm.generalIssue;
+    const showReportPicker = !s.reportForm.generalIssue && !s.reportForm.linkedDataPointId;
+
+    const rdq = s.reportDataPointQuery.trim().toLowerCase();
+    const reportDataPointResults = (showReportPicker && rdq !== '') ? [
+      ...CATALOG.filter(e => e.name.toLowerCase().includes(rdq)).slice(0,5).map(e => ({ id:e.id, typeLabel:'Catalog entry', name:e.name, onSelect: () => this.selectReportDataPoint('catalog', e.id) })),
+      ...PIPELINES.filter(p => p.name.toLowerCase().includes(rdq)).slice(0,5).map(p => ({ id:p.id, typeLabel:'Pipeline', name:p.name, onSelect: () => this.selectReportDataPoint('pipeline', p.id) }))
+    ].slice(0,8) : [];
+    const reportHasResults = reportDataPointResults.length > 0;
+
+    const reportSummaryLabel = s.reportForm.generalIssue ? 'General / platform issue' : (reportSelectedDataPointName ? (reportSelectedDataPointTypeLabel+' · '+reportSelectedDataPointName) : 'Not specified');
+
+    const reportFormView = {
+      ...s.reportForm,
+      titleSummary: orDash(s.reportForm.title),
+      descriptionSummary: orDash(s.reportForm.description),
+      jiraLinkSummary: orDash(s.reportForm.jiraLink),
+      prLinkSummary: orDash(s.reportForm.prLink)
+    };
+
+    const reportGeneralToggleStyle = 'display:flex; align-items:center; gap:8px; background:none; border:none; padding:0; margin-top:10px; font-size:12.5px; color:#6B6B6B; cursor:pointer;';
+    const reportGeneralCheckStyle = 'width:16px;height:16px;border-radius:4px;flex-shrink:0;border:1px solid '+(s.reportForm.generalIssue?'#0A0A0A':'#D0D0D0')+';background:'+(s.reportForm.generalIssue?'#0A0A0A':'#FFFFFF')+';';
 
     return {
       isLogin: s.screen === 'login',
@@ -1498,13 +1779,25 @@ class Component extends DCLogic {
       chatMessages, chatInput: s.chatInput, onChatInputChange: this.onChatInputChange, onChatKeyDown: this.onChatKeyDown, sendChat: this.sendChat,
       showSuggestions: s.chatMessages.length <= 1, suggestions,
       roadmapColumns,
-      contributeStep: s.contributeStep,
+      contributeStep: s.contributeStep, contributeStepChips,
       isContributeStep1: s.contributeStep === 1, isContributeStep2: s.contributeStep === 2,
-      contributeForm: s.contributeForm, estimatedReviewDate: this.estimateReviewDate(),
-      onContributeNameChange: this.onContributeNameChange, onContributeLobChange: this.onContributeLobChange, onContributeDescChange: this.onContributeDescChange,
+      contributeForm: contributeFormView, estimatedReviewDate: this.estimateReviewDate(), nextPlanningMeetingLabel,
+      owningTeamOptions, payloadRowsView, payloadRowsSummary, hasPayloadRows, noPayloadRows,
+      onContributeNameChange: this.onContributeNameChange, onContributeLobChange: this.onContributeLobChange, onContributeOwningTeamChange: this.onContributeOwningTeamChange,
+      onContributeDescChange: this.onContributeDescChange, onContributeRepoLinkChange: this.onContributeRepoLinkChange,
+      onContributeJiraLinkChange: this.onContributeJiraLinkChange, onContributeVolumeChange: this.onContributeVolumeChange,
+      addPayloadRow: this.addPayloadRow,
       contributeNext: this.contributeNext, contributeBack: this.contributeBack, submitContribute: this.submitContribute,
-      reportForm: s.reportForm,
-      onReportTitleChange: this.onReportTitleChange, onReportSeverityChange: this.onReportSeverityChange, onReportDescChange: this.onReportDescChange,
+      reportStep: s.reportStep, reportStepChips,
+      isReportStep1: s.reportStep === 1, isReportStep2: s.reportStep === 2,
+      reportForm: reportFormView, reportDataPointQuery: s.reportDataPointQuery,
+      reportDataPointResults, reportHasResults, showReportPicker, showReportSelectedChip, showReportGeneralChip,
+      reportSelectedDataPointName, reportSelectedDataPointTypeLabel, reportSummaryLabel,
+      reportGeneralToggleStyle, reportGeneralCheckStyle,
+      onReportTitleChange: this.onReportTitleChange, onReportSeverityChange: this.onReportSeverityChange, onReportCategoryChange: this.onReportCategoryChange,
+      onReportDescChange: this.onReportDescChange, onReportJiraLinkChange: this.onReportJiraLinkChange, onReportPrLinkChange: this.onReportPrLinkChange,
+      onReportDataPointQueryChange: this.onReportDataPointQueryChange, clearReportDataPoint: this.clearReportDataPoint, toggleReportGeneral: this.toggleReportGeneral,
+      reportNext: this.reportNext, reportBack: this.reportBack,
       submitReport: this.submitReport,
       toast: s.toast,
       stopClick: this.stopClick
