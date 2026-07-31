@@ -5,27 +5,24 @@ Status values: open, in progress, done
 
 HIGH PRIORITY
 -------------
-[done] Adopt Uber Base visual identity — left sidebar nav, true black/white/green tokens, pill buttons, pastel icon-badge KPI cards
-[open] Wire real SSO — login screen currently only accepts the hardcoded demo credentials (pulse-demo@uber.com / Pulse2026); PRD calls for Uber's internal identity provider
-[open] Visual QA pass on the new sidebar shell — check spacing/wrapping on Data Catalog table and AI Assistant panel now that content width lost ~232px to the sidebar; verify all four screens + both modals against the new tokens
-[open] Define AI Assistant data access scope for v1 (catalog metadata only vs. live query) — PRD open question, owner Alex + Data Engineering
-[open] Catalog seeding — replace the 9 hardcoded CATALOG entries with real pipeline metadata; PRD flags existing metadata quality as a high-likelihood/high-impact risk
+[open] Headline metrics are internally inconsistent, overall all mock metrics needs to be reevaluated and close to realistic numbers. Before making this change write down for all pages all the data points why they are valuable to show is it realistic meanilgul mock data to include — GTV $482.6M / 187.3M weekly trips implies a ~$2.58 average fare (real-world average is closer to $20+), and Weekly Trips (187.3M) + Eats Deliveries (64.1M) = 251.4M exceeds the PRD appendix's own reference of "175-200M weekly" trips+deliveries combined. Rework the mock dataset so headline numbers are mutually consistent and Uber-scale-credible — undermines the product's core "can I trust this data" premise if the demo data can't pass its own trust test
+[open] KPI trend icon direction doesn't match the metric's sign — B2B Transactions shows an "up" arrow while down -1.3% WoW; icon should reflect m.positive per card, not a single fixed glyph
+[open] Report Issue and Contribute open as modal popovers; now that they're sidebar destinations (not transient actions), they should be full pages with their own screen state and back-navigation like Home/Catalog/Roadmap, not overlays
+[open] Icons throughout (sidebar nav, top bar "Ask Pulse", KPI badges) read too small — bump sizing ~2-5px across the board; specifically verify the AI Assistant/Ask Pulse sparkle icon reads clearly as a sparkle rather than a stray plus-and-period once enlarged
+[open] Visual QA pass on the sidebar shell — check spacing/wrapping on Data Catalog table and AI Assistant panel now that content width lost ~232px to the sidebar; verify all screens against the new tokens
 
 
 MEDIUM PRIORITY
 ----------------
-[open] Slack/email notifications when a pipeline's quality score drops below threshold (Tom's persona story)
-[open] Contribution review workflow backend — submissions currently just appear in local state under "Under Review," no real review/approval path or reviewer notification
-[open] Report Issue — currently only shows a toast with a fake ticket number; needs to create a tracked, visible issue per PRD
-[open] Roadmap "View full roadmap in Jira" — currently a dead link; wire to the real Jira board
-[open] Confirm which pipelines are included in v1 monitoring table — all 24+ app teams or a prioritized subset (PRD open question, owner Alex)
-[open] Confirm schema contribution review SLA commitment (PRD open question, owner Alex)
+[open] Roadmap "View full roadmap in Jira" — add more details to the cards here. Any notes documents brainstorm documents, or better yet when someone clicks on a card like JIRA show mock data make sure the mock data relates to this topic. 
 [open] Expand icon set for KPI badges / nav so new LOBs or metric types don't reuse the same trend-arrow glyph indefinitely
+[open] AI Assistant panel has a lot of dead space in its empty state — fixed-height chat area shows only a greeting bubble and suggestion chips with a large blank gap above the input; reconsider vertical centering or content-driven height. We can rather see a page like Claude's project page where we can see a how can I help you today input bar, file upload voice input and udnerneat a list of previous chats the user had 
 
 
 LOW PRIORITY
 ------------
 [open] Dark mode for the app shell (login already dark; rest of app is light-only)
 [open] Micro-interactions / motion pass (hover states, panel transitions) once core visual direction is validated
-[open] Mobile support — explicitly out of scope for v1 per PRD, desktop-only work context
-[open] Data serving API — deferred to v2 per PRD, dependent on v1 catalog trust layer being established
+[open] Mobile support — make sure the site is mobile compatible
+[open] Don't we need a documentation page either from the source of all events, or the api or over a dashbaord how can people get data. 
+[open] Data serving API — we don't have to build an api but we can fake having an api, maybe add a new navigation link, get started data points repository links maybe a uber fitting api landing page get api key feature perhaps
