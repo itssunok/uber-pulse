@@ -374,18 +374,18 @@
 
               <div style="display:grid; grid-template-columns:repeat(4,1fr); grid-template-rows:1fr; gap:14px; width:100%; flex:1; min-height:0;">
                 <sc-for list="{{ roadmapColumns }}" as="col" hint-placeholder-count="4">
-                  <div style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; padding:16px; box-sizing:border-box; height:100%; display:flex; flex-direction:column; overflow:hidden;">
+                  <div style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; padding:16px; box-sizing:border-box; height:100%; min-width:0; display:flex; flex-direction:column; overflow:hidden;">
                     <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:#6B6B6B; margin-bottom:10px; flex-shrink:0;">{{ col.title }} · {{ col.count }}</div>
-                    <div style="display:flex; flex-direction:column; gap:10px; overflow-y:auto; flex:1; min-height:0; padding-right:4px;">
+                    <div style="display:flex; flex-direction:column; gap:10px; overflow-y:auto; overflow-x:hidden; flex:1; min-height:0; padding-right:4px;">
                       <sc-for list="{{ col.items }}" as="it" hint-placeholder-count="2">
                         <div style="{{ it.cardStyle }}" onClick="{{ it.onSelect }}">
-                          <div style="display:flex; align-items:center; justify-content:between; gap:8px;">
-                            <span style="font-weight:600; font-size:13px; font-family:ui-monospace,monospace;">{{ it.name }}</span>
-                            <sc-if value="{{ it.isNew }}" hint-placeholder-val="{{ false }}"><span style="background:#DFF3E6; color:#067A3E; font-size:10px; font-weight:700; padding:2px 6px; border-radius:5px; margin-left:6px;">NEW</span></sc-if>
+                          <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:8px;">
+                            <span style="font-weight:600; font-size:13px; font-family:ui-monospace,monospace; word-break:break-word; overflow-wrap:anywhere; min-width:0;">{{ it.name }}</span>
+                            <sc-if value="{{ it.isNew }}" hint-placeholder-val="{{ false }}"><span style="background:#DFF3E6; color:#067A3E; font-size:10px; font-weight:700; padding:2px 6px; border-radius:5px; margin-left:6px; flex-shrink:0;">NEW</span></sc-if>
                           </div>
-                          <div style="display:flex; align-items:center; gap:6px; margin-top:8px;">
-                            <span style="{{ it.lobChipStyle }}">{{ it.lob }}</span>
-                            <span style="font-size:12px; color:#6B6B6B;">{{ it.team }}</span>
+                          <div style="display:flex; align-items:center; gap:6px; margin-top:8px; min-width:0;">
+                            <span style="{{ it.lobChipStyle }} flex-shrink:0;">{{ it.lob }}</span>
+                            <span style="font-size:12px; color:#6B6B6B; min-width:0; overflow-wrap:anywhere;">{{ it.team }}</span>
                           </div>
                           <div style="font-size:11px; color:#9B9B9B; margin-top:8px;">{{ it.dateLabel }}</div>
                         </div>
@@ -1838,7 +1838,7 @@ class Component extends DCLogic {
         ...it,
         stage: col.title,
         isNew: !!it.isNew,
-        cardStyle: 'background:'+(it.isNew ? '#FFFFFF' : '#FAFAFA')+';border:1px solid '+(it.isNew ? '#06C167' : '#EFEFEF')+';border-radius:10px;padding:14px;cursor:pointer;',
+        cardStyle: 'background:'+(it.isNew ? '#FFFFFF' : '#FAFAFA')+';border:1px solid '+(it.isNew ? '#06C167' : '#EFEFEF')+';border-radius:10px;padding:14px;cursor:pointer;min-width:0;box-sizing:border-box;',
         lobChipStyle: lobChipStyle(it.lob),
         onSelect: () => this.selectRoadmapItem(it.id)
       }))
