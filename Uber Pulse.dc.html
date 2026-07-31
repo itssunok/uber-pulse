@@ -83,7 +83,7 @@
       <div style="display:flex; align-items:center; justify-content:space-between; height:60px; padding:0 28px; background:#FFFFFF; border-bottom:1px solid #E5E5E5; position:sticky; top:0; z-index:20; box-sizing:border-box;">
         <span onClick="{{ goHome }}" style="font-size:16px; font-weight:800; letter-spacing:-0.3px; color:#0A0A0A; cursor:pointer;">Pulse for Uber</span>
         <div style="display:flex; align-items:center; gap:10px;">
-          <button onClick="{{ goAssistant }}" style="display:flex; align-items:center; gap:8px; background:#0A0A0A; border:none; color:#FFFFFF; border-radius:999px; padding:8px 16px; font-size:13px; font-weight:700; cursor:pointer;">
+          <button onClick="{{ openAskPulseSheet }}" style="display:flex; align-items:center; gap:8px; background:#0A0A0A; border:none; color:#FFFFFF; border-radius:999px; padding:8px 16px; font-size:13px; font-weight:700; cursor:pointer;">
             <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" style="flex-shrink:0;"><path d="M12 3l1.7 4.9L18.6 9.4l-4.9 1.7L12 16l-1.7-4.9L5.4 9.4l4.9-1.7L12 3z"/><path d="M18.5 14.5l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7.7-2z"/></svg>
             Ask Pulse
           </button>
@@ -912,6 +912,68 @@
       </div>
     </sc-if>
 
+    <sc-if value="{{ askPulseSheetOpen }}" hint-placeholder-val="{{ false }}">
+      <div style="position:fixed; inset:0; background:rgba(10,10,10,0.35); z-index:30;" onClick="{{ closeAskPulseSheet }}"></div>
+      <div style="position:fixed; top:0; right:0; bottom:0; width:440px; background:#FFFFFF; box-shadow:-8px 0 30px rgba(0,0,0,0.12); z-index:31; display:flex; flex-direction:column;">
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:18px 20px; border-bottom:1px solid #E5E5E5; flex-shrink:0;">
+          <div style="display:flex; align-items:center; gap:8px; min-width:0;">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" style="flex-shrink:0;"><path d="M12 3l1.7 4.9L18.6 9.4l-4.9 1.7L12 16l-1.7-4.9L5.4 9.4l4.9-1.7L12 3z"/><path d="M18.5 14.5l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7.7-2z"/></svg>
+            <div style="font-size:14px; font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ askPulseSheetTitle }}</div>
+          </div>
+          <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
+            <sc-if value="{{ isChatActive }}" hint-placeholder-val="{{ false }}">
+              <button onClick="{{ startNewChat }}" title="New chat" style="background:none; border:1px solid #E5E5E5; border-radius:999px; padding:6px 12px; font-size:12px; font-weight:600; cursor:pointer;">+ New</button>
+            </sc-if>
+            <button onClick="{{ expandAskPulseSheet }}" title="Open full assistant" style="background:none; border:1px solid #E5E5E5; border-radius:999px; width:28px; height:28px; display:flex; align-items:center; justify-content:center; cursor:pointer; color:#6B6B6B;"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H3v6M15 21h6v-6M21 3l-7 7M3 21l7-7"/></svg></button>
+            <button onClick="{{ closeAskPulseSheet }}" style="background:none; border:none; font-size:16px; cursor:pointer; color:#9B9B9B;">✕</button>
+          </div>
+        </div>
+
+        <div style="flex:1; min-height:0; overflow-y:auto; padding:18px 20px; display:flex; flex-direction:column; gap:14px;">
+          <sc-if value="{{ isChatLanding }}" hint-placeholder-val="{{ true }}">
+            <div style="font-size:12.5px; color:#9B9B9B; padding:8px 2px;">Ask about data availability, definitions, or describe a feature you're planning.</div>
+          </sc-if>
+          <sc-for list="{{ chatMessages }}" as="msg" hint-placeholder-count="0">
+            <div style="{{ msg.rowStyle }}">
+              <div style="{{ msg.bubbleStyle }}">
+                <div>{{ msg.text }}</div>
+                <sc-if value="{{ msg.catalogRefLabel }}" hint-placeholder-val="{{ false }}">
+                  <div onClick="{{ msg.onViewCatalog }}" style="margin-top:10px; display:inline-flex; align-items:center; gap:6px; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:7px; padding:6px 10px; font-size:12px; cursor:pointer;"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><rect x="3.5" y="4" width="17" height="16" rx="2.5"/><path d="M3.5 9.5h17M9.5 9.5V20"/></svg><span style="font-family:ui-monospace,monospace;">{{ msg.catalogRefLabel }}</span> → open in catalog</div>
+                </sc-if>
+                <sc-if value="{{ msg.csv }}" hint-placeholder-val="{{ false }}">
+                  <button onClick="{{ msg.onDownloadCsv }}" style="margin-top:10px; background:#0A0A0A; color:#FFF; border:none; border-radius:999px; padding:8px 14px; font-size:12px; font-weight:600; cursor:pointer;">Download CSV</button>
+                </sc-if>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="padding:14px 20px; border-top:1px solid #EFEFEF; flex-shrink:0;">
+          <sc-if value="{{ hasAttachedFile }}" hint-placeholder-val="{{ false }}">
+            <div style="display:inline-flex; align-items:center; gap:6px; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:7px; padding:5px 10px; font-size:12px; margin-bottom:10px;">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M21 10.5v6a5.5 5.5 0 0 1-11 0v-9a3.5 3.5 0 1 1 7 0v8a1.5 1.5 0 0 1-3 0v-7"/></svg> {{ attachedFileName }}
+              <span onClick="{{ clearAttachedFile }}" style="cursor:pointer; color:#9B9B9B; font-weight:700;">✕</span>
+            </div>
+          </sc-if>
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div style="display:flex; align-items:center; gap:6px; position:relative; flex-shrink:0;">
+              <button onClick="{{ toggleAttachMenu }}" style="background:none; border:1px solid #E5E5E5; border-radius:999px; width:32px; height:32px; display:flex; align-items:center; justify-content:center; cursor:pointer; color:#6B6B6B;"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10.5v6a5.5 5.5 0 0 1-11 0v-9a3.5 3.5 0 1 1 7 0v8a1.5 1.5 0 0 1-3 0v-7"/></svg></button>
+              <button onClick="{{ onVoiceClick }}" style="background:none; border:1px solid #E5E5E5; border-radius:999px; width:32px; height:32px; display:flex; align-items:center; justify-content:center; cursor:pointer; color:#6B6B6B;"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3"/></svg></button>
+              <sc-if value="{{ attachMenuOpen }}" hint-placeholder-val="{{ false }}">
+                <div style="position:absolute; bottom:38px; left:0; background:#FFFFFF; border:1px solid #E5E5E5; border-radius:10px; box-shadow:0 10px 30px rgba(0,0,0,0.12); width:220px; z-index:10; overflow:hidden;">
+                  <div onClick="{{ onUploadFile }}" style="display:flex; align-items:center; gap:10px; padding:10px 14px; font-size:13px; cursor:pointer; border-bottom:1px solid #F0F0F0; color:#6B6B6B;"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5"/></svg><span style="color:#0A0A0A;">Upload a file</span></div>
+                  <div onClick="{{ onUploadScreenshot }}" style="display:flex; align-items:center; gap:10px; padding:10px 14px; font-size:13px; cursor:pointer; border-bottom:1px solid #F0F0F0; color:#6B6B6B;"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 16l-5-5-4 4-2-2-5 5"/></svg><span style="color:#0A0A0A;">Attach a screenshot</span></div>
+                  <div onClick="{{ onReferenceCatalogEntry }}" style="display:flex; align-items:center; gap:10px; padding:10px 14px; font-size:13px; cursor:pointer; color:#6B6B6B;"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><rect x="3.5" y="4" width="17" height="16" rx="2.5"/><path d="M3.5 9.5h17M9.5 9.5V20"/></svg><span style="color:#0A0A0A;">Reference a catalog entry</span></div>
+                </div>
+              </sc-if>
+            </div>
+            <input value="{{ chatInput }}" onChange="{{ onChatInputChange }}" onKeyDown="{{ onChatKeyDown }}" placeholder="Ask a question about data…" style="flex:1; min-width:0; box-sizing:border-box; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:8px; padding:11px 12px; font-size:13px; outline:none;" />
+            <button onClick="{{ sendChat }}" style="background:#0A0A0A; color:#FFF; border:none; border-radius:999px; padding:11px 20px; font-size:13px; font-weight:700; cursor:pointer; flex-shrink:0;">Send</button>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
     <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
       <div style="position:fixed; bottom:24px; right:24px; background:#0A0A0A; color:#FFF; font-size:13px; padding:12px 18px; border-radius:9px; box-shadow:0 10px 30px rgba(0,0,0,0.25); z-index:50; max-width:320px;">{{ toast }}</div>
     </sc-if>
@@ -1523,6 +1585,23 @@ const SEED_CHAT_SESSIONS = [
   ]}
 ];
 
+const CHAT_SESSIONS_STORAGE_KEY = 'pulse.chatSessions';
+
+function loadChatSessions() {
+  try {
+    const raw = localStorage.getItem(CHAT_SESSIONS_STORAGE_KEY);
+    if (!raw) return SEED_CHAT_SESSIONS;
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) && parsed.length ? parsed : SEED_CHAT_SESSIONS;
+  } catch (err) {
+    return SEED_CHAT_SESSIONS;
+  }
+}
+
+function saveChatSessions(sessions) {
+  try { localStorage.setItem(CHAT_SESSIONS_STORAGE_KEY, JSON.stringify(sessions)); } catch (err) {}
+}
+
 const ROADMAP_BASE = {
   defining:[
     { id:'r1', name:'b2b_bulk_shipment_event', type:'data', lob:'B2B', team:'Freight Engineering', owner:'Priya Nair', dateLabel:'Est. Aug 22', priority:'P1', ticketId:'DATA-482',
@@ -1654,8 +1733,9 @@ class Component extends DCLogic {
     catalogQuery:'', catalogLob:'All', catalogStatus:'All', selectedEntryId:null, catalogTab:'data',
     pipelineQuery:'', pipelineLob:'All', pipelineHealth:'All', selectedPipelineId:null, selectedRoadmapItemId:null,
     catalogPage:1, pipelineLogPage:1,
-    chatSessions: SEED_CHAT_SESSIONS,
+    chatSessions: loadChatSessions(),
     activeChatId: null,
+    askPulseSheetOpen: false,
     chatInput:'', attachedFileName:null, attachMenuOpen:false, chatSearchQuery:'',
     contributeStep:1,
     contributeForm:{name:'',lob:'Ridesharing',owningTeam:OWNING_TEAMS[0],description:'',repoLink:'',jiraLink:'',expectedVolume:'',payloadRows:[{field:'',value:''}]},
@@ -1680,7 +1760,10 @@ class Component extends DCLogic {
 
   goHome = () => this.setState({appScreen:'home', selectedEntryId:null, selectedPipelineId:null});
   goCatalog = () => this.setState({appScreen:'catalog', selectedEntryId:null, selectedPipelineId:null, catalogTab:'data', catalogPage:1, pipelineLogPage:1});
-  goAssistant = () => this.setState({appScreen:'assistant', selectedEntryId:null, selectedPipelineId:null, activeChatId:null, attachMenuOpen:false, chatSearchQuery:''});
+  goAssistant = () => this.setState({appScreen:'assistant', selectedEntryId:null, selectedPipelineId:null, activeChatId:null, attachMenuOpen:false, chatSearchQuery:'', askPulseSheetOpen:false});
+  openAskPulseSheet = () => this.setState({askPulseSheetOpen:true, attachMenuOpen:false});
+  closeAskPulseSheet = () => this.setState({askPulseSheetOpen:false, attachMenuOpen:false});
+  expandAskPulseSheet = () => this.setState({appScreen:'assistant', selectedEntryId:null, selectedPipelineId:null, askPulseSheetOpen:false, attachMenuOpen:false});
   goRoadmap = () => this.setState({appScreen:'roadmap', selectedEntryId:null, selectedPipelineId:null, selectedRoadmapItemId:null});
   goReport = () => this.setState({
     appScreen:'report', selectedEntryId:null, selectedPipelineId:null, reportStep:1, reportDataPointQuery:'',
@@ -1753,6 +1836,7 @@ class Component extends DCLogic {
         activeId = newSession.id;
       }
       sessions = sessions.map(sess => sess.id === activeId ? { ...sess, messages:[...sess.messages, {role:'user', text}, {role:'assistant', ...response}] } : sess);
+      saveChatSessions(sessions);
       return { chatSessions:sessions, activeChatId:activeId };
     });
   };
@@ -2133,6 +2217,9 @@ class Component extends DCLogic {
       handleLogin: this.handleLogin, fillDemo: this.fillDemo, logout: this.logout,
       goHome: this.goHome, goCatalog: this.goCatalog, goAssistant: this.goAssistant, goRoadmap: this.goRoadmap,
       goReport: this.goReport, goContribute: this.goContribute,
+      askPulseSheetOpen: s.askPulseSheetOpen, openAskPulseSheet: this.openAskPulseSheet,
+      closeAskPulseSheet: this.closeAskPulseSheet, expandAskPulseSheet: this.expandAskPulseSheet,
+      askPulseSheetTitle: activeChatSession ? activeChatSession.title : 'Ask Pulse',
       navBtnStyle_home: navStyle(s.appScreen==='home'), navBtnStyle_catalog: navStyle(s.appScreen==='catalog'),
       navBtnStyle_assistant: navStyle(s.appScreen==='assistant'), navBtnStyle_roadmap: navStyle(s.appScreen==='roadmap'),
       navBtnStyle_report: navStyle(s.appScreen==='report'), navBtnStyle_contribute: navStyle(s.appScreen==='contribute'),
