@@ -5,7 +5,6 @@ Status values: open, in progress, done
 
 HIGH PRIORITY
 -------------
-[open] Icons throughout (sidebar nav, top bar "Ask Pulse", KPI badges) read too small — bump sizing ~2-5px across the board; specifically verify the AI Assistant/Ask Pulse sparkle icon reads clearly as a sparkle rather than a stray plus-and-period once enlarged
 [open] Visual QA pass on the sidebar shell — check spacing/wrapping on Data Catalog table and AI Assistant panel now that content width lost ~232px to the sidebar; verify all screens against the new tokens
 
 
