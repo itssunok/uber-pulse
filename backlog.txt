@@ -5,7 +5,6 @@ Status values: open, in progress, done
 
 HIGH PRIORITY
 -------------
-[open] Headline metrics are internally inconsistent, overall all mock metrics needs to be reevaluated and close to realistic numbers. Before making this change write down for all pages all the data points why they are valuable to show is it realistic meanilgul mock data to include — GTV $482.6M / 187.3M weekly trips implies a ~$2.58 average fare (real-world average is closer to $20+), and Weekly Trips (187.3M) + Eats Deliveries (64.1M) = 251.4M exceeds the PRD appendix's own reference of "175-200M weekly" trips+deliveries combined. Rework the mock dataset so headline numbers are mutually consistent and Uber-scale-credible — undermines the product's core "can I trust this data" premise if the demo data can't pass its own trust test
 [open] KPI trend icon direction doesn't match the metric's sign — B2B Transactions shows an "up" arrow while down -1.3% WoW; icon should reflect m.positive per card, not a single fixed glyph
 [open] Report Issue and Contribute open as modal popovers; now that they're sidebar destinations (not transient actions), they should be full pages with their own screen state and back-navigation like Home/Catalog/Roadmap, not overlays
 [open] Icons throughout (sidebar nav, top bar "Ask Pulse", KPI badges) read too small — bump sizing ~2-5px across the board; specifically verify the AI Assistant/Ask Pulse sparkle icon reads clearly as a sparkle rather than a stray plus-and-period once enlarged
@@ -24,5 +23,6 @@ LOW PRIORITY
 [open] Dark mode for the app shell (login already dark; rest of app is light-only)
 [open] Micro-interactions / motion pass (hover states, panel transitions) once core visual direction is validated
 [open] Mobile support — make sure the site is mobile compatible
+[open] Use one of the installed engineering skills to review the project's architecture, code quality, details and optimise the project. 
 [open] Don't we need a documentation page either from the source of all events, or the api or over a dashbaord how can people get data. 
 [open] Data serving API — we don't have to build an api but we can fake having an api, maybe add a new navigation link, get started data points repository links maybe a uber fitting api landing page get api key feature perhaps
