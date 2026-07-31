@@ -383,7 +383,8 @@
                             <span style="font-weight:600; font-size:13px; font-family:ui-monospace,monospace; word-break:break-word; overflow-wrap:anywhere; min-width:0;">{{ it.name }}</span>
                             <sc-if value="{{ it.isNew }}" hint-placeholder-val="{{ false }}"><span style="background:#DFF3E6; color:#067A3E; font-size:10px; font-weight:700; padding:2px 6px; border-radius:5px; margin-left:6px; flex-shrink:0;">NEW</span></sc-if>
                           </div>
-                          <div style="display:flex; align-items:center; gap:6px; margin-top:8px; min-width:0;">
+                          <div style="display:flex; align-items:center; gap:6px; margin-top:8px; min-width:0; flex-wrap:wrap;">
+                            <span style="{{ it.typeChipStyle }} flex-shrink:0;">{{ it.typeLabel }}</span>
                             <span style="{{ it.lobChipStyle }} flex-shrink:0;">{{ it.lob }}</span>
                             <span style="font-size:12px; color:#6B6B6B; min-width:0; overflow-wrap:anywhere;">{{ it.team }}</span>
                           </div>
@@ -741,11 +742,15 @@
         </div>
         <div style="display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap;">
           <span style="{{ selectedRoadmapItem.stageChipStyle }}">{{ selectedRoadmapItem.stage }}</span>
+          <span style="{{ selectedRoadmapItem.typeChipStyle }}">{{ selectedRoadmapItem.typeLabel }}</span>
           <span style="{{ selectedRoadmapItem.lobChipStyle }}">{{ selectedRoadmapItem.lob }}</span>
         </div>
         <div style="font-size:13px; line-height:1.6; color:#0A0A0A; margin-bottom:18px;">{{ selectedRoadmapItem.description }}</div>
 
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:20px;">
+          <sc-if value="{{ selectedRoadmapItem.hasOwner }}" hint-placeholder-val="{{ false }}">
+            <div><div style="font-size:11px; color:#9B9B9B; font-weight:600; text-transform:uppercase; margin-bottom:3px;">Owner</div><div style="font-size:13px;">{{ selectedRoadmapItem.owner }}</div></div>
+          </sc-if>
           <div><div style="font-size:11px; color:#9B9B9B; font-weight:600; text-transform:uppercase; margin-bottom:3px;">Team</div><div style="font-size:13px;">{{ selectedRoadmapItem.team }}</div></div>
           <div><div style="font-size:11px; color:#9B9B9B; font-weight:600; text-transform:uppercase; margin-bottom:3px;">Target</div><div style="font-size:13px;">{{ selectedRoadmapItem.dateLabel }}</div></div>
           <sc-if value="{{ selectedRoadmapItem.hasTicket }}" hint-placeholder-val="{{ false }}">
@@ -1419,41 +1424,51 @@ const OWNING_TEAMS = [...new Set(PIPELINES.map(p => p.owningTeam))].sort().conca
 
 const ROADMAP_BASE = {
   defining:[
-    { id:'r1', name:'b2b_bulk_shipment_event', lob:'B2B', team:'Freight Engineering', dateLabel:'Est. Aug 22', priority:'P1', ticketId:'DATA-482',
+    { id:'r1', name:'b2b_bulk_shipment_event', type:'data', lob:'B2B', team:'Freight Engineering', owner:'Priya Nair', dateLabel:'Est. Aug 22', priority:'P1', ticketId:'DATA-482',
       description:'New event to capture bulk/multi-shipment freight bookings in a single transaction, replacing the current one-event-per-shipment model that undercounts enterprise freight volume.',
       statusHistory:[{stage:'Proposed',date:'Jul 14'},{stage:'Under review',date:'Jul 22'},{stage:'In definition',date:'Aug 1'}],
       comments:[
         {author:'Priya Nair (Freight Eng)',date:'Jul 24',text:'Confirmed the payload needs a shipment_count field — single-shipment bookings will just set it to 1.'},
         {author:'Alex (Web Data PM)',date:'Jul 29',text:'Aligned with Finance on billing implications; moving to definition this week.'}
       ],
-      docs:[{label:'PRD — Bulk Freight Booking',type:'PRD'},{label:'Data model brainstorm doc',type:'Doc'},{label:'Freight billing sync notes',type:'Notes'}] }
+      docs:[{label:'PRD — Bulk Freight Booking',type:'PRD'},{label:'Data model brainstorm doc',type:'Doc'},{label:'Freight billing sync notes',type:'Notes'}] },
+    { id:'r6', name:'Payments & Refunds pipeline SLA fix', type:'pipeline', pipelineId:'p8', lob:'Platform', team:'Payments Engineering', owner:'Diego Alvarez', dateLabel:'Est. Aug 18', priority:'P1', ticketId:'DATA-455',
+      description:'Root-causing the SLA slip on the Payments & Refunds pipeline (98.0% actual vs. 99.5% target) — refund events are batching under load during peak Eats hours.',
+      statusHistory:[{stage:'Proposed',date:'Jul 10'},{stage:'Root cause identified',date:'Jul 26'},{stage:'Fix in progress',date:'Aug 2'}],
+      comments:[{author:'Diego Alvarez (Payments Eng)',date:'Jul 26',text:'Batching kicks in above 40k refund events/min — raising the batch threshold should clear it.'}],
+      docs:[{label:'Payments pipeline incident notes',type:'Notes'},{label:'SLA remediation runbook',type:'Notes'}] }
   ],
   next:[
-    { id:'r2', name:'eats_group_order_conversion', lob:'Eats', team:'Eats Growth', dateLabel:'Est. Sep 5', priority:'P2', ticketId:'DATA-511',
+    { id:'r2', name:'eats_group_order_conversion', type:'data', lob:'Eats', team:'Eats Growth', owner:'Jordan Lee', dateLabel:'Est. Sep 5', priority:'P2', ticketId:'DATA-511',
       description:"Tracks conversion rate from a group order invite to a completed group checkout — currently invisible since group orders emit the same event as solo orders.",
       statusHistory:[{stage:'Proposed',date:'Jul 18'},{stage:'Prioritized for Sep',date:'Jul 30'}],
-      comments:[{author:'Jordan (Eats Growth)',date:'Jul 25',text:'Group orders are up 40% QoQ — need this before the September push.'}],
+      comments:[{author:'Jordan Lee (Eats Growth)',date:'Jul 25',text:'Group orders are up 40% QoQ — need this before the September push.'}],
       docs:[{label:'Group Ordering brainstorm doc',type:'Doc'},{label:'Growth metrics PRD',type:'PRD'}] },
-    { id:'r3', name:'driver_supply_v2 migration', lob:'Ridesharing', team:'Platform Engineering', dateLabel:'Est. Sep 12', priority:'P0', ticketId:'DATA-397',
-      description:'Migrates driver_supply_events off the legacy v1 schema onto v2, fixing the duplicate-event issue currently degrading the Driver Supply Events pipeline.',
+    { id:'r3', name:'driver_supply_v2 migration', type:'pipeline', pipelineId:'p6', lob:'Ridesharing', team:'Platform Engineering', owner:'Sam Osei', dateLabel:'Est. Sep 12', priority:'P0', ticketId:'DATA-397',
+      description:'Migrates the Driver Supply Events pipeline off the legacy v1 schema onto v2, fixing the duplicate-event issue currently degrading it (94.2% SLA actual vs. 99.9% target).',
       statusHistory:[{stage:'Proposed',date:'Jun 30'},{stage:'Scoped',date:'Jul 15'},{stage:'Scheduled for Sep',date:'Jul 28'}],
       comments:[
-        {author:'Sam (Rides Platform)',date:'Jul 20',text:'v2 schema removes the race condition causing duplicate availability pings.'},
+        {author:'Sam Osei (Rides Platform)',date:'Jul 20',text:'v2 schema removes the race condition causing duplicate availability pings.'},
         {author:'Alex (Web Data PM)',date:'Jul 28',text:'This is the fix for the Driver Supply Events degradation — prioritizing above eats_group_order_conversion.'}
       ],
       docs:[{label:'driver_supply_v2 design doc',type:'Doc'},{label:'Migration runbook',type:'Notes'}] }
   ],
   shipped:[
-    { id:'r4', name:'campaign_started_v1', lob:'Eats', team:'Marketing Analytics', dateLabel:'Shipped Jul 20', priority:null, ticketId:'DATA-402',
+    { id:'r4', name:'campaign_started_v1', type:'data', lob:'Eats', team:'Marketing Analytics', owner:'Dana Cole', dateLabel:'Shipped Jul 20', priority:null, ticketId:'DATA-402',
       description:'Replaced the deprecated attribution_touch definition with a single, consistent campaign_started event across paid social, display, and in-app placements.',
       statusHistory:[{stage:'Proposed',date:'Jun 1'},{stage:'In definition',date:'Jun 20'},{stage:'Shipped',date:'Jul 20'}],
-      comments:[{author:'Marketing Analytics',date:'Jul 20',text:'Live in production — campaign_started is now the source of truth, attribution_touch is deprecated.'}],
+      comments:[{author:'Dana Cole (Marketing Analytics)',date:'Jul 20',text:'Live in production — campaign_started is now the source of truth, attribution_touch is deprecated.'}],
       docs:[{label:'campaign_started_v1 PRD',type:'PRD'},{label:'Attribution deprecation notes',type:'Notes'}] },
-    { id:'r5', name:'session_started_v4', lob:'Platform', team:'Web Infrastructure', dateLabel:'Shipped Jul 10', priority:null, ticketId:'DATA-388',
+    { id:'r5', name:'session_started_v4', type:'data', lob:'Platform', team:'Web Infrastructure', owner:'Leo Martins', dateLabel:'Shipped Jul 10', priority:null, ticketId:'DATA-388',
       description:'Consolidated session start tracking across all web surfaces into one v4 event, replacing three legacy per-surface session events.',
       statusHistory:[{stage:'Proposed',date:'May 20'},{stage:'In definition',date:'Jun 12'},{stage:'Shipped',date:'Jul 10'}],
-      comments:[{author:'Web Infrastructure',date:'Jul 10',text:'session_started v4 is live across web; legacy per-surface events are now deprecated.'}],
-      docs:[{label:'session_started_v4 design doc',type:'Doc'}] }
+      comments:[{author:'Leo Martins (Web Infrastructure)',date:'Jul 10',text:'session_started v4 is live across web; legacy per-surface events are now deprecated.'}],
+      docs:[{label:'session_started_v4 design doc',type:'Doc'}] },
+    { id:'r7', name:'Eats Delivery Tracking latency optimization', type:'pipeline', pipelineId:'p9', lob:'Eats', team:'Eats Logistics Engineering', owner:'Nina Kowalski', dateLabel:'Shipped Jul 15', priority:null, ticketId:'DATA-431',
+      description:'Cut end-to-end latency on the Eats Delivery Tracking pipeline from ~9 min to under 5 min freshness by moving courier handoff events to a dedicated low-latency topic.',
+      statusHistory:[{stage:'Proposed',date:'Jun 15'},{stage:'In progress',date:'Jul 1'},{stage:'Shipped',date:'Jul 15'}],
+      comments:[{author:'Nina Kowalski (Eats Logistics Eng)',date:'Jul 15',text:'Freshness is holding steady around 5 min in production — closing this out.'}],
+      docs:[{label:'Delivery tracking latency design doc',type:'Doc'}] }
   ]
 };
 
@@ -1502,6 +1517,12 @@ function roadmapStageChipStyle(stage){
     'Recently Shipped':'background:#DFF3E6;color:#067A3E;'
   };
   return 'font-size:11px;font-weight:700;padding:3px 9px;border-radius:6px;display:inline-block;' + (map[stage] || map['Coming Next']);
+}
+function roadmapTypeLabel(type){
+  return type === 'pipeline' ? 'Pipeline' : 'Data';
+}
+function roadmapTypeChipStyle(type){
+  return 'font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;padding:2px 7px;border-radius:5px;display:inline-block;border:1px solid #E5E5E5;background:#FFFFFF;color:#6B6B6B;';
 }
 
 function downloadCSV(filename, headerRow, rows){
@@ -1645,7 +1666,7 @@ class Component extends DCLogic {
   submitContribute = () => {
     const f = this.state.contributeForm;
     const newItem = {
-      id:'sub-'+Date.now(), name:f.name || 'Untitled schema', lob:f.lob, team:f.owningTeam,
+      id:'sub-'+Date.now(), name:f.name || 'Untitled schema', type:'data', lob:f.lob, team:f.owningTeam, owner:'Data Consumer',
       dateLabel:'Est. '+this.estimateReviewDate(), isNew:true, isSubmission:true,
       submittedDateLabel:new Date().toLocaleDateString('en-US',{month:'short',day:'numeric'}),
       description:f.description, repoLink:f.repoLink, jiraLink:f.jiraLink, expectedVolume:f.expectedVolume,
@@ -1657,7 +1678,7 @@ class Component extends DCLogic {
 
   submitPlanForReview = (plan) => {
     const newItem = {
-      id:'sub-'+Date.now(), name:plan.events[0], lob:'Ridesharing', team:'Your submission (AI-assisted)',
+      id:'sub-'+Date.now(), name:plan.events[0], type:'data', lob:'Ridesharing', team:'Your submission (AI-assisted)', owner:'Data Consumer',
       dateLabel:'Est. '+this.estimateReviewDate(), isNew:true, isSubmission:true,
       submittedDateLabel:new Date().toLocaleDateString('en-US',{month:'short',day:'numeric'}),
       description:plan.similarNote || ('Draft measurement plan for '+plan.featureName+'.'),
@@ -1840,6 +1861,8 @@ class Component extends DCLogic {
         isNew: !!it.isNew,
         cardStyle: 'background:'+(it.isNew ? '#FFFFFF' : '#FAFAFA')+';border:1px solid '+(it.isNew ? '#06C167' : '#EFEFEF')+';border-radius:10px;padding:14px;cursor:pointer;min-width:0;box-sizing:border-box;',
         lobChipStyle: lobChipStyle(it.lob),
+        typeLabel: roadmapTypeLabel(it.type),
+        typeChipStyle: roadmapTypeChipStyle(it.type),
         onSelect: () => this.selectRoadmapItem(it.id)
       }))
     }));
@@ -1850,6 +1873,9 @@ class Component extends DCLogic {
       ...rawSelectedRoadmapItem,
       lobChipStyle: lobChipStyle(rawSelectedRoadmapItem.lob),
       stageChipStyle: roadmapStageChipStyle(rawSelectedRoadmapItem.stage),
+      typeLabel: roadmapTypeLabel(rawSelectedRoadmapItem.type),
+      typeChipStyle: roadmapTypeChipStyle(rawSelectedRoadmapItem.type),
+      hasOwner: !!rawSelectedRoadmapItem.owner,
       isSubmission: !!rawSelectedRoadmapItem.isSubmission,
       hasStatusHistory: !!(rawSelectedRoadmapItem.statusHistory && rawSelectedRoadmapItem.statusHistory.length),
       hasComments: !!(rawSelectedRoadmapItem.comments && rawSelectedRoadmapItem.comments.length),
