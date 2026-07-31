@@ -322,20 +322,20 @@
                     <div style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:16px; padding:14px 16px; box-shadow:0 4px 16px rgba(0,0,0,0.04);">
                       <sc-if value="{{ hasAttachedFile }}" hint-placeholder-val="{{ false }}">
                         <div style="display:inline-flex; align-items:center; gap:6px; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:7px; padding:5px 10px; font-size:12px; margin-bottom:10px;">
-                          📎 {{ attachedFileName }}
+                          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M21 10.5v6a5.5 5.5 0 0 1-11 0v-9a3.5 3.5 0 1 1 7 0v8a1.5 1.5 0 0 1-3 0v-7"/></svg> {{ attachedFileName }}
                           <span onClick="{{ clearAttachedFile }}" style="cursor:pointer; color:#9B9B9B; font-weight:700;">✕</span>
                         </div>
                       </sc-if>
                       <input value="{{ chatInput }}" onChange="{{ onChatInputChange }}" onKeyDown="{{ onChatKeyDown }}" placeholder="Ask about data availability, definitions, or describe a feature…" style="width:100%; box-sizing:border-box; border:none; outline:none; font-size:15px; font-family:inherit; padding:6px 2px;" />
                       <div style="display:flex; align-items:center; justify-content:space-between; margin-top:10px;">
                         <div style="display:flex; align-items:center; gap:6px; position:relative;">
-                          <button onClick="{{ toggleAttachMenu }}" style="background:none; border:1px solid #E5E5E5; border-radius:999px; width:32px; height:32px; cursor:pointer; color:#6B6B6B; font-size:15px;">📎</button>
-                          <button onClick="{{ onVoiceClick }}" style="background:none; border:1px solid #E5E5E5; border-radius:999px; width:32px; height:32px; cursor:pointer; color:#6B6B6B; font-size:15px;">🎤</button>
+                          <button onClick="{{ toggleAttachMenu }}" style="background:none; border:1px solid #E5E5E5; border-radius:999px; width:32px; height:32px; display:flex; align-items:center; justify-content:center; cursor:pointer; color:#6B6B6B;"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10.5v6a5.5 5.5 0 0 1-11 0v-9a3.5 3.5 0 1 1 7 0v8a1.5 1.5 0 0 1-3 0v-7"/></svg></button>
+                          <button onClick="{{ onVoiceClick }}" style="background:none; border:1px solid #E5E5E5; border-radius:999px; width:32px; height:32px; display:flex; align-items:center; justify-content:center; cursor:pointer; color:#6B6B6B;"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3"/></svg></button>
                           <sc-if value="{{ attachMenuOpen }}" hint-placeholder-val="{{ false }}">
                             <div style="position:absolute; top:38px; left:0; background:#FFFFFF; border:1px solid #E5E5E5; border-radius:10px; box-shadow:0 10px 30px rgba(0,0,0,0.12); width:220px; z-index:10; overflow:hidden;">
-                              <div onClick="{{ onUploadFile }}" style="padding:10px 14px; font-size:13px; cursor:pointer; border-bottom:1px solid #F0F0F0;">📄 Upload a file</div>
-                              <div onClick="{{ onUploadScreenshot }}" style="padding:10px 14px; font-size:13px; cursor:pointer; border-bottom:1px solid #F0F0F0;">🖼️ Attach a screenshot</div>
-                              <div onClick="{{ onReferenceCatalogEntry }}" style="padding:10px 14px; font-size:13px; cursor:pointer;">📇 Reference a catalog entry</div>
+                              <div onClick="{{ onUploadFile }}" style="display:flex; align-items:center; gap:10px; padding:10px 14px; font-size:13px; cursor:pointer; border-bottom:1px solid #F0F0F0; color:#6B6B6B;"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5"/></svg><span style="color:#0A0A0A;">Upload a file</span></div>
+                              <div onClick="{{ onUploadScreenshot }}" style="display:flex; align-items:center; gap:10px; padding:10px 14px; font-size:13px; cursor:pointer; border-bottom:1px solid #F0F0F0; color:#6B6B6B;"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 16l-5-5-4 4-2-2-5 5"/></svg><span style="color:#0A0A0A;">Attach a screenshot</span></div>
+                              <div onClick="{{ onReferenceCatalogEntry }}" style="display:flex; align-items:center; gap:10px; padding:10px 14px; font-size:13px; cursor:pointer; color:#6B6B6B;"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><rect x="3.5" y="4" width="17" height="16" rx="2.5"/><path d="M3.5 9.5h17M9.5 9.5V20"/></svg><span style="color:#0A0A0A;">Reference a catalog entry</span></div>
                             </div>
                           </sc-if>
                         </div>
@@ -351,18 +351,26 @@
 
                     <sc-if value="{{ hasChatSessions }}" hint-placeholder-val="{{ true }}">
                       <div style="margin-top:40px;">
-                        <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:#6B6B6B; margin-bottom:12px;">Recent chats</div>
-                        <div style="display:flex; flex-direction:column; gap:8px;">
-                          <sc-for list="{{ chatSessionsView }}" as="cs" hint-placeholder-count="3">
-                            <div onClick="{{ cs.onOpen }}" style="display:flex; align-items:center; justify-content:space-between; gap:12px; border:1px solid #E5E5E5; border-radius:10px; padding:12px 14px; cursor:pointer; min-width:0;">
-                              <div style="min-width:0;">
-                                <div style="font-weight:600; font-size:13px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ cs.title }}</div>
-                                <div style="font-size:11px; color:#9B9B9B; margin-top:2px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ cs.previewLabel }}</div>
-                              </div>
-                              <div style="font-size:11px; color:#9B9B9B; flex-shrink:0;">{{ cs.createdLabel }}</div>
-                            </div>
-                          </sc-for>
+                        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
+                          <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:#6B6B6B;">Recent chats</div>
+                          <input value="{{ chatSearchQuery }}" onChange="{{ onChatSearchChange }}" placeholder="Search chats…" style="width:180px; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:6px 10px; font-size:12px; outline:none;" />
                         </div>
+                        <sc-if value="{{ hasChatSearchResults }}" hint-placeholder-val="{{ true }}">
+                          <div style="display:flex; flex-direction:column; gap:8px;">
+                            <sc-for list="{{ chatSessionsView }}" as="cs" hint-placeholder-count="3">
+                              <div onClick="{{ cs.onOpen }}" style="display:flex; align-items:center; justify-content:space-between; gap:12px; border:1px solid #E5E5E5; border-radius:10px; padding:12px 14px; cursor:pointer; min-width:0;">
+                                <div style="min-width:0;">
+                                  <div style="font-weight:600; font-size:13px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ cs.title }}</div>
+                                  <div style="font-size:11px; color:#9B9B9B; margin-top:2px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ cs.previewLabel }}</div>
+                                </div>
+                                <div style="font-size:11px; color:#9B9B9B; flex-shrink:0;">{{ cs.createdLabel }}</div>
+                              </div>
+                            </sc-for>
+                          </div>
+                        </sc-if>
+                        <sc-if value="{{ noChatSearchResults }}" hint-placeholder-val="{{ false }}">
+                          <div style="font-size:12.5px; color:#9B9B9B; padding:12px 2px;">No chats match "{{ chatSearchQuery }}".</div>
+                        </sc-if>
                       </div>
                     </sc-if>
                   </div>
@@ -382,7 +390,7 @@
                         <div style="{{ msg.bubbleStyle }}">
                           <div>{{ msg.text }}</div>
                           <sc-if value="{{ msg.catalogRefLabel }}" hint-placeholder-val="{{ false }}">
-                            <div onClick="{{ msg.onViewCatalog }}" style="margin-top:10px; display:inline-flex; align-items:center; gap:6px; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:7px; padding:6px 10px; font-size:12px; font-family:ui-monospace,monospace; cursor:pointer;">📇 {{ msg.catalogRefLabel }} → open in catalog</div>
+                            <div onClick="{{ msg.onViewCatalog }}" style="margin-top:10px; display:inline-flex; align-items:center; gap:6px; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:7px; padding:6px 10px; font-size:12px; cursor:pointer;"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><rect x="3.5" y="4" width="17" height="16" rx="2.5"/><path d="M3.5 9.5h17M9.5 9.5V20"/></svg><span style="font-family:ui-monospace,monospace;">{{ msg.catalogRefLabel }}</span> → open in catalog</div>
                           </sc-if>
                           <sc-if value="{{ msg.csv }}" hint-placeholder-val="{{ false }}">
                             <button onClick="{{ msg.onDownloadCsv }}" style="margin-top:10px; background:#0A0A0A; color:#FFF; border:none; border-radius:999px; padding:8px 14px; font-size:12px; font-weight:600; cursor:pointer;">Download CSV</button>
@@ -410,19 +418,19 @@
                   <div style="padding:14px 20px; border-top:1px solid #EFEFEF; flex-shrink:0;">
                     <sc-if value="{{ hasAttachedFile }}" hint-placeholder-val="{{ false }}">
                       <div style="display:inline-flex; align-items:center; gap:6px; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:7px; padding:5px 10px; font-size:12px; margin-bottom:10px;">
-                        📎 {{ attachedFileName }}
+                        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M21 10.5v6a5.5 5.5 0 0 1-11 0v-9a3.5 3.5 0 1 1 7 0v8a1.5 1.5 0 0 1-3 0v-7"/></svg> {{ attachedFileName }}
                         <span onClick="{{ clearAttachedFile }}" style="cursor:pointer; color:#9B9B9B; font-weight:700;">✕</span>
                       </div>
                     </sc-if>
                     <div style="display:flex; align-items:center; gap:10px;">
                       <div style="display:flex; align-items:center; gap:6px; position:relative; flex-shrink:0;">
-                        <button onClick="{{ toggleAttachMenu }}" style="background:none; border:1px solid #E5E5E5; border-radius:999px; width:32px; height:32px; cursor:pointer; color:#6B6B6B; font-size:15px;">📎</button>
-                        <button onClick="{{ onVoiceClick }}" style="background:none; border:1px solid #E5E5E5; border-radius:999px; width:32px; height:32px; cursor:pointer; color:#6B6B6B; font-size:15px;">🎤</button>
+                        <button onClick="{{ toggleAttachMenu }}" style="background:none; border:1px solid #E5E5E5; border-radius:999px; width:32px; height:32px; display:flex; align-items:center; justify-content:center; cursor:pointer; color:#6B6B6B;"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10.5v6a5.5 5.5 0 0 1-11 0v-9a3.5 3.5 0 1 1 7 0v8a1.5 1.5 0 0 1-3 0v-7"/></svg></button>
+                        <button onClick="{{ onVoiceClick }}" style="background:none; border:1px solid #E5E5E5; border-radius:999px; width:32px; height:32px; display:flex; align-items:center; justify-content:center; cursor:pointer; color:#6B6B6B;"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3"/></svg></button>
                         <sc-if value="{{ attachMenuOpen }}" hint-placeholder-val="{{ false }}">
                           <div style="position:absolute; bottom:38px; left:0; background:#FFFFFF; border:1px solid #E5E5E5; border-radius:10px; box-shadow:0 10px 30px rgba(0,0,0,0.12); width:220px; z-index:10; overflow:hidden;">
-                            <div onClick="{{ onUploadFile }}" style="padding:10px 14px; font-size:13px; cursor:pointer; border-bottom:1px solid #F0F0F0;">📄 Upload a file</div>
-                            <div onClick="{{ onUploadScreenshot }}" style="padding:10px 14px; font-size:13px; cursor:pointer; border-bottom:1px solid #F0F0F0;">🖼️ Attach a screenshot</div>
-                            <div onClick="{{ onReferenceCatalogEntry }}" style="padding:10px 14px; font-size:13px; cursor:pointer;">📇 Reference a catalog entry</div>
+                            <div onClick="{{ onUploadFile }}" style="display:flex; align-items:center; gap:10px; padding:10px 14px; font-size:13px; cursor:pointer; border-bottom:1px solid #F0F0F0; color:#6B6B6B;"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5"/></svg><span style="color:#0A0A0A;">Upload a file</span></div>
+                            <div onClick="{{ onUploadScreenshot }}" style="display:flex; align-items:center; gap:10px; padding:10px 14px; font-size:13px; cursor:pointer; border-bottom:1px solid #F0F0F0; color:#6B6B6B;"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 16l-5-5-4 4-2-2-5 5"/></svg><span style="color:#0A0A0A;">Attach a screenshot</span></div>
+                            <div onClick="{{ onReferenceCatalogEntry }}" style="display:flex; align-items:center; gap:10px; padding:10px 14px; font-size:13px; cursor:pointer; color:#6B6B6B;"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><rect x="3.5" y="4" width="17" height="16" rx="2.5"/><path d="M3.5 9.5h17M9.5 9.5V20"/></svg><span style="color:#0A0A0A;">Reference a catalog entry</span></div>
                           </div>
                         </sc-if>
                       </div>
@@ -1648,7 +1656,7 @@ class Component extends DCLogic {
     catalogPage:1, pipelineLogPage:1,
     chatSessions: SEED_CHAT_SESSIONS,
     activeChatId: null,
-    chatInput:'', attachedFileName:null, attachMenuOpen:false,
+    chatInput:'', attachedFileName:null, attachMenuOpen:false, chatSearchQuery:'',
     contributeStep:1,
     contributeForm:{name:'',lob:'Ridesharing',owningTeam:OWNING_TEAMS[0],description:'',repoLink:'',jiraLink:'',expectedVolume:'',payloadRows:[{field:'',value:''}]},
     reportStep:1, reportDataPointQuery:'',
@@ -1672,7 +1680,7 @@ class Component extends DCLogic {
 
   goHome = () => this.setState({appScreen:'home', selectedEntryId:null, selectedPipelineId:null});
   goCatalog = () => this.setState({appScreen:'catalog', selectedEntryId:null, selectedPipelineId:null, catalogTab:'data', catalogPage:1, pipelineLogPage:1});
-  goAssistant = () => this.setState({appScreen:'assistant', selectedEntryId:null, selectedPipelineId:null, activeChatId:null, attachMenuOpen:false});
+  goAssistant = () => this.setState({appScreen:'assistant', selectedEntryId:null, selectedPipelineId:null, activeChatId:null, attachMenuOpen:false, chatSearchQuery:''});
   goRoadmap = () => this.setState({appScreen:'roadmap', selectedEntryId:null, selectedPipelineId:null, selectedRoadmapItemId:null});
   goReport = () => this.setState({
     appScreen:'report', selectedEntryId:null, selectedPipelineId:null, reportStep:1, reportDataPointQuery:'',
@@ -1714,6 +1722,7 @@ class Component extends DCLogic {
 
   onChatInputChange = (e) => this.setState({chatInput:e.target.value});
   onChatKeyDown = (e) => { if(e.key === 'Enter'){ this.sendChat(); } };
+  onChatSearchChange = (e) => this.setState({chatSearchQuery:e.target.value});
 
   getAssistantResponse = (text) => {
     const lower = text.toLowerCase();
@@ -1761,8 +1770,8 @@ class Component extends DCLogic {
 
   sendSuggestion = (text) => { this.pushChatExchange(text); };
 
-  startNewChat = () => this.setState({activeChatId:null, chatInput:'', attachedFileName:null, attachMenuOpen:false});
-  openChatSession = (id) => this.setState({activeChatId:id, chatInput:'', attachedFileName:null, attachMenuOpen:false});
+  startNewChat = () => this.setState({activeChatId:null, chatInput:'', attachedFileName:null, attachMenuOpen:false, chatSearchQuery:''});
+  openChatSession = (id) => this.setState({activeChatId:id, chatInput:'', attachedFileName:null, attachMenuOpen:false, chatSearchQuery:''});
 
   toggleAttachMenu = () => this.setState(s => ({attachMenuOpen: !s.attachMenuOpen}));
   closeAttachMenu = () => this.setState({attachMenuOpen:false});
@@ -1981,15 +1990,20 @@ class Component extends DCLogic {
       onSubmitPlan: m.plan ? (() => this.submitPlanForReview(m.plan)) : null
     }));
 
-    const chatSessionsView = s.chatSessions.map(sess => {
+    const allChatSessionsView = s.chatSessions.map(sess => {
       const lastMsg = sess.messages[sess.messages.length - 1];
       return {
         ...sess,
         previewLabel: lastMsg ? (lastMsg.role === 'user' ? lastMsg.text : lastMsg.text).slice(0,72) : '',
+        searchBlob: (sess.title+' '+sess.messages.map(m=>m.text).join(' ')).toLowerCase(),
         onOpen: () => this.openChatSession(sess.id)
       };
     });
+    const chatSearchQuery = s.chatSearchQuery.trim().toLowerCase();
+    const chatSessionsView = allChatSessionsView.filter(sess => chatSearchQuery === '' || sess.searchBlob.includes(chatSearchQuery));
     const hasChatSessions = s.chatSessions.length > 0;
+    const hasChatSearchResults = chatSessionsView.length > 0;
+    const noChatSearchResults = chatSearchQuery !== '' && !hasChatSearchResults;
     const hasAttachedFile = !!s.attachedFileName;
 
     const suggestionTexts = ['What is completed_trip?', 'How many rides did we complete last week in the Netherlands?', "Where do I find surge pricing event data?", "We're launching scheduled rides up to 30 days in advance — what should we track?"];
@@ -2137,7 +2151,9 @@ class Component extends DCLogic {
       filteredCatalog, selectedEntry, closeEntry: this.closeEntry,
       isChatLanding, isChatActive, activeChatSession,
       chatMessages, chatInput: s.chatInput, onChatInputChange: this.onChatInputChange, onChatKeyDown: this.onChatKeyDown, sendChat: this.sendChat,
-      chatSessionsView, hasChatSessions, startNewChat: this.startNewChat, openChatSession: this.openChatSession,
+      chatSessionsView, hasChatSessions, hasChatSearchResults, noChatSearchResults,
+      chatSearchQuery: s.chatSearchQuery, onChatSearchChange: this.onChatSearchChange,
+      startNewChat: this.startNewChat, openChatSession: this.openChatSession,
       hasAttachedFile, attachedFileName: s.attachedFileName, clearAttachedFile: this.clearAttachedFile,
       attachMenuOpen: s.attachMenuOpen, toggleAttachMenu: this.toggleAttachMenu,
       onUploadFile: this.onUploadFile, onUploadScreenshot: this.onUploadScreenshot, onReferenceCatalogEntry: this.onReferenceCatalogEntry,
