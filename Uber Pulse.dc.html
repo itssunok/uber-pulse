@@ -114,6 +114,10 @@
               <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M5 3v18"/><path d="M5 4.5h11.5l-2.2 3.75L16.5 12H5"/></svg>
               <span>Roadmap</span>
             </button>
+            <button onClick="{{ goDeveloper }}" style="{{ navBtnStyle_developer }}">
+              <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><circle cx="7.5" cy="15.5" r="4.5"/><path d="M11 12l9-9M16 7l3 3M13 10l2 2"/></svg>
+              <span>Developer Tools</span>
+            </button>
             <button onClick="{{ goReport }}" style="{{ navBtnStyle_report }}">
               <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M12 4 3 20h18L12 4z"/><path d="M12 10.5v3.5"/><circle cx="12" cy="17" r="0.6" fill="currentColor" stroke="none"/></svg>
               <span>Report Issue</span>
@@ -720,6 +724,108 @@
                 </div>
               </sc-if>
             </div>
+          </sc-if>
+
+          <sc-if value="{{ isDeveloper }}" hint-placeholder-val="{{ false }}">
+            <h1 style="font-size:24px; font-weight:800; margin:0 0 4px 0; letter-spacing:-0.5px;">Developer Tools</h1>
+            <p style="font-size:14px; color:#6B6B6B; margin:0 0 20px 0;">Get programmatic access to Pulse data — API keys, docs, and endpoints.</p>
+
+            <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:28px;">
+              <div style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; padding:20px;">
+                <div style="width:34px; height:34px; border-radius:10px; background:#DFF3E6; display:flex; align-items:center; justify-content:center; margin-bottom:12px;">
+                  <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="#067A3E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                </div>
+                <div style="font-size:14px; font-weight:700; margin-bottom:8px;">Getting started</div>
+                <div style="font-size:12.5px; color:#6B6B6B; line-height:1.8; margin-bottom:12px;">
+                  1. Create an API key<br/>
+                  2. Authenticate your requests<br/>
+                  3. Explore available endpoints
+                </div>
+                <a href="#" style="font-size:12.5px; font-weight:600; color:#0A0A0A;">View full docs ↗</a>
+              </div>
+              <div style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; padding:20px;">
+                <div style="width:34px; height:34px; border-radius:10px; background:#DCEBF7; display:flex; align-items:center; justify-content:center; margin-bottom:12px;">
+                  <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="#1D6FA5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 9l-4 3 4 3M16 9l4 3-4 3M13 5l-2 14"/></svg>
+                </div>
+                <div style="font-size:14px; font-weight:700; margin-bottom:8px;">Code examples</div>
+                <div style="background:#0A0A0A; color:#DFF3E6; font-family:ui-monospace,monospace; font-size:11px; border-radius:8px; padding:10px 12px; margin-bottom:12px; overflow-x:auto; white-space:pre;">curl https://api.pulse.uber.com/v1/events/completed_trip \\
+  -H "Authorization: Bearer pulse_live_…"</div>
+                <a href="#" style="font-size:12.5px; font-weight:600; color:#0A0A0A;">Browse examples ↗</a>
+              </div>
+              <div style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; padding:20px;">
+                <div style="width:34px; height:34px; border-radius:10px; background:#EDE3F7; display:flex; align-items:center; justify-content:center; margin-bottom:12px;">
+                  <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="#6B3FA0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4" width="17" height="16" rx="2.5"/><path d="M3.5 9.5h17M9.5 9.5V20"/></svg>
+                </div>
+                <div style="font-size:14px; font-weight:700; margin-bottom:8px;">Endpoints</div>
+                <div style="font-size:12px; color:#6B6B6B; line-height:1.9; margin-bottom:12px;">
+                  <sc-for list="{{ sampleEndpoints }}" as="ep" hint-placeholder-count="3">
+                    <div onClick="{{ ep.onSelect }}" style="font-family:ui-monospace,monospace; cursor:pointer; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">/v1/events/{{ ep.name }}</div>
+                  </sc-for>
+                </div>
+                <a onClick="{{ goCatalog }}" href="#" style="font-size:12.5px; font-weight:600; color:#0A0A0A;">Browse endpoints ↗</a>
+              </div>
+            </div>
+
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;">
+              <div style="font-size:16px; font-weight:700;">API Keys</div>
+              <button onClick="{{ openCreateKeyForm }}" style="background:#0A0A0A; color:#FFF; border:none; border-radius:999px; padding:9px 18px; font-size:13px; font-weight:700; cursor:pointer;">+ Create API key</button>
+            </div>
+
+            <sc-if value="{{ showCreateKeyForm }}" hint-placeholder-val="{{ false }}">
+              <div style="background:#F6F6F6; border:1px solid #E5E5E5; border-radius:10px; padding:16px; margin-bottom:14px; display:flex; align-items:flex-end; gap:12px;">
+                <div style="flex:1; min-width:0;">
+                  <label style="display:block; font-size:12px; font-weight:600; color:#6B6B6B; margin-bottom:6px;">Key name</label>
+                  <input value="{{ newKeyName }}" onChange="{{ onNewKeyNameChange }}" placeholder="e.g. Staging integration" style="width:100%; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:13px; background:#FFFFFF;" />
+                </div>
+                <button onClick="{{ createApiKey }}" style="background:#06C167; color:#FFF; border:none; border-radius:999px; padding:10px 18px; font-size:13px; font-weight:700; cursor:pointer; flex-shrink:0;">Create key</button>
+                <button onClick="{{ closeCreateKeyForm }}" style="background:none; border:1px solid #E5E5E5; border-radius:999px; padding:10px 18px; font-size:13px; cursor:pointer; flex-shrink:0;">Cancel</button>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ justCreatedKeyView }}" hint-placeholder-val="{{ false }}">
+              <div style="background:#DFF3E6; border:1px solid #B4E3C6; border-radius:10px; padding:16px; margin-bottom:14px;">
+                <div style="font-size:13px; font-weight:700; color:#067A3E; margin-bottom:6px;">"{{ justCreatedKeyView.name }}" created — copy this key now, you won't be able to see it again.</div>
+                <div style="display:flex; align-items:center; gap:10px;">
+                  <div style="flex:1; min-width:0; background:#FFFFFF; border:1px solid #B4E3C6; border-radius:8px; padding:9px 12px; font-family:ui-monospace,monospace; font-size:12.5px; overflow-x:auto; white-space:nowrap;">{{ justCreatedKeyView.key }}</div>
+                  <button onClick="{{ justCreatedKeyView.onCopy }}" style="background:#067A3E; color:#FFF; border:none; border-radius:999px; padding:9px 16px; font-size:12.5px; font-weight:700; cursor:pointer; flex-shrink:0;">Copy</button>
+                  <button onClick="{{ justCreatedKeyView.onDismiss }}" style="background:none; border:1px solid #B4E3C6; border-radius:999px; padding:9px 16px; font-size:12.5px; cursor:pointer; flex-shrink:0; color:#067A3E;">Done</button>
+                </div>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ hasApiKeys }}" hint-placeholder-val="{{ true }}">
+              <div style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; overflow:hidden;">
+                <div style="display:grid; grid-template-columns:1.5fr 1.5fr 1fr 1fr 120px; gap:10px; padding:12px 18px; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#9B9B9B; border-bottom:1px solid #F0F0F0;">
+                  <div>Name</div><div>Key</div><div>Created</div><div>Last used</div><div style="text-align:right;">Actions</div>
+                </div>
+                <sc-for list="{{ apiKeysView }}" as="k" hint-placeholder-count="2">
+                  <div style="display:grid; grid-template-columns:1.5fr 1.5fr 1fr 1fr 120px; gap:10px; padding:14px 18px; font-size:13px; border-bottom:1px solid #F0F0F0; align-items:center;">
+                    <div style="font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ k.name }}</div>
+                    <div style="font-family:ui-monospace,monospace; font-size:12px; color:#6B6B6B; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ k.maskedKey }}</div>
+                    <div style="color:#6B6B6B; font-size:12.5px;">{{ k.createdLabel }}</div>
+                    <div style="color:#6B6B6B; font-size:12.5px;">{{ k.lastUsedLabel }}</div>
+                    <div>
+                      <sc-if value="{{ k.isConfirmingDelete }}" hint-placeholder-val="{{ false }}">
+                        <div style="display:flex; align-items:center; gap:6px; justify-content:flex-end;">
+                          <span style="font-size:11.5px; color:#A93327; white-space:nowrap;">Delete?</span>
+                          <button onClick="{{ k.onConfirmDelete }}" style="background:#A93327; color:#FFF; border:none; border-radius:999px; padding:5px 10px; font-size:11.5px; font-weight:700; cursor:pointer; flex-shrink:0;">Yes</button>
+                          <button onClick="{{ k.onCancelDelete }}" style="background:none; border:1px solid #E5E5E5; border-radius:999px; padding:5px 10px; font-size:11.5px; cursor:pointer; flex-shrink:0;">No</button>
+                        </div>
+                      </sc-if>
+                      <sc-if value="{{ k.isNotConfirmingDelete }}" hint-placeholder-val="{{ true }}">
+                        <div style="display:flex; align-items:center; gap:6px; justify-content:flex-end;">
+                          <button onClick="{{ k.onTest }}" title="Trigger test request" style="background:none; border:1px solid #E5E5E5; border-radius:999px; width:30px; height:30px; display:flex; align-items:center; justify-content:center; cursor:pointer; color:#6B6B6B; flex-shrink:0;"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4l14 8-14 8V4z"/></svg></button>
+                          <button onClick="{{ k.onDelete }}" title="Delete key" style="background:none; border:1px solid #E5E5E5; border-radius:999px; width:30px; height:30px; display:flex; align-items:center; justify-content:center; cursor:pointer; color:#A93327; flex-shrink:0;"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3m-8 0v13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V7"/></svg></button>
+                        </div>
+                      </sc-if>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+            <sc-if value="{{ noApiKeys }}" hint-placeholder-val="{{ false }}">
+              <div style="font-size:13px; color:#9B9B9B; padding:20px 2px;">No API keys yet — create one to get started.</div>
+            </sc-if>
           </sc-if>
         </div>
       </div>
@@ -1602,6 +1708,22 @@ function saveChatSessions(sessions) {
   try { localStorage.setItem(CHAT_SESSIONS_STORAGE_KEY, JSON.stringify(sessions)); } catch (err) {}
 }
 
+const SEED_API_KEYS = [
+  { id:'key-1', name:'Production dashboard', key:'pulse_live_7f3a9d2c8e1b4f6091ad', createdLabel:'2026-06-02', lastUsedLabel:'3 hours ago' },
+  { id:'key-2', name:'Local development', key:'pulse_live_1a2b3c4d5e6f708933ce', createdLabel:'2026-07-15', lastUsedLabel:'Yesterday' }
+];
+
+function maskApiKey(key) {
+  return key.slice(0, 15) + '••••••••' + key.slice(-4);
+}
+
+function generateApiKey() {
+  const chars = 'abcdef0123456789';
+  let out = 'pulse_live_';
+  for (let i = 0; i < 20; i++) out += chars[Math.floor(Math.random() * chars.length)];
+  return out;
+}
+
 const ROADMAP_BASE = {
   defining:[
     { id:'r1', name:'b2b_bulk_shipment_event', type:'data', lob:'B2B', team:'Freight Engineering', owner:'Priya Nair', dateLabel:'Est. Aug 22', priority:'P1', ticketId:'DATA-482',
@@ -1742,6 +1864,8 @@ class Component extends DCLogic {
     reportStep:1, reportDataPointQuery:'',
     reportForm:{title:'',description:'',severity:'Medium',category:'Data Quality',generalIssue:false,linkedDataPointId:null,linkedDataPointType:null,jiraLink:'',prLink:''},
     extraSubmissions:[],
+    apiKeys: SEED_API_KEYS,
+    showCreateKeyForm:false, newKeyName:'', justCreatedKey:null, confirmDeleteKeyId:null,
     toast:null
   };
 
@@ -1773,6 +1897,48 @@ class Component extends DCLogic {
     appScreen:'contribute', selectedEntryId:null, selectedPipelineId:null, contributeStep:1,
     contributeForm:{name:'',lob:'Ridesharing',owningTeam:OWNING_TEAMS[0],description:'',repoLink:'',jiraLink:'',expectedVolume:'',payloadRows:[{field:'',value:''}]}
   });
+  goDeveloper = () => this.setState({
+    appScreen:'developer', selectedEntryId:null, selectedPipelineId:null,
+    showCreateKeyForm:false, newKeyName:'', justCreatedKey:null, confirmDeleteKeyId:null
+  });
+
+  openCreateKeyForm = () => this.setState({showCreateKeyForm:true, newKeyName:''});
+  closeCreateKeyForm = () => this.setState({showCreateKeyForm:false, newKeyName:''});
+  onNewKeyNameChange = (e) => this.setState({newKeyName:e.target.value});
+  createApiKey = () => {
+    const name = this.state.newKeyName.trim() || 'Untitled key';
+    const key = generateApiKey();
+    const newKey = { id:'key-'+Date.now(), name, key, createdLabel:'Just now', lastUsedLabel:'Never' };
+    this.setState(s => ({ apiKeys:[newKey, ...s.apiKeys], showCreateKeyForm:false, newKeyName:'', justCreatedKey:newKey }));
+  };
+  dismissJustCreatedKey = () => this.setState({justCreatedKey:null});
+  copyApiKey = (key) => {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(key).then(
+        () => this.showToast('API key copied to clipboard.'),
+        () => this.showToast('Copy failed — select and copy manually.')
+      );
+    } else {
+      this.showToast('Copy failed — select and copy manually.');
+    }
+  };
+  testApiKey = (id) => {
+    this.setState(s => ({
+      apiKeys: s.apiKeys.map(k => k.id === id ? { ...k, lastUsedLabel:'Just now' } : k)
+    }));
+    const key = this.state.apiKeys.find(k => k.id === id);
+    this.showToast('Test request sent using "'+(key ? key.name : 'this key')+'" — 200 OK (mock response).');
+  };
+  askDeleteKey = (id) => this.setState({confirmDeleteKeyId:id});
+  cancelDeleteKey = () => this.setState({confirmDeleteKeyId:null});
+  confirmDeleteKey = (id) => {
+    this.setState(s => ({
+      apiKeys: s.apiKeys.filter(k => k.id !== id),
+      confirmDeleteKeyId:null,
+      justCreatedKey: s.justCreatedKey && s.justCreatedKey.id === id ? null : s.justCreatedKey
+    }));
+    this.showToast('API key deleted.');
+  };
 
   setCatalogTab = (tab) => this.setState({catalogTab:tab, catalogPage:1, pipelineLogPage:1});
   onCatalogQueryChange = (e) => this.setState({catalogQuery:e.target.value, catalogPage:1});
@@ -2267,6 +2433,26 @@ class Component extends DCLogic {
       onReportDataPointQueryChange: this.onReportDataPointQueryChange, clearReportDataPoint: this.clearReportDataPoint, toggleReportGeneral: this.toggleReportGeneral,
       reportNext: this.reportNext, reportBack: this.reportBack,
       submitReport: this.submitReport,
+      isDeveloper: s.appScreen === 'developer', goDeveloper: this.goDeveloper,
+      navBtnStyle_developer: navStyle(s.appScreen==='developer'),
+      sampleEndpoints: CATALOG.slice(0,3).map(e => ({ name:e.name, onSelect: () => this.viewCatalogRef(e.id) })),
+      showCreateKeyForm: s.showCreateKeyForm, newKeyName: s.newKeyName,
+      openCreateKeyForm: this.openCreateKeyForm, closeCreateKeyForm: this.closeCreateKeyForm,
+      onNewKeyNameChange: this.onNewKeyNameChange, createApiKey: this.createApiKey,
+      justCreatedKeyView: s.justCreatedKey ? {
+        name: s.justCreatedKey.name, key: s.justCreatedKey.key,
+        onCopy: () => this.copyApiKey(s.justCreatedKey.key), onDismiss: this.dismissJustCreatedKey
+      } : null,
+      apiKeysView: s.apiKeys.map(k => ({
+        id:k.id, name:k.name, maskedKey: maskApiKey(k.key), createdLabel:k.createdLabel, lastUsedLabel:k.lastUsedLabel,
+        isConfirmingDelete: s.confirmDeleteKeyId === k.id,
+        isNotConfirmingDelete: s.confirmDeleteKeyId !== k.id,
+        onTest: () => this.testApiKey(k.id),
+        onDelete: () => this.askDeleteKey(k.id),
+        onConfirmDelete: () => this.confirmDeleteKey(k.id),
+        onCancelDelete: () => this.cancelDeleteKey()
+      })),
+      hasApiKeys: s.apiKeys.length > 0, noApiKeys: s.apiKeys.length === 0,
       toast: s.toast,
       stopClick: this.stopClick
     };
