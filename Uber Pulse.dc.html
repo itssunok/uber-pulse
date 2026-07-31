@@ -123,8 +123,8 @@
           </div>
         </div>
 
-        <div style="flex:1; min-width:0;">
-          <div style="max-width:1180px; margin:0 auto; padding:32px 32px 80px 32px;">
+        <div style="flex:1; min-width:0; display:flex; flex-direction:column; min-height:0;">
+          <div style="max-width:1180px; margin:0 auto; padding:32px 32px 80px 32px; width:100%; box-sizing:border-box; display:flex; flex-direction:column; flex:1; min-height:0;">
 
           <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
             <sc-if value="{{ criticalPipeline }}" hint-placeholder-val="{{ false }}">
@@ -176,7 +176,7 @@
                   <div style="color:#9B9B9B;">{{ p.rowNumber }}</div>
                   <div style="font-weight:600;">{{ p.name }}</div>
                   <div style="color:#6B6B6B;">{{ p.weeklyVolumeLabel }}</div>
-                  <div style="color:#6B6B6B;">{{ p.lob }}</div>
+                  <div><span style="{{ p.lobChipStyle }}">{{ p.lob }}</span></div>
                   <div><span style="{{ p.statusChipStyle }}">{{ p.statusLabel }}</span></div>
                   <div style="color:#6B6B6B;">{{ p.slaTarget }} / <span style="{{ p.slaActualStyle }}">{{ p.slaActual }}</span></div>
                   <div style="color:#6B6B6B;">{{ p.freshness }}</div>
@@ -239,7 +239,7 @@
                       <span style="font-weight:600; font-family:ui-monospace,monospace;">{{ e.name }}</span>
                     </div>
                     <div style="color:#6B6B6B;">{{ e.weeklyVolumeLabel }}</div>
-                    <div style="color:#6B6B6B;">{{ e.lob }}</div>
+                    <div><span style="{{ e.lobChipStyle }}">{{ e.lob }}</span></div>
                     <div><span style="{{ e.statusChipStyle }}">{{ e.statusLabel }}</span></div>
                     <div style="color:#6B6B6B;">{{ e.definitionOwner }}</div>
                     <div style="color:#9B9B9B;">{{ e.lastUpdated }}</div>
@@ -290,7 +290,7 @@
                     <div style="color:#9B9B9B;">{{ p.rowNumber }}</div>
                     <div style="font-weight:600;">{{ p.name }}</div>
                     <div style="color:#6B6B6B;">{{ p.weeklyVolumeLabel }}</div>
-                    <div style="color:#6B6B6B;">{{ p.lob }}</div>
+                    <div><span style="{{ p.lobChipStyle }}">{{ p.lob }}</span></div>
                     <div><span style="{{ p.statusChipStyle }}">{{ p.statusLabel }}</span></div>
                     <div style="color:#6B6B6B;">{{ p.slaTarget }} / <span style="{{ p.slaActualStyle }}">{{ p.slaActual }}</span></div>
                     <div style="color:#6B6B6B;">{{ p.freshness }}</div>
@@ -363,32 +363,37 @@
           </sc-if>
 
           <sc-if value="{{ isRoadmap }}" hint-placeholder-val="{{ false }}">
-            <div style="display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:20px;">
-              <div>
-                <h1 style="font-size:24px; font-weight:800; margin:0 0 4px 0; letter-spacing:-0.5px;">Roadmap</h1>
-                <p style="font-size:14px; color:#6B6B6B; margin:0;">What the data team is working on, and what's coming next.</p>
-              </div>
-              <a href="#" style="font-size:13px; font-weight:600; background:#FFFFFF; border:1px solid #E5E5E5; border-radius:999px; padding:8px 16px; text-decoration:none;">View full roadmap in Jira ↗</a>
-            </div>
-
-            <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:14px;">
-              <sc-for list="{{ roadmapColumns }}" as="col" hint-placeholder-count="4">
+            <div style="display:flex; flex-direction:column; flex:1; min-height:0; width:100%;">
+              <div style="display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:20px; flex-shrink:0;">
                 <div>
-                  <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:#6B6B6B; margin-bottom:10px;">{{ col.title }} · {{ col.count }}</div>
-                  <div style="display:flex; flex-direction:column; gap:10px;">
-                    <sc-for list="{{ col.items }}" as="it" hint-placeholder-count="2">
-                      <div style="{{ it.cardStyle }}">
-                        <div style="display:flex; align-items:center; justify-content:between; gap:8px;">
-                          <span style="font-weight:600; font-size:13px; font-family:ui-monospace,monospace;">{{ it.name }}</span>
-                          <sc-if value="{{ it.isNew }}" hint-placeholder-val="{{ false }}"><span style="background:#DFF3E6; color:#067A3E; font-size:10px; font-weight:700; padding:2px 6px; border-radius:5px; margin-left:6px;">NEW</span></sc-if>
-                        </div>
-                        <div style="font-size:12px; color:#6B6B6B; margin-top:6px;">{{ it.lob }} · {{ it.team }}</div>
-                        <div style="font-size:11px; color:#9B9B9B; margin-top:8px;">{{ it.dateLabel }}</div>
-                      </div>
-                    </sc-for>
-                  </div>
+                  <h1 style="font-size:24px; font-weight:800; margin:0 0 4px 0; letter-spacing:-0.5px;">Roadmap</h1>
+                  <p style="font-size:14px; color:#6B6B6B; margin:0;">What the data team is working on, and what's coming next.</p>
                 </div>
-              </sc-for>
+                <a href="#" style="font-size:13px; font-weight:600; background:#FFFFFF; border:1px solid #E5E5E5; border-radius:999px; padding:8px 16px; text-decoration:none;">View full roadmap in Jira ↗</a>
+              </div>
+
+              <div style="display:grid; grid-template-columns:repeat(4,1fr); grid-template-rows:1fr; gap:14px; width:100%; flex:1; min-height:0;">
+                <sc-for list="{{ roadmapColumns }}" as="col" hint-placeholder-count="4">
+                  <div style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; padding:16px; box-sizing:border-box; height:100%; display:flex; flex-direction:column; overflow:hidden;">
+                    <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:#6B6B6B; margin-bottom:10px; flex-shrink:0;">{{ col.title }} · {{ col.count }}</div>
+                    <div style="display:flex; flex-direction:column; gap:10px; overflow-y:auto; flex:1; min-height:0; padding-right:4px;">
+                      <sc-for list="{{ col.items }}" as="it" hint-placeholder-count="2">
+                        <div style="{{ it.cardStyle }}" onClick="{{ it.onSelect }}">
+                          <div style="display:flex; align-items:center; justify-content:between; gap:8px;">
+                            <span style="font-weight:600; font-size:13px; font-family:ui-monospace,monospace;">{{ it.name }}</span>
+                            <sc-if value="{{ it.isNew }}" hint-placeholder-val="{{ false }}"><span style="background:#DFF3E6; color:#067A3E; font-size:10px; font-weight:700; padding:2px 6px; border-radius:5px; margin-left:6px;">NEW</span></sc-if>
+                          </div>
+                          <div style="display:flex; align-items:center; gap:6px; margin-top:8px;">
+                            <span style="{{ it.lobChipStyle }}">{{ it.lob }}</span>
+                            <span style="font-size:12px; color:#6B6B6B;">{{ it.team }}</span>
+                          </div>
+                          <div style="font-size:11px; color:#9B9B9B; margin-top:8px;">{{ it.dateLabel }}</div>
+                        </div>
+                      </sc-for>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
             </div>
           </sc-if>
 
@@ -646,7 +651,7 @@
         </div>
         <div style="display:flex; gap:8px; margin-bottom:16px;">
           <span style="{{ selectedEntry.statusChipStyle }}">{{ selectedEntry.statusLabel }}</span>
-          <span style="font-size:12px; color:#6B6B6B; background:#F6F6F6; border-radius:6px; padding:3px 8px;">{{ selectedEntry.lob }}</span>
+          <span style="{{ selectedEntry.lobChipStyle }}">{{ selectedEntry.lob }}</span>
           <span style="font-size:12px; color:#6B6B6B; background:#F6F6F6; border-radius:6px; padding:3px 8px;">{{ selectedEntry.version }}</span>
         </div>
         <sc-if value="{{ selectedEntry.warning }}" hint-placeholder-val="{{ false }}">
@@ -688,7 +693,7 @@
         </div>
         <div style="display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap;">
           <span style="{{ selectedPipeline.statusChipStyle }}">{{ selectedPipeline.statusLabel }}</span>
-          <span style="font-size:12px; color:#6B6B6B; background:#F6F6F6; border-radius:6px; padding:3px 8px;">{{ selectedPipeline.lob }}</span>
+          <span style="{{ selectedPipeline.lobChipStyle }}">{{ selectedPipeline.lob }}</span>
           <span style="font-size:12px; color:#6B6B6B; background:#F6F6F6; border-radius:6px; padding:3px 8px;">{{ selectedPipeline.weeklyVolumeLabel }}/wk</span>
         </div>
         <div style="font-size:13px; line-height:1.6; color:#0A0A0A; margin-bottom:18px;">{{ selectedPipeline.description }}</div>
@@ -727,6 +732,99 @@
       </div>
     </sc-if>
 
+    <sc-if value="{{ selectedRoadmapItem }}" hint-placeholder-val="{{ false }}">
+      <div style="position:fixed; inset:0; background:rgba(10,10,10,0.35); z-index:30;" onClick="{{ closeRoadmapItem }}"></div>
+      <div style="position:fixed; top:0; right:0; bottom:0; width:440px; background:#FFFFFF; box-shadow:-8px 0 30px rgba(0,0,0,0.12); z-index:31; overflow-y:auto; padding:28px;">
+        <div style="display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:16px;">
+          <div style="font-size:16px; font-weight:700; font-family:ui-monospace,monospace;">{{ selectedRoadmapItem.name }}</div>
+          <button onClick="{{ closeRoadmapItem }}" style="background:none; border:none; font-size:18px; cursor:pointer; color:#9B9B9B;">✕</button>
+        </div>
+        <div style="display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap;">
+          <span style="{{ selectedRoadmapItem.stageChipStyle }}">{{ selectedRoadmapItem.stage }}</span>
+          <span style="{{ selectedRoadmapItem.lobChipStyle }}">{{ selectedRoadmapItem.lob }}</span>
+        </div>
+        <div style="font-size:13px; line-height:1.6; color:#0A0A0A; margin-bottom:18px;">{{ selectedRoadmapItem.description }}</div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:20px;">
+          <div><div style="font-size:11px; color:#9B9B9B; font-weight:600; text-transform:uppercase; margin-bottom:3px;">Team</div><div style="font-size:13px;">{{ selectedRoadmapItem.team }}</div></div>
+          <div><div style="font-size:11px; color:#9B9B9B; font-weight:600; text-transform:uppercase; margin-bottom:3px;">Target</div><div style="font-size:13px;">{{ selectedRoadmapItem.dateLabel }}</div></div>
+          <sc-if value="{{ selectedRoadmapItem.hasTicket }}" hint-placeholder-val="{{ false }}">
+            <div><div style="font-size:11px; color:#9B9B9B; font-weight:600; text-transform:uppercase; margin-bottom:3px;">Ticket</div><div style="font-size:13px; font-family:ui-monospace,monospace;">{{ selectedRoadmapItem.ticketId }}</div></div>
+          </sc-if>
+          <sc-if value="{{ selectedRoadmapItem.hasPriority }}" hint-placeholder-val="{{ false }}">
+            <div><div style="font-size:11px; color:#9B9B9B; font-weight:600; text-transform:uppercase; margin-bottom:3px;">Priority</div><div style="font-size:13px;">{{ selectedRoadmapItem.priority }}</div></div>
+          </sc-if>
+          <sc-if value="{{ selectedRoadmapItem.isSubmission }}" hint-placeholder-val="{{ false }}">
+            <div><div style="font-size:11px; color:#9B9B9B; font-weight:600; text-transform:uppercase; margin-bottom:3px;">Submitted</div><div style="font-size:13px;">{{ selectedRoadmapItem.submittedDateLabel }}</div></div>
+          </sc-if>
+          <sc-if value="{{ selectedRoadmapItem.hasRepoLink }}" hint-placeholder-val="{{ false }}">
+            <div style="grid-column:1 / -1;"><div style="font-size:11px; color:#9B9B9B; font-weight:600; text-transform:uppercase; margin-bottom:3px;">Repo</div><div style="font-size:13px; word-break:break-all;">{{ selectedRoadmapItem.repoLink }}</div></div>
+          </sc-if>
+          <sc-if value="{{ selectedRoadmapItem.hasJiraLink }}" hint-placeholder-val="{{ false }}">
+            <div style="grid-column:1 / -1;"><div style="font-size:11px; color:#9B9B9B; font-weight:600; text-transform:uppercase; margin-bottom:3px;">Jira epic</div><div style="font-size:13px; word-break:break-all;">{{ selectedRoadmapItem.jiraLink }}</div></div>
+          </sc-if>
+        </div>
+
+        <sc-if value="{{ selectedRoadmapItem.isSubmission }}" hint-placeholder-val="{{ false }}">
+          <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#6B6B6B; margin-bottom:10px;">Status</div>
+          <div style="background:#F6F6F6; border-radius:12px; padding:12px 14px; font-size:13px; line-height:1.55; margin-bottom:22px;">Awaiting triage — this submission will be discussed at the next planning meeting ({{ nextPlanningMeetingLabel }}).</div>
+        </sc-if>
+
+        <sc-if value="{{ selectedRoadmapItem.hasStatusHistory }}" hint-placeholder-val="{{ false }}">
+          <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#6B6B6B; margin-bottom:10px;">Status history</div>
+          <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:22px;">
+            <sc-for list="{{ selectedRoadmapItem.statusHistory }}" as="sh" hint-placeholder-count="3">
+              <div style="border-left:2px solid #E5E5E5; padding-left:12px;">
+                <div style="font-size:12px; font-weight:600;">{{ sh.stage }} · <span style="color:#9B9B9B; font-weight:400;">{{ sh.date }}</span></div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ selectedRoadmapItem.hasComments }}" hint-placeholder-val="{{ false }}">
+          <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#6B6B6B; margin-bottom:10px;">Discussion</div>
+          <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:22px;">
+            <sc-for list="{{ selectedRoadmapItem.comments }}" as="cm" hint-placeholder-count="2">
+              <div>
+                <div style="font-size:11px; color:#9B9B9B; margin-bottom:4px;">{{ cm.author }} · {{ cm.date }}</div>
+                <div style="background:#F6F6F6; border-radius:12px; padding:10px 12px; font-size:12.5px; line-height:1.5; color:#0A0A0A;">{{ cm.text }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ selectedRoadmapItem.hasDocs }}" hint-placeholder-val="{{ false }}">
+          <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#6B6B6B; margin-bottom:10px;">Linked docs</div>
+          <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:22px;">
+            <sc-for list="{{ selectedRoadmapItem.docs }}" as="dc" hint-placeholder-count="2">
+              <div style="display:flex; align-items:center; justify-content:space-between; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px;">
+                <span style="font-size:12.5px;">{{ dc.label }}</span>
+                <span style="font-size:11px; color:#6B6B6B; background:#F6F6F6; border-radius:6px; padding:2px 8px;">{{ dc.type }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ selectedRoadmapItem.hasEvents }}" hint-placeholder-val="{{ false }}">
+          <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#6B6B6B; margin-bottom:10px;">Suggested events</div>
+          <div style="margin-bottom:22px;">
+            <sc-for list="{{ selectedRoadmapItem.events }}" as="ev" hint-placeholder-count="3">
+              <div style="font-family:ui-monospace,monospace; font-size:12px; margin-bottom:2px;">• {{ ev }}</div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ selectedRoadmapItem.hasPayloadRows }}" hint-placeholder-val="{{ false }}">
+          <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#6B6B6B; margin-bottom:10px;">Sample payload</div>
+          <div style="background:#F6F6F6; border-radius:8px; padding:12px; font-family:ui-monospace,monospace; font-size:12px; line-height:1.7;">
+            <sc-for list="{{ selectedRoadmapItem.payloadRows }}" as="pr" hint-placeholder-count="3">
+              <div><span style="color:#6B6B6B;">{{ pr.field }}:</span> {{ pr.value }}</div>
+            </sc-for>
+          </div>
+        </sc-if>
+      </div>
+    </sc-if>
+
     <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
       <div style="position:fixed; bottom:24px; right:24px; background:#0A0A0A; color:#FFF; font-size:13px; padding:12px 18px; border-radius:9px; box-shadow:0 10px 30px rgba(0,0,0,0.25); z-index:50; max-width:320px;">{{ toast }}</div>
     </sc-if>
@@ -735,7 +833,12 @@
 
 </x-dc>
 <script type="text/x-dc" data-dc-script>
-const LOB_COLORS = {};
+const LOB_COLORS = {
+  Ridesharing: { bg:'#DCEBF7', color:'#1D6FA5' },
+  Eats: { bg:'#FBE8D8', color:'#B45F06' },
+  B2B: { bg:'#EDE3F7', color:'#6B3FA0' },
+  Platform: { bg:'#EFEFEF', color:'#5A5A5A' }
+};
 
 const PIPELINES = [
   { id:'p1', name:'Trip Completion Events', lob:'Ridesharing', health:'green', slaTarget:'99.9%', slaActual:'99.94%', freshness:'4 min ago', quality:98,
@@ -1315,9 +1418,43 @@ const CATALOG = [
 const OWNING_TEAMS = [...new Set(PIPELINES.map(p => p.owningTeam))].sort().concat('Other');
 
 const ROADMAP_BASE = {
-  defining:[ {id:'r1',name:'b2b_bulk_shipment_event',lob:'B2B',team:'Freight Engineering',dateLabel:'Est. Aug 22'} ],
-  next:[ {id:'r2',name:'eats_group_order_conversion',lob:'Eats',team:'Eats Growth',dateLabel:'Est. Sep 5'}, {id:'r3',name:'driver_supply_v2 migration',lob:'Ridesharing',team:'Platform Engineering',dateLabel:'Est. Sep 12'} ],
-  shipped:[ {id:'r4',name:'campaign_started_v1',lob:'Eats',team:'Marketing Analytics',dateLabel:'Shipped Jul 20'}, {id:'r5',name:'session_started_v4',lob:'Platform',team:'Web Infrastructure',dateLabel:'Shipped Jul 10'} ]
+  defining:[
+    { id:'r1', name:'b2b_bulk_shipment_event', lob:'B2B', team:'Freight Engineering', dateLabel:'Est. Aug 22', priority:'P1', ticketId:'DATA-482',
+      description:'New event to capture bulk/multi-shipment freight bookings in a single transaction, replacing the current one-event-per-shipment model that undercounts enterprise freight volume.',
+      statusHistory:[{stage:'Proposed',date:'Jul 14'},{stage:'Under review',date:'Jul 22'},{stage:'In definition',date:'Aug 1'}],
+      comments:[
+        {author:'Priya Nair (Freight Eng)',date:'Jul 24',text:'Confirmed the payload needs a shipment_count field — single-shipment bookings will just set it to 1.'},
+        {author:'Alex (Web Data PM)',date:'Jul 29',text:'Aligned with Finance on billing implications; moving to definition this week.'}
+      ],
+      docs:[{label:'PRD — Bulk Freight Booking',type:'PRD'},{label:'Data model brainstorm doc',type:'Doc'},{label:'Freight billing sync notes',type:'Notes'}] }
+  ],
+  next:[
+    { id:'r2', name:'eats_group_order_conversion', lob:'Eats', team:'Eats Growth', dateLabel:'Est. Sep 5', priority:'P2', ticketId:'DATA-511',
+      description:"Tracks conversion rate from a group order invite to a completed group checkout — currently invisible since group orders emit the same event as solo orders.",
+      statusHistory:[{stage:'Proposed',date:'Jul 18'},{stage:'Prioritized for Sep',date:'Jul 30'}],
+      comments:[{author:'Jordan (Eats Growth)',date:'Jul 25',text:'Group orders are up 40% QoQ — need this before the September push.'}],
+      docs:[{label:'Group Ordering brainstorm doc',type:'Doc'},{label:'Growth metrics PRD',type:'PRD'}] },
+    { id:'r3', name:'driver_supply_v2 migration', lob:'Ridesharing', team:'Platform Engineering', dateLabel:'Est. Sep 12', priority:'P0', ticketId:'DATA-397',
+      description:'Migrates driver_supply_events off the legacy v1 schema onto v2, fixing the duplicate-event issue currently degrading the Driver Supply Events pipeline.',
+      statusHistory:[{stage:'Proposed',date:'Jun 30'},{stage:'Scoped',date:'Jul 15'},{stage:'Scheduled for Sep',date:'Jul 28'}],
+      comments:[
+        {author:'Sam (Rides Platform)',date:'Jul 20',text:'v2 schema removes the race condition causing duplicate availability pings.'},
+        {author:'Alex (Web Data PM)',date:'Jul 28',text:'This is the fix for the Driver Supply Events degradation — prioritizing above eats_group_order_conversion.'}
+      ],
+      docs:[{label:'driver_supply_v2 design doc',type:'Doc'},{label:'Migration runbook',type:'Notes'}] }
+  ],
+  shipped:[
+    { id:'r4', name:'campaign_started_v1', lob:'Eats', team:'Marketing Analytics', dateLabel:'Shipped Jul 20', priority:null, ticketId:'DATA-402',
+      description:'Replaced the deprecated attribution_touch definition with a single, consistent campaign_started event across paid social, display, and in-app placements.',
+      statusHistory:[{stage:'Proposed',date:'Jun 1'},{stage:'In definition',date:'Jun 20'},{stage:'Shipped',date:'Jul 20'}],
+      comments:[{author:'Marketing Analytics',date:'Jul 20',text:'Live in production — campaign_started is now the source of truth, attribution_touch is deprecated.'}],
+      docs:[{label:'campaign_started_v1 PRD',type:'PRD'},{label:'Attribution deprecation notes',type:'Notes'}] },
+    { id:'r5', name:'session_started_v4', lob:'Platform', team:'Web Infrastructure', dateLabel:'Shipped Jul 10', priority:null, ticketId:'DATA-388',
+      description:'Consolidated session start tracking across all web surfaces into one v4 event, replacing three legacy per-surface session events.',
+      statusHistory:[{stage:'Proposed',date:'May 20'},{stage:'In definition',date:'Jun 12'},{stage:'Shipped',date:'Jul 10'}],
+      comments:[{author:'Web Infrastructure',date:'Jul 10',text:'session_started v4 is live across web; legacy per-surface events are now deprecated.'}],
+      docs:[{label:'session_started_v4 design doc',type:'Doc'}] }
+  ]
 };
 
 const METRICS_BASE = [
@@ -1353,6 +1490,19 @@ function statusLabel(status){
   if(status==='red') return 'Critical';
   return status.charAt(0).toUpperCase()+status.slice(1);
 }
+function lobChipStyle(lob){
+  const c = LOB_COLORS[lob] || LOB_COLORS.Platform;
+  return 'font-size:11px;font-weight:700;padding:3px 9px;border-radius:6px;display:inline-block;background:'+c.bg+';color:'+c.color+';';
+}
+function roadmapStageChipStyle(stage){
+  const map = {
+    'Newly Submitted':'background:#DCEBF7;color:#1D6FA5;',
+    'Currently Being Defined':'background:#FCEFDC;color:#96530A;',
+    'Coming Next':'background:#EDE3F7;color:#6B3FA0;',
+    'Recently Shipped':'background:#DFF3E6;color:#067A3E;'
+  };
+  return 'font-size:11px;font-weight:700;padding:3px 9px;border-radius:6px;display:inline-block;' + (map[stage] || map['Coming Next']);
+}
 
 function downloadCSV(filename, headerRow, rows){
   const csv = [headerRow, ...rows].map(r=>r.join(',')).join('\n');
@@ -1367,7 +1517,7 @@ class Component extends DCLogic {
     screen:'app', loginEmail:'', loginPassword:'', loginError:'',
     appScreen:'home',
     catalogQuery:'', catalogLob:'All', catalogStatus:'All', selectedEntryId:null, catalogTab:'data',
-    pipelineQuery:'', pipelineLob:'All', pipelineHealth:'All', selectedPipelineId:null,
+    pipelineQuery:'', pipelineLob:'All', pipelineHealth:'All', selectedPipelineId:null, selectedRoadmapItemId:null,
     catalogPage:1, pipelineLogPage:1,
     chatMessages:[{role:'assistant', text:"Hi, I'm the Pulse assistant. Ask me about any event or metric, request a quick data pull, or describe a feature to get a draft measurement plan."}],
     chatInput:'',
@@ -1395,7 +1545,7 @@ class Component extends DCLogic {
   goHome = () => this.setState({appScreen:'home', selectedEntryId:null, selectedPipelineId:null});
   goCatalog = () => this.setState({appScreen:'catalog', selectedEntryId:null, selectedPipelineId:null, catalogTab:'data', catalogPage:1, pipelineLogPage:1});
   goAssistant = () => this.setState({appScreen:'assistant', selectedEntryId:null, selectedPipelineId:null});
-  goRoadmap = () => this.setState({appScreen:'roadmap', selectedEntryId:null, selectedPipelineId:null});
+  goRoadmap = () => this.setState({appScreen:'roadmap', selectedEntryId:null, selectedPipelineId:null, selectedRoadmapItemId:null});
   goReport = () => this.setState({
     appScreen:'report', selectedEntryId:null, selectedPipelineId:null, reportStep:1, reportDataPointQuery:'',
     reportForm:{title:'',description:'',severity:'Medium',category:'Data Quality',generalIssue:false,linkedDataPointId:null,linkedDataPointType:null,jiraLink:'',prLink:''}
@@ -1418,6 +1568,8 @@ class Component extends DCLogic {
   closeEntry = () => this.setState({selectedEntryId:null});
   selectPipeline = (id) => this.setState({selectedPipelineId:id});
   closePipeline = () => this.setState({selectedPipelineId:null});
+  selectRoadmapItem = (id) => this.setState({selectedRoadmapItemId:id});
+  closeRoadmapItem = () => this.setState({selectedRoadmapItemId:null});
   viewCatalogRef = (id) => this.setState({appScreen:'catalog', catalogQuery:'', catalogLob:'All', catalogStatus:'All', selectedEntryId:id, catalogTab:'data'});
   viewCatalogEntryFromPipeline = (id) => this.setState({appScreen:'catalog', catalogQuery:'', catalogLob:'All', catalogStatus:'All', selectedEntryId:id, catalogTab:'data', selectedPipelineId:null});
 
@@ -1494,7 +1646,8 @@ class Component extends DCLogic {
     const f = this.state.contributeForm;
     const newItem = {
       id:'sub-'+Date.now(), name:f.name || 'Untitled schema', lob:f.lob, team:f.owningTeam,
-      dateLabel:'Est. '+this.estimateReviewDate(), isNew:true,
+      dateLabel:'Est. '+this.estimateReviewDate(), isNew:true, isSubmission:true,
+      submittedDateLabel:new Date().toLocaleDateString('en-US',{month:'short',day:'numeric'}),
       description:f.description, repoLink:f.repoLink, jiraLink:f.jiraLink, expectedVolume:f.expectedVolume,
       payloadRows: f.payloadRows.filter(r => r.field || r.value)
     };
@@ -1503,7 +1656,13 @@ class Component extends DCLogic {
   };
 
   submitPlanForReview = (plan) => {
-    const newItem = { id:'sub-'+Date.now(), name:plan.events[0], lob:'Ridesharing', team:'Your submission (AI-assisted)', dateLabel:'Est. '+this.estimateReviewDate(), isNew:true };
+    const newItem = {
+      id:'sub-'+Date.now(), name:plan.events[0], lob:'Ridesharing', team:'Your submission (AI-assisted)',
+      dateLabel:'Est. '+this.estimateReviewDate(), isNew:true, isSubmission:true,
+      submittedDateLabel:new Date().toLocaleDateString('en-US',{month:'short',day:'numeric'}),
+      description:plan.similarNote || ('Draft measurement plan for '+plan.featureName+'.'),
+      events:plan.events, metrics:plan.metrics
+    };
     this.setState(s => ({ extraSubmissions:[newItem, ...s.extraSubmissions], appScreen:'roadmap', selectedEntryId:null }));
     this.showToast('Measurement plan submitted for review.');
   };
@@ -1558,6 +1717,7 @@ class Component extends DCLogic {
         weeklyVolume,
         statusLabel: statusLabel(p.health),
         statusChipStyle: statusChipStyle(p.health),
+        lobChipStyle: lobChipStyle(p.lob),
         slaActualStyle: 'font-weight:600;color:'+(p.health==='green' ? '#067A3E' : p.health==='amber' ? '#96530A' : '#A93327')+';',
         qualityBarStyle: 'height:100%;border-radius:3px;width:'+p.quality+'%;background:'+(p.quality>=95?'#06C167':p.quality>=80?'#C98A1E':'#A93327')+';',
         weeklyVolumeLabel: weeklyVolume.toFixed(1)+'M',
@@ -1580,6 +1740,7 @@ class Component extends DCLogic {
       ...rawSelectedPipeline,
       statusLabel: statusLabel(rawSelectedPipeline.health),
       statusChipStyle: statusChipStyle(rawSelectedPipeline.health),
+      lobChipStyle: lobChipStyle(rawSelectedPipeline.lob),
       slaActualStyle: 'font-weight:600;color:'+(rawSelectedPipeline.health==='green' ? '#067A3E' : rawSelectedPipeline.health==='amber' ? '#96530A' : '#A93327')+';',
       weeklyVolumeLabel: pipelineVolume(rawSelectedPipeline.id).toFixed(1)+'M',
       events: pipelineEvents(rawSelectedPipeline.id).map(e => ({
@@ -1627,6 +1788,7 @@ class Component extends DCLogic {
       ...e,
       statusLabel: e.status.charAt(0).toUpperCase()+e.status.slice(1),
       statusChipStyle: statusChipStyle(e.status),
+      lobChipStyle: lobChipStyle(e.lob),
       weeklyVolumeLabel: e.weeklyVolume.toFixed(1)+'M',
       onSelect: () => this.selectEntry(e.id)
     })).sort((a,b) => b.weeklyVolume - a.weeklyVolume);
@@ -1646,6 +1808,7 @@ class Component extends DCLogic {
       ...rawSelected,
       statusLabel: rawSelected.status.charAt(0).toUpperCase()+rawSelected.status.slice(1),
       statusChipStyle: statusChipStyle(rawSelected.status),
+      lobChipStyle: lobChipStyle(rawSelected.lob),
       onDownload: () => this.downloadSample(rawSelected)
     } : null;
 
@@ -1663,19 +1826,41 @@ class Component extends DCLogic {
     const suggestionTexts = ['What is completed_trip?', 'How many rides did we complete last week in the Netherlands?', "Where do I find surge pricing event data?", "We're launching scheduled rides up to 30 days in advance — what should we track?"];
     const suggestions = suggestionTexts.map(t => ({ label:t, onClick: () => this.sendSuggestion(t) }));
 
-    const roadmapColumns = [
-      { title:'Newly Submitted', count:s.extraSubmissions.length, items:s.extraSubmissions },
-      { title:'Currently Being Defined', count:ROADMAP_BASE.defining.length, items:ROADMAP_BASE.defining },
-      { title:'Coming Next', count:ROADMAP_BASE.next.length, items:ROADMAP_BASE.next },
-      { title:'Recently Shipped', count:ROADMAP_BASE.shipped.length, items:ROADMAP_BASE.shipped }
-    ].map(col => ({
-      ...col,
+    const roadmapColumnDefs = [
+      { title:'Newly Submitted', items:s.extraSubmissions },
+      { title:'Currently Being Defined', items:ROADMAP_BASE.defining },
+      { title:'Coming Next', items:ROADMAP_BASE.next },
+      { title:'Recently Shipped', items:ROADMAP_BASE.shipped }
+    ];
+    const roadmapColumns = roadmapColumnDefs.map(col => ({
+      title: col.title, count: col.items.length,
       items: col.items.map(it => ({
         ...it,
+        stage: col.title,
         isNew: !!it.isNew,
-        cardStyle: 'background:#FFFFFF;border:1px solid '+(it.isNew ? '#06C167' : '#E5E5E5')+';border-radius:10px;padding:14px;'
+        cardStyle: 'background:'+(it.isNew ? '#FFFFFF' : '#FAFAFA')+';border:1px solid '+(it.isNew ? '#06C167' : '#EFEFEF')+';border-radius:10px;padding:14px;cursor:pointer;',
+        lobChipStyle: lobChipStyle(it.lob),
+        onSelect: () => this.selectRoadmapItem(it.id)
       }))
     }));
+
+    const allRoadmapItems = roadmapColumnDefs.flatMap(col => col.items.map(it => ({ ...it, stage: col.title })));
+    const rawSelectedRoadmapItem = allRoadmapItems.find(it => it.id === s.selectedRoadmapItemId) || null;
+    const selectedRoadmapItem = rawSelectedRoadmapItem ? {
+      ...rawSelectedRoadmapItem,
+      lobChipStyle: lobChipStyle(rawSelectedRoadmapItem.lob),
+      stageChipStyle: roadmapStageChipStyle(rawSelectedRoadmapItem.stage),
+      isSubmission: !!rawSelectedRoadmapItem.isSubmission,
+      hasStatusHistory: !!(rawSelectedRoadmapItem.statusHistory && rawSelectedRoadmapItem.statusHistory.length),
+      hasComments: !!(rawSelectedRoadmapItem.comments && rawSelectedRoadmapItem.comments.length),
+      hasDocs: !!(rawSelectedRoadmapItem.docs && rawSelectedRoadmapItem.docs.length),
+      hasEvents: !!(rawSelectedRoadmapItem.events && rawSelectedRoadmapItem.events.length),
+      hasPayloadRows: !!(rawSelectedRoadmapItem.payloadRows && rawSelectedRoadmapItem.payloadRows.length),
+      hasRepoLink: !!rawSelectedRoadmapItem.repoLink,
+      hasJiraLink: !!rawSelectedRoadmapItem.jiraLink,
+      hasTicket: !!rawSelectedRoadmapItem.ticketId,
+      hasPriority: !!rawSelectedRoadmapItem.priority
+    } : null;
 
     const buildStepChips = (labels, currentStep, onSelect) => labels.map((label, i) => {
       const idx = i+1;
@@ -1778,7 +1963,7 @@ class Component extends DCLogic {
       filteredCatalog, selectedEntry, closeEntry: this.closeEntry,
       chatMessages, chatInput: s.chatInput, onChatInputChange: this.onChatInputChange, onChatKeyDown: this.onChatKeyDown, sendChat: this.sendChat,
       showSuggestions: s.chatMessages.length <= 1, suggestions,
-      roadmapColumns,
+      roadmapColumns, selectedRoadmapItem, closeRoadmapItem: this.closeRoadmapItem,
       contributeStep: s.contributeStep, contributeStepChips,
       isContributeStep1: s.contributeStep === 1, isContributeStep2: s.contributeStep === 2,
       contributeForm: contributeFormView, estimatedReviewDate: this.estimateReviewDate(), nextPlanningMeetingLabel,
