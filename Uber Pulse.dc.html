@@ -180,40 +180,71 @@
 
           <sc-if value="{{ isCatalog }}" hint-placeholder-val="{{ false }}">
             <h1 style="font-size:24px; font-weight:800; margin:0 0 4px 0; letter-spacing:-0.5px;">Data Catalog</h1>
-            <p style="font-size:14px; color:#6B6B6B; margin:0 0 20px 0;">The authoritative record of every metric, event, and dataset on the platform.</p>
+            <p style="font-size:14px; color:#6B6B6B; margin:0 0 16px 0;">The authoritative record of every metric, event, and pipeline on the platform.</p>
 
-            <div style="display:flex; gap:10px; margin-bottom:16px; flex-wrap:wrap;">
-              <input value="{{ catalogQuery }}" onChange="{{ onCatalogQueryChange }}" placeholder="Search events, metrics, definitions…" style="flex:1; min-width:220px; box-sizing:border-box; background:#FFFFFF; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:13px; outline:none;" />
-              <select value="{{ catalogLob }}" onChange="{{ onCatalogLobChange }}" style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:13px;">
-                <option value="All">All LOBs</option>
-                <option value="Ridesharing">Ridesharing</option>
-                <option value="Eats">Eats</option>
-                <option value="B2B">B2B</option>
-                <option value="Platform">Platform</option>
-              </select>
-              <select value="{{ catalogStatus }}" onChange="{{ onCatalogStatusChange }}" style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:13px;">
-                <option value="All">All statuses</option>
-                <option value="active">Active</option>
-                <option value="under review">Under review</option>
-                <option value="deprecated">Deprecated</option>
-              </select>
+            <div style="display:flex; border-bottom:1px solid #E5E5E5; margin-bottom:20px;">
+              <button onClick="{{ onCatalogTabData }}" style="{{ catalogTabDataStyle }}">Data Log</button>
+              <button onClick="{{ onCatalogTabPipeline }}" style="{{ catalogTabPipelineStyle }}">Pipeline Log</button>
             </div>
-            <div style="font-size:12px; color:#9B9B9B; margin-bottom:10px;">{{ catalogCountLabel }}</div>
 
-            <div style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; overflow:hidden;">
-              <sc-for list="{{ filteredCatalog }}" as="e" hint-placeholder-count="6">
-                <div onClick="{{ e.onSelect }}" style="display:grid; grid-template-columns:2fr 1fr 1fr 1.6fr 1fr; gap:10px; padding:14px 18px; font-size:13px; border-bottom:1px solid #F0F0F0; align-items:center; cursor:pointer;">
-                  <div style="display:flex; align-items:center; gap:8px;">
-                    <sc-if value="{{ e.warning }}" hint-placeholder-val="{{ false }}"><span style="width:6px; height:6px; border-radius:50%; background:#A93327; flex-shrink:0;"></span></sc-if>
-                    <span style="font-weight:600; font-family:ui-monospace,monospace;">{{ e.name }}</span>
+            <sc-if value="{{ isCatalogDataTab }}" hint-placeholder-val="{{ true }}">
+              <div style="display:flex; gap:10px; margin-bottom:16px; flex-wrap:wrap;">
+                <input value="{{ catalogQuery }}" onChange="{{ onCatalogQueryChange }}" placeholder="Search events, metrics, definitions…" style="flex:1; min-width:220px; box-sizing:border-box; background:#FFFFFF; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:13px; outline:none;" />
+                <select value="{{ catalogLob }}" onChange="{{ onCatalogLobChange }}" style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:13px;">
+                  <option value="All">All LOBs</option>
+                  <option value="Ridesharing">Ridesharing</option>
+                  <option value="Eats">Eats</option>
+                  <option value="B2B">B2B</option>
+                  <option value="Platform">Platform</option>
+                </select>
+                <select value="{{ catalogStatus }}" onChange="{{ onCatalogStatusChange }}" style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:13px;">
+                  <option value="All">All statuses</option>
+                  <option value="active">Active</option>
+                  <option value="under review">Under review</option>
+                  <option value="deprecated">Deprecated</option>
+                </select>
+              </div>
+              <div style="font-size:12px; color:#9B9B9B; margin-bottom:10px;">{{ catalogCountLabel }}</div>
+
+              <div style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; overflow:hidden;">
+                <sc-for list="{{ filteredCatalog }}" as="e" hint-placeholder-count="6">
+                  <div onClick="{{ e.onSelect }}" style="display:grid; grid-template-columns:2fr 1fr 1fr 1.6fr 1fr; gap:10px; padding:14px 18px; font-size:13px; border-bottom:1px solid #F0F0F0; align-items:center; cursor:pointer;">
+                    <div style="display:flex; align-items:center; gap:8px;">
+                      <sc-if value="{{ e.warning }}" hint-placeholder-val="{{ false }}"><span style="width:6px; height:6px; border-radius:50%; background:#A93327; flex-shrink:0;"></span></sc-if>
+                      <span style="font-weight:600; font-family:ui-monospace,monospace;">{{ e.name }}</span>
+                    </div>
+                    <div style="color:#6B6B6B;">{{ e.lob }}</div>
+                    <div><span style="{{ e.statusChipStyle }}">{{ e.statusLabel }}</span></div>
+                    <div style="color:#6B6B6B;">{{ e.definitionOwner }}</div>
+                    <div style="color:#9B9B9B;">{{ e.lastUpdated }}</div>
                   </div>
-                  <div style="color:#6B6B6B;">{{ e.lob }}</div>
-                  <div><span style="{{ e.statusChipStyle }}">{{ e.statusLabel }}</span></div>
-                  <div style="color:#6B6B6B;">{{ e.definitionOwner }}</div>
-                  <div style="color:#9B9B9B;">{{ e.lastUpdated }}</div>
+                </sc-for>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ isCatalogPipelineTab }}" hint-placeholder-val="{{ false }}">
+              <p style="font-size:13px; color:#6B6B6B; margin:-6px 0 14px 0;">Real-time status across every core web data pipeline, based on daily, weekly, and monthly validation checks.</p>
+              <div style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; overflow:hidden;">
+                <div style="display:grid; grid-template-columns:2fr 1fr 1fr 1.4fr 1.1fr 1fr; gap:8px; padding:10px 18px; font-size:11px; color:#9B9B9B; font-weight:600; text-transform:uppercase; letter-spacing:0.04em; border-bottom:1px solid #EFEFEF;">
+                  <div>Pipeline</div><div>LOB</div><div>Status</div><div>SLA (target / actual)</div><div>Freshness</div><div>Quality</div>
                 </div>
-              </sc-for>
-            </div>
+                <sc-for list="{{ pipelines }}" as="p" hint-placeholder-count="9">
+                  <div style="display:grid; grid-template-columns:2fr 1fr 1fr 1.4fr 1.1fr 1fr; gap:8px; padding:13px 18px; font-size:13px; border-bottom:1px solid #F0F0F0; align-items:center;">
+                    <div style="font-weight:600;">{{ p.name }}</div>
+                    <div style="color:#6B6B6B;">{{ p.lob }}</div>
+                    <div><span style="{{ p.statusChipStyle }}">{{ p.statusLabel }}</span></div>
+                    <div style="color:#6B6B6B;">{{ p.slaTarget }} / <span style="{{ p.slaActualStyle }}">{{ p.slaActual }}</span></div>
+                    <div style="color:#6B6B6B;">{{ p.freshness }}</div>
+                    <div style="display:flex; align-items:center; gap:8px;">
+                      <span style="font-weight:600;">{{ p.quality }}</span>
+                      <div style="width:44px; height:5px; background:#EFEFEF; border-radius:3px; overflow:hidden;">
+                        <div style="{{ p.qualityBarStyle }}"></div>
+                      </div>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
           </sc-if>
 
           <sc-if value="{{ isAssistant }}" hint-placeholder-val="{{ false }}">
@@ -353,7 +384,7 @@
             <div style="display:flex; flex-direction:column; gap:14px;">
               <div>
                 <label style="display:block; font-size:12px; font-weight:600; color:#6B6B6B; margin-bottom:6px;">Event / schema name</label>
-                <input value="{{ contributeForm.name }}" onChange="{{ onContributeNameChange }}" placeholder="e.g. scheduled_ride_requested" style="width:100%; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:13px; font-family:ui-monospace,monospace;" />
+                <input value="{{ contributeForm.name }}" onChange="{{ onContributeNameChange }}" placeholder="e.g. driver_rating_submitted" style="width:100%; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:13px; font-family:ui-monospace,monospace;" />
               </div>
               <div>
                 <label style="display:block; font-size:12px; font-weight:600; color:#6B6B6B; margin-bottom:6px;">Line of business</label>
@@ -455,7 +486,7 @@ const CATALOG = [
     implementingTeam:'Pricing Engineering', definitionOwner:'Pricing Data Science', version:'v2.1', lastUpdated:'2026-06-30', warning:false,
     changelog:[{version:'v2.1',date:'2026-06-30',change:'Added zone-level granularity'},{version:'v2.0',date:'2026-03-11',change:'Renamed from surge_applied'}],
     payload:[{field:'request_id',value:'q_10293'},{field:'zone_id',value:'ams-central'},{field:'multiplier',value:'1.8'},{field:'applied_at',value:'2026-07-29T18:02:44Z'}] },
-  { id:'eats_conversion', name:'eats_campaign_conversion', lob:'Eats', status:'active',
+  { id:'eats_campaign_conversion', name:'eats_campaign_conversion', lob:'Eats', status:'active',
     definition:'The official definition of "conversion" for Eats campaigns: an order placed within 7 days of an attributed ad click or impression.',
     implementingTeam:'Eats Growth Engineering', definitionOwner:'Marketing Analytics', version:'v4.0', lastUpdated:'2026-07-05', warning:false,
     changelog:[{version:'v4.0',date:'2026-07-05',change:'Attribution window extended from 3 to 7 days'},{version:'v3.0',date:'2026-01-20',change:'Excluded refunded orders from conversion count'}],
@@ -541,7 +572,7 @@ class Component extends DCLogic {
   state = {
     screen:'login', loginEmail:'', loginPassword:'', loginError:'',
     appScreen:'home',
-    catalogQuery:'', catalogLob:'All', catalogStatus:'All', selectedEntryId:null,
+    catalogQuery:'', catalogLob:'All', catalogStatus:'All', selectedEntryId:null, catalogTab:'data',
     chatMessages:[{role:'assistant', text:"Hi, I'm the Pulse assistant. Ask me about any event or metric, request a quick data pull, or describe a feature to get a draft measurement plan."}],
     chatInput:'',
     contributeOpen:false, contributeStep:1, contributeForm:{name:'',lob:'Ridesharing',description:''},
@@ -564,16 +595,17 @@ class Component extends DCLogic {
   logout = () => this.setState({screen:'login', loginEmail:'', loginPassword:'', loginError:''});
 
   goHome = () => this.setState({appScreen:'home', selectedEntryId:null});
-  goCatalog = () => this.setState({appScreen:'catalog', selectedEntryId:null});
+  goCatalog = () => this.setState({appScreen:'catalog', selectedEntryId:null, catalogTab:'data'});
   goAssistant = () => this.setState({appScreen:'assistant', selectedEntryId:null});
   goRoadmap = () => this.setState({appScreen:'roadmap', selectedEntryId:null});
 
+  setCatalogTab = (tab) => this.setState({catalogTab:tab});
   onCatalogQueryChange = (e) => this.setState({catalogQuery:e.target.value});
   onCatalogLobChange = (e) => this.setState({catalogLob:e.target.value});
   onCatalogStatusChange = (e) => this.setState({catalogStatus:e.target.value});
   selectEntry = (id) => this.setState({selectedEntryId:id});
   closeEntry = () => this.setState({selectedEntryId:null});
-  viewCatalogRef = (id) => this.setState({appScreen:'catalog', catalogQuery:'', catalogLob:'All', catalogStatus:'All', selectedEntryId:id});
+  viewCatalogRef = (id) => this.setState({appScreen:'catalog', catalogQuery:'', catalogLob:'All', catalogStatus:'All', selectedEntryId:id, catalogTab:'data'});
 
   downloadSample = (entry) => {
     downloadCSV(entry.id+'_sample.csv', ['field','value'], entry.payload.map(p=>[p.field,p.value]));
@@ -602,7 +634,7 @@ class Component extends DCLogic {
     }
     if(lower.includes('scheduled') || lower.includes('30 days') || lower.includes('advance') || lower.includes('book a ride')){
       return { text:"Here's a draft measurement plan for scheduled rides, aligned to existing naming conventions:",
-        plan:{ featureName:'Scheduled Rides', events:['scheduled_ride_requested','scheduled_ride_confirmed','scheduled_ride_cancelled'], metrics:['Scheduled Ride Booking Rate','GTV from Scheduled Rides','Pre-pickup Cancellation Rate'], similarNote:'Similar events found: completed_trip, surge_multiplier_applied — naming aligned to existing conventions.' } };
+        plan:{ featureName:'Scheduled Rides', events:['scheduled_ride_booked','scheduled_ride_confirmed','scheduled_ride_cancelled'], metrics:['Scheduled Ride Booking Rate','GTV from Scheduled Rides','Pre-pickup Cancellation Rate'], similarNote:'scheduled_ride_booked is already in review (v0.1, submitted 07/27) — new events built as its lifecycle companions rather than a duplicate definition.' } };
     }
     return { text:"I can help with data definitions, quick metric pulls, or measurement plans. Try asking about a specific event, or describe a new feature you're building." };
   };
@@ -674,6 +706,14 @@ class Component extends DCLogic {
       qualityBarStyle: 'height:100%;border-radius:3px;width:'+p.quality+'%;background:'+(p.quality>=95?'#06C167':p.quality>=80?'#C98A1E':'#A93327')+';'
     }));
 
+    const catalogTabStyle = (active) => 'background:none;border:none;border-bottom:2px solid '+(active?'#0A0A0A':'transparent')+';color:'+(active?'#0A0A0A':'#6B6B6B')+';font-weight:'+(active?'700':'500')+';font-size:13.5px;padding:10px 4px;margin-right:24px;cursor:pointer;';
+    const isCatalogDataTab = s.catalogTab === 'data';
+    const isCatalogPipelineTab = s.catalogTab === 'pipeline';
+    const catalogTabDataStyle = catalogTabStyle(isCatalogDataTab);
+    const catalogTabPipelineStyle = catalogTabStyle(isCatalogPipelineTab);
+    const onCatalogTabData = () => this.setCatalogTab('data');
+    const onCatalogTabPipeline = () => this.setCatalogTab('pipeline');
+
     const q = s.catalogQuery.trim().toLowerCase();
     const filteredCatalog = CATALOG.filter(e =>
       (s.catalogLob === 'All' || e.lob === s.catalogLob) &&
@@ -739,6 +779,8 @@ class Component extends DCLogic {
       openReport: this.openReport, openContribute: this.openContribute,
       criticalPipeline, metrics, pipelines,
       catalogQuery: s.catalogQuery, catalogLob: s.catalogLob, catalogStatus: s.catalogStatus,
+      isCatalogDataTab, isCatalogPipelineTab, catalogTabDataStyle, catalogTabPipelineStyle,
+      onCatalogTabData, onCatalogTabPipeline,
       onCatalogQueryChange: this.onCatalogQueryChange, onCatalogLobChange: this.onCatalogLobChange, onCatalogStatusChange: this.onCatalogStatusChange,
       catalogCountLabel: filteredCatalog.length + (filteredCatalog.length===1 ? ' result' : ' results'),
       filteredCatalog, selectedEntry, closeEntry: this.closeEntry,
