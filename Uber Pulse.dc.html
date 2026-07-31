@@ -312,53 +312,127 @@
           </sc-if>
 
           <sc-if value="{{ isAssistant }}" hint-placeholder-val="{{ false }}">
-            <h1 style="font-size:24px; font-weight:800; margin:0 0 4px 0; letter-spacing:-0.5px;">AI Assistant</h1>
-            <p style="font-size:14px; color:#6B6B6B; margin:0 0 20px 0;">Ask about data availability and definitions, or describe a feature to get a draft measurement plan.</p>
+            <div style="display:flex; flex-direction:column; flex:1; min-height:0; width:100%;">
 
-            <div style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; display:flex; flex-direction:column; height:560px;">
-              <div style="flex:1; overflow-y:auto; padding:20px; display:flex; flex-direction:column; gap:14px;">
-                <sc-for list="{{ chatMessages }}" as="msg" hint-placeholder-count="1">
-                  <div style="{{ msg.rowStyle }}">
-                    <div style="{{ msg.bubbleStyle }}">
-                      <div>{{ msg.text }}</div>
-                      <sc-if value="{{ msg.catalogRefLabel }}" hint-placeholder-val="{{ false }}">
-                        <div onClick="{{ msg.onViewCatalog }}" style="margin-top:10px; display:inline-flex; align-items:center; gap:6px; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:7px; padding:6px 10px; font-size:12px; font-family:ui-monospace,monospace; cursor:pointer;">📇 {{ msg.catalogRefLabel }} → open in catalog</div>
-                      </sc-if>
-                      <sc-if value="{{ msg.csv }}" hint-placeholder-val="{{ false }}">
-                        <button onClick="{{ msg.onDownloadCsv }}" style="margin-top:10px; background:#0A0A0A; color:#FFF; border:none; border-radius:999px; padding:8px 14px; font-size:12px; font-weight:600; cursor:pointer;">Download CSV</button>
-                      </sc-if>
-                      <sc-if value="{{ msg.plan }}" hint-placeholder-val="{{ false }}">
-                        <div style="margin-top:12px; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:10px; padding:14px;">
-                          <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#6B6B6B; margin-bottom:8px;">Draft Measurement Plan — {{ msg.plan.featureName }}</div>
-                          <div style="font-size:12px; color:#6B6B6B; font-weight:600; margin-bottom:4px;">Suggested events</div>
-                          <sc-for list="{{ msg.plan.events }}" as="ev" hint-placeholder-count="3">
-                            <div style="font-family:ui-monospace,monospace; font-size:12px; margin-bottom:2px;">• {{ ev }}</div>
-                          </sc-for>
-                          <div style="font-size:12px; color:#6B6B6B; font-weight:600; margin:8px 0 4px 0;">Success metrics</div>
-                          <sc-for list="{{ msg.plan.metrics }}" as="me" hint-placeholder-count="3">
-                            <div style="font-size:12px; margin-bottom:2px;">• {{ me }}</div>
-                          </sc-for>
-                          <div style="font-size:11px; color:#9B9B9B; margin-top:8px;">{{ msg.plan.similarNote }}</div>
-                          <button onClick="{{ msg.onSubmitPlan }}" style="margin-top:10px; background:#06C167; color:#FFF; border:none; border-radius:999px; padding:8px 14px; font-size:12px; font-weight:700; cursor:pointer;">Submit for review</button>
+              <sc-if value="{{ isChatLanding }}" hint-placeholder-val="{{ true }}">
+                <div style="flex:1; min-height:0; overflow-y:auto; display:flex; flex-direction:column; align-items:center; padding:40px 20px;">
+                  <div style="width:100%; max-width:640px;">
+                    <h1 style="font-size:28px; font-weight:800; text-align:center; margin:0 0 20px 0; letter-spacing:-0.6px;">How can I help you today?</h1>
+
+                    <div style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:16px; padding:14px 16px; box-shadow:0 4px 16px rgba(0,0,0,0.04);">
+                      <sc-if value="{{ hasAttachedFile }}" hint-placeholder-val="{{ false }}">
+                        <div style="display:inline-flex; align-items:center; gap:6px; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:7px; padding:5px 10px; font-size:12px; margin-bottom:10px;">
+                          📎 {{ attachedFileName }}
+                          <span onClick="{{ clearAttachedFile }}" style="cursor:pointer; color:#9B9B9B; font-weight:700;">✕</span>
                         </div>
                       </sc-if>
+                      <input value="{{ chatInput }}" onChange="{{ onChatInputChange }}" onKeyDown="{{ onChatKeyDown }}" placeholder="Ask about data availability, definitions, or describe a feature…" style="width:100%; box-sizing:border-box; border:none; outline:none; font-size:15px; font-family:inherit; padding:6px 2px;" />
+                      <div style="display:flex; align-items:center; justify-content:space-between; margin-top:10px;">
+                        <div style="display:flex; align-items:center; gap:6px; position:relative;">
+                          <button onClick="{{ toggleAttachMenu }}" style="background:none; border:1px solid #E5E5E5; border-radius:999px; width:32px; height:32px; cursor:pointer; color:#6B6B6B; font-size:15px;">📎</button>
+                          <button onClick="{{ onVoiceClick }}" style="background:none; border:1px solid #E5E5E5; border-radius:999px; width:32px; height:32px; cursor:pointer; color:#6B6B6B; font-size:15px;">🎤</button>
+                          <sc-if value="{{ attachMenuOpen }}" hint-placeholder-val="{{ false }}">
+                            <div style="position:absolute; top:38px; left:0; background:#FFFFFF; border:1px solid #E5E5E5; border-radius:10px; box-shadow:0 10px 30px rgba(0,0,0,0.12); width:220px; z-index:10; overflow:hidden;">
+                              <div onClick="{{ onUploadFile }}" style="padding:10px 14px; font-size:13px; cursor:pointer; border-bottom:1px solid #F0F0F0;">📄 Upload a file</div>
+                              <div onClick="{{ onUploadScreenshot }}" style="padding:10px 14px; font-size:13px; cursor:pointer; border-bottom:1px solid #F0F0F0;">🖼️ Attach a screenshot</div>
+                              <div onClick="{{ onReferenceCatalogEntry }}" style="padding:10px 14px; font-size:13px; cursor:pointer;">📇 Reference a catalog entry</div>
+                            </div>
+                          </sc-if>
+                        </div>
+                        <button onClick="{{ sendChat }}" style="background:#0A0A0A; color:#FFF; border:none; border-radius:999px; padding:9px 20px; font-size:13px; font-weight:700; cursor:pointer;">Send</button>
+                      </div>
                     </div>
-                  </div>
-                </sc-for>
-              </div>
 
-              <sc-if value="{{ showSuggestions }}" hint-placeholder-val="{{ true }}">
-                <div style="display:flex; gap:8px; flex-wrap:wrap; padding:0 20px 14px 20px;">
-                  <sc-for list="{{ suggestions }}" as="sg" hint-placeholder-count="4">
-                    <button onClick="{{ sg.onClick }}" style="background:#F6F6F6; border:1px solid #E5E5E5; border-radius:999px; padding:7px 14px; font-size:12px; cursor:pointer; color:#0A0A0A;">{{ sg.label }}</button>
-                  </sc-for>
+                    <div style="display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin-top:14px;">
+                      <sc-for list="{{ suggestions }}" as="sg" hint-placeholder-count="4">
+                        <button onClick="{{ sg.onClick }}" style="background:#F6F6F6; border:1px solid #E5E5E5; border-radius:999px; padding:7px 14px; font-size:12px; cursor:pointer; color:#0A0A0A;">{{ sg.label }}</button>
+                      </sc-for>
+                    </div>
+
+                    <sc-if value="{{ hasChatSessions }}" hint-placeholder-val="{{ true }}">
+                      <div style="margin-top:40px;">
+                        <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:#6B6B6B; margin-bottom:12px;">Recent chats</div>
+                        <div style="display:flex; flex-direction:column; gap:8px;">
+                          <sc-for list="{{ chatSessionsView }}" as="cs" hint-placeholder-count="3">
+                            <div onClick="{{ cs.onOpen }}" style="display:flex; align-items:center; justify-content:space-between; gap:12px; border:1px solid #E5E5E5; border-radius:10px; padding:12px 14px; cursor:pointer; min-width:0;">
+                              <div style="min-width:0;">
+                                <div style="font-weight:600; font-size:13px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ cs.title }}</div>
+                                <div style="font-size:11px; color:#9B9B9B; margin-top:2px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ cs.previewLabel }}</div>
+                              </div>
+                              <div style="font-size:11px; color:#9B9B9B; flex-shrink:0;">{{ cs.createdLabel }}</div>
+                            </div>
+                          </sc-for>
+                        </div>
+                      </div>
+                    </sc-if>
+                  </div>
                 </div>
               </sc-if>
 
-              <div style="display:flex; gap:10px; padding:14px 20px; border-top:1px solid #EFEFEF;">
-                <input value="{{ chatInput }}" onChange="{{ onChatInputChange }}" onKeyDown="{{ onChatKeyDown }}" placeholder="Ask a question about data…" style="flex:1; box-sizing:border-box; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:8px; padding:11px 12px; font-size:13px; outline:none;" />
-                <button onClick="{{ sendChat }}" style="background:#0A0A0A; color:#FFF; border:none; border-radius:999px; padding:11px 20px; font-size:13px; font-weight:700; cursor:pointer;">Send</button>
-              </div>
+              <sc-if value="{{ isChatActive }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; flex-shrink:0;">
+                  <div style="font-size:16px; font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ activeChatSession.title }}</div>
+                  <button onClick="{{ startNewChat }}" style="background:none; border:1px solid #E5E5E5; border-radius:999px; padding:7px 14px; font-size:12px; font-weight:600; cursor:pointer; flex-shrink:0;">+ New chat</button>
+                </div>
+
+                <div style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; display:flex; flex-direction:column; flex:1; min-height:0;">
+                  <div style="flex:1; min-height:0; overflow-y:auto; padding:20px; display:flex; flex-direction:column; gap:14px;">
+                    <sc-for list="{{ chatMessages }}" as="msg" hint-placeholder-count="1">
+                      <div style="{{ msg.rowStyle }}">
+                        <div style="{{ msg.bubbleStyle }}">
+                          <div>{{ msg.text }}</div>
+                          <sc-if value="{{ msg.catalogRefLabel }}" hint-placeholder-val="{{ false }}">
+                            <div onClick="{{ msg.onViewCatalog }}" style="margin-top:10px; display:inline-flex; align-items:center; gap:6px; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:7px; padding:6px 10px; font-size:12px; font-family:ui-monospace,monospace; cursor:pointer;">📇 {{ msg.catalogRefLabel }} → open in catalog</div>
+                          </sc-if>
+                          <sc-if value="{{ msg.csv }}" hint-placeholder-val="{{ false }}">
+                            <button onClick="{{ msg.onDownloadCsv }}" style="margin-top:10px; background:#0A0A0A; color:#FFF; border:none; border-radius:999px; padding:8px 14px; font-size:12px; font-weight:600; cursor:pointer;">Download CSV</button>
+                          </sc-if>
+                          <sc-if value="{{ msg.plan }}" hint-placeholder-val="{{ false }}">
+                            <div style="margin-top:12px; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:10px; padding:14px;">
+                              <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#6B6B6B; margin-bottom:8px;">Draft Measurement Plan — {{ msg.plan.featureName }}</div>
+                              <div style="font-size:12px; color:#6B6B6B; font-weight:600; margin-bottom:4px;">Suggested events</div>
+                              <sc-for list="{{ msg.plan.events }}" as="ev" hint-placeholder-count="3">
+                                <div style="font-family:ui-monospace,monospace; font-size:12px; margin-bottom:2px;">• {{ ev }}</div>
+                              </sc-for>
+                              <div style="font-size:12px; color:#6B6B6B; font-weight:600; margin:8px 0 4px 0;">Success metrics</div>
+                              <sc-for list="{{ msg.plan.metrics }}" as="me" hint-placeholder-count="3">
+                                <div style="font-size:12px; margin-bottom:2px;">• {{ me }}</div>
+                              </sc-for>
+                              <div style="font-size:11px; color:#9B9B9B; margin-top:8px;">{{ msg.plan.similarNote }}</div>
+                              <button onClick="{{ msg.onSubmitPlan }}" style="margin-top:10px; background:#06C167; color:#FFF; border:none; border-radius:999px; padding:8px 14px; font-size:12px; font-weight:700; cursor:pointer;">Submit for review</button>
+                            </div>
+                          </sc-if>
+                        </div>
+                      </div>
+                    </sc-for>
+                  </div>
+
+                  <div style="padding:14px 20px; border-top:1px solid #EFEFEF; flex-shrink:0;">
+                    <sc-if value="{{ hasAttachedFile }}" hint-placeholder-val="{{ false }}">
+                      <div style="display:inline-flex; align-items:center; gap:6px; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:7px; padding:5px 10px; font-size:12px; margin-bottom:10px;">
+                        📎 {{ attachedFileName }}
+                        <span onClick="{{ clearAttachedFile }}" style="cursor:pointer; color:#9B9B9B; font-weight:700;">✕</span>
+                      </div>
+                    </sc-if>
+                    <div style="display:flex; align-items:center; gap:10px;">
+                      <div style="display:flex; align-items:center; gap:6px; position:relative; flex-shrink:0;">
+                        <button onClick="{{ toggleAttachMenu }}" style="background:none; border:1px solid #E5E5E5; border-radius:999px; width:32px; height:32px; cursor:pointer; color:#6B6B6B; font-size:15px;">📎</button>
+                        <button onClick="{{ onVoiceClick }}" style="background:none; border:1px solid #E5E5E5; border-radius:999px; width:32px; height:32px; cursor:pointer; color:#6B6B6B; font-size:15px;">🎤</button>
+                        <sc-if value="{{ attachMenuOpen }}" hint-placeholder-val="{{ false }}">
+                          <div style="position:absolute; bottom:38px; left:0; background:#FFFFFF; border:1px solid #E5E5E5; border-radius:10px; box-shadow:0 10px 30px rgba(0,0,0,0.12); width:220px; z-index:10; overflow:hidden;">
+                            <div onClick="{{ onUploadFile }}" style="padding:10px 14px; font-size:13px; cursor:pointer; border-bottom:1px solid #F0F0F0;">📄 Upload a file</div>
+                            <div onClick="{{ onUploadScreenshot }}" style="padding:10px 14px; font-size:13px; cursor:pointer; border-bottom:1px solid #F0F0F0;">🖼️ Attach a screenshot</div>
+                            <div onClick="{{ onReferenceCatalogEntry }}" style="padding:10px 14px; font-size:13px; cursor:pointer;">📇 Reference a catalog entry</div>
+                          </div>
+                        </sc-if>
+                      </div>
+                      <input value="{{ chatInput }}" onChange="{{ onChatInputChange }}" onKeyDown="{{ onChatKeyDown }}" placeholder="Ask a question about data…" style="flex:1; min-width:0; box-sizing:border-box; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:8px; padding:11px 12px; font-size:13px; outline:none;" />
+                      <button onClick="{{ sendChat }}" style="background:#0A0A0A; color:#FFF; border:none; border-radius:999px; padding:11px 20px; font-size:13px; font-weight:700; cursor:pointer; flex-shrink:0;">Send</button>
+                    </div>
+                  </div>
+                </div>
+              </sc-if>
+
             </div>
           </sc-if>
 
@@ -1422,6 +1496,25 @@ const CATALOG = [
 
 const OWNING_TEAMS = [...new Set(PIPELINES.map(p => p.owningTeam))].sort().concat('Other');
 
+const SEED_CHAT_SESSIONS = [
+  { id:'seed-1', title:'What is completed_trip?', createdLabel:'2 days ago', messages:[
+    {role:'user', text:'What is completed_trip?'},
+    {role:'assistant', text:'A completed_trip fires when the rider is dropped off at the confirmed destination and payment is captured successfully. Owned by Maya Chen (Data Science); currently v3.2. Note: it has an active data quality flag for duplicate events in the EU region.', catalogRefLabel:'completed_trip', catalogRefId:'completed_trip'}
+  ]},
+  { id:'seed-2', title:'Completed rides in the Netherlands', createdLabel:'3 days ago', messages:[
+    {role:'user', text:'How many rides did we complete last week in the Netherlands?'},
+    {role:'assistant', text:'Completed rides in the Netherlands, last 7 days: 1,284,930 rides — up 3.1% week-over-week. Sourced from completed_trip, filtered to country=NL.', csv:true, csvData:{ header:['date','city','completed_rides'], rows:[['2026-07-23','Amsterdam',201422],['2026-07-24','Amsterdam',198310],['2026-07-25','Rotterdam',94211],['2026-07-26','Amsterdam',205993],['2026-07-27','The Hague',61204],['2026-07-28','Amsterdam',210881],['2026-07-29','Amsterdam',312899]] }}
+  ]},
+  { id:'seed-3', title:'Surge pricing event data', createdLabel:'5 days ago', messages:[
+    {role:'user', text:'Where do I find surge pricing event data?'},
+    {role:'assistant', text:'Surge pricing is tracked via surge_multiplier_applied, implemented by Pricing Engineering. Table location: web_data.pricing.surge_multiplier_applied.', catalogRefLabel:'surge_multiplier_applied', catalogRefId:'surge_multiplier_applied'}
+  ]},
+  { id:'seed-4', title:'Scheduled rides measurement plan', createdLabel:'1 week ago', messages:[
+    {role:'user', text:"We're launching scheduled rides up to 30 days in advance — what should we track?"},
+    {role:'assistant', text:"Here's a draft measurement plan for scheduled rides, aligned to existing naming conventions:", plan:{ featureName:'Scheduled Rides', events:['scheduled_ride_booked','scheduled_ride_confirmed','scheduled_ride_cancelled'], metrics:['Scheduled Ride Booking Rate','GTV from Scheduled Rides','Pre-pickup Cancellation Rate'], similarNote:'scheduled_ride_booked is already in review (v0.1, submitted 07/27) — new events built as its lifecycle companions rather than a duplicate definition.' }}
+  ]}
+];
+
 const ROADMAP_BASE = {
   defining:[
     { id:'r1', name:'b2b_bulk_shipment_event', type:'data', lob:'B2B', team:'Freight Engineering', owner:'Priya Nair', dateLabel:'Est. Aug 22', priority:'P1', ticketId:'DATA-482',
@@ -1533,6 +1626,19 @@ function downloadCSV(filename, headerRow, rows){
   URL.revokeObjectURL(url);
 }
 
+function pickFile(accept, onPicked){
+  const input = document.createElement('input');
+  input.type = 'file';
+  if(accept) input.accept = accept;
+  input.onchange = (e) => {
+    const f = e.target.files[0];
+    if(f) onPicked(f.name);
+    input.remove();
+  };
+  document.body.appendChild(input);
+  input.click();
+}
+
 class Component extends DCLogic {
   state = {
     screen:'app', loginEmail:'', loginPassword:'', loginError:'',
@@ -1540,8 +1646,9 @@ class Component extends DCLogic {
     catalogQuery:'', catalogLob:'All', catalogStatus:'All', selectedEntryId:null, catalogTab:'data',
     pipelineQuery:'', pipelineLob:'All', pipelineHealth:'All', selectedPipelineId:null, selectedRoadmapItemId:null,
     catalogPage:1, pipelineLogPage:1,
-    chatMessages:[{role:'assistant', text:"Hi, I'm the Pulse assistant. Ask me about any event or metric, request a quick data pull, or describe a feature to get a draft measurement plan."}],
-    chatInput:'',
+    chatSessions: SEED_CHAT_SESSIONS,
+    activeChatId: null,
+    chatInput:'', attachedFileName:null, attachMenuOpen:false,
     contributeStep:1,
     contributeForm:{name:'',lob:'Ridesharing',owningTeam:OWNING_TEAMS[0],description:'',repoLink:'',jiraLink:'',expectedVolume:'',payloadRows:[{field:'',value:''}]},
     reportStep:1, reportDataPointQuery:'',
@@ -1565,7 +1672,7 @@ class Component extends DCLogic {
 
   goHome = () => this.setState({appScreen:'home', selectedEntryId:null, selectedPipelineId:null});
   goCatalog = () => this.setState({appScreen:'catalog', selectedEntryId:null, selectedPipelineId:null, catalogTab:'data', catalogPage:1, pipelineLogPage:1});
-  goAssistant = () => this.setState({appScreen:'assistant', selectedEntryId:null, selectedPipelineId:null});
+  goAssistant = () => this.setState({appScreen:'assistant', selectedEntryId:null, selectedPipelineId:null, activeChatId:null, attachMenuOpen:false});
   goRoadmap = () => this.setState({appScreen:'roadmap', selectedEntryId:null, selectedPipelineId:null, selectedRoadmapItemId:null});
   goReport = () => this.setState({
     appScreen:'report', selectedEntryId:null, selectedPipelineId:null, reportStep:1, reportDataPointQuery:'',
@@ -1626,17 +1733,44 @@ class Component extends DCLogic {
     return { text:"I can help with data definitions, quick metric pulls, or measurement plans. Try asking about a specific event, or describe a new feature you're building." };
   };
 
-  sendChat = () => {
-    const text = this.state.chatInput.trim();
-    if(!text) return;
+  pushChatExchange = (text) => {
     const response = this.getAssistantResponse(text);
-    this.setState(s => ({ chatMessages:[...s.chatMessages, {role:'user', text}, {role:'assistant', ...response}], chatInput:'' }));
+    this.setState(s => {
+      let sessions = s.chatSessions;
+      let activeId = s.activeChatId;
+      if(!activeId){
+        const newSession = { id:'chat-'+Date.now(), title: text.length > 48 ? text.slice(0,48)+'…' : text, createdLabel:'Just now', messages:[] };
+        sessions = [newSession, ...sessions];
+        activeId = newSession.id;
+      }
+      sessions = sessions.map(sess => sess.id === activeId ? { ...sess, messages:[...sess.messages, {role:'user', text}, {role:'assistant', ...response}] } : sess);
+      return { chatSessions:sessions, activeChatId:activeId };
+    });
   };
 
-  sendSuggestion = (text) => {
-    const response = this.getAssistantResponse(text);
-    this.setState(s => ({ chatMessages:[...s.chatMessages, {role:'user', text}, {role:'assistant', ...response}] }));
+  sendChat = () => {
+    const text = this.state.chatInput.trim();
+    const file = this.state.attachedFileName;
+    if(!text && !file) return;
+    const parts = [];
+    if(file) parts.push('📎 '+file);
+    if(text) parts.push(text);
+    this.pushChatExchange(parts.join('\n'));
+    this.setState({chatInput:'', attachedFileName:null});
   };
+
+  sendSuggestion = (text) => { this.pushChatExchange(text); };
+
+  startNewChat = () => this.setState({activeChatId:null, chatInput:'', attachedFileName:null, attachMenuOpen:false});
+  openChatSession = (id) => this.setState({activeChatId:id, chatInput:'', attachedFileName:null, attachMenuOpen:false});
+
+  toggleAttachMenu = () => this.setState(s => ({attachMenuOpen: !s.attachMenuOpen}));
+  closeAttachMenu = () => this.setState({attachMenuOpen:false});
+  clearAttachedFile = () => this.setState({attachedFileName:null});
+  onUploadFile = () => { this.setState({attachMenuOpen:false}); pickFile('', (name) => this.setState({attachedFileName:name})); };
+  onUploadScreenshot = () => { this.setState({attachMenuOpen:false}); pickFile('image/*', (name) => this.setState({attachedFileName:name})); };
+  onReferenceCatalogEntry = () => { this.setState({attachMenuOpen:false}); };
+  onVoiceClick = () => { this.showToast('Voice input coming soon.'); };
 
   downloadChatCsv = (csvData) => { downloadCSV('query_result.csv', csvData.header, csvData.rows); this.showToast('CSV downloaded.'); };
 
@@ -1833,7 +1967,10 @@ class Component extends DCLogic {
       onDownload: () => this.downloadSample(rawSelected)
     } : null;
 
-    const chatMessages = s.chatMessages.map(m => ({
+    const isChatActive = !!s.activeChatId;
+    const isChatLanding = !isChatActive;
+    const activeChatSession = s.chatSessions.find(sess => sess.id === s.activeChatId) || null;
+    const chatMessages = (activeChatSession ? activeChatSession.messages : []).map(m => ({
       ...m,
       rowStyle: 'display:flex;'+(m.role==='user' ? 'justify-content:flex-end;' : 'justify-content:flex-start;'),
       bubbleStyle: 'max-width:78%;padding:12px 14px;border-radius:12px;font-size:13px;line-height:1.55;'+(m.role==='user' ? 'background:#0A0A0A;color:#FFFFFF;' : 'background:#F6F6F6;color:#0A0A0A;'),
@@ -1843,6 +1980,17 @@ class Component extends DCLogic {
       plan: m.plan || null,
       onSubmitPlan: m.plan ? (() => this.submitPlanForReview(m.plan)) : null
     }));
+
+    const chatSessionsView = s.chatSessions.map(sess => {
+      const lastMsg = sess.messages[sess.messages.length - 1];
+      return {
+        ...sess,
+        previewLabel: lastMsg ? (lastMsg.role === 'user' ? lastMsg.text : lastMsg.text).slice(0,72) : '',
+        onOpen: () => this.openChatSession(sess.id)
+      };
+    });
+    const hasChatSessions = s.chatSessions.length > 0;
+    const hasAttachedFile = !!s.attachedFileName;
 
     const suggestionTexts = ['What is completed_trip?', 'How many rides did we complete last week in the Netherlands?', "Where do I find surge pricing event data?", "We're launching scheduled rides up to 30 days in advance — what should we track?"];
     const suggestions = suggestionTexts.map(t => ({ label:t, onClick: () => this.sendSuggestion(t) }));
@@ -1987,8 +2135,14 @@ class Component extends DCLogic {
       onCatalogQueryChange: this.onCatalogQueryChange, onCatalogLobChange: this.onCatalogLobChange, onCatalogStatusChange: this.onCatalogStatusChange,
       catalogCountLabel: filteredCatalog.length + (filteredCatalog.length===1 ? ' result' : ' results'),
       filteredCatalog, selectedEntry, closeEntry: this.closeEntry,
+      isChatLanding, isChatActive, activeChatSession,
       chatMessages, chatInput: s.chatInput, onChatInputChange: this.onChatInputChange, onChatKeyDown: this.onChatKeyDown, sendChat: this.sendChat,
-      showSuggestions: s.chatMessages.length <= 1, suggestions,
+      chatSessionsView, hasChatSessions, startNewChat: this.startNewChat, openChatSession: this.openChatSession,
+      hasAttachedFile, attachedFileName: s.attachedFileName, clearAttachedFile: this.clearAttachedFile,
+      attachMenuOpen: s.attachMenuOpen, toggleAttachMenu: this.toggleAttachMenu,
+      onUploadFile: this.onUploadFile, onUploadScreenshot: this.onUploadScreenshot, onReferenceCatalogEntry: this.onReferenceCatalogEntry,
+      onVoiceClick: this.onVoiceClick,
+      suggestions,
       roadmapColumns, selectedRoadmapItem, closeRoadmapItem: this.closeRoadmapItem,
       contributeStep: s.contributeStep, contributeStepChips,
       isContributeStep1: s.contributeStep === 1, isContributeStep2: s.contributeStep === 2,

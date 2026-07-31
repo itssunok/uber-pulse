@@ -9,8 +9,6 @@ HIGH PRIORITY
 
 MEDIUM PRIORITY
 ----------------
-[open] Expand icon set for KPI badges / nav so new LOBs or metric types don't reuse the same trend-arrow glyph indefinitely
-[open] AI Assistant page has a lot of dead space in its empty state — fixed-height chat area shows only a greeting bubble and suggestion chips with a large blank gap above the input; reconsider vertical centering or content-driven height. We can rather see a page like Claude's project page where we can see a how can I help you today input bar, file upload voice input and udnerneat a list of previous chats the user had 
 
 
 LOW PRIORITY
