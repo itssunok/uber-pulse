@@ -16,7 +16,6 @@ LOW PRIORITY
 [open] Dark mode for the app shell (login already dark; rest of app is light-only)
 [open] Micro-interactions / motion pass (hover states, panel transitions) once core visual direction is validated
 [open] Mobile support — make sure the site is mobile compatible
-[open] Add favicon
 [open] Enable login
 [open] Some metrics in the data log have a red dot before their name, what is the purpose? Consider removing this. 
 [open] If the AI chat is triggered from the navigation top bar, then it should come up as a side sheet. Not direct back to the AI Assistant page. 
