@@ -112,11 +112,11 @@
               <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M5 3v18"/><path d="M5 4.5h11.5l-2.2 3.75L16.5 12H5"/></svg>
               <span>Roadmap</span>
             </button>
-            <button onClick="{{ openReport }}" style="{{ navBtnStyle_plain }}">
+            <button onClick="{{ goReport }}" style="{{ navBtnStyle_report }}">
               <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M12 4 3 20h18L12 4z"/><path d="M12 10.5v3.5"/><circle cx="12" cy="17" r="0.6" fill="currentColor" stroke="none"/></svg>
               <span>Report Issue</span>
             </button>
-            <button onClick="{{ openContribute }}" style="{{ navBtnStyle_plain }}">
+            <button onClick="{{ goContribute }}" style="{{ navBtnStyle_contribute }}">
               <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>
               <span>Contribute</span>
             </button>
@@ -391,6 +391,82 @@
               </sc-for>
             </div>
           </sc-if>
+
+          <sc-if value="{{ isContribute }}" hint-placeholder-val="{{ false }}">
+            <h1 style="font-size:24px; font-weight:800; margin:0 0 4px 0; letter-spacing:-0.5px;">Contribute a schema</h1>
+            <p style="font-size:14px; color:#6B6B6B; margin:0 0 24px 0;">Propose a new event or metric for review by the data team. Step {{ contributeStep }} of 2.</p>
+
+            <div style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; padding:28px; max-width:560px;">
+              <sc-if value="{{ isContributeStep1 }}" hint-placeholder-val="{{ true }}">
+                <div style="display:flex; flex-direction:column; gap:14px;">
+                  <div>
+                    <label style="display:block; font-size:12px; font-weight:600; color:#6B6B6B; margin-bottom:6px;">Event / schema name</label>
+                    <input value="{{ contributeForm.name }}" onChange="{{ onContributeNameChange }}" placeholder="e.g. driver_rating_submitted" style="width:100%; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:13px; font-family:ui-monospace,monospace;" />
+                  </div>
+                  <div>
+                    <label style="display:block; font-size:12px; font-weight:600; color:#6B6B6B; margin-bottom:6px;">Line of business</label>
+                    <select value="{{ contributeForm.lob }}" onChange="{{ onContributeLobChange }}" style="width:100%; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:13px;">
+                      <option value="Ridesharing">Ridesharing</option>
+                      <option value="Eats">Eats</option>
+                      <option value="B2B">B2B</option>
+                      <option value="Platform">Platform</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label style="display:block; font-size:12px; font-weight:600; color:#6B6B6B; margin-bottom:6px;">What does this event capture?</label>
+                    <textarea value="{{ contributeForm.description }}" onChange="{{ onContributeDescChange }}" placeholder="Describe when this event fires and why it's needed…" rows="3" style="width:100%; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:13px; font-family:inherit; resize:vertical;"></textarea>
+                  </div>
+                </div>
+                <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:22px;">
+                  <button onClick="{{ goHome }}" style="background:none; border:1px solid #E5E5E5; border-radius:999px; padding:10px 18px; font-size:13px; cursor:pointer;">Cancel</button>
+                  <button onClick="{{ contributeNext }}" style="background:#06C167; color:#FFF; border:none; border-radius:999px; padding:10px 20px; font-size:13px; font-weight:700; cursor:pointer;">Next</button>
+                </div>
+              </sc-if>
+
+              <sc-if value="{{ isContributeStep2 }}" hint-placeholder-val="{{ false }}">
+                <div style="background:#F6F6F6; border-radius:10px; padding:16px; font-size:13px; line-height:1.8;">
+                  <div><strong>Name:</strong> {{ contributeForm.name }}</div>
+                  <div><strong>LOB:</strong> {{ contributeForm.lob }}</div>
+                  <div><strong>Description:</strong> {{ contributeForm.description }}</div>
+                  <div style="margin-top:8px; color:#6B6B6B;">Estimated review date: {{ estimatedReviewDate }}</div>
+                </div>
+                <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:22px;">
+                  <button onClick="{{ contributeBack }}" style="background:none; border:1px solid #E5E5E5; border-radius:999px; padding:10px 18px; font-size:13px; cursor:pointer;">Back</button>
+                  <button onClick="{{ submitContribute }}" style="background:#06C167; color:#FFF; border:none; border-radius:999px; padding:10px 20px; font-size:13px; font-weight:700; cursor:pointer;">Submit for review</button>
+                </div>
+              </sc-if>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ isReport }}" hint-placeholder-val="{{ false }}">
+            <h1 style="font-size:24px; font-weight:800; margin:0 0 4px 0; letter-spacing:-0.5px;">Report an issue</h1>
+            <p style="font-size:14px; color:#6B6B6B; margin:0 0 24px 0;">Flag a data quality, freshness, or platform issue to the data team.</p>
+
+            <div style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; padding:28px; max-width:520px;">
+              <div style="display:flex; flex-direction:column; gap:14px;">
+                <div>
+                  <label style="display:block; font-size:12px; font-weight:600; color:#6B6B6B; margin-bottom:6px;">Title</label>
+                  <input value="{{ reportForm.title }}" onChange="{{ onReportTitleChange }}" placeholder="e.g. Quality score looks wrong for eats_order_placed" style="width:100%; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:13px;" />
+                </div>
+                <div>
+                  <label style="display:block; font-size:12px; font-weight:600; color:#6B6B6B; margin-bottom:6px;">Severity</label>
+                  <select value="{{ reportForm.severity }}" onChange="{{ onReportSeverityChange }}" style="width:100%; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:13px;">
+                    <option value="Low">Low</option>
+                    <option value="Medium">Medium</option>
+                    <option value="High">High</option>
+                  </select>
+                </div>
+                <div>
+                  <label style="display:block; font-size:12px; font-weight:600; color:#6B6B6B; margin-bottom:6px;">Description</label>
+                  <textarea value="{{ reportForm.description }}" onChange="{{ onReportDescChange }}" rows="3" placeholder="What did you see, and what did you expect?" style="width:100%; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:13px; font-family:inherit; resize:vertical;"></textarea>
+                </div>
+              </div>
+              <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:22px;">
+                <button onClick="{{ goHome }}" style="background:none; border:1px solid #E5E5E5; border-radius:999px; padding:10px 18px; font-size:13px; cursor:pointer;">Cancel</button>
+                <button onClick="{{ submitReport }}" style="background:#0A0A0A; color:#FFF; border:none; border-radius:999px; padding:10px 20px; font-size:13px; font-weight:700; cursor:pointer;">Submit</button>
+              </div>
+            </div>
+          </sc-if>
         </div>
       </div>
       </div>
@@ -482,84 +558,6 @@
               </div>
             </div>
           </sc-for>
-        </div>
-      </div>
-    </sc-if>
-
-    <sc-if value="{{ contributeOpen }}" hint-placeholder-val="{{ false }}">
-      <div style="position:fixed; inset:0; background:rgba(10,10,10,0.4); z-index:40; display:flex; align-items:center; justify-content:center;" onClick="{{ closeContribute }}">
-        <div style="background:#FFFFFF; border-radius:14px; width:520px; max-width:92vw; padding:28px; box-shadow:0 20px 60px rgba(0,0,0,0.2);" onClick="{{ stopClick }}">
-          <div style="font-size:17px; font-weight:700; margin-bottom:4px;">Contribute a schema</div>
-          <div style="font-size:13px; color:#6B6B6B; margin-bottom:20px;">Step {{ contributeStep }} of 2</div>
-
-          <sc-if value="{{ isContributeStep1 }}" hint-placeholder-val="{{ true }}">
-            <div style="display:flex; flex-direction:column; gap:14px;">
-              <div>
-                <label style="display:block; font-size:12px; font-weight:600; color:#6B6B6B; margin-bottom:6px;">Event / schema name</label>
-                <input value="{{ contributeForm.name }}" onChange="{{ onContributeNameChange }}" placeholder="e.g. driver_rating_submitted" style="width:100%; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:13px; font-family:ui-monospace,monospace;" />
-              </div>
-              <div>
-                <label style="display:block; font-size:12px; font-weight:600; color:#6B6B6B; margin-bottom:6px;">Line of business</label>
-                <select value="{{ contributeForm.lob }}" onChange="{{ onContributeLobChange }}" style="width:100%; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:13px;">
-                  <option value="Ridesharing">Ridesharing</option>
-                  <option value="Eats">Eats</option>
-                  <option value="B2B">B2B</option>
-                  <option value="Platform">Platform</option>
-                </select>
-              </div>
-              <div>
-                <label style="display:block; font-size:12px; font-weight:600; color:#6B6B6B; margin-bottom:6px;">What does this event capture?</label>
-                <textarea value="{{ contributeForm.description }}" onChange="{{ onContributeDescChange }}" placeholder="Describe when this event fires and why it's needed…" rows="3" style="width:100%; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:13px; font-family:inherit; resize:vertical;"></textarea>
-              </div>
-            </div>
-            <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:22px;">
-              <button onClick="{{ closeContribute }}" style="background:none; border:1px solid #E5E5E5; border-radius:999px; padding:10px 18px; font-size:13px; cursor:pointer;">Cancel</button>
-              <button onClick="{{ contributeNext }}" style="background:#06C167; color:#FFF; border:none; border-radius:999px; padding:10px 20px; font-size:13px; font-weight:700; cursor:pointer;">Next</button>
-            </div>
-          </sc-if>
-
-          <sc-if value="{{ isContributeStep2 }}" hint-placeholder-val="{{ false }}">
-            <div style="background:#F6F6F6; border-radius:10px; padding:16px; font-size:13px; line-height:1.8;">
-              <div><strong>Name:</strong> {{ contributeForm.name }}</div>
-              <div><strong>LOB:</strong> {{ contributeForm.lob }}</div>
-              <div><strong>Description:</strong> {{ contributeForm.description }}</div>
-              <div style="margin-top:8px; color:#6B6B6B;">Estimated review date: {{ estimatedReviewDate }}</div>
-            </div>
-            <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:22px;">
-              <button onClick="{{ contributeBack }}" style="background:none; border:1px solid #E5E5E5; border-radius:999px; padding:10px 18px; font-size:13px; cursor:pointer;">Back</button>
-              <button onClick="{{ submitContribute }}" style="background:#06C167; color:#FFF; border:none; border-radius:999px; padding:10px 20px; font-size:13px; font-weight:700; cursor:pointer;">Submit for review</button>
-            </div>
-          </sc-if>
-        </div>
-      </div>
-    </sc-if>
-
-    <sc-if value="{{ reportOpen }}" hint-placeholder-val="{{ false }}">
-      <div style="position:fixed; inset:0; background:rgba(10,10,10,0.4); z-index:40; display:flex; align-items:center; justify-content:center;" onClick="{{ closeReport }}">
-        <div style="background:#FFFFFF; border-radius:14px; width:480px; max-width:92vw; padding:28px; box-shadow:0 20px 60px rgba(0,0,0,0.2);" onClick="{{ stopClick }}">
-          <div style="font-size:17px; font-weight:700; margin-bottom:20px;">Report an issue</div>
-          <div style="display:flex; flex-direction:column; gap:14px;">
-            <div>
-              <label style="display:block; font-size:12px; font-weight:600; color:#6B6B6B; margin-bottom:6px;">Title</label>
-              <input value="{{ reportForm.title }}" onChange="{{ onReportTitleChange }}" placeholder="e.g. Quality score looks wrong for eats_order_placed" style="width:100%; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:13px;" />
-            </div>
-            <div>
-              <label style="display:block; font-size:12px; font-weight:600; color:#6B6B6B; margin-bottom:6px;">Severity</label>
-              <select value="{{ reportForm.severity }}" onChange="{{ onReportSeverityChange }}" style="width:100%; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:13px;">
-                <option value="Low">Low</option>
-                <option value="Medium">Medium</option>
-                <option value="High">High</option>
-              </select>
-            </div>
-            <div>
-              <label style="display:block; font-size:12px; font-weight:600; color:#6B6B6B; margin-bottom:6px;">Description</label>
-              <textarea value="{{ reportForm.description }}" onChange="{{ onReportDescChange }}" rows="3" placeholder="What did you see, and what did you expect?" style="width:100%; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:13px; font-family:inherit; resize:vertical;"></textarea>
-            </div>
-          </div>
-          <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:22px;">
-            <button onClick="{{ closeReport }}" style="background:none; border:1px solid #E5E5E5; border-radius:999px; padding:10px 18px; font-size:13px; cursor:pointer;">Cancel</button>
-            <button onClick="{{ submitReport }}" style="background:#0A0A0A; color:#FFF; border:none; border-radius:999px; padding:10px 20px; font-size:13px; font-weight:700; cursor:pointer;">Submit</button>
-          </div>
         </div>
       </div>
     </sc-if>
@@ -1206,8 +1204,8 @@ class Component extends DCLogic {
     catalogPage:1, pipelineLogPage:1,
     chatMessages:[{role:'assistant', text:"Hi, I'm the Pulse assistant. Ask me about any event or metric, request a quick data pull, or describe a feature to get a draft measurement plan."}],
     chatInput:'',
-    contributeOpen:false, contributeStep:1, contributeForm:{name:'',lob:'Ridesharing',description:''},
-    reportOpen:false, reportForm:{title:'',description:'',severity:'Medium'},
+    contributeStep:1, contributeForm:{name:'',lob:'Ridesharing',description:''},
+    reportForm:{title:'',description:'',severity:'Medium'},
     extraSubmissions:[],
     toast:null
   };
@@ -1229,6 +1227,8 @@ class Component extends DCLogic {
   goCatalog = () => this.setState({appScreen:'catalog', selectedEntryId:null, selectedPipelineId:null, catalogTab:'data', catalogPage:1, pipelineLogPage:1});
   goAssistant = () => this.setState({appScreen:'assistant', selectedEntryId:null, selectedPipelineId:null});
   goRoadmap = () => this.setState({appScreen:'roadmap', selectedEntryId:null, selectedPipelineId:null});
+  goReport = () => this.setState({appScreen:'report', selectedEntryId:null, selectedPipelineId:null, reportForm:{title:'',description:'',severity:'Medium'}});
+  goContribute = () => this.setState({appScreen:'contribute', selectedEntryId:null, selectedPipelineId:null, contributeStep:1, contributeForm:{name:'',lob:'Ridesharing',description:''}});
 
   setCatalogTab = (tab) => this.setState({catalogTab:tab, catalogPage:1, pipelineLogPage:1});
   onCatalogQueryChange = (e) => this.setState({catalogQuery:e.target.value, catalogPage:1});
@@ -1294,8 +1294,6 @@ class Component extends DCLogic {
 
   estimateReviewDate = () => { const d = new Date(); d.setDate(d.getDate()+10); return d.toLocaleDateString('en-US',{month:'short',day:'numeric'}); };
 
-  openContribute = () => this.setState({contributeOpen:true, contributeStep:1, contributeForm:{name:'',lob:'Ridesharing',description:''}});
-  closeContribute = () => this.setState({contributeOpen:false});
   contributeNext = () => this.setState({contributeStep:2});
   contributeBack = () => this.setState({contributeStep:1});
   onContributeNameChange = (e) => this.setState(s=>({contributeForm:{...s.contributeForm, name:e.target.value}}));
@@ -1304,7 +1302,7 @@ class Component extends DCLogic {
   submitContribute = () => {
     const f = this.state.contributeForm;
     const newItem = { id:'sub-'+Date.now(), name:f.name || 'Untitled schema', lob:f.lob, team:'Your submission', dateLabel:'Est. '+this.estimateReviewDate(), isNew:true };
-    this.setState(s => ({ extraSubmissions:[newItem, ...s.extraSubmissions], contributeOpen:false, appScreen:'roadmap', selectedEntryId:null }));
+    this.setState(s => ({ extraSubmissions:[newItem, ...s.extraSubmissions], appScreen:'roadmap', selectedEntryId:null }));
     this.showToast('Submitted for review — track status on the Roadmap.');
   };
 
@@ -1314,12 +1312,13 @@ class Component extends DCLogic {
     this.showToast('Measurement plan submitted for review.');
   };
 
-  openReport = () => this.setState({reportOpen:true, reportForm:{title:'',description:'',severity:'Medium'}});
-  closeReport = () => this.setState({reportOpen:false});
   onReportTitleChange = (e) => this.setState(s=>({reportForm:{...s.reportForm, title:e.target.value}}));
   onReportSeverityChange = (e) => this.setState(s=>({reportForm:{...s.reportForm, severity:e.target.value}}));
   onReportDescChange = (e) => this.setState(s=>({reportForm:{...s.reportForm, description:e.target.value}}));
-  submitReport = () => { this.setState({reportOpen:false}); this.showToast('Issue reported — tracked as PULSE-'+Math.floor(1000+Math.random()*9000)+'.'); };
+  submitReport = () => {
+    this.setState({appScreen:'home', reportForm:{title:'',description:'',severity:'Medium'}});
+    this.showToast('Issue reported — tracked as PULSE-'+Math.floor(1000+Math.random()*9000)+'.');
+  };
 
   stopClick = (e) => e.stopPropagation();
 
@@ -1473,14 +1472,17 @@ class Component extends DCLogic {
       isCatalog: s.appScreen === 'catalog',
       isAssistant: s.appScreen === 'assistant',
       isRoadmap: s.appScreen === 'roadmap',
+      isContribute: s.appScreen === 'contribute',
+      isReport: s.appScreen === 'report',
       loginEmail: s.loginEmail, loginPassword: s.loginPassword, loginError: s.loginError,
       onLoginEmailChange: this.onLoginEmailChange, onLoginPasswordChange: this.onLoginPasswordChange,
       handleLogin: this.handleLogin, fillDemo: this.fillDemo, logout: this.logout,
       goHome: this.goHome, goCatalog: this.goCatalog, goAssistant: this.goAssistant, goRoadmap: this.goRoadmap,
+      goReport: this.goReport, goContribute: this.goContribute,
       navBtnStyle_home: navStyle(s.appScreen==='home'), navBtnStyle_catalog: navStyle(s.appScreen==='catalog'),
       navBtnStyle_assistant: navStyle(s.appScreen==='assistant'), navBtnStyle_roadmap: navStyle(s.appScreen==='roadmap'),
+      navBtnStyle_report: navStyle(s.appScreen==='report'), navBtnStyle_contribute: navStyle(s.appScreen==='contribute'),
       navBtnStyle_plain: navStyle(false),
-      openReport: this.openReport, openContribute: this.openContribute,
       criticalPipeline, metrics, pipelines, homePipelines, selectedPipeline, closePipeline: this.closePipeline,
       pipelineQuery: s.pipelineQuery, pipelineLob: s.pipelineLob, pipelineHealth: s.pipelineHealth,
       onPipelineQueryChange: this.onPipelineQueryChange, onPipelineLobChange: this.onPipelineLobChange, onPipelineHealthChange: this.onPipelineHealthChange,
@@ -1496,14 +1498,14 @@ class Component extends DCLogic {
       chatMessages, chatInput: s.chatInput, onChatInputChange: this.onChatInputChange, onChatKeyDown: this.onChatKeyDown, sendChat: this.sendChat,
       showSuggestions: s.chatMessages.length <= 1, suggestions,
       roadmapColumns,
-      contributeOpen: s.contributeOpen, contributeStep: s.contributeStep,
+      contributeStep: s.contributeStep,
       isContributeStep1: s.contributeStep === 1, isContributeStep2: s.contributeStep === 2,
       contributeForm: s.contributeForm, estimatedReviewDate: this.estimateReviewDate(),
       onContributeNameChange: this.onContributeNameChange, onContributeLobChange: this.onContributeLobChange, onContributeDescChange: this.onContributeDescChange,
-      closeContribute: this.closeContribute, contributeNext: this.contributeNext, contributeBack: this.contributeBack, submitContribute: this.submitContribute,
-      reportOpen: s.reportOpen, reportForm: s.reportForm,
+      contributeNext: this.contributeNext, contributeBack: this.contributeBack, submitContribute: this.submitContribute,
+      reportForm: s.reportForm,
       onReportTitleChange: this.onReportTitleChange, onReportSeverityChange: this.onReportSeverityChange, onReportDescChange: this.onReportDescChange,
-      closeReport: this.closeReport, submitReport: this.submitReport,
+      submitReport: this.submitReport,
       toast: s.toast,
       stopClick: this.stopClick
     };
