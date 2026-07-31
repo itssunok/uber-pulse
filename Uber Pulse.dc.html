@@ -62,10 +62,9 @@
           <div style="margin-top:28px; background:#F6F6F6; border:1px dashed #E0E0E0; border-radius:12px; padding:16px 18px;">
             <div style="font-size:11px; color:#7A7A7A; text-transform:uppercase; letter-spacing:0.06em; font-weight:600; margin-bottom:8px;">Demo account</div>
             <div style="font-size:13px; color:#3A3A3A; line-height:1.7;">
-              <div>pulse-demo@uber.com</div>
-              <div>Pulse2026</div>
+              <div><span style="color:#7A7A7A;">Username:</span> pulse-demo@uber.com</div>
+              <div><span style="color:#7A7A7A;">Password:</span> Pulse2026</div>
             </div>
-            <button onClick="{{ fillDemo }}" style="margin-top:10px; background:#FFFFFF; border:1px solid #E5E5E5; color:#0A0A0A; border-radius:999px; padding:8px 14px; font-size:13px; cursor:pointer;">Use demo credentials</button>
           </div>
         </div>
       </div>
@@ -73,49 +72,55 @@
   </sc-if>
 
   <sc-if value="{{ isApp }}" hint-placeholder-val="{{ false }}">
-    <div style="display:flex; min-height:100vh;">
+    <div style="display:flex; flex-direction:column; min-height:100vh;">
 
-      <div style="width:232px; flex-shrink:0; background:#FFFFFF; border-right:1px solid #E5E5E5; display:flex; flex-direction:column; padding:20px 12px; position:sticky; top:0; height:100vh; box-sizing:border-box;">
-        <div onClick="{{ goHome }}" style="display:flex; align-items:center; gap:8px; cursor:pointer; padding:6px 10px 22px 10px;">
-          <div style="display:flex; align-items:flex-end; gap:2px; height:16px;">
-            <div style="width:3px; height:7px; background:#06C167; border-radius:1px;"></div>
-            <div style="width:3px; height:15px; background:#06C167; border-radius:1px;"></div>
-            <div style="width:3px; height:10px; background:#06C167; border-radius:1px;"></div>
-          </div>
-          <span style="font-size:16px; font-weight:800; letter-spacing:-0.3px; color:#0A0A0A;">Pulse</span>
-        </div>
-
-        <div style="display:flex; flex-direction:column; gap:2px;">
-          <button onClick="{{ goHome }}" style="{{ navBtnStyle_home }}">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9a1 1 0 0 0 1 1h4v-6h3v6h4a1 1 0 0 0 1-1v-9"/></svg>
-            <span>Home</span>
+      <div style="display:flex; align-items:center; justify-content:space-between; height:60px; padding:0 28px; background:#FFFFFF; border-bottom:1px solid #E5E5E5; position:sticky; top:0; z-index:20; box-sizing:border-box;">
+        <span onClick="{{ goHome }}" style="font-size:16px; font-weight:800; letter-spacing:-0.3px; color:#0A0A0A; cursor:pointer;">Pulse for Uber</span>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <button onClick="{{ goAssistant }}" style="display:flex; align-items:center; gap:8px; background:#0A0A0A; border:none; color:#FFFFFF; border-radius:999px; padding:8px 16px; font-size:13px; font-weight:700; cursor:pointer;">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" style="flex-shrink:0;"><path d="M12 3l1.7 4.9L18.6 9.4l-4.9 1.7L12 16l-1.7-4.9L5.4 9.4l4.9-1.7L12 3z"/><path d="M18.5 14.5l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7.7-2z"/></svg>
+            Ask Pulse
           </button>
-          <button onClick="{{ goCatalog }}" style="{{ navBtnStyle_catalog }}">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><rect x="3.5" y="4" width="17" height="16" rx="2.5"/><path d="M3.5 9.5h17M9.5 9.5V20"/></svg>
-            <span>Data Catalog</span>
-          </button>
-          <button onClick="{{ goAssistant }}" style="{{ navBtnStyle_assistant }}">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" style="flex-shrink:0;"><path d="M12 3l1.7 4.9L18.6 9.4l-4.9 1.7L12 16l-1.7-4.9L5.4 9.4l4.9-1.7L12 3z"/><path d="M18.5 14.5l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7.7-2z"/></svg>
-            <span>AI Assistant</span>
-          </button>
-          <button onClick="{{ goRoadmap }}" style="{{ navBtnStyle_roadmap }}">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M5 3v18"/><path d="M5 4.5h11.5l-2.2 3.75L16.5 12H5"/></svg>
-            <span>Roadmap</span>
-          </button>
-        </div>
-      </div>
-
-      <div style="flex:1; min-width:0;">
-        <div style="display:flex; align-items:center; justify-content:flex-end; padding:0 28px; height:60px; border-bottom:1px solid #E5E5E5; position:sticky; top:0; background:#FFFFFF; z-index:20; gap:10px;">
-          <button onClick="{{ openReport }}" style="background:#FFFFFF; border:1px solid #E5E5E5; color:#0A0A0A; border-radius:999px; padding:8px 16px; font-size:13px; font-weight:600; cursor:pointer;">Report Issue</button>
-          <button onClick="{{ openContribute }}" style="background:#06C167; border:none; color:#FFFFFF; border-radius:999px; padding:8px 16px; font-size:13px; font-weight:700; cursor:pointer;">Contribute</button>
-          <div style="display:flex; align-items:center; gap:8px; margin-left:8px; padding-left:14px; border-left:1px solid #E5E5E5; cursor:pointer;" onClick="{{ logout }}">
+          <div style="display:flex; align-items:center; gap:8px; margin-left:4px; padding-left:14px; border-left:1px solid #E5E5E5; cursor:pointer;" onClick="{{ logout }}">
             <div style="width:30px; height:30px; border-radius:50%; background:#DFF3E6; color:#067A3E; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700;">PD</div>
             <div style="font-size:12px; color:#6B6B6B; line-height:1.3;">Data Consumer<div style="font-size:10px; color:#9B9B9B;">Click to log out</div></div>
           </div>
         </div>
+      </div>
 
-        <div style="max-width:1180px; margin:0 auto; padding:32px 32px 80px 32px;">
+      <div style="display:flex; flex:1; min-height:0;">
+
+        <div style="width:232px; flex-shrink:0; background:#FFFFFF; border-right:1px solid #E5E5E5; display:flex; flex-direction:column; padding:16px 12px; position:sticky; top:60px; align-self:flex-start; height:calc(100vh - 60px); box-sizing:border-box;">
+          <div style="display:flex; flex-direction:column; gap:2px;">
+            <button onClick="{{ goHome }}" style="{{ navBtnStyle_home }}">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9a1 1 0 0 0 1 1h4v-6h3v6h4a1 1 0 0 0 1-1v-9"/></svg>
+              <span>Home</span>
+            </button>
+            <button onClick="{{ goCatalog }}" style="{{ navBtnStyle_catalog }}">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><rect x="3.5" y="4" width="17" height="16" rx="2.5"/><path d="M3.5 9.5h17M9.5 9.5V20"/></svg>
+              <span>Data Catalog</span>
+            </button>
+            <button onClick="{{ goAssistant }}" style="{{ navBtnStyle_assistant }}">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" style="flex-shrink:0;"><path d="M12 3l1.7 4.9L18.6 9.4l-4.9 1.7L12 16l-1.7-4.9L5.4 9.4l4.9-1.7L12 3z"/><path d="M18.5 14.5l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7.7-2z"/></svg>
+              <span>AI Assistant</span>
+            </button>
+            <button onClick="{{ goRoadmap }}" style="{{ navBtnStyle_roadmap }}">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M5 3v18"/><path d="M5 4.5h11.5l-2.2 3.75L16.5 12H5"/></svg>
+              <span>Roadmap</span>
+            </button>
+            <button onClick="{{ openReport }}" style="{{ navBtnStyle_plain }}">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M12 4 3 20h18L12 4z"/><path d="M12 10.5v3.5"/><circle cx="12" cy="17" r="0.6" fill="currentColor" stroke="none"/></svg>
+              <span>Report Issue</span>
+            </button>
+            <button onClick="{{ openContribute }}" style="{{ navBtnStyle_plain }}">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>
+              <span>Contribute</span>
+            </button>
+          </div>
+        </div>
+
+        <div style="flex:1; min-width:0;">
+          <div style="max-width:1180px; margin:0 auto; padding:32px 32px 80px 32px;">
 
           <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
             <sc-if value="{{ criticalPipeline }}" hint-placeholder-val="{{ false }}">
@@ -292,6 +297,7 @@
             </div>
           </sc-if>
         </div>
+      </div>
       </div>
     </div>
 
@@ -729,6 +735,7 @@ class Component extends DCLogic {
       goHome: this.goHome, goCatalog: this.goCatalog, goAssistant: this.goAssistant, goRoadmap: this.goRoadmap,
       navBtnStyle_home: navStyle(s.appScreen==='home'), navBtnStyle_catalog: navStyle(s.appScreen==='catalog'),
       navBtnStyle_assistant: navStyle(s.appScreen==='assistant'), navBtnStyle_roadmap: navStyle(s.appScreen==='roadmap'),
+      navBtnStyle_plain: navStyle(false),
       openReport: this.openReport, openContribute: this.openContribute,
       criticalPipeline, metrics, pipelines,
       catalogQuery: s.catalogQuery, catalogLob: s.catalogLob, catalogStatus: s.catalogStatus,
