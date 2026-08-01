@@ -14,6 +14,5 @@ MEDIUM PRIORITY
 LOW PRIORITY
 ------------
 [open] Micro-interactions / motion pass (hover states, panel transitions) once core visual direction is validated
-[in progress] Mobile support — make sure the site is mobile compatible. See docs/superpowers/specs/2026-08-01-mobile-support-design.md. Steps 1-7/8 done. User flagged step 7 (Developer Tools/Docs) as "buggy" without specifics — revisit and get exact repro before step 8 wraps up.
 [open] Enable login
 [open] Use one of the installed engineering skills to review the project's architecture, code quality, details and optimise the project. 
