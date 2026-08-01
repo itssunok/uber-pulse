@@ -273,7 +273,7 @@
               <div style="font-size:12px; color:#9B9B9B; margin-bottom:10px;">{{ catalogCountLabel }}</div>
 
               <div style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; overflow:hidden;">
-                <div style="display:grid; grid-template-columns:0.3fr 2fr 0.9fr 1fr 1fr 1.6fr 1fr; gap:10px; padding:10px 18px; font-size:11px; color:#9B9B9B; font-weight:600; text-transform:uppercase; letter-spacing:0.04em; border-bottom:1px solid #EFEFEF;">
+                <div class="pulse-pipeline-header" style="display:grid; grid-template-columns:0.3fr 2fr 0.9fr 1fr 1fr 1.6fr 1fr; gap:10px; padding:10px 18px; font-size:11px; color:#9B9B9B; font-weight:600; text-transform:uppercase; letter-spacing:0.04em; border-bottom:1px solid #EFEFEF;">
                   <div>#</div>
                   <div>Event Name<span class="pulse-tt" style="display:inline-flex;"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; left:0; text-transform:none; letter-spacing:normal; font-weight:500;">The unique event or metric name, as it appears in the data warehouse. A dot indicates an active data quality warning.</span></span></div>
                   <div>Weekly Volume<span class="pulse-tt" style="display:inline-flex;"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; left:0; text-transform:none; letter-spacing:normal; font-weight:500;">Times this event fired in the trailing 7 days.</span></span></div>
@@ -283,16 +283,16 @@
                   <div>Last Updated<span class="pulse-tt" style="display:inline-flex;"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; right:0; left:auto; text-transform:none; letter-spacing:normal; font-weight:500;">Date this definition's payload or logic was last changed.</span></span></div>
                 </div>
                 <sc-for list="{{ pagedCatalog }}" as="e" hint-placeholder-count="30">
-                  <div onClick="{{ e.onSelect }}" style="display:grid; grid-template-columns:0.3fr 2fr 0.9fr 1fr 1fr 1.6fr 1fr; gap:10px; padding:14px 18px; font-size:13px; border-bottom:1px solid #F0F0F0; align-items:center; cursor:pointer;">
-                    <div style="color:#9B9B9B;">{{ e.rowNumber }}</div>
-                    <div style="display:flex; align-items:center; gap:8px;">
+                  <div class="pulse-pipeline-row" onClick="{{ e.onSelect }}" style="display:grid; grid-template-columns:0.3fr 2fr 0.9fr 1fr 1fr 1.6fr 1fr; gap:10px; padding:14px 18px; font-size:13px; border-bottom:1px solid #F0F0F0; align-items:center; cursor:pointer;">
+                    <div class="pulse-row-num" style="color:#9B9B9B;">{{ e.rowNumber }}</div>
+                    <div class="pulse-row-name" style="display:flex; align-items:center; gap:8px;">
                       <span style="font-weight:600; font-family:ui-monospace,monospace;">{{ e.name }}</span>
                     </div>
-                    <div style="color:#6B6B6B;">{{ e.weeklyVolumeLabel }}</div>
-                    <div><span style="{{ e.lobChipStyle }}">{{ e.lob }}</span></div>
-                    <div><span style="{{ e.statusChipStyle }}">{{ e.statusLabel }}</span></div>
-                    <div style="color:#6B6B6B;">{{ e.definitionOwner }}</div>
-                    <div style="color:#9B9B9B;">{{ e.lastUpdated }}</div>
+                    <div class="pulse-row-field" style="color:#6B6B6B;"><span class="pulse-mobile-label">Weekly Volume</span>{{ e.weeklyVolumeLabel }}</div>
+                    <div class="pulse-row-field"><span class="pulse-mobile-label">LOB</span><span style="{{ e.lobChipStyle }}">{{ e.lob }}</span></div>
+                    <div class="pulse-row-field"><span class="pulse-mobile-label">Status</span><span style="{{ e.statusChipStyle }}">{{ e.statusLabel }}</span></div>
+                    <div class="pulse-row-field" style="color:#6B6B6B;"><span class="pulse-mobile-label">Definition Owner</span>{{ e.definitionOwner }}</div>
+                    <div class="pulse-row-field" style="color:#9B9B9B;"><span class="pulse-mobile-label">Last Updated</span>{{ e.lastUpdated }}</div>
                   </div>
                 </sc-for>
               </div>
@@ -325,7 +325,7 @@
               <div style="font-size:12px; color:#9B9B9B; margin-bottom:10px;">{{ pipelineCountLabel }}</div>
 
               <div style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; overflow:hidden;">
-                <div style="display:grid; grid-template-columns:0.3fr 2fr 0.9fr 1fr 1fr 1.4fr 1.1fr 1fr; gap:8px; padding:10px 18px; font-size:11px; color:#9B9B9B; font-weight:600; text-transform:uppercase; letter-spacing:0.04em; border-bottom:1px solid #EFEFEF;">
+                <div class="pulse-pipeline-header" style="display:grid; grid-template-columns:0.3fr 2fr 0.9fr 1fr 1fr 1.4fr 1.1fr 1fr; gap:8px; padding:10px 18px; font-size:11px; color:#9B9B9B; font-weight:600; text-transform:uppercase; letter-spacing:0.04em; border-bottom:1px solid #EFEFEF;">
                   <div>#</div>
                 <div>Pipeline<span class="pulse-tt" style="display:inline-flex;"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; left:0; text-transform:none; letter-spacing:normal; font-weight:500;">The name of the data pipeline processing this event stream.</span></span></div>
                 <div>Weekly Volume<span class="pulse-tt" style="display:inline-flex;"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; left:0; text-transform:none; letter-spacing:normal; font-weight:500;">Records processed by this pipeline in the trailing 7 days.</span></span></div>
@@ -336,18 +336,21 @@
                   <div>Quality<span class="pulse-tt" style="display:inline-flex;"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; right:0; left:auto; text-transform:none; letter-spacing:normal; font-weight:500;">Composite score (0-100) from schema, completeness, and duplication checks.</span></span></div>
                 </div>
                 <sc-for list="{{ pagedPipelines }}" as="p" hint-placeholder-count="30">
-                  <div style="display:grid; grid-template-columns:0.3fr 2fr 0.9fr 1fr 1fr 1.4fr 1.1fr 1fr; gap:8px; padding:13px 18px; font-size:13px; border-bottom:1px solid #F0F0F0; align-items:center; cursor:pointer;" onClick="{{ p.onSelect }}">
-                    <div style="color:#9B9B9B;">{{ p.rowNumber }}</div>
-                    <div style="font-weight:600;">{{ p.name }}</div>
-                    <div style="color:#6B6B6B;">{{ p.weeklyVolumeLabel }}</div>
-                    <div><span style="{{ p.lobChipStyle }}">{{ p.lob }}</span></div>
-                    <div><span style="{{ p.statusChipStyle }}">{{ p.statusLabel }}</span></div>
-                    <div style="color:#6B6B6B;">{{ p.slaTarget }} / <span style="{{ p.slaActualStyle }}">{{ p.slaActual }}</span></div>
-                    <div style="color:#6B6B6B;">{{ p.freshness }}</div>
-                    <div style="display:flex; align-items:center; gap:8px;">
-                      <span style="font-weight:600;">{{ p.quality }}</span>
-                      <div style="width:44px; height:5px; background:#EFEFEF; border-radius:3px; overflow:hidden;">
-                        <div style="{{ p.qualityBarStyle }}"></div>
+                  <div class="pulse-pipeline-row" style="display:grid; grid-template-columns:0.3fr 2fr 0.9fr 1fr 1fr 1.4fr 1.1fr 1fr; gap:8px; padding:13px 18px; font-size:13px; border-bottom:1px solid #F0F0F0; align-items:center; cursor:pointer;" onClick="{{ p.onSelect }}">
+                    <div class="pulse-row-num" style="color:#9B9B9B;">{{ p.rowNumber }}</div>
+                    <div class="pulse-row-name" style="font-weight:600;">{{ p.name }}</div>
+                    <div class="pulse-row-field" style="color:#6B6B6B;"><span class="pulse-mobile-label">Weekly Volume</span>{{ p.weeklyVolumeLabel }}</div>
+                    <div class="pulse-row-field"><span class="pulse-mobile-label">LOB</span><span style="{{ p.lobChipStyle }}">{{ p.lob }}</span></div>
+                    <div class="pulse-row-field"><span class="pulse-mobile-label">Status</span><span style="{{ p.statusChipStyle }}">{{ p.statusLabel }}</span></div>
+                    <div class="pulse-row-field" style="color:#6B6B6B;"><span class="pulse-mobile-label">SLA (target / actual)</span>{{ p.slaTarget }} / <span style="{{ p.slaActualStyle }}">{{ p.slaActual }}</span></div>
+                    <div class="pulse-row-field" style="color:#6B6B6B;"><span class="pulse-mobile-label">Freshness</span>{{ p.freshness }}</div>
+                    <div class="pulse-row-field">
+                      <span class="pulse-mobile-label">Quality</span>
+                      <div style="display:flex; align-items:center; gap:8px;">
+                        <span style="font-weight:600;">{{ p.quality }}</span>
+                        <div style="width:44px; height:5px; background:#EFEFEF; border-radius:3px; overflow:hidden;">
+                          <div style="{{ p.qualityBarStyle }}"></div>
+                        </div>
                       </div>
                     </div>
                   </div>
