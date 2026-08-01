@@ -63,7 +63,8 @@
       .pulse-roadmap-col-items { overflow-y:visible !important; flex:none !important; height:auto !important; }
       .pulse-roadmap-dots { display:flex !important; justify-content:center; gap:6px; margin-top:12px; }
 
-      .pulse-kpi-grid { grid-template-columns:1fr !important; }
+      .pulse-kpi-grid, .pulse-grid-1col { grid-template-columns:1fr !important; }
+      .pulse-stack-mobile { flex-direction:column !important; align-items:stretch !important; }
       .pulse-pipeline-header { display:none !important; }
       .pulse-pipeline-row {
         display:flex !important; flex-direction:column; gap:6px; padding:14px 16px !important;
@@ -797,7 +798,7 @@
             <h1 style="font-size:24px; font-weight:800; margin:0 0 4px 0; letter-spacing:-0.5px;">Developer Tools</h1>
             <p style="font-size:14px; color:#6B6B6B; margin:0 0 20px 0;">Get programmatic access to Pulse data — API keys, docs, and endpoints.</p>
 
-            <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:28px;">
+            <div class="pulse-grid-1col" style="display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:28px;">
               <div style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; padding:20px;">
                 <div style="width:34px; height:34px; border-radius:10px; background:#DFF3E6; display:flex; align-items:center; justify-content:center; margin-bottom:12px;">
                   <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="#067A3E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
@@ -839,7 +840,7 @@
             </div>
 
             <sc-if value="{{ showCreateKeyForm }}" hint-placeholder-val="{{ false }}">
-              <div style="background:#F6F6F6; border:1px solid #E5E5E5; border-radius:10px; padding:16px; margin-bottom:14px; display:flex; align-items:flex-end; gap:12px;">
+              <div class="pulse-stack-mobile" style="background:#F6F6F6; border:1px solid #E5E5E5; border-radius:10px; padding:16px; margin-bottom:14px; display:flex; align-items:flex-end; gap:12px;">
                 <div style="flex:1; min-width:0;">
                   <label style="display:block; font-size:12px; font-weight:600; color:#6B6B6B; margin-bottom:6px;">Key name</label>
                   <input value="{{ newKeyName }}" onChange="{{ onNewKeyNameChange }}" placeholder="e.g. Staging integration" style="width:100%; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:13px; background:#FFFFFF;" />
@@ -852,7 +853,7 @@
             <sc-if value="{{ justCreatedKeyView }}" hint-placeholder-val="{{ false }}">
               <div style="background:#DFF3E6; border:1px solid #B4E3C6; border-radius:10px; padding:16px; margin-bottom:14px;">
                 <div style="font-size:13px; font-weight:700; color:#067A3E; margin-bottom:6px;">"{{ justCreatedKeyView.name }}" created — copy this key now, you won't be able to see it again.</div>
-                <div style="display:flex; align-items:center; gap:10px;">
+                <div class="pulse-stack-mobile" style="display:flex; align-items:center; gap:10px;">
                   <div style="flex:1; min-width:0; background:#FFFFFF; border:1px solid #B4E3C6; border-radius:8px; padding:9px 12px; font-family:ui-monospace,monospace; font-size:12.5px; overflow-x:auto; white-space:nowrap;">{{ justCreatedKeyView.key }}</div>
                   <button onClick="{{ justCreatedKeyView.onCopy }}" style="background:#067A3E; color:#FFF; border:none; border-radius:999px; padding:9px 16px; font-size:12.5px; font-weight:700; cursor:pointer; flex-shrink:0;">Copy</button>
                   <button onClick="{{ justCreatedKeyView.onDismiss }}" style="background:none; border:1px solid #B4E3C6; border-radius:999px; padding:9px 16px; font-size:12.5px; cursor:pointer; flex-shrink:0; color:#067A3E;">Done</button>
@@ -862,15 +863,15 @@
 
             <sc-if value="{{ hasApiKeys }}" hint-placeholder-val="{{ true }}">
               <div style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; overflow:hidden;">
-                <div style="display:grid; grid-template-columns:1.5fr 1.5fr 1fr 1fr 120px; gap:10px; padding:12px 18px; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#9B9B9B; border-bottom:1px solid #F0F0F0;">
+                <div class="pulse-pipeline-header" style="display:grid; grid-template-columns:1.5fr 1.5fr 1fr 1fr 120px; gap:10px; padding:12px 18px; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#9B9B9B; border-bottom:1px solid #F0F0F0;">
                   <div>Name</div><div>Key</div><div>Created</div><div>Last used</div><div style="text-align:right;">Actions</div>
                 </div>
                 <sc-for list="{{ apiKeysView }}" as="k" hint-placeholder-count="2">
-                  <div style="display:grid; grid-template-columns:1.5fr 1.5fr 1fr 1fr 120px; gap:10px; padding:14px 18px; font-size:13px; border-bottom:1px solid #F0F0F0; align-items:center;">
-                    <div style="font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ k.name }}</div>
-                    <div style="font-family:ui-monospace,monospace; font-size:12px; color:#6B6B6B; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ k.maskedKey }}</div>
-                    <div style="color:#6B6B6B; font-size:12.5px;">{{ k.createdLabel }}</div>
-                    <div style="color:#6B6B6B; font-size:12.5px;">{{ k.lastUsedLabel }}</div>
+                  <div class="pulse-pipeline-row" style="display:grid; grid-template-columns:1.5fr 1.5fr 1fr 1fr 120px; gap:10px; padding:14px 18px; font-size:13px; border-bottom:1px solid #F0F0F0; align-items:center;">
+                    <div class="pulse-row-name" style="font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ k.name }}</div>
+                    <div class="pulse-row-field" style="font-family:ui-monospace,monospace; font-size:12px; color:#6B6B6B; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"><span class="pulse-mobile-label">Key</span>{{ k.maskedKey }}</div>
+                    <div class="pulse-row-field" style="color:#6B6B6B; font-size:12.5px;"><span class="pulse-mobile-label">Created</span>{{ k.createdLabel }}</div>
+                    <div class="pulse-row-field" style="color:#6B6B6B; font-size:12.5px;"><span class="pulse-mobile-label">Last used</span>{{ k.lastUsedLabel }}</div>
                     <div>
                       <sc-if value="{{ k.isConfirmingDelete }}" hint-placeholder-val="{{ false }}">
                         <div style="display:flex; align-items:center; gap:6px; justify-content:flex-end;">
@@ -909,7 +910,7 @@
             </div>
 
             <sc-if value="{{ hasDocResults }}" hint-placeholder-val="{{ true }}">
-              <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:14px;">
+              <div class="pulse-grid-1col" style="display:grid; grid-template-columns:repeat(3,1fr); gap:14px;">
                 <sc-for list="{{ docTopicsView }}" as="dt" hint-placeholder-count="8">
                   <div onClick="{{ dt.onSelect }}" style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; padding:18px; cursor:pointer; min-width:0;">
                     <div style="width:32px; height:32px; border-radius:9px; background:{{ dt.badgeBg }}; display:flex; align-items:center; justify-content:center; margin-bottom:12px;">
@@ -933,7 +934,7 @@
 
     <sc-if value="{{ selectedDocTopic }}" hint-placeholder-val="{{ false }}">
       <div style="position:fixed; inset:0; background:rgba(10,10,10,0.35); z-index:30;" onClick="{{ closeDocTopic }}"></div>
-      <div style="position:fixed; top:0; right:0; bottom:0; width:440px; background:#FFFFFF; box-shadow:-8px 0 30px rgba(0,0,0,0.12); z-index:31; overflow-y:auto; padding:28px;">
+      <div class="pulse-side-sheet" style="position:fixed; top:0; right:0; bottom:0; width:440px; background:#FFFFFF; box-shadow:-8px 0 30px rgba(0,0,0,0.12); z-index:31; overflow-y:auto; padding:28px;">
         <div style="display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:20px;">
           <div style="display:flex; align-items:center; gap:10px; min-width:0;">
             <div style="width:32px; height:32px; border-radius:9px; background:{{ selectedDocTopic.badgeBg }}; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
@@ -956,7 +957,7 @@
 
     <sc-if value="{{ selectedEntry }}" hint-placeholder-val="{{ false }}">
       <div style="position:fixed; inset:0; background:rgba(10,10,10,0.35); z-index:30;" onClick="{{ closeEntry }}"></div>
-      <div style="position:fixed; top:0; right:0; bottom:0; width:440px; background:#FFFFFF; box-shadow:-8px 0 30px rgba(0,0,0,0.12); z-index:31; overflow-y:auto; padding:28px;">
+      <div class="pulse-side-sheet" style="position:fixed; top:0; right:0; bottom:0; width:440px; background:#FFFFFF; box-shadow:-8px 0 30px rgba(0,0,0,0.12); z-index:31; overflow-y:auto; padding:28px;">
         <div style="display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:16px;">
           <div style="font-size:16px; font-weight:700; font-family:ui-monospace,monospace;">{{ selectedEntry.name }}</div>
           <button onClick="{{ closeEntry }}" style="background:none; border:none; font-size:18px; cursor:pointer; color:#9B9B9B;">✕</button>
@@ -998,7 +999,7 @@
 
     <sc-if value="{{ selectedPipeline }}" hint-placeholder-val="{{ false }}">
       <div style="position:fixed; inset:0; background:rgba(10,10,10,0.35); z-index:30;" onClick="{{ closePipeline }}"></div>
-      <div style="position:fixed; top:0; right:0; bottom:0; width:440px; background:#FFFFFF; box-shadow:-8px 0 30px rgba(0,0,0,0.12); z-index:31; overflow-y:auto; padding:28px;">
+      <div class="pulse-side-sheet" style="position:fixed; top:0; right:0; bottom:0; width:440px; background:#FFFFFF; box-shadow:-8px 0 30px rgba(0,0,0,0.12); z-index:31; overflow-y:auto; padding:28px;">
         <div style="display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:16px;">
           <div style="font-size:16px; font-weight:700;">{{ selectedPipeline.name }}</div>
           <button onClick="{{ closePipeline }}" style="background:none; border:none; font-size:18px; cursor:pointer; color:#9B9B9B;">✕</button>
