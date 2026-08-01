@@ -9,7 +9,6 @@ Prioritized MoSCoW-style following the full UX/UI/Brand design audit (Aug 2026),
 
 ## High Priority (Must)
 
-- `[open]` Rewrite AI Assistant landing headline — currently ChatGPT's unmodified default greeting ("How can I help you today?"), on the PRD's own highest-value differentiator feature. Small effort.
 - `[open]` Fix elevation inconsistency — side-sheets, dropdowns, toast, and the AI Assistant composer mix box-shadow with no border, violating "hairline borders over drop shadows." Replace side-sheet shadows with borders; standardize dropdowns/toast to one lighter "floating" shadow level. Small effort.
 - `[open]` Move AI Assistant to its own icon in the mobile bottom nav — currently buried inside a generic "More" menu despite being the PRD's named highest-value onboarding feature. Small effort.
 - `[open]` Add a "Canonical" badge to the one true definition per LOB in the Data Catalog — directly addresses James's #1 documented pain point (three different attribution numbers with no arbiter). Small effort.
