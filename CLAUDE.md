@@ -29,7 +29,7 @@ Uber Pulse is a vibe-coded, frontend-only prototype — there is no real backend
 ## Code organization
 Uber Pulse is still zero-build (no bundler, no framework) — this section documents conventions added on top of that, not a departure from it:
 - **Design tokens** live in `styles/tokens.css` as CSS custom properties (colors, 8px spacing scale, type scale, radius). Reference `var(--token-name)` in shared style-builder functions and the base `<style>` block rather than hardcoding hex/pixel values. Inline `style=""` attributes on markup are a known, accepted gap for now — see docs/backlog.md.
-- **Mock data** (`PIPELINES`, `CATALOG`, `ROADMAP_BASE`, `METRICS_BASE`) lives in plain JS files under `data/`, loaded via `<script src>` before `support.js` in `Uber Pulse.dc.html`'s `<head>` — no TypeScript, no runtime validation library. Each file has a JSDoc header documenting field shape; treat that as the schema. Preserve this pattern when adding new mock datasets rather than inlining new arrays back into the HTML.
+- **Mock data** (`PIPELINES`, `CATALOG`, `ROADMAP_BASE`, `METRICS_BASE`) lives in plain JS files under `data/`, loaded via `<script src>` before `support.js` in `index.html`'s `<head>` — no TypeScript, no runtime validation library. Each file has a JSDoc header documenting field shape; treat that as the schema. Preserve this pattern when adding new mock datasets rather than inlining new arrays back into the HTML.
 - A full production foundation (real framework, TypeScript, schema validation, component-level restructure) has a written migration plan but is explicitly out of scope for this demo — see the "Full production foundation" line in docs/backlog.md. Don't start it piecemeal.
 
 ## Product decisions

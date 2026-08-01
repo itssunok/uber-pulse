@@ -1,0 +1,35 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 -c ' *)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)",
+      "WebFetch(domain:docs.google.com)",
+      "WebFetch(domain:www.figma.com)",
+      "Bash(git commit *)",
+      "Bash(awk '/^const CATALOG = \\\\[/,/^\\\\];/' \"/Users/sunokok/Desktop/UberPulseRepo/uber-pulse/index.html\")",
+      "Bash(awk '/^const PIPELINES = \\\\[/,/^\\\\];/' \"/Users/sunokok/Desktop/UberPulseRepo/uber-pulse/index.html\")",
+      "Bash(node --check /tmp/dc_script.js)",
+      "Bash(python3 /tmp/gen_new_data.py)",
+      "Bash(python3)",
+      "Bash(node -e ' *)",
+      "Bash(node --check /tmp/dc_script3.js)",
+      "Bash(node --check /tmp/dc_script4.js)",
+      "Bash(node --check /tmp/dc_script5.js)",
+      "Bash(node --check /tmp/dc_script6.js)",
+      "Bash(git config *)",
+      "Bash(git restore *)",
+      "Bash(node -e \"console.log\\(require.resolve\\('playwright'\\)\\)\")",
+      "Bash(npx --no-install playwright --version)",
+      "Bash(python3 -c \"print\\('py ok'\\)\")",
+      "Bash(open \"/Users/sunokok/Desktop/UberPulseRepo/uber-pulse/index.html\")",
+      "Bash(open -a \"Google Chrome\" \"/Users/sunokok/Desktop/UberPulseRepo/uber-pulse/index.html\")",
+      "Bash(open \"index.html\")",
+      "Bash(python3 -)",
+      "Bash(grep -n 'margin:0 0 20px 0;\">Propose\\\\|margin:0 0 20px 0;\">Flag\\\\|margin-bottom:20px;\">\\\\s*$\\\\|rows=\"4\"' \"/Users/sunokok/Desktop/UberPulseRepo/uber-pulse/index.html\")",
+      "Bash(osascript -e 'tell application \"Google Chrome\" to activate')",
+      "Bash(osascript -e 'tell application \"System Events\" to keystroke \"3\" using {command down, shift down}')"
+    ]
+  }
+}
