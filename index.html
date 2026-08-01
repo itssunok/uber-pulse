@@ -992,6 +992,12 @@
           <div><div style="font-size:11px; color:#9B9B9B; font-weight:600; text-transform:uppercase; margin-bottom:3px;">Definition owner</div><div style="font-size:13px;">{{ selectedEntry.definitionOwner }}</div></div>
           <div><div style="font-size:11px; color:#9B9B9B; font-weight:600; text-transform:uppercase; margin-bottom:3px;">Last updated</div><div style="font-size:13px;">{{ selectedEntry.lastUpdated }}</div></div>
         </div>
+        <sc-if value="{{ selectedEntry.pipelineName }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-bottom:20px;">
+            <div style="font-size:11px; color:#9B9B9B; font-weight:600; text-transform:uppercase; margin-bottom:6px;">Carried by pipeline</div>
+            <div role="button" tabindex="0" onClick="{{ selectedEntry.onViewPipeline }}" onKeyDown="{{ selectedEntry.onViewPipelineKeyDown }}" style="display:inline-flex; align-items:center; gap:6px; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:7px; padding:6px 10px; font-size:12.5px; cursor:pointer;">{{ selectedEntry.pipelineName }} →</div>
+          </div>
+        </sc-if>
         <button onClick="{{ selectedEntry.onDownload }}" style="width:100%; box-sizing:border-box; background:#0A0A0A; color:#FFF; border:none; border-radius:999px; padding:11px; font-size:13px; font-weight:600; cursor:pointer; margin-bottom:22px;">Download sample CSV</button>
 
         <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#6B6B6B; margin-bottom:10px;">Version history</div>
@@ -1003,6 +1009,21 @@
             </div>
           </sc-for>
         </div>
+
+        <sc-if value="{{ selectedEntry.pipelineHistory }}" hint-placeholder-val="{{ false }}">
+          <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#6B6B6B; margin-bottom:10px;">Pipeline quality history</div>
+          <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:22px;">
+            <sc-for list="{{ selectedEntry.pipelineHistory }}" as="h" hint-placeholder-count="5">
+              <div style="display:flex; align-items:center; justify-content:space-between; border:1px solid #E5E5E5; border-radius:8px; padding:9px 12px;">
+                <span style="font-size:12.5px; color:#6B6B6B;">{{ h.date }}</span>
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <span style="font-size:12.5px; font-weight:600;">Quality {{ h.quality }}</span>
+                  <span style="width:8px; height:8px; border-radius:50%; background:{{ h.dotColor }};"></span>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
 
         <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#6B6B6B; margin-bottom:10px;">Sample payload</div>
         <div style="background:#F6F6F6; border-radius:8px; padding:12px; font-family:ui-monospace,monospace; font-size:12px; line-height:1.7;">
@@ -1039,6 +1060,19 @@
             <div style="display:flex; align-items:center; justify-content:space-between; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px;">
               <div style="font-size:13px;">{{ c.name }}</div>
               <span style="{{ c.chipStyle }}">{{ c.status }}</span>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#6B6B6B; margin-bottom:10px;">History</div>
+        <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:22px;">
+          <sc-for list="{{ selectedPipeline.history }}" as="h" hint-placeholder-count="5">
+            <div style="display:flex; align-items:center; justify-content:space-between; border:1px solid #E5E5E5; border-radius:8px; padding:9px 12px;">
+              <span style="font-size:12.5px; color:#6B6B6B;">{{ h.date }}</span>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <span style="font-size:12.5px; font-weight:600;">Quality {{ h.quality }}</span>
+                <span style="width:8px; height:8px; border-radius:50%; background:{{ h.dotColor }};"></span>
+              </div>
             </div>
           </sc-for>
         </div>
@@ -1413,6 +1447,9 @@ function sparkPoints(nums){
   }).join(' ');
 }
 
+function healthDotColor(health){
+  return health==='green' ? '#06C167' : health==='amber' ? '#C98A1E' : '#A93327';
+}
 function statusChipStyle(status){
   const map = {
     green:'background:var(--color-status-green-bg);color:var(--color-status-green-fg);', amber:'background:var(--color-status-amber-bg);color:var(--color-status-amber-fg);', red:'background:var(--color-status-red-bg);color:var(--color-status-red-fg);',
@@ -1602,6 +1639,7 @@ class Component extends DCLogic {
   closeRoadmapItem = () => this.setState({selectedRoadmapItemId:null});
   viewCatalogRef = (id) => this.setState({appScreen:'catalog', catalogQuery:'', catalogLob:'All', catalogStatus:'All', selectedEntryId:id, catalogTab:'data'});
   viewCatalogEntryFromPipeline = (id) => this.setState({appScreen:'catalog', catalogQuery:'', catalogLob:'All', catalogStatus:'All', selectedEntryId:id, catalogTab:'data', selectedPipelineId:null});
+  viewPipelineFromCatalog = (id) => this.setState({selectedEntryId:null, selectedPipelineId:id});
 
   downloadSample = (entry) => {
     downloadCSV(entry.id+'_sample.csv', ['field','value'], entry.payload.map(p=>[p.field,p.value]));
@@ -1874,12 +1912,17 @@ class Component extends DCLogic {
     const catalogNextDisabled = catalogPageClamped>=catalogTotalPages;
 
     const rawSelected = CATALOG.find(e => e.id === s.selectedEntryId) || null;
+    const entryPipeline = rawSelected ? PIPELINES.find(p => p.id === rawSelected.pipelineId) || null : null;
     const selectedEntry = rawSelected ? {
       ...rawSelected,
       statusLabel: rawSelected.status.charAt(0).toUpperCase()+rawSelected.status.slice(1),
       statusChipStyle: statusChipStyle(rawSelected.status),
       lobChipStyle: lobChipStyle(rawSelected.lob),
-      onDownload: () => this.downloadSample(rawSelected)
+      onDownload: () => this.downloadSample(rawSelected),
+      pipelineName: entryPipeline ? entryPipeline.name : null,
+      onViewPipeline: entryPipeline ? (() => this.viewPipelineFromCatalog(entryPipeline.id)) : null,
+      onViewPipelineKeyDown: entryPipeline ? this.onRowKeyDown(() => this.viewPipelineFromCatalog(entryPipeline.id)) : null,
+      pipelineHistory: entryPipeline ? entryPipeline.history.map(h => ({ ...h, dotColor: healthDotColor(h.health) })) : null
     } : null;
 
     return {
@@ -2180,6 +2223,7 @@ class Component extends DCLogic {
       lobChipStyle: lobChipStyle(rawSelectedPipeline.lob),
       slaActualStyle: 'font-weight:600;color:'+(rawSelectedPipeline.health==='green' ? '#067A3E' : rawSelectedPipeline.health==='amber' ? '#96530A' : '#A93327')+';',
       weeklyVolumeLabel: pipelineVolume(rawSelectedPipeline.id).toFixed(1)+'M',
+      history: rawSelectedPipeline.history.map(h => ({ ...h, dotColor: healthDotColor(h.health) })),
       events: pipelineEvents(rawSelectedPipeline.id).map(e => ({
         ...e,
         weeklyVolumeLabel: e.weeklyVolume.toFixed(1)+'M',
