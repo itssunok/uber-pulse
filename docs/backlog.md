@@ -7,18 +7,8 @@ Prioritized MoSCoW-style following the full UX/UI/Brand design audit (Aug 2026),
 
 ---
 
-## Foundation (done, Aug 2026)
-
-- `[done]` Design tokens extracted to `styles/tokens.css` (colors, 8px spacing scale, type scale, radius) and wired into the base `<style>` block + shared style-builder functions. Includes the `#9B9B9B`→`#6B6B6B` contrast merge for everywhere those functions/block touch. Scoped as a demo-appropriate token extraction, not a full design-system/component migration — the 539 individual inline `style=""` attributes on markup were explicitly left untouched, so some old hex/pixel values still exist there (see notes on Should-tier items below).
-- `[done]` Mock data (`PIPELINES`, `CATALOG`, `ROADMAP_BASE`, `METRICS_BASE`) moved out of `index.html` into `data/pipelines.js`, `data/catalog.js`, `data/roadmap.js`, `data/metrics.js` — plain JS globals, no build step, loaded via `<script src>` before `scripts/support.js`. Each file has a JSDoc header documenting field shape/types. Values preserved exactly, no new fields added.
-- `[done]` Project folder structure organized — `favicon.png` moved to `assets/favicon.png`, `support.js` moved to `scripts/support.js`, and the main app file renamed from `Uber Pulse.dc.html` to `index.html` (confirmed safe — the `.dc.html` suffix convention only applies to component files loaded via the runtime's `x-import` mechanism, not the root document). All reference paths updated, including the duplicate `<link rel="icon">` inside the `<helmet>` block.
-- `[open]` Full production foundation (Vite + React + TypeScript migration, real schema validation, component-level restructure) — scoped out for now, this is a demo project not a production build. Written plan exists (see conversation history) if this ever becomes real. ~3-4 weeks effort, do not start piecemeal.
-
----
-
 ## High Priority (Must)
 
-- `[open]` Drop the "real-time" claim on Pipeline Log's subhead copy — it currently claims real-time status while validation is daily/weekly/monthly, which is the actual credibility problem. Small effort, copy-only (the date-filter UI that was previously bundled with this is now a separate Should-tier item — the filters aren't required to fix the false claim).
 - `[open]` Fix broken catalog changelogs for the entries actually surfaced elsewhere in the app (the ones referenced by the AI assistant's canned responses, e.g. `completed_trip`) — a representative fix, not an exhaustive backfill across every v2+ entry. Rescoped down from a full catalog sweep: faking every entry's history is disproportionate effort for the credibility this buys. Small-medium effort.
 - `[open]` Add confidence/live-vs-cached signals — scope to the AI assistant's 4 canned responses plus the catalog entries they reference, not all 85+ catalog entries. Make the assistant cite sources consistently (currently only half do) and visually separate live data-quality warnings from confident prose (e.g. the EU duplicate-events caveat). Directly addresses the PRD's own named top risk for the AI assistant. Rescoped down from a full-catalog pass. Small-medium effort.
 - `[open]` Add pipeline/quality-score history — rescoped down from a real time-series data model to a modest static array of 5-10 past timestamped snapshots per pipeline, rendered as a simple list. Enough for James and Tom to see a pipeline was checked and degraded on a specific date, without engineering real searchable history tracking. Medium effort (down from Large).
