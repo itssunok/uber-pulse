@@ -2062,6 +2062,9 @@ function roadmapTypeLabel(type){
 function roadmapTypeChipStyle(type){
   return 'font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.03em;padding:2px 7px;border-radius:5px;display:inline-block;border:1px solid #E5E5E5;background:#FFFFFF;color:#6B6B6B;';
 }
+function orDash(v){
+  return (v && String(v).trim() !== '') ? v : '—';
+}
 
 function downloadCSV(filename, headerRow, rows){
   const csv = [headerRow, ...rows].map(r=>r.join(',')).join('\n');
@@ -2367,6 +2370,22 @@ class Component extends DCLogic {
   stopClick = (e) => e.stopPropagation();
   onRowKeyDown = (fn) => (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fn(); } };
 
+  buildStepChips = (labels, currentStep, onSelect) => labels.map((label, i) => {
+    const idx = i+1;
+    const stepState = idx < currentStep ? 'done' : idx === currentStep ? 'active' : 'future';
+    const circleBg = stepState==='active' ? '#0A0A0A' : stepState==='done' ? '#06C167' : '#EFEFEF';
+    const circleColor = stepState==='future' ? '#9B9B9B' : '#FFFFFF';
+    return {
+      index: idx, label,
+      circleStyle: 'width:24px;height:24px;border-radius:50%;background:'+circleBg+';color:'+circleColor+';display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;',
+      labelStyle: 'font-size:12.5px;font-weight:'+(stepState==='active'?'700':'500')+';color:'+(stepState==='future'?'#9B9B9B':'#0A0A0A')+';margin-left:8px;margin-right:16px;white-space:nowrap;',
+      cursorStyle: stepState==='done' ? 'pointer' : 'default',
+      onClick: stepState==='done' ? (() => onSelect(idx)) : (() => {}),
+      showConnector: idx < labels.length,
+      connectorStyle: 'flex:1;height:1px;background:'+(idx<currentStep?'#06C167':'#E5E5E5')+';margin-right:16px;'
+    };
+  });
+
   componentDidUpdate(_prevProps) {
     if (this.state.appScreen !== this._lastAppScreen) {
       this._lastAppScreen = this.state.appScreen;
@@ -2374,14 +2393,37 @@ class Component extends DCLogic {
     }
   }
 
-  renderVals() {
-    const s = this.state;
-    const navStyle = (active) => 'display:flex;align-items:center;gap:10px;width:100%;box-sizing:border-box;text-align:left;background:'+(active?'#F6F6F6':'none')+';border:none;color:'+(active?'#0A0A0A':'#6B6B6B')+';font-weight:'+(active?'700':'500')+';border-radius:10px;padding:10px 12px;font-size:13.5px;cursor:pointer;';
-    const mobileMoreActive = ['assistant','developer','report','contribute','docs'].includes(s.appScreen);
-    const mobileNavStyle = (active) => 'display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;flex:1;min-height:48px;background:none;border:none;color:'+(active?'#0A0A0A':'#6B6B6B')+';font-weight:'+(active?'700':'500')+';font-size:10.5px;cursor:pointer;padding:6px 4px;';
+  renderLoginVals(s) {
+    return {
+      loginEmail: s.loginEmail, loginPassword: s.loginPassword, loginError: s.loginError,
+      onLoginEmailChange: this.onLoginEmailChange, onLoginPasswordChange: this.onLoginPasswordChange,
+      handleLogin: this.handleLogin, fillDemo: this.fillDemo, logout: this.logout,
+      logoutKeyDown: this.onRowKeyDown(this.logout)
+    };
+  }
 
+  renderNavShellVals(s, navStyle, mobileNavStyle, mobileMoreActive, activeChatSession) {
+    return {
+      goHome: this.goHome, goCatalog: this.goCatalog, goAssistant: this.goAssistant, goRoadmap: this.goRoadmap,
+      goReport: this.goReport, goContribute: this.goContribute,
+      askPulseSheetOpen: s.askPulseSheetOpen, openAskPulseSheet: this.openAskPulseSheet,
+      closeAskPulseSheet: this.closeAskPulseSheet, expandAskPulseSheet: this.expandAskPulseSheet,
+      askPulseSheetTitle: activeChatSession ? activeChatSession.title : 'Ask Pulse',
+      mobileMoreOpen: s.mobileMoreOpen, openMobileMore: this.openMobileMore, closeMobileMore: this.closeMobileMore,
+      mobileMoreActive,
+      mobileNavStyle_home: mobileNavStyle(s.appScreen==='home'), mobileNavStyle_catalog: mobileNavStyle(s.appScreen==='catalog'),
+      mobileNavStyle_roadmap: mobileNavStyle(s.appScreen==='roadmap'), mobileNavStyle_more: mobileNavStyle(mobileMoreActive),
+      navBtnStyle_home: navStyle(s.appScreen==='home'), navBtnStyle_catalog: navStyle(s.appScreen==='catalog'),
+      navBtnStyle_assistant: navStyle(s.appScreen==='assistant'), navBtnStyle_roadmap: navStyle(s.appScreen==='roadmap'),
+      navBtnStyle_report: navStyle(s.appScreen==='report'), navBtnStyle_contribute: navStyle(s.appScreen==='contribute'),
+      navBtnStyle_plain: navStyle(false),
+      navBtnStyle_developer: navStyle(s.appScreen==='developer'),
+      navBtnStyle_docs: navStyle(s.appScreen==='docs')
+    };
+  }
+
+  renderHomeVals(s, pipelines) {
     const criticalPipeline = PIPELINES.find(p => p.health === 'red') || null;
-
     const metrics = METRICS_BASE.map(m => ({
       ...m,
       deltaLabel: m.delta,
@@ -2389,55 +2431,15 @@ class Component extends DCLogic {
       sparkPoints: sparkPoints(m.points),
       sparkColor: m.positive ? '#06C167' : '#A93327'
     }));
-
-    const pipelineVolume = (pid) => CATALOG.filter(e => e.pipelineId === pid).reduce((sum,e) => sum + e.weeklyVolume, 0);
-    const pipelineEvents = (pid) => CATALOG.filter(e => e.pipelineId === pid).sort((a,b) => b.weeklyVolume - a.weeklyVolume);
-
-    const pipelines = PIPELINES.map(p => {
-      const weeklyVolume = pipelineVolume(p.id);
-      return {
-        ...p,
-        weeklyVolume,
-        statusLabel: statusLabel(p.health),
-        statusChipStyle: statusChipStyle(p.health),
-        lobChipStyle: lobChipStyle(p.lob),
-        slaActualStyle: 'font-weight:600;color:'+(p.health==='green' ? '#067A3E' : p.health==='amber' ? '#96530A' : '#A93327')+';',
-        qualityBarStyle: 'height:100%;border-radius:3px;width:'+p.quality+'%;background:'+(p.quality>=95?'#06C167':p.quality>=80?'#C98A1E':'#A93327')+';',
-        weeklyVolumeLabel: weeklyVolume.toFixed(1)+'M',
-        onSelect: () => this.selectPipeline(p.id),
-        onKeyDown: this.onRowKeyDown(() => this.selectPipeline(p.id))
-      };
-    }).sort((a,b) => b.weeklyVolume - a.weeklyVolume);
-
     const homePipelines = pipelines.slice(0, 10).map((p,i) => ({ ...p, rowNumber: i+1 }));
+    return {
+      isHome: s.appScreen === 'home',
+      criticalPipeline, metrics, homePipelines
+    };
+  }
 
-    const pipelineChecks = (health) => ([
-      { name:'Schema validation', status: health==='red' ? 'fail' : 'pass' },
-      { name:'Duplicate detection', status: health==='red' ? 'warn' : (health==='amber' ? 'warn' : 'pass') },
-      { name:'Completeness', status: health==='red' ? 'warn' : 'pass' }
-    ]);
-    const checkStyle = (status) => 'font-size:11px;font-weight:700;text-transform:capitalize;padding:3px 9px;border-radius:6px;display:inline-block;' +
-      (status==='pass' ? 'background:#DFF3E6;color:#067A3E;' : status==='warn' ? 'background:#FCEFDC;color:#96530A;' : 'background:#FBE9E6;color:#A93327;');
-
-    const rawSelectedPipeline = PIPELINES.find(p => p.id === s.selectedPipelineId) || null;
-    const selectedPipeline = rawSelectedPipeline ? {
-      ...rawSelectedPipeline,
-      statusLabel: statusLabel(rawSelectedPipeline.health),
-      statusChipStyle: statusChipStyle(rawSelectedPipeline.health),
-      lobChipStyle: lobChipStyle(rawSelectedPipeline.lob),
-      slaActualStyle: 'font-weight:600;color:'+(rawSelectedPipeline.health==='green' ? '#067A3E' : rawSelectedPipeline.health==='amber' ? '#96530A' : '#A93327')+';',
-      weeklyVolumeLabel: pipelineVolume(rawSelectedPipeline.id).toFixed(1)+'M',
-      events: pipelineEvents(rawSelectedPipeline.id).map(e => ({
-        ...e,
-        weeklyVolumeLabel: e.weeklyVolume.toFixed(1)+'M',
-        statusChipStyle: statusChipStyle(e.status),
-        statusLabel: e.status.charAt(0).toUpperCase()+e.status.slice(1),
-        onSelect: () => this.viewCatalogEntryFromPipeline(e.id),
-        onKeyDown: this.onRowKeyDown(() => this.viewCatalogEntryFromPipeline(e.id))
-      })),
-      checks: pipelineChecks(rawSelectedPipeline.health).map(c => ({ ...c, chipStyle: checkStyle(c.status) }))
-    } : null;
-
+  renderCatalogVals(s, pipelines) {
+    const PAGE_SIZE = 30;
     const catalogTabStyle = (active) => 'background:none;border:none;border-bottom:2px solid '+(active?'#0A0A0A':'transparent')+';color:'+(active?'#0A0A0A':'#6B6B6B')+';font-weight:'+(active?'700':'500')+';font-size:13.5px;padding:10px 4px;margin-right:24px;cursor:pointer;';
     const isCatalogDataTab = s.catalogTab === 'data';
     const isCatalogPipelineTab = s.catalogTab === 'pipeline';
@@ -2453,7 +2455,6 @@ class Component extends DCLogic {
       (pq === '' || p.name.toLowerCase().includes(pq))
     );
     const pipelineCountLabel = filteredPipelines.length + (filteredPipelines.length===1 ? ' result' : ' results');
-    const PAGE_SIZE = 30;
     const pipelineLogTotalPages = Math.max(1, Math.ceil(filteredPipelines.length / PAGE_SIZE));
     const pipelineLogPageClamped = Math.min(s.pipelineLogPage, pipelineLogTotalPages);
     const pipelineLogRowOffset = (pipelineLogPageClamped-1)*PAGE_SIZE;
@@ -2498,9 +2499,25 @@ class Component extends DCLogic {
       onDownload: () => this.downloadSample(rawSelected)
     } : null;
 
+    return {
+      isCatalog: s.appScreen === 'catalog',
+      pipelineQuery: s.pipelineQuery, pipelineLob: s.pipelineLob, pipelineHealth: s.pipelineHealth,
+      onPipelineQueryChange: this.onPipelineQueryChange, onPipelineLobChange: this.onPipelineLobChange, onPipelineHealthChange: this.onPipelineHealthChange,
+      filteredPipelines, pipelineCountLabel,
+      pagedPipelines, pipelineLogPageLabel, onPipelineLogPrevPage, onPipelineLogNextPage, pipelineLogPrevDisabled, pipelineLogNextDisabled,
+      pagedCatalog, catalogPageLabel, onCatalogPrevPage, onCatalogNextPage, catalogPrevDisabled, catalogNextDisabled,
+      catalogQuery: s.catalogQuery, catalogLob: s.catalogLob, catalogStatus: s.catalogStatus,
+      isCatalogDataTab, isCatalogPipelineTab, catalogTabDataStyle, catalogTabPipelineStyle,
+      onCatalogTabData, onCatalogTabPipeline,
+      onCatalogQueryChange: this.onCatalogQueryChange, onCatalogLobChange: this.onCatalogLobChange, onCatalogStatusChange: this.onCatalogStatusChange,
+      catalogCountLabel: filteredCatalog.length + (filteredCatalog.length===1 ? ' result' : ' results'),
+      filteredCatalog, selectedEntry, closeEntry: this.closeEntry
+    };
+  }
+
+  renderAssistantVals(s, activeChatSession) {
     const isChatActive = !!s.activeChatId;
     const isChatLanding = !isChatActive;
-    const activeChatSession = s.chatSessions.find(sess => sess.id === s.activeChatId) || null;
     const chatMessages = (activeChatSession ? activeChatSession.messages : []).map(m => ({
       ...m,
       rowStyle: 'display:flex;'+(m.role==='user' ? 'justify-content:flex-end;' : 'justify-content:flex-start;'),
@@ -2521,10 +2538,6 @@ class Component extends DCLogic {
         onOpen: () => this.openChatSession(sess.id)
       };
     });
-    const docsQueryLower = s.docsQuery.trim().toLowerCase();
-    const docTopicsFiltered = DOC_TOPICS
-      .filter(t => s.docsCategory === 'All' || t.category === s.docsCategory)
-      .filter(t => docsQueryLower === '' || t.title.toLowerCase().includes(docsQueryLower) || t.blurb.toLowerCase().includes(docsQueryLower) || t.sections.some(sec => sec.body.toLowerCase().includes(docsQueryLower)));
     const chatSearchQuery = s.chatSearchQuery.trim().toLowerCase();
     const chatSessionsView = allChatSessionsView.filter(sess => chatSearchQuery === '' || sess.searchBlob.includes(chatSearchQuery));
     const hasChatSessions = s.chatSessions.length > 0;
@@ -2535,6 +2548,22 @@ class Component extends DCLogic {
     const suggestionTexts = ['What is completed_trip?', 'How many rides did we complete last week in the Netherlands?', "Where do I find surge pricing event data?", "We're launching scheduled rides up to 30 days in advance — what should we track?"];
     const suggestions = suggestionTexts.map(t => ({ label:t, onClick: () => this.sendSuggestion(t) }));
 
+    return {
+      isAssistant: s.appScreen === 'assistant',
+      isChatLanding, isChatActive, activeChatSession,
+      chatMessages, chatInput: s.chatInput, onChatInputChange: this.onChatInputChange, onChatKeyDown: this.onChatKeyDown, sendChat: this.sendChat,
+      chatSessionsView, hasChatSessions, hasChatSearchResults, noChatSearchResults,
+      chatSearchQuery: s.chatSearchQuery, onChatSearchChange: this.onChatSearchChange,
+      startNewChat: this.startNewChat, openChatSession: this.openChatSession,
+      hasAttachedFile, attachedFileName: s.attachedFileName, clearAttachedFile: this.clearAttachedFile,
+      attachMenuOpen: s.attachMenuOpen, toggleAttachMenu: this.toggleAttachMenu,
+      onUploadFile: this.onUploadFile, onUploadScreenshot: this.onUploadScreenshot, onReferenceCatalogEntry: this.onReferenceCatalogEntry,
+      onVoiceClick: this.onVoiceClick,
+      suggestions
+    };
+  }
+
+  renderRoadmapVals(s) {
     const roadmapColumnDefs = [
       { title:'Newly Submitted', items:s.extraSubmissions },
       { title:'Currently Being Defined', items:ROADMAP_BASE.defining },
@@ -2583,27 +2612,15 @@ class Component extends DCLogic {
       hasPriority: !!rawSelectedRoadmapItem.priority
     } : null;
 
-    const buildStepChips = (labels, currentStep, onSelect) => labels.map((label, i) => {
-      const idx = i+1;
-      const stepState = idx < currentStep ? 'done' : idx === currentStep ? 'active' : 'future';
-      const circleBg = stepState==='active' ? '#0A0A0A' : stepState==='done' ? '#06C167' : '#EFEFEF';
-      const circleColor = stepState==='future' ? '#9B9B9B' : '#FFFFFF';
-      return {
-        index: idx, label,
-        circleStyle: 'width:24px;height:24px;border-radius:50%;background:'+circleBg+';color:'+circleColor+';display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;',
-        labelStyle: 'font-size:12.5px;font-weight:'+(stepState==='active'?'700':'500')+';color:'+(stepState==='future'?'#9B9B9B':'#0A0A0A')+';margin-left:8px;margin-right:16px;white-space:nowrap;',
-        cursorStyle: stepState==='done' ? 'pointer' : 'default',
-        onClick: stepState==='done' ? (() => onSelect(idx)) : (() => {}),
-        showConnector: idx < labels.length,
-        connectorStyle: 'flex:1;height:1px;background:'+(idx<currentStep?'#06C167':'#E5E5E5')+';margin-right:16px;'
-      };
-    });
+    return {
+      isRoadmap: s.appScreen === 'roadmap',
+      roadmapColumns, selectedRoadmapItem, closeRoadmapItem: this.closeRoadmapItem,
+      roadmapDots, onRoadmapScroll: this.onRoadmapScroll
+    };
+  }
 
-    const contributeStepChips = buildStepChips(['Details','Review & submit'], s.contributeStep, this.setContributeStep);
-    const reportStepChips = buildStepChips(['Details','Review & submit'], s.reportStep, this.setReportStep);
-
-    const owningTeamOptions = OWNING_TEAMS;
-    const orDash = (v) => (v && String(v).trim() !== '') ? v : '—';
+  renderContributeVals(s) {
+    const contributeStepChips = this.buildStepChips(['Details','Review & submit'], s.contributeStep, this.setContributeStep);
 
     const contributeFormView = {
       ...s.contributeForm,
@@ -2623,7 +2640,23 @@ class Component extends DCLogic {
     const payloadRowsSummary = s.contributeForm.payloadRows.filter(r => r.field || r.value);
     const hasPayloadRows = payloadRowsSummary.length > 0;
     const noPayloadRows = !hasPayloadRows;
-    const nextPlanningMeetingLabel = this.nextPlanningMeeting();
+
+    return {
+      isContribute: s.appScreen === 'contribute',
+      contributeStep: s.contributeStep, contributeStepChips,
+      isContributeStep1: s.contributeStep === 1, isContributeStep2: s.contributeStep === 2,
+      contributeForm: contributeFormView, estimatedReviewDate: this.estimateReviewDate(),
+      owningTeamOptions: OWNING_TEAMS, payloadRowsView, payloadRowsSummary, hasPayloadRows, noPayloadRows,
+      onContributeNameChange: this.onContributeNameChange, onContributeLobChange: this.onContributeLobChange, onContributeOwningTeamChange: this.onContributeOwningTeamChange,
+      onContributeDescChange: this.onContributeDescChange, onContributeRepoLinkChange: this.onContributeRepoLinkChange,
+      onContributeJiraLinkChange: this.onContributeJiraLinkChange, onContributeVolumeChange: this.onContributeVolumeChange,
+      addPayloadRow: this.addPayloadRow,
+      contributeNext: this.contributeNext, contributeBack: this.contributeBack, submitContribute: this.submitContribute
+    };
+  }
+
+  renderReportVals(s) {
+    const reportStepChips = this.buildStepChips(['Details','Review & submit'], s.reportStep, this.setReportStep);
 
     const findDataPointName = (type, id) => type==='pipeline' ? (PIPELINES.find(p=>p.id===id)||{}).name : (CATALOG.find(e=>e.id===id)||{}).name;
     const reportSelectedDataPointName = s.reportForm.linkedDataPointId ? findDataPointName(s.reportForm.linkedDataPointType, s.reportForm.linkedDataPointId) : null;
@@ -2653,64 +2686,7 @@ class Component extends DCLogic {
     const reportGeneralCheckStyle = 'width:16px;height:16px;border-radius:4px;flex-shrink:0;border:1px solid '+(s.reportForm.generalIssue?'#0A0A0A':'#D0D0D0')+';background:'+(s.reportForm.generalIssue?'#0A0A0A':'#FFFFFF')+';';
 
     return {
-      isLogin: s.screen === 'login',
-      isApp: s.screen === 'app',
-      isHome: s.appScreen === 'home',
-      isCatalog: s.appScreen === 'catalog',
-      isAssistant: s.appScreen === 'assistant',
-      isRoadmap: s.appScreen === 'roadmap',
-      isContribute: s.appScreen === 'contribute',
       isReport: s.appScreen === 'report',
-      loginEmail: s.loginEmail, loginPassword: s.loginPassword, loginError: s.loginError,
-      onLoginEmailChange: this.onLoginEmailChange, onLoginPasswordChange: this.onLoginPasswordChange,
-      handleLogin: this.handleLogin, fillDemo: this.fillDemo, logout: this.logout,
-      logoutKeyDown: this.onRowKeyDown(this.logout),
-      goHome: this.goHome, goCatalog: this.goCatalog, goAssistant: this.goAssistant, goRoadmap: this.goRoadmap,
-      goReport: this.goReport, goContribute: this.goContribute,
-      askPulseSheetOpen: s.askPulseSheetOpen, openAskPulseSheet: this.openAskPulseSheet,
-      closeAskPulseSheet: this.closeAskPulseSheet, expandAskPulseSheet: this.expandAskPulseSheet,
-      askPulseSheetTitle: activeChatSession ? activeChatSession.title : 'Ask Pulse',
-      mobileMoreOpen: s.mobileMoreOpen, openMobileMore: this.openMobileMore, closeMobileMore: this.closeMobileMore,
-      mobileMoreActive,
-      mobileNavStyle_home: mobileNavStyle(s.appScreen==='home'), mobileNavStyle_catalog: mobileNavStyle(s.appScreen==='catalog'),
-      mobileNavStyle_roadmap: mobileNavStyle(s.appScreen==='roadmap'), mobileNavStyle_more: mobileNavStyle(mobileMoreActive),
-      navBtnStyle_home: navStyle(s.appScreen==='home'), navBtnStyle_catalog: navStyle(s.appScreen==='catalog'),
-      navBtnStyle_assistant: navStyle(s.appScreen==='assistant'), navBtnStyle_roadmap: navStyle(s.appScreen==='roadmap'),
-      navBtnStyle_report: navStyle(s.appScreen==='report'), navBtnStyle_contribute: navStyle(s.appScreen==='contribute'),
-      navBtnStyle_plain: navStyle(false),
-      criticalPipeline, metrics, pipelines, homePipelines, selectedPipeline, closePipeline: this.closePipeline,
-      pipelineQuery: s.pipelineQuery, pipelineLob: s.pipelineLob, pipelineHealth: s.pipelineHealth,
-      onPipelineQueryChange: this.onPipelineQueryChange, onPipelineLobChange: this.onPipelineLobChange, onPipelineHealthChange: this.onPipelineHealthChange,
-      filteredPipelines, pipelineCountLabel,
-      pagedPipelines, pipelineLogPageLabel, onPipelineLogPrevPage, onPipelineLogNextPage, pipelineLogPrevDisabled, pipelineLogNextDisabled,
-      pagedCatalog, catalogPageLabel, onCatalogPrevPage, onCatalogNextPage, catalogPrevDisabled, catalogNextDisabled,
-      catalogQuery: s.catalogQuery, catalogLob: s.catalogLob, catalogStatus: s.catalogStatus,
-      isCatalogDataTab, isCatalogPipelineTab, catalogTabDataStyle, catalogTabPipelineStyle,
-      onCatalogTabData, onCatalogTabPipeline,
-      onCatalogQueryChange: this.onCatalogQueryChange, onCatalogLobChange: this.onCatalogLobChange, onCatalogStatusChange: this.onCatalogStatusChange,
-      catalogCountLabel: filteredCatalog.length + (filteredCatalog.length===1 ? ' result' : ' results'),
-      filteredCatalog, selectedEntry, closeEntry: this.closeEntry,
-      isChatLanding, isChatActive, activeChatSession,
-      chatMessages, chatInput: s.chatInput, onChatInputChange: this.onChatInputChange, onChatKeyDown: this.onChatKeyDown, sendChat: this.sendChat,
-      chatSessionsView, hasChatSessions, hasChatSearchResults, noChatSearchResults,
-      chatSearchQuery: s.chatSearchQuery, onChatSearchChange: this.onChatSearchChange,
-      startNewChat: this.startNewChat, openChatSession: this.openChatSession,
-      hasAttachedFile, attachedFileName: s.attachedFileName, clearAttachedFile: this.clearAttachedFile,
-      attachMenuOpen: s.attachMenuOpen, toggleAttachMenu: this.toggleAttachMenu,
-      onUploadFile: this.onUploadFile, onUploadScreenshot: this.onUploadScreenshot, onReferenceCatalogEntry: this.onReferenceCatalogEntry,
-      onVoiceClick: this.onVoiceClick,
-      suggestions,
-      roadmapColumns, selectedRoadmapItem, closeRoadmapItem: this.closeRoadmapItem,
-      roadmapDots, onRoadmapScroll: this.onRoadmapScroll,
-      contributeStep: s.contributeStep, contributeStepChips,
-      isContributeStep1: s.contributeStep === 1, isContributeStep2: s.contributeStep === 2,
-      contributeForm: contributeFormView, estimatedReviewDate: this.estimateReviewDate(), nextPlanningMeetingLabel,
-      owningTeamOptions, payloadRowsView, payloadRowsSummary, hasPayloadRows, noPayloadRows,
-      onContributeNameChange: this.onContributeNameChange, onContributeLobChange: this.onContributeLobChange, onContributeOwningTeamChange: this.onContributeOwningTeamChange,
-      onContributeDescChange: this.onContributeDescChange, onContributeRepoLinkChange: this.onContributeRepoLinkChange,
-      onContributeJiraLinkChange: this.onContributeJiraLinkChange, onContributeVolumeChange: this.onContributeVolumeChange,
-      addPayloadRow: this.addPayloadRow,
-      contributeNext: this.contributeNext, contributeBack: this.contributeBack, submitContribute: this.submitContribute,
       reportStep: s.reportStep, reportStepChips,
       isReportStep1: s.reportStep === 1, isReportStep2: s.reportStep === 2,
       reportForm: reportFormView, reportDataPointQuery: s.reportDataPointQuery,
@@ -2721,9 +2697,13 @@ class Component extends DCLogic {
       onReportDescChange: this.onReportDescChange, onReportJiraLinkChange: this.onReportJiraLinkChange, onReportPrLinkChange: this.onReportPrLinkChange,
       onReportDataPointQueryChange: this.onReportDataPointQueryChange, clearReportDataPoint: this.clearReportDataPoint, toggleReportGeneral: this.toggleReportGeneral,
       reportNext: this.reportNext, reportBack: this.reportBack,
-      submitReport: this.submitReport,
+      submitReport: this.submitReport
+    };
+  }
+
+  renderDeveloperVals(s) {
+    return {
       isDeveloper: s.appScreen === 'developer', goDeveloper: this.goDeveloper,
-      navBtnStyle_developer: navStyle(s.appScreen==='developer'),
       sampleEndpoints: CATALOG.slice(0,3).map(e => ({ name:e.name, onSelect: () => this.viewCatalogRef(e.id) })),
       showCreateKeyForm: s.showCreateKeyForm, newKeyName: s.newKeyName,
       openCreateKeyForm: this.openCreateKeyForm, closeCreateKeyForm: this.closeCreateKeyForm,
@@ -2741,9 +2721,18 @@ class Component extends DCLogic {
         onConfirmDelete: () => this.confirmDeleteKey(k.id),
         onCancelDelete: () => this.cancelDeleteKey()
       })),
-      hasApiKeys: s.apiKeys.length > 0, noApiKeys: s.apiKeys.length === 0,
+      hasApiKeys: s.apiKeys.length > 0, noApiKeys: s.apiKeys.length === 0
+    };
+  }
+
+  renderDocsVals(s) {
+    const docsQueryLower = s.docsQuery.trim().toLowerCase();
+    const docTopicsFiltered = DOC_TOPICS
+      .filter(t => s.docsCategory === 'All' || t.category === s.docsCategory)
+      .filter(t => docsQueryLower === '' || t.title.toLowerCase().includes(docsQueryLower) || t.blurb.toLowerCase().includes(docsQueryLower) || t.sections.some(sec => sec.body.toLowerCase().includes(docsQueryLower)));
+
+    return {
       isDocs: s.appScreen === 'docs', goDocs: this.goDocs, openApiReferenceDoc: this.openApiReferenceDoc,
-      navBtnStyle_docs: navStyle(s.appScreen==='docs'),
       docsQuery: s.docsQuery, onDocsQueryChange: this.onDocsQueryChange,
       docsCategory: s.docsCategory, onDocsCategoryChange: this.onDocsCategoryChange,
       docsCategoryOptions: ['All', ...[...new Set(DOC_TOPICS.map(t => t.category))]],
@@ -2757,7 +2746,80 @@ class Component extends DCLogic {
         const t = DOC_TOPICS.find(t => t.id === s.selectedDocTopicId);
         if (!t) return null;
         return { id:t.id, title:t.title, badgeBg:t.badgeBg, badgeColor:t.badgeColor, sections:t.sections };
-      })(),
+      })()
+    };
+  }
+
+  renderVals() {
+    const s = this.state;
+    const navStyle = (active) => 'display:flex;align-items:center;gap:10px;width:100%;box-sizing:border-box;text-align:left;background:'+(active?'#F6F6F6':'none')+';border:none;color:'+(active?'#0A0A0A':'#6B6B6B')+';font-weight:'+(active?'700':'500')+';border-radius:10px;padding:10px 12px;font-size:13.5px;cursor:pointer;';
+    const mobileMoreActive = ['assistant','developer','report','contribute','docs'].includes(s.appScreen);
+    const mobileNavStyle = (active) => 'display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;flex:1;min-height:48px;background:none;border:none;color:'+(active?'#0A0A0A':'#6B6B6B')+';font-weight:'+(active?'700':'500')+';font-size:10.5px;cursor:pointer;padding:6px 4px;';
+
+    const pipelineVolume = (pid) => CATALOG.filter(e => e.pipelineId === pid).reduce((sum,e) => sum + e.weeklyVolume, 0);
+    const pipelineEvents = (pid) => CATALOG.filter(e => e.pipelineId === pid).sort((a,b) => b.weeklyVolume - a.weeklyVolume);
+
+    const pipelines = PIPELINES.map(p => {
+      const weeklyVolume = pipelineVolume(p.id);
+      return {
+        ...p,
+        weeklyVolume,
+        statusLabel: statusLabel(p.health),
+        statusChipStyle: statusChipStyle(p.health),
+        lobChipStyle: lobChipStyle(p.lob),
+        slaActualStyle: 'font-weight:600;color:'+(p.health==='green' ? '#067A3E' : p.health==='amber' ? '#96530A' : '#A93327')+';',
+        qualityBarStyle: 'height:100%;border-radius:3px;width:'+p.quality+'%;background:'+(p.quality>=95?'#06C167':p.quality>=80?'#C98A1E':'#A93327')+';',
+        weeklyVolumeLabel: weeklyVolume.toFixed(1)+'M',
+        onSelect: () => this.selectPipeline(p.id),
+        onKeyDown: this.onRowKeyDown(() => this.selectPipeline(p.id))
+      };
+    }).sort((a,b) => b.weeklyVolume - a.weeklyVolume);
+
+    const pipelineChecks = (health) => ([
+      { name:'Schema validation', status: health==='red' ? 'fail' : 'pass' },
+      { name:'Duplicate detection', status: health==='red' ? 'warn' : (health==='amber' ? 'warn' : 'pass') },
+      { name:'Completeness', status: health==='red' ? 'warn' : 'pass' }
+    ]);
+    const checkStyle = (status) => 'font-size:11px;font-weight:700;text-transform:capitalize;padding:3px 9px;border-radius:6px;display:inline-block;' +
+      (status==='pass' ? 'background:#DFF3E6;color:#067A3E;' : status==='warn' ? 'background:#FCEFDC;color:#96530A;' : 'background:#FBE9E6;color:#A93327;');
+
+    const rawSelectedPipeline = PIPELINES.find(p => p.id === s.selectedPipelineId) || null;
+    const selectedPipeline = rawSelectedPipeline ? {
+      ...rawSelectedPipeline,
+      statusLabel: statusLabel(rawSelectedPipeline.health),
+      statusChipStyle: statusChipStyle(rawSelectedPipeline.health),
+      lobChipStyle: lobChipStyle(rawSelectedPipeline.lob),
+      slaActualStyle: 'font-weight:600;color:'+(rawSelectedPipeline.health==='green' ? '#067A3E' : rawSelectedPipeline.health==='amber' ? '#96530A' : '#A93327')+';',
+      weeklyVolumeLabel: pipelineVolume(rawSelectedPipeline.id).toFixed(1)+'M',
+      events: pipelineEvents(rawSelectedPipeline.id).map(e => ({
+        ...e,
+        weeklyVolumeLabel: e.weeklyVolume.toFixed(1)+'M',
+        statusChipStyle: statusChipStyle(e.status),
+        statusLabel: e.status.charAt(0).toUpperCase()+e.status.slice(1),
+        onSelect: () => this.viewCatalogEntryFromPipeline(e.id),
+        onKeyDown: this.onRowKeyDown(() => this.viewCatalogEntryFromPipeline(e.id))
+      })),
+      checks: pipelineChecks(rawSelectedPipeline.health).map(c => ({ ...c, chipStyle: checkStyle(c.status) }))
+    } : null;
+
+    const activeChatSession = s.chatSessions.find(sess => sess.id === s.activeChatId) || null;
+    const nextPlanningMeetingLabel = this.nextPlanningMeeting();
+
+    return {
+      isLogin: s.screen === 'login',
+      isApp: s.screen === 'app',
+      ...this.renderLoginVals(s),
+      ...this.renderNavShellVals(s, navStyle, mobileNavStyle, mobileMoreActive, activeChatSession),
+      ...this.renderHomeVals(s, pipelines),
+      ...this.renderCatalogVals(s, pipelines),
+      ...this.renderAssistantVals(s, activeChatSession),
+      ...this.renderRoadmapVals(s),
+      ...this.renderContributeVals(s),
+      ...this.renderReportVals(s),
+      ...this.renderDeveloperVals(s),
+      ...this.renderDocsVals(s),
+      pipelines, selectedPipeline, closePipeline: this.closePipeline,
+      nextPlanningMeetingLabel,
       toast: s.toast,
       stopClick: this.stopClick
     };
