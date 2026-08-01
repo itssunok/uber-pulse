@@ -25,6 +25,7 @@
 
     .pulse-bottom-nav, .pulse-mobile-sheet-overlay { display:none; }
     .pulse-mobile-label { display:none; }
+    .pulse-roadmap-dots { display:none; }
 
     @media (max-width:900px) {
       .pulse-desktop-sidebar { display:none !important; }
@@ -46,6 +47,19 @@
       .pulse-mobile-sheet button {
         min-height:44px;
       }
+
+      .pulse-side-sheet { width:100% !important; }
+
+      .pulse-roadmap-grid {
+        display:flex !important; overflow-x:auto; scroll-snap-type:x mandatory;
+        -webkit-overflow-scrolling:touch; gap:0 !important; scrollbar-width:none;
+      }
+      .pulse-roadmap-grid::-webkit-scrollbar { display:none; }
+      .pulse-roadmap-col {
+        flex:0 0 100% !important; scroll-snap-align:start; height:auto !important; max-height:none !important;
+      }
+      .pulse-roadmap-col-items { overflow-y:visible !important; flex:none !important; height:auto !important; }
+      .pulse-roadmap-dots { display:flex !important; justify-content:center; gap:6px; margin-top:12px; }
 
       .pulse-kpi-grid { grid-template-columns:1fr !important; }
       .pulse-pipeline-header { display:none !important; }
@@ -496,7 +510,7 @@
 
           <sc-if value="{{ isRoadmap }}" hint-placeholder-val="{{ false }}">
             <div style="display:flex; flex-direction:column; flex:1; min-height:0; width:100%;">
-              <div style="display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:20px; flex-shrink:0;">
+              <div style="display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:20px; flex-shrink:0; flex-wrap:wrap; gap:10px;">
                 <div>
                   <h1 style="font-size:24px; font-weight:800; margin:0 0 4px 0; letter-spacing:-0.5px;">Roadmap</h1>
                   <p style="font-size:14px; color:#6B6B6B; margin:0;">What the data team is working on, and what's coming next.</p>
@@ -504,11 +518,11 @@
                 <a href="#" style="font-size:13px; font-weight:600; background:#FFFFFF; border:1px solid #E5E5E5; border-radius:999px; padding:8px 16px; text-decoration:none;">View full roadmap in Jira ↗</a>
               </div>
 
-              <div style="display:grid; grid-template-columns:repeat(4,1fr); grid-template-rows:1fr; gap:14px; width:100%; flex:1; min-height:0;">
+              <div id="pulse-roadmap-track" class="pulse-roadmap-grid" onScroll="{{ onRoadmapScroll }}" style="display:grid; grid-template-columns:repeat(4,1fr); grid-template-rows:1fr; gap:14px; width:100%; flex:1; min-height:0;">
                 <sc-for list="{{ roadmapColumns }}" as="col" hint-placeholder-count="4">
-                  <div style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; padding:16px; box-sizing:border-box; height:100%; min-width:0; display:flex; flex-direction:column; overflow:hidden;">
+                  <div class="pulse-roadmap-col" style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; padding:16px; box-sizing:border-box; height:100%; min-width:0; display:flex; flex-direction:column; overflow:hidden;">
                     <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:#6B6B6B; margin-bottom:10px; flex-shrink:0;">{{ col.title }} · {{ col.count }}</div>
-                    <div style="display:flex; flex-direction:column; gap:10px; overflow-y:auto; overflow-x:hidden; flex:1; min-height:0; padding-right:4px;">
+                    <div class="pulse-roadmap-col-items" style="display:flex; flex-direction:column; gap:10px; overflow-y:auto; overflow-x:hidden; flex:1; min-height:0; padding-right:4px;">
                       <sc-for list="{{ col.items }}" as="it" hint-placeholder-count="2">
                         <div style="{{ it.cardStyle }}" onClick="{{ it.onSelect }}">
                           <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:8px;">
@@ -525,6 +539,12 @@
                       </sc-for>
                     </div>
                   </div>
+                </sc-for>
+              </div>
+
+              <div class="pulse-roadmap-dots">
+                <sc-for list="{{ roadmapDots }}" as="d" hint-placeholder-count="4">
+                  <button onClick="{{ d.onClick }}" style="{{ d.dotStyle }}"></button>
                 </sc-for>
               </div>
             </div>
@@ -1023,7 +1043,7 @@
 
     <sc-if value="{{ selectedRoadmapItem }}" hint-placeholder-val="{{ false }}">
       <div style="position:fixed; inset:0; background:rgba(10,10,10,0.35); z-index:30;" onClick="{{ closeRoadmapItem }}"></div>
-      <div style="position:fixed; top:0; right:0; bottom:0; width:440px; background:#FFFFFF; box-shadow:-8px 0 30px rgba(0,0,0,0.12); z-index:31; overflow-y:auto; padding:28px;">
+      <div class="pulse-side-sheet" style="position:fixed; top:0; right:0; bottom:0; width:440px; background:#FFFFFF; box-shadow:-8px 0 30px rgba(0,0,0,0.12); z-index:31; overflow-y:auto; padding:28px;">
         <div style="display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:16px;">
           <div style="font-size:16px; font-weight:700; font-family:ui-monospace,monospace;">{{ selectedRoadmapItem.name }}</div>
           <button onClick="{{ closeRoadmapItem }}" style="background:none; border:none; font-size:18px; cursor:pointer; color:#9B9B9B;">✕</button>
@@ -2069,6 +2089,7 @@ class Component extends DCLogic {
     activeChatId: null,
     askPulseSheetOpen: false,
     mobileMoreOpen: false,
+    roadmapActiveCol: 0,
     chatInput:'', attachedFileName:null, attachMenuOpen:false, chatSearchQuery:'',
     contributeStep:1,
     contributeForm:{name:'',lob:'Ridesharing',owningTeam:OWNING_TEAMS[0],description:'',repoLink:'',jiraLink:'',expectedVolume:'',payloadRows:[{field:'',value:''}]},
@@ -2101,7 +2122,17 @@ class Component extends DCLogic {
   expandAskPulseSheet = () => this.setState({appScreen:'assistant', selectedEntryId:null, selectedPipelineId:null, askPulseSheetOpen:false, attachMenuOpen:false});
   openMobileMore = () => this.setState({mobileMoreOpen:true});
   closeMobileMore = () => this.setState({mobileMoreOpen:false});
-  goRoadmap = () => this.setState({appScreen:'roadmap', selectedEntryId:null, selectedPipelineId:null, selectedRoadmapItemId:null, mobileMoreOpen:false});
+  goRoadmap = () => this.setState({appScreen:'roadmap', selectedEntryId:null, selectedPipelineId:null, selectedRoadmapItemId:null, mobileMoreOpen:false, roadmapActiveCol:0});
+  onRoadmapScroll = (e) => {
+    const w = e.target.clientWidth || 1;
+    const idx = Math.round(e.target.scrollLeft / w);
+    if (idx !== this.state.roadmapActiveCol) this.setState({roadmapActiveCol: idx});
+  };
+  goToRoadmapCol = (i) => {
+    const el = document.getElementById('pulse-roadmap-track');
+    if (el) el.scrollTo({ left: i * el.clientWidth, behavior: 'smooth' });
+    this.setState({roadmapActiveCol: i});
+  };
   goReport = () => this.setState({
     appScreen:'report', selectedEntryId:null, selectedPipelineId:null, reportStep:1, reportDataPointQuery:'',
     reportForm:{title:'',description:'',severity:'Medium',category:'Data Quality',generalIssue:false,linkedDataPointId:null,linkedDataPointType:null,jiraLink:'',prLink:''},
@@ -2514,6 +2545,12 @@ class Component extends DCLogic {
       }))
     }));
 
+    const roadmapDots = roadmapColumns.map((col, i) => ({
+      index: i,
+      onClick: () => this.goToRoadmapCol(i),
+      dotStyle: 'width:6px;height:6px;border-radius:50%;border:none;padding:0;cursor:pointer;background:'+(i === s.roadmapActiveCol ? '#0A0A0A' : '#D0D0D0')+';'
+    }));
+
     const allRoadmapItems = roadmapColumnDefs.flatMap(col => col.items.map(it => ({ ...it, stage: col.title })));
     const rawSelectedRoadmapItem = allRoadmapItems.find(it => it.id === s.selectedRoadmapItemId) || null;
     const selectedRoadmapItem = rawSelectedRoadmapItem ? {
@@ -2652,6 +2689,7 @@ class Component extends DCLogic {
       onVoiceClick: this.onVoiceClick,
       suggestions,
       roadmapColumns, selectedRoadmapItem, closeRoadmapItem: this.closeRoadmapItem,
+      roadmapDots, onRoadmapScroll: this.onRoadmapScroll,
       contributeStep: s.contributeStep, contributeStepChips,
       isContributeStep1: s.contributeStep === 1, isContributeStep2: s.contributeStep === 2,
       contributeForm: contributeFormView, estimatedReviewDate: this.estimateReviewDate(), nextPlanningMeetingLabel,
