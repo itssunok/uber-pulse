@@ -9,7 +9,6 @@ Prioritized MoSCoW-style following the full UX/UI/Brand design audit (Aug 2026),
 
 ## High Priority (Must)
 
-- `[open]` Add confidence/live-vs-cached signals — scope to the AI assistant's 4 canned responses plus the catalog entries they reference, not all 85+ catalog entries. Make the assistant cite sources consistently (currently only half do) and visually separate live data-quality warnings from confident prose (e.g. the EU duplicate-events caveat). Directly addresses the PRD's own named top risk for the AI assistant. Rescoped down from a full-catalog pass. Small-medium effort.
 - `[open]` Add pipeline/quality-score history — rescoped down from a real time-series data model to a modest static array of 5-10 past timestamped snapshots per pipeline, rendered as a simple list. Enough for James and Tom to see a pipeline was checked and degraded on a specific date, without engineering real searchable history tracking. Medium effort (down from Large).
 - `[open]` Rewrite AI Assistant landing headline — currently ChatGPT's unmodified default greeting ("How can I help you today?"), on the PRD's own highest-value differentiator feature. Small effort.
 - `[open]` Fix elevation inconsistency — side-sheets, dropdowns, toast, and the AI Assistant composer mix box-shadow with no border, violating "hairline borders over drop shadows." Replace side-sheet shadows with borders; standardize dropdowns/toast to one lighter "floating" shadow level. Small effort.

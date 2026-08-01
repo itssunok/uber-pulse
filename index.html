@@ -466,8 +466,14 @@
                       <div style="{{ msg.rowStyle }}">
                         <div style="{{ msg.bubbleStyle }}">
                           <div>{{ msg.text }}</div>
+                          <sc-if value="{{ msg.dataWarning }}" hint-placeholder-val="{{ false }}">
+                            <div style="margin-top:10px; background:#FBE9E6; border:1px solid #F0C4BC; color:#8C332A; font-size:12px; border-radius:8px; padding:8px 10px;">⚠ {{ msg.dataWarning }}</div>
+                          </sc-if>
                           <sc-if value="{{ msg.catalogRefLabel }}" hint-placeholder-val="{{ false }}">
                             <div onClick="{{ msg.onViewCatalog }}" style="margin-top:10px; display:inline-flex; align-items:center; gap:6px; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:7px; padding:6px 10px; font-size:12px; cursor:pointer;"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><rect x="3.5" y="4" width="17" height="16" rx="2.5"/><path d="M3.5 9.5h17M9.5 9.5V20"/></svg><span style="font-family:ui-monospace,monospace;">{{ msg.catalogRefLabel }}</span> → open in catalog</div>
+                          </sc-if>
+                          <sc-if value="{{ msg.freshnessLabel }}" hint-placeholder-val="{{ false }}">
+                            <div style="margin-top:6px; display:flex; align-items:center; gap:5px; font-size:11px; color:#067A3E;"><span style="width:6px; height:6px; border-radius:50%; background:#06C167; flex-shrink:0;"></span>{{ msg.freshnessLabel }}</div>
                           </sc-if>
                           <sc-if value="{{ msg.csv }}" hint-placeholder-val="{{ false }}">
                             <button onClick="{{ msg.onDownloadCsv }}" style="margin-top:10px; background:#0A0A0A; color:#FFF; border:none; border-radius:999px; padding:8px 14px; font-size:12px; font-weight:600; cursor:pointer;">Download CSV</button>
@@ -1176,8 +1182,14 @@
             <div style="{{ msg.rowStyle }}">
               <div style="{{ msg.bubbleStyle }}">
                 <div>{{ msg.text }}</div>
+                <sc-if value="{{ msg.dataWarning }}" hint-placeholder-val="{{ false }}">
+                  <div style="margin-top:10px; background:#FBE9E6; border:1px solid #F0C4BC; color:#8C332A; font-size:12px; border-radius:8px; padding:8px 10px;">⚠ {{ msg.dataWarning }}</div>
+                </sc-if>
                 <sc-if value="{{ msg.catalogRefLabel }}" hint-placeholder-val="{{ false }}">
                   <div onClick="{{ msg.onViewCatalog }}" style="margin-top:10px; display:inline-flex; align-items:center; gap:6px; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:7px; padding:6px 10px; font-size:12px; cursor:pointer;"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><rect x="3.5" y="4" width="17" height="16" rx="2.5"/><path d="M3.5 9.5h17M9.5 9.5V20"/></svg><span style="font-family:ui-monospace,monospace;">{{ msg.catalogRefLabel }}</span> → open in catalog</div>
+                </sc-if>
+                <sc-if value="{{ msg.freshnessLabel }}" hint-placeholder-val="{{ false }}">
+                  <div style="margin-top:6px; display:flex; align-items:center; gap:5px; font-size:11px; color:#067A3E;"><span style="width:6px; height:6px; border-radius:50%; background:#06C167; flex-shrink:0;"></span>{{ msg.freshnessLabel }}</div>
                 </sc-if>
                 <sc-if value="{{ msg.csv }}" hint-placeholder-val="{{ false }}">
                   <button onClick="{{ msg.onDownloadCsv }}" style="margin-top:10px; background:#0A0A0A; color:#FFF; border:none; border-radius:999px; padding:8px 14px; font-size:12px; font-weight:600; cursor:pointer;">Download CSV</button>
@@ -1275,11 +1287,11 @@ const OWNING_TEAMS = [...new Set(PIPELINES.map(p => p.owningTeam))].sort().conca
 const SEED_CHAT_SESSIONS = [
   { id:'seed-1', title:'What is completed_trip?', createdLabel:'2 days ago', messages:[
     {role:'user', text:'What is completed_trip?'},
-    {role:'assistant', text:'A completed_trip fires when the rider is dropped off at the confirmed destination and payment is captured successfully. Owned by Maya Chen (Data Science); currently v3.2. Note: it has an active data quality flag for duplicate events in the EU region.', catalogRefLabel:'completed_trip', catalogRefId:'completed_trip'}
+    {role:'assistant', text:'A completed_trip fires when the rider is dropped off at the confirmed destination and payment is captured successfully. Owned by Maya Chen (Data Science); currently v3.2.', catalogRefLabel:'completed_trip', catalogRefId:'completed_trip', dataWarning:'Active data quality flag: duplicate completion events observed in the EU region.'}
   ]},
   { id:'seed-2', title:'Completed rides in the Netherlands', createdLabel:'3 days ago', messages:[
     {role:'user', text:'How many rides did we complete last week in the Netherlands?'},
-    {role:'assistant', text:'Completed rides in the Netherlands, last 7 days: 1,284,930 rides — up 3.1% week-over-week. Sourced from completed_trip, filtered to country=NL.', csv:true, csvData:{ header:['date','city','completed_rides'], rows:[['2026-07-23','Amsterdam',201422],['2026-07-24','Amsterdam',198310],['2026-07-25','Rotterdam',94211],['2026-07-26','Amsterdam',205993],['2026-07-27','The Hague',61204],['2026-07-28','Amsterdam',210881],['2026-07-29','Amsterdam',312899]] }}
+    {role:'assistant', text:'Completed rides in the Netherlands, last 7 days: 1,284,930 rides — up 3.1% week-over-week. Sourced from completed_trip, filtered to country=NL.', csv:true, csvData:{ header:['date','city','completed_rides'], rows:[['2026-07-23','Amsterdam',201422],['2026-07-24','Amsterdam',198310],['2026-07-25','Rotterdam',94211],['2026-07-26','Amsterdam',205993],['2026-07-27','The Hague',61204],['2026-07-28','Amsterdam',210881],['2026-07-29','Amsterdam',312899]] }, catalogRefLabel:'completed_trip', catalogRefId:'completed_trip'}
   ]},
   { id:'seed-3', title:'Surge pricing event data', createdLabel:'5 days ago', messages:[
     {role:'user', text:'Where do I find surge pricing event data?'},
@@ -1609,10 +1621,10 @@ class Component extends DCLogic {
   getAssistantResponse = (text) => {
     const lower = text.toLowerCase();
     if(lower.includes('completed_trip') || (lower.includes('completed') && lower.includes('trip'))){
-      return { text:'A completed_trip fires when the rider is dropped off at the confirmed destination and payment is captured successfully. Owned by Maya Chen (Data Science); currently v3.2. Note: it has an active data quality flag for duplicate events in the EU region.', catalogRefLabel:'completed_trip', catalogRefId:'completed_trip' };
+      return { text:'A completed_trip fires when the rider is dropped off at the confirmed destination and payment is captured successfully. Owned by Maya Chen (Data Science); currently v3.2.', catalogRefLabel:'completed_trip', catalogRefId:'completed_trip', dataWarning:'Active data quality flag: duplicate completion events observed in the EU region.' };
     }
     if((lower.includes('netherlands') || lower.includes('amsterdam')) && (lower.includes('rid') || lower.includes('trip'))){
-      return { text:'Completed rides in the Netherlands, last 7 days: 1,284,930 rides — up 3.1% week-over-week. Sourced from completed_trip, filtered to country=NL.', csv:true, csvData:{ header:['date','city','completed_rides'], rows:[['2026-07-23','Amsterdam',201422],['2026-07-24','Amsterdam',198310],['2026-07-25','Rotterdam',94211],['2026-07-26','Amsterdam',205993],['2026-07-27','The Hague',61204],['2026-07-28','Amsterdam',210881],['2026-07-29','Amsterdam',312899]] } };
+      return { text:'Completed rides in the Netherlands, last 7 days: 1,284,930 rides — up 3.1% week-over-week. Sourced from completed_trip, filtered to country=NL.', csv:true, csvData:{ header:['date','city','completed_rides'], rows:[['2026-07-23','Amsterdam',201422],['2026-07-24','Amsterdam',198310],['2026-07-25','Rotterdam',94211],['2026-07-26','Amsterdam',205993],['2026-07-27','The Hague',61204],['2026-07-28','Amsterdam',210881],['2026-07-29','Amsterdam',312899]] }, catalogRefLabel:'completed_trip', catalogRefId:'completed_trip' };
     }
     if(lower.includes('surge')){
       return { text:'Surge pricing is tracked via surge_multiplier_applied, implemented by Pricing Engineering. Table location: web_data.pricing.surge_multiplier_applied.', catalogRefLabel:'surge_multiplier_applied', catalogRefId:'surge_multiplier_applied' };
@@ -1889,16 +1901,22 @@ class Component extends DCLogic {
   renderAssistantVals(s, activeChatSession) {
     const isChatActive = !!s.activeChatId;
     const isChatLanding = !isChatActive;
-    const chatMessages = (activeChatSession ? activeChatSession.messages : []).map(m => ({
-      ...m,
-      rowStyle: 'display:flex;'+(m.role==='user' ? 'justify-content:flex-end;' : 'justify-content:flex-start;'),
-      bubbleStyle: 'max-width:78%;padding:12px 14px;border-radius:12px;font-size:13px;line-height:1.55;'+(m.role==='user' ? 'background:#0A0A0A;color:#FFFFFF;' : 'background:#F6F6F6;color:#0A0A0A;'),
-      catalogRefLabel: m.catalogRefLabel || null,
-      onViewCatalog: m.catalogRefId ? (() => this.viewCatalogRef(m.catalogRefId)) : null,
-      onDownloadCsv: m.csv ? (() => this.downloadChatCsv(m.csvData)) : null,
-      plan: m.plan || null,
-      onSubmitPlan: m.plan ? (() => this.submitPlanForReview(m.plan)) : null
-    }));
+    const chatMessages = (activeChatSession ? activeChatSession.messages : []).map(m => {
+      const refEntry = m.catalogRefId ? CATALOG.find(e => e.id === m.catalogRefId) : null;
+      const refPipeline = refEntry ? PIPELINES.find(p => p.id === refEntry.pipelineId) : null;
+      return {
+        ...m,
+        rowStyle: 'display:flex;'+(m.role==='user' ? 'justify-content:flex-end;' : 'justify-content:flex-start;'),
+        bubbleStyle: 'max-width:78%;padding:12px 14px;border-radius:12px;font-size:13px;line-height:1.55;'+(m.role==='user' ? 'background:#0A0A0A;color:#FFFFFF;' : 'background:#F6F6F6;color:#0A0A0A;'),
+        catalogRefLabel: m.catalogRefLabel || null,
+        onViewCatalog: m.catalogRefId ? (() => this.viewCatalogRef(m.catalogRefId)) : null,
+        onDownloadCsv: m.csv ? (() => this.downloadChatCsv(m.csvData)) : null,
+        plan: m.plan || null,
+        onSubmitPlan: m.plan ? (() => this.submitPlanForReview(m.plan)) : null,
+        dataWarning: m.dataWarning || null,
+        freshnessLabel: refPipeline ? 'Live · pipeline data as of '+refPipeline.freshness : null
+      };
+    });
 
     const allChatSessionsView = s.chatSessions.map(sess => {
       const lastMsg = sess.messages[sess.messages.length - 1];
