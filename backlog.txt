@@ -9,7 +9,6 @@ HIGH PRIORITY
 
 MEDIUM PRIORITY
 ----------------
-[open] Split renderVals() into per-screen helper functions — one ~500+ line method computes props for every screen with no boundary between them; risk of an edit to one screen's logic accidentally colliding with another's. Medium effort.
 [open] Extract shared pipeline table markup and a decoratePipeline() helper — the 8-column pipeline table (header + row) is duplicated verbatim between Home and Catalog → Pipeline Log, and the status/LOB/SLA/quality styling transform is recomputed separately in each place. Risk of "edit one copy, forget the other." Medium effort.
 
 
