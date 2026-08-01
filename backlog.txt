@@ -9,10 +9,16 @@ HIGH PRIORITY
 
 MEDIUM PRIORITY
 ----------------
+[open] Split renderVals() into per-screen helper functions — one ~500+ line method computes props for every screen with no boundary between them; risk of an edit to one screen's logic accidentally colliding with another's. Medium effort.
+[open] Extract shared pipeline table markup and a decoratePipeline() helper — the 8-column pipeline table (header + row) is duplicated verbatim between Home and Catalog → Pipeline Log, and the status/LOB/SLA/quality styling transform is recomputed separately in each place. Risk of "edit one copy, forget the other." Medium effort.
 
 
 LOW PRIORITY
 ------------
 [open] Micro-interactions / motion pass (hover states, panel transitions) once core visual direction is validated
 [open] Enable login
-[open] Use one of the installed engineering skills to review the project's architecture, code quality, details and optimise the project. 
+[open] Cap chatSessions localStorage growth and log on parse/save failure — currently grows unbounded and write errors are silently swallowed in an empty catch. Small effort.
+[open] Dedupe nav-handler selection-reset boilerplate — every goX screen-nav handler repeats the same selectedEntryId/selectedPipelineId/mobileMoreOpen reset; easy to forget on a future new screen. Small effort.
+[open] Comment mobile-only CSS classes that default to display:none above the @media block — currently unexplained bare declarations that could misread as dead code to someone skimming from the top. Trivial effort.
+[open] Verify 44px touch targets on bottom-nav items and table row taps — the min-height:44px rule currently only covers the More sheet's buttons. Small effort.
+[open] No tablet-tier breakpoint — single 900px cliff between desktop and mobile layouts. Not an issue today; flag for scoping if tablet-specific support is ever requested.
