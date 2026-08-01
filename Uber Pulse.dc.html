@@ -126,6 +126,10 @@
               <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>
               <span>Contribute</span>
             </button>
+            <button onClick="{{ goDocs }}" style="{{ navBtnStyle_docs }}">
+              <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M6.5 4h9.5a1 1 0 0 1 1 1v15l-5.5-3-5.5 3V5a1 1 0 0 1 1-1z"/></svg>
+              <span>Documentation</span>
+            </button>
           </div>
         </div>
 
@@ -741,7 +745,7 @@
                   2. Authenticate your requests<br/>
                   3. Explore available endpoints
                 </div>
-                <a href="#" style="font-size:12.5px; font-weight:600; color:#0A0A0A;">View full docs ↗</a>
+                <a onClick="{{ openApiReferenceDoc }}" href="#" style="font-size:12.5px; font-weight:600; color:#0A0A0A;">View full docs ↗</a>
               </div>
               <div style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; padding:20px;">
                 <div style="width:34px; height:34px; border-radius:10px; background:#DCEBF7; display:flex; align-items:center; justify-content:center; margin-bottom:12px;">
@@ -750,7 +754,7 @@
                 <div style="font-size:14px; font-weight:700; margin-bottom:8px;">Code examples</div>
                 <div style="background:#0A0A0A; color:#DFF3E6; font-family:ui-monospace,monospace; font-size:11px; border-radius:8px; padding:10px 12px; margin-bottom:12px; overflow-x:auto; white-space:pre;">curl https://api.pulse.uber.com/v1/events/completed_trip \\
   -H "Authorization: Bearer pulse_live_…"</div>
-                <a href="#" style="font-size:12.5px; font-weight:600; color:#0A0A0A;">Browse examples ↗</a>
+                <a onClick="{{ openApiReferenceDoc }}" href="#" style="font-size:12.5px; font-weight:600; color:#0A0A0A;">Browse examples ↗</a>
               </div>
               <div style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; padding:20px;">
                 <div style="width:34px; height:34px; border-radius:10px; background:#EDE3F7; display:flex; align-items:center; justify-content:center; margin-bottom:12px;">
@@ -827,10 +831,65 @@
               <div style="font-size:13px; color:#9B9B9B; padding:20px 2px;">No API keys yet — create one to get started.</div>
             </sc-if>
           </sc-if>
+
+          <sc-if value="{{ isDocs }}" hint-placeholder-val="{{ false }}">
+            <h1 style="font-size:24px; font-weight:800; margin:0 0 4px 0; letter-spacing:-0.5px;">Documentation</h1>
+            <p style="font-size:14px; color:#6B6B6B; margin:0 0 20px 0;">How to use every part of Pulse — from browsing the catalog to getting data out via the API.</p>
+
+            <div style="display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap;">
+              <input value="{{ docsQuery }}" onChange="{{ onDocsQueryChange }}" placeholder="Search documentation…" style="flex:1; min-width:220px; box-sizing:border-box; background:#FFFFFF; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:13px; outline:none;" />
+              <select value="{{ docsCategory }}" onChange="{{ onDocsCategoryChange }}" style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:13px;">
+                <sc-for list="{{ docsCategoryOptions }}" as="cat" hint-placeholder-count="4">
+                  <option value="{{ cat }}">{{ cat }}</option>
+                </sc-for>
+              </select>
+            </div>
+
+            <sc-if value="{{ hasDocResults }}" hint-placeholder-val="{{ true }}">
+              <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:14px;">
+                <sc-for list="{{ docTopicsView }}" as="dt" hint-placeholder-count="8">
+                  <div onClick="{{ dt.onSelect }}" style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; padding:18px; cursor:pointer; min-width:0;">
+                    <div style="width:32px; height:32px; border-radius:9px; background:{{ dt.badgeBg }}; display:flex; align-items:center; justify-content:center; margin-bottom:12px;">
+                      <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="{{ dt.badgeColor }}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 4h9.5a1 1 0 0 1 1 1v15l-5.5-3-5.5 3V5a1 1 0 0 1 1-1z"/></svg>
+                    </div>
+                    <div style="font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:{{ dt.badgeColor }}; margin-bottom:6px;">{{ dt.category }}</div>
+                    <div style="font-size:14px; font-weight:700; margin-bottom:6px;">{{ dt.title }}</div>
+                    <div style="font-size:12.5px; color:#6B6B6B; line-height:1.5;">{{ dt.blurb }}</div>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+            <sc-if value="{{ noDocResults }}" hint-placeholder-val="{{ false }}">
+              <div style="font-size:13px; color:#9B9B9B; padding:20px 2px;">No documentation topics match your search.</div>
+            </sc-if>
+          </sc-if>
         </div>
       </div>
       </div>
     </div>
+
+    <sc-if value="{{ selectedDocTopic }}" hint-placeholder-val="{{ false }}">
+      <div style="position:fixed; inset:0; background:rgba(10,10,10,0.35); z-index:30;" onClick="{{ closeDocTopic }}"></div>
+      <div style="position:fixed; top:0; right:0; bottom:0; width:440px; background:#FFFFFF; box-shadow:-8px 0 30px rgba(0,0,0,0.12); z-index:31; overflow-y:auto; padding:28px;">
+        <div style="display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:20px;">
+          <div style="display:flex; align-items:center; gap:10px; min-width:0;">
+            <div style="width:32px; height:32px; border-radius:9px; background:{{ selectedDocTopic.badgeBg }}; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="{{ selectedDocTopic.badgeColor }}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 4h9.5a1 1 0 0 1 1 1v15l-5.5-3-5.5 3V5a1 1 0 0 1 1-1z"/></svg>
+            </div>
+            <div style="font-size:16px; font-weight:700;">{{ selectedDocTopic.title }}</div>
+          </div>
+          <button onClick="{{ closeDocTopic }}" style="background:none; border:none; font-size:18px; cursor:pointer; color:#9B9B9B; flex-shrink:0;">✕</button>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:20px;">
+          <sc-for list="{{ selectedDocTopic.sections }}" as="sec" hint-placeholder-count="3">
+            <div>
+              <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#6B6B6B; margin-bottom:6px;">{{ sec.heading }}</div>
+              <div style="font-size:13px; line-height:1.7; color:#0A0A0A;">{{ sec.body }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
 
     <sc-if value="{{ selectedEntry }}" hint-placeholder-val="{{ false }}">
       <div style="position:fixed; inset:0; background:rgba(10,10,10,0.35); z-index:30;" onClick="{{ closeEntry }}"></div>
@@ -1724,6 +1783,74 @@ function generateApiKey() {
   return out;
 }
 
+const DOC_TOPICS = [
+  { id:'overview', title:'What is Pulse for Uber?', badgeBg:'#DFF3E6', badgeColor:'#067A3E', category:'Getting Started',
+    blurb:'The single source of truth for Web data across Ridesharing, Eats, and B2B.',
+    sections:[
+      { heading:'What it is', body:'Pulse is the internal system of record for every event, metric, and pipeline powering Web analytics across Ridesharing, Delivery (Eats), and B2B/Freight. It replaces ad hoc spreadsheets and tribal knowledge with one governed, browsable definition of what data exists, who owns it, and how healthy it is.' },
+      { heading:'Who it\'s for', body:'Web Data Engineers, Data Scientists, front-end engineers across the 24+ onboarded app teams, EMs and Mobile Engineering leads, and BI/Analytics consumers using Tableau, Looker, or Google Data Studio.' },
+      { heading:'Where to start', body:'New here? Browse the Data Catalog to see what events already exist before proposing something new, check the Home dashboard for platform health, and use the AI Assistant for quick questions instead of pinging a data engineer directly.' }
+    ] },
+  { id:'home', title:'Home dashboard', badgeBg:'#DCEBF7', badgeColor:'#1D6FA5', category:'Core Features',
+    blurb:'Platform-wide health, KPIs, and top pipelines at a glance.',
+    sections:[
+      { heading:'What it shows', body:'A critical-pipeline banner (if anything is degraded), top-line KPI cards (e.g. completed trips, GTV, active pipelines), and a table of the highest-volume pipelines with SLA target vs. actual, freshness, and data quality score.' },
+      { heading:'How to use it', body:'Use Home as your first stop each morning to check nothing is on fire. Click any pipeline row to open its detail sidesheet with owning team, SLA history, and linked events.' },
+      { heading:'Tips', body:'A red status dot on a pipeline means it\'s below its SLA target right now — check the sidesheet for the current freshness and quality numbers before assuming it\'s a data issue vs. a real product spike.' }
+    ] },
+  { id:'catalog', title:'Data Catalog', badgeBg:'#EDE3F7', badgeColor:'#6B3FA0', category:'Core Features',
+    blurb:'Browse every event, metric, and pipeline with full definitions and version history.',
+    sections:[
+      { heading:'What it shows', body:'Two tabs: Data Log (every event/metric — name, LOB, status, weekly volume) and Pipeline Log (the pipelines that ingest and process them — health, SLA, freshness). Filter by LOB and status, or search by name.' },
+      { heading:'How to use it', body:'Click any row to open its detail sidesheet: full definition, implementing team, definition owner, version history (changelog), and a sample payload you can download as CSV.' },
+      { heading:'Tips', body:'Always check the Data Catalog before filing a "missing data" report or proposing a new schema via Contribute — what you need may already exist under a different name.' }
+    ] },
+  { id:'assistant', title:'AI Assistant', badgeBg:'#FBE8D8', badgeColor:'#B45F06', category:'Core Features',
+    blurb:'Ask questions about data availability, definitions, or plan a new feature\'s measurement.',
+    sections:[
+      { heading:'What it can do', body:'Answer questions about existing definitions (e.g. "What is completed_trip?"), run mock ad hoc queries with downloadable CSV results, and draft a measurement plan (suggested events + success metrics) for a feature you\'re about to build.' },
+      { heading:'How to use it', body:'Type a question, or attach a file/screenshot for context via the paperclip menu. Every conversation is saved to Recent Chats (searchable) so you can pick up where you left off. The top-bar "Ask Pulse" button opens a compact side sheet version for quick questions without leaving your current page.' },
+      { heading:'Tips', body:'If the Assistant drafts a measurement plan, you can submit it straight for review — it lands in the Roadmap under "Newly Submitted" so the data team can pick it up.' }
+    ] },
+  { id:'roadmap', title:'Roadmap', badgeBg:'#DCEBF7', badgeColor:'#1D6FA5', category:'Core Features',
+    blurb:'What the data team is working on, and what\'s coming next.',
+    sections:[
+      { heading:'The four columns', body:'Newly Submitted (your own Contribute/AI-plan submissions, not yet triaged), Currently Being Defined (actively in progress), Coming Next (queued), and Recently Shipped (done).' },
+      { heading:'How to use it', body:'Click any card to open a JIRA-style detail sidesheet with status history, comments, and linked docs. Cards show whether the item is a data/schema change or a pipeline change, plus the owning team and named owner.' },
+      { heading:'Tips', body:'Don\'t see your submission move for a while? Check the item\'s "Next planning meeting" date — new submissions are triaged on a fixed weekly cadence, not immediately.' }
+    ] },
+  { id:'developer', title:'Developer Tools', badgeBg:'#DFF3E6', badgeColor:'#067A3E', category:'Developer Tools',
+    blurb:'Programmatic access to Pulse data — API keys, docs, and endpoints.',
+    sections:[
+      { heading:'What it\'s for', body:'A self-serve landing page for pulling data out of Pulse without going through the UI — useful for BI tools (Tableau/Looker/Data Studio) and services that need to poll data directly.' },
+      { heading:'How to use it', body:'Create an API key (shown once — copy it immediately), then authenticate requests with it as a bearer token against the mock endpoint paths shown under "Endpoints," which mirror the Data Catalog\'s event names.' },
+      { heading:'Tips', body:'Rotate keys you\'re not actively using — delete them from the API Keys table. Use "Trigger test" on a key to confirm it\'s wired correctly before handing it to a downstream service.' }
+    ] },
+  { id:'api-reference', title:'API Reference', badgeBg:'#DCEBF7', badgeColor:'#1D6FA5', category:'Developer Tools',
+    blurb:'Authentication, endpoints, request/response format, and error codes.',
+    sections:[
+      { heading:'Authentication', body:'Every request must include your API key as a bearer token: Authorization: Bearer pulse_live_…. Keys are scoped to your account and inherit read access to every event and metric visible to you in the Data Catalog.' },
+      { heading:'Base URL & endpoints', body:'All requests are made against https://api.pulse.uber.com/v1/. Events and metrics are available at /events/{event_name} and /metrics/{metric_name}, using the exact name shown in the Data Catalog (e.g. /events/completed_trip). Pipeline metadata is available at /pipelines/{pipeline_id}.' },
+      { heading:'Example request', body:'GET /v1/events/completed_trip?start=2026-07-24&end=2026-07-30&country=NL — returns daily row counts for the given date range, optionally filtered by any payload field.' },
+      { heading:'Example response', body:'{ "event": "completed_trip", "rows": [ { "date": "2026-07-29", "count": 210881 } ], "meta": { "definition_version": "v3.2" } }' },
+      { heading:'Error codes', body:'401 — missing or invalid API key. 403 — key doesn\'t have access to this event/metric. 404 — unknown event or metric name. 429 — rate limit exceeded (mock plan limit: 1,000 requests/day per key).' }
+    ] },
+  { id:'report', title:'Report an Issue', badgeBg:'#FBE9E6', badgeColor:'#8C332A', category:'Contributing & Support',
+    blurb:'Flag a data quality, freshness, or platform issue to the data team.',
+    sections:[
+      { heading:'What to report', body:'Four categories: Data Quality (wrong/duplicate values), Scalability (volume the pipeline can\'t keep up with), Definition/Documentation (unclear or outdated definitions), and Missing Data (something that should exist but doesn\'t).' },
+      { heading:'How to use it', body:'Search for and attach the specific event/metric/pipeline the issue relates to (or mark it as a general/platform issue), set a severity, and optionally link a Jira ticket or PR already tracking it.' },
+      { heading:'Tips', body:'The more specific the linked data point, the faster triage — "general platform issue" reports take longer to route to the right owning team.' }
+    ] },
+  { id:'contribute', title:'Contribute a Schema', badgeBg:'#DFF3E6', badgeColor:'#067A3E', category:'Contributing & Support',
+    blurb:'Propose a new event or metric for review by the data team.',
+    sections:[
+      { heading:'What it collects', body:'Event/schema name, LOB, owning team, a description of when it fires and why it\'s needed, plus optional technical details: source repo link, Jira epic link, expected weekly volume, and a sample payload builder.' },
+      { heading:'How to use it', body:'Fill in Details, review everything on the summary step, then submit. Your submission lands in Roadmap under "Newly Submitted" with a next-planning-meeting date and a ~2-week estimated decision window.' },
+      { heading:'Tips', body:'Check the Data Catalog first — a very similar event may already exist, in which case Report an Issue (Definition/Documentation) may be the faster path instead of a brand-new schema.' }
+    ] }
+];
+
 const ROADMAP_BASE = {
   defining:[
     { id:'r1', name:'b2b_bulk_shipment_event', type:'data', lob:'B2B', team:'Freight Engineering', owner:'Priya Nair', dateLabel:'Est. Aug 22', priority:'P1', ticketId:'DATA-482',
@@ -1854,7 +1981,7 @@ class Component extends DCLogic {
     appScreen:'home',
     catalogQuery:'', catalogLob:'All', catalogStatus:'All', selectedEntryId:null, catalogTab:'data',
     pipelineQuery:'', pipelineLob:'All', pipelineHealth:'All', selectedPipelineId:null, selectedRoadmapItemId:null,
-    catalogPage:1, pipelineLogPage:1,
+    catalogPage:1, pipelineLogPage:1, selectedDocTopicId:null, docsQuery:'', docsCategory:'All',
     chatSessions: loadChatSessions(),
     activeChatId: null,
     askPulseSheetOpen: false,
@@ -1901,6 +2028,12 @@ class Component extends DCLogic {
     appScreen:'developer', selectedEntryId:null, selectedPipelineId:null,
     showCreateKeyForm:false, newKeyName:'', justCreatedKey:null, confirmDeleteKeyId:null
   });
+  goDocs = () => this.setState({appScreen:'docs', selectedEntryId:null, selectedPipelineId:null, selectedDocTopicId:null, docsQuery:'', docsCategory:'All'});
+  openApiReferenceDoc = () => this.setState({appScreen:'docs', selectedEntryId:null, selectedPipelineId:null, docsQuery:'', docsCategory:'All', selectedDocTopicId:'api-reference'});
+  selectDocTopic = (id) => this.setState({selectedDocTopicId:id});
+  closeDocTopic = () => this.setState({selectedDocTopicId:null});
+  onDocsQueryChange = (e) => this.setState({docsQuery:e.target.value});
+  onDocsCategoryChange = (e) => this.setState({docsCategory:e.target.value});
 
   openCreateKeyForm = () => this.setState({showCreateKeyForm:true, newKeyName:''});
   closeCreateKeyForm = () => this.setState({showCreateKeyForm:false, newKeyName:''});
@@ -2249,6 +2382,10 @@ class Component extends DCLogic {
         onOpen: () => this.openChatSession(sess.id)
       };
     });
+    const docsQueryLower = s.docsQuery.trim().toLowerCase();
+    const docTopicsFiltered = DOC_TOPICS
+      .filter(t => s.docsCategory === 'All' || t.category === s.docsCategory)
+      .filter(t => docsQueryLower === '' || t.title.toLowerCase().includes(docsQueryLower) || t.blurb.toLowerCase().includes(docsQueryLower) || t.sections.some(sec => sec.body.toLowerCase().includes(docsQueryLower)));
     const chatSearchQuery = s.chatSearchQuery.trim().toLowerCase();
     const chatSessionsView = allChatSessionsView.filter(sess => chatSearchQuery === '' || sess.searchBlob.includes(chatSearchQuery));
     const hasChatSessions = s.chatSessions.length > 0;
@@ -2453,6 +2590,22 @@ class Component extends DCLogic {
         onCancelDelete: () => this.cancelDeleteKey()
       })),
       hasApiKeys: s.apiKeys.length > 0, noApiKeys: s.apiKeys.length === 0,
+      isDocs: s.appScreen === 'docs', goDocs: this.goDocs, openApiReferenceDoc: this.openApiReferenceDoc,
+      navBtnStyle_docs: navStyle(s.appScreen==='docs'),
+      docsQuery: s.docsQuery, onDocsQueryChange: this.onDocsQueryChange,
+      docsCategory: s.docsCategory, onDocsCategoryChange: this.onDocsCategoryChange,
+      docsCategoryOptions: ['All', ...[...new Set(DOC_TOPICS.map(t => t.category))]],
+      docTopicsView: docTopicsFiltered.map(t => ({
+        id:t.id, title:t.title, blurb:t.blurb, badgeBg:t.badgeBg, badgeColor:t.badgeColor, category:t.category,
+        onSelect: () => this.selectDocTopic(t.id)
+      })),
+      hasDocResults: docTopicsFiltered.length > 0, noDocResults: docTopicsFiltered.length === 0,
+      closeDocTopic: this.closeDocTopic,
+      selectedDocTopic: (() => {
+        const t = DOC_TOPICS.find(t => t.id === s.selectedDocTopicId);
+        if (!t) return null;
+        return { id:t.id, title:t.title, badgeBg:t.badgeBg, badgeColor:t.badgeColor, sections:t.sections };
+      })(),
       toast: s.toast,
       stopClick: this.stopClick
     };
