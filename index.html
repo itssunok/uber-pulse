@@ -336,6 +336,68 @@
                 <div><div style="font-size:11px; color:#9B9B9B; font-weight:600; text-transform:uppercase; margin-bottom:3px;">Definition owner</div><div style="font-size:13px;">{{ selectedMetric.definitionOwner }}</div></div>
               </sc-if>
             </div>
+
+            <sc-if value="{{ isDetailMetric }}" hint-placeholder-val="{{ false }}">
+              <div style="max-width:800px; margin-bottom:32px;">
+                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;">
+                  <h2 style="font-size:14px; font-weight:700; margin:0;">4-week trend by category</h2>
+                  <button onClick="{{ selectedMetric.onDownloadTrend }}" style="background:#0A0A0A; color:#FFF; border:none; border-radius:999px; padding:8px 16px; font-size:12.5px; font-weight:600; cursor:pointer;">Download CSV</button>
+                </div>
+                <div style="display:flex; align-items:flex-end; gap:24px; height:160px; padding:0 4px 0 0; border-bottom:1px solid #E5E5E5;">
+                  <sc-for list="{{ selectedMetric.trendChart.weeks }}" as="wk" hint-placeholder-count="4">
+                    <div style="display:flex; flex-direction:column; align-items:center; gap:8px; flex:1;">
+                      <div style="width:100%; max-width:64px; height:140px; display:flex; align-items:flex-end;">
+                        <div style="width:100%; display:flex; flex-direction:column-reverse; {{ wk.barWrapStyle }} border-radius:4px 4px 0 0; overflow:hidden;">
+                          <sc-for list="{{ wk.segments }}" as="seg" hint-placeholder-count="3">
+                            <div style="{{ seg.barStyle }}"></div>
+                          </sc-for>
+                        </div>
+                      </div>
+                      <div style="font-size:11px; color:#6B6B6B; text-align:center;">{{ wk.dateLabel }}</div>
+                      <div style="font-size:11px; font-weight:600; text-align:center;">{{ wk.totalLabel }}</div>
+                    </div>
+                  </sc-for>
+                </div>
+                <div style="display:flex; gap:16px; flex-wrap:wrap; margin-top:14px;">
+                  <sc-for list="{{ selectedMetric.trendChart.legend }}" as="lg" hint-placeholder-count="3">
+                    <div style="display:flex; align-items:center; gap:6px; font-size:12px; color:#6B6B6B;">
+                      <span style="width:9px; height:9px; border-radius:2px; background:{{ lg.color }}; display:inline-block;"></span>{{ lg.label }}
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ isDetailPipeline }}" hint-placeholder-val="{{ false }}">
+              <div style="max-width:640px; margin-bottom:32px;">
+                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;">
+                  <h2 style="font-size:14px; font-weight:700; margin:0;">Composition by event, this week</h2>
+                  <button onClick="{{ selectedPipeline.onDownloadComposition }}" style="background:#0A0A0A; color:#FFF; border:none; border-radius:999px; padding:8px 16px; font-size:12.5px; font-weight:600; cursor:pointer;">Download CSV</button>
+                </div>
+                <div style="display:flex; flex-direction:column; gap:10px;">
+                  <sc-for list="{{ selectedPipeline.composition.top }}" as="ce" hint-placeholder-count="6">
+                    <div>
+                      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:4px;">
+                        <span style="font-size:12.5px; font-family:ui-monospace,monospace;">{{ ce.name }}</span>
+                        <span style="font-size:12px; color:#6B6B6B;">{{ ce.weeklyVolumeLabel }}</span>
+                      </div>
+                      <div style="width:100%; height:8px; background:#F0F0F0; border-radius:4px; overflow:hidden;">
+                        <div style="{{ ce.barStyle }}"></div>
+                      </div>
+                    </div>
+                  </sc-for>
+                </div>
+                <sc-if value="{{ selectedPipeline.composition.hasRemainder }}" hint-placeholder-val="{{ false }}">
+                  <div style="font-size:12px; color:#9B9B9B; margin-top:10px;">+{{ selectedPipeline.composition.remainderCount }} more events — see full breakdown in the CSV export.</div>
+                </sc-if>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ isDetailEvent }}" hint-placeholder-val="{{ false }}">
+              <div style="margin-bottom:32px;">
+                <button onClick="{{ selectedEntry.onDownload }}" style="background:#0A0A0A; color:#FFF; border:none; border-radius:999px; padding:11px 22px; font-size:13px; font-weight:600; cursor:pointer;">Download sample CSV</button>
+              </div>
+            </sc-if>
           </sc-if>
 
           <sc-if value="{{ isCatalog }}" hint-placeholder-val="{{ false }}">
@@ -1735,6 +1797,35 @@ function orDash(v){
   return (v && String(v).trim() !== '') ? v : '—';
 }
 
+const TREND_CHART_SHADES = ['#0A0A0A','#4A4A4A','#8C8C8C','#C9C9C9'];
+const TREND_WEEK_LABELS = ['2026-07-11','2026-07-18','2026-07-25','2026-08-01'];
+function buildWeeklyStackedChart(weeklyByCategory){
+  if(!weeklyByCategory || !weeklyByCategory.length) return null;
+  const weekCount = weeklyByCategory[0].values.length;
+  const weekTotals = [];
+  for(let w=0; w<weekCount; w++){
+    weekTotals.push(weeklyByCategory.reduce((sum,cat) => sum + cat.values[w], 0));
+  }
+  const maxTotal = Math.max(...weekTotals);
+  const legend = weeklyByCategory.map((cat,i) => ({ label:cat.label, color:TREND_CHART_SHADES[i % TREND_CHART_SHADES.length] }));
+  const weeks = [];
+  for(let w=0; w<weekCount; w++){
+    const total = weekTotals[w];
+    const segments = weeklyByCategory.map((cat,i) => {
+      const value = cat.values[w];
+      const heightPct = total > 0 ? (value/total*100) : 0;
+      return { label:cat.label, value, barStyle:'height:'+heightPct.toFixed(2)+'%;background:'+TREND_CHART_SHADES[i % TREND_CHART_SHADES.length]+';' };
+    });
+    weeks.push({
+      dateLabel: TREND_WEEK_LABELS[w] || ('Week '+(w+1)),
+      totalLabel: total.toLocaleString(undefined,{maximumFractionDigits:1}),
+      barWrapStyle: 'height:'+(maxTotal>0 ? (total/maxTotal*100).toFixed(2) : 0)+'%;',
+      segments
+    });
+  }
+  return { weeks, legend };
+}
+
 function downloadCSV(filename, headerRow, rows){
   const csv = [headerRow, ...rows].map(r=>r.join(',')).join('\n');
   const blob = new Blob([csv], {type:'text/csv'});
@@ -2173,7 +2264,13 @@ class Component extends DCLogic {
       freshnessLabel: metricSourcePipeline ? metricSourcePipeline.freshness : null,
       hasWarning: !!(metricSourceEvent && metricSourceEvent.warning),
       warningText: metricSourceEvent ? metricSourceEvent.warningText : null,
-      verticalBreakdown: rawSelectedMetric.verticalBreakdown ? rawSelectedMetric.verticalBreakdown.map(vb => ({ ...vb, barStyle:'height:100%;border-radius:4px;width:'+vb.pct+'%;background:'+rawSelectedMetric.iconColor+';' })) : null
+      verticalBreakdown: rawSelectedMetric.verticalBreakdown ? rawSelectedMetric.verticalBreakdown.map(vb => ({ ...vb, barStyle:'height:100%;border-radius:4px;width:'+vb.pct+'%;background:'+rawSelectedMetric.iconColor+';' })) : null,
+      trendChart: buildWeeklyStackedChart(rawSelectedMetric.weeklyByCategory),
+      onDownloadTrend: () => downloadCSV(
+        rawSelectedMetric.id+'_weekly_by_category.csv',
+        ['category', ...TREND_WEEK_LABELS],
+        rawSelectedMetric.weeklyByCategory.map(cat => [cat.label, ...cat.values])
+      )
     } : null;
 
     return {
@@ -2597,7 +2694,24 @@ class Component extends DCLogic {
         onSelect: () => this.viewCatalogEntryFromPipeline(e.id),
         onKeyDown: this.onRowKeyDown(() => this.viewCatalogEntryFromPipeline(e.id))
       })),
-      checks: pipelineChecks(rawSelectedPipeline.health).map(c => ({ ...c, chipStyle: checkStyle(c.status) }))
+      checks: pipelineChecks(rawSelectedPipeline.health).map(c => ({ ...c, chipStyle: checkStyle(c.status) })),
+      composition: (() => {
+        const events = pipelineEvents(rawSelectedPipeline.id);
+        const total = pipelineVolume(rawSelectedPipeline.id);
+        const top = events.slice(0, 6).map((e,i) => ({
+          name: e.name,
+          weeklyVolumeLabel: e.weeklyVolume.toFixed(1)+'M',
+          pct: total > 0 ? (e.weeklyVolume/total*100) : 0,
+          barStyle: 'height:100%;border-radius:4px;width:'+(total > 0 ? (e.weeklyVolume/total*100) : 0).toFixed(1)+'%;background:'+TREND_CHART_SHADES[i % TREND_CHART_SHADES.length]+';'
+        }));
+        const remainder = events.length - top.length;
+        return { top, remainderCount: remainder > 0 ? remainder : 0, hasRemainder: remainder > 0 };
+      })(),
+      onDownloadComposition: () => downloadCSV(
+        rawSelectedPipeline.id+'_event_composition.csv',
+        ['event','weekly_volume_millions'],
+        pipelineEvents(rawSelectedPipeline.id).map(e => [e.name, e.weeklyVolume])
+      )
     } : null;
 
     const activeChatSession = s.chatSessions.find(sess => sess.id === s.activeChatId) || null;
