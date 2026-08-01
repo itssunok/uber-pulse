@@ -73,6 +73,9 @@
       .pulse-row-name { font-size:14px; }
       .pulse-row-field { display:flex !important; justify-content:space-between; align-items:center; }
       .pulse-mobile-label { display:inline !important; color:#9B9B9B; font-size:12px; }
+
+      .pulse-login-topbar { padding:0 20px !important; }
+      .pulse-login-formwrap { padding:48px 20px 40px 20px !important; }
     }
   </style>
 </helmet>
@@ -81,11 +84,11 @@
 
   <sc-if value="{{ isLogin }}" hint-placeholder-val="{{ true }}">
     <div style="min-height:100vh; width:100%; background:#FFFFFF;">
-      <div style="height:64px; background:#0A0A0A; display:flex; align-items:center; padding:0 32px; box-sizing:border-box;">
+      <div class="pulse-login-topbar" style="height:64px; background:#0A0A0A; display:flex; align-items:center; padding:0 32px; box-sizing:border-box;">
         <span style="font-size:19px; font-weight:700; color:#FFFFFF; letter-spacing:-0.2px;">Pulse for Uber</span>
       </div>
 
-      <div style="display:flex; justify-content:center; padding:90px 32px 60px 32px; box-sizing:border-box;">
+      <div class="pulse-login-formwrap" style="display:flex; justify-content:center; padding:90px 32px 60px 32px; box-sizing:border-box;">
         <div style="width:100%; max-width:420px;">
           <h1 style="font-size:30px; font-weight:800; color:#0A0A0A; margin:0 0 26px 0; letter-spacing:-0.6px; line-height:1.2;">What's your work email?</h1>
 
