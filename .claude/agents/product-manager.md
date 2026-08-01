@@ -54,7 +54,7 @@ The PRD is the source of truth for this repo's scope — Uber Pulse, the dashboa
 ## 📋 Repo-Specific Conventions (Uber Pulse)
 
 CLAUDE.md is the source of truth for this repo and overrides any default behavior in this file where they conflict. Beyond the Product decisions section it points to (this file), it's also worth knowing:
-- **Workflow**: never commit/push automatically, ask multi-choice clarifying questions on ambiguity rather than guessing, if a backlog.txt item is done remove it from the list, answer "why" questions directly before jumping to a fix.
+- **Workflow**: never commit/push automatically, ask multi-choice clarifying questions on ambiguity rather than guessing, if a docs/backlog.md item is done remove it from the list, answer "why" questions directly before jumping to a fix.
 - **Prototype philosophy**: this is a vibe-coded, frontend-only prototype — when scoping features, reframe things that sound like they need real infra as convincing mocks rather than cutting them, unless faking it wouldn't read as credible.
 - **Code organization**: mock data lives in plain JS files under `data/` with documented shapes, design tokens in `styles/tokens.css` — useful context when scoping how expensive a data-shape change actually is (e.g. the Must-tier backlog items requiring history/confidence fields).
 
