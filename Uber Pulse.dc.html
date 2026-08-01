@@ -623,8 +623,8 @@
                         <div style="display:flex; flex-direction:column; gap:8px;">
                           <sc-for list="{{ payloadRowsView }}" as="row" hint-placeholder-count="1">
                             <div style="display:flex; gap:8px; align-items:center;">
-                              <input value="{{ row.field }}" onChange="{{ row.onFieldChange }}" placeholder="field_name" style="flex:1; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:8px 10px; font-size:12.5px; font-family:ui-monospace,monospace;" />
-                              <input value="{{ row.value }}" onChange="{{ row.onValueChange }}" placeholder="example value" style="flex:1; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:8px 10px; font-size:12.5px;" />
+                              <input value="{{ row.field }}" onChange="{{ row.onFieldChange }}" placeholder="field_name" style="flex:1; min-width:0; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:8px 10px; font-size:12.5px; font-family:ui-monospace,monospace;" />
+                              <input value="{{ row.value }}" onChange="{{ row.onValueChange }}" placeholder="example value" style="flex:1; min-width:0; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:8px 10px; font-size:12.5px;" />
                               <sc-if value="{{ row.canRemove }}" hint-placeholder-val="{{ true }}">
                                 <button onClick="{{ row.onRemove }}" style="background:none; border:none; color:#9B9B9B; cursor:pointer; font-size:15px; padding:4px 6px; flex-shrink:0;">✕</button>
                               </sc-if>
