@@ -1140,7 +1140,7 @@
 
     <sc-if value="{{ askPulseSheetOpen }}" hint-placeholder-val="{{ false }}">
       <div style="position:fixed; inset:0; background:rgba(10,10,10,0.35); z-index:30;" onClick="{{ closeAskPulseSheet }}"></div>
-      <div style="position:fixed; top:0; right:0; bottom:0; width:440px; background:#FFFFFF; box-shadow:-8px 0 30px rgba(0,0,0,0.12); z-index:31; display:flex; flex-direction:column;">
+      <div class="pulse-side-sheet" style="position:fixed; top:0; right:0; bottom:0; width:440px; background:#FFFFFF; box-shadow:-8px 0 30px rgba(0,0,0,0.12); z-index:31; display:flex; flex-direction:column;">
         <div style="display:flex; align-items:center; justify-content:space-between; padding:18px 20px; border-bottom:1px solid #E5E5E5; flex-shrink:0;">
           <div style="display:flex; align-items:center; gap:8px; min-width:0;">
             <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" style="flex-shrink:0;"><path d="M12 3l1.7 4.9L18.6 9.4l-4.9 1.7L12 16l-1.7-4.9L5.4 9.4l4.9-1.7L12 3z"/><path d="M18.5 14.5l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7.7-2z"/></svg>
