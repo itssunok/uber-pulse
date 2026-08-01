@@ -1,0 +1,76 @@
+/* Uber Pulse design tokens
+ * Extracted from hardcoded hex/pixel literals scattered across
+ * "Uber Pulse.dc.html" (base <style> block + shared JS style-builder
+ * functions). This is a value-for-value extraction for a demo build —
+ * not a full design-system migration.
+ */
+:root {
+  /* Brand — black/white are default UI colors; green is reserved for
+     status-positive states, the logo mark, and the Contribute action. */
+  --color-black: #0A0A0A;
+  --color-white: #FFFFFF;
+  --color-green: #06C167;
+  --color-green-hover: #067A3E; /* link/hover-weight green used in text links */
+  --color-green-hover-dark: #04562B;
+
+  /* Neutral gray ramp.
+     Note: #9B9B9B was merged into #6B6B6B here (approved Should-tier
+     backlog item — #9B9B9B was a WCAG contrast failure at 2.7:1). */
+  --color-gray-50: #F6F6F6;
+  --color-gray-100: #EFEFEF;
+  --color-gray-200: #E5E5E5;
+  --color-gray-300: #D0D0D0;
+  --color-gray-600: #6B6B6B;
+  --color-gray-700: #5A5A5A;
+
+  /* LOB badge colors (background / foreground pairs) */
+  --color-lob-ridesharing-bg: #DCEBF7;
+  --color-lob-ridesharing-fg: #1D6FA5;
+  --color-lob-eats-bg: #FBE8D8;
+  --color-lob-eats-fg: #B45F06;
+  --color-lob-b2b-bg: #EDE3F7;
+  --color-lob-b2b-fg: #6B3FA0;
+  --color-lob-platform-bg: #EFEFEF;
+  --color-lob-platform-fg: #5A5A5A;
+
+  /* Status colors (background / foreground pairs) */
+  --color-status-green-bg: #DFF3E6;
+  --color-status-green-fg: #067A3E;
+  --color-status-amber-bg: #FCEFDC;
+  --color-status-amber-fg: #96530A;
+  --color-status-red-bg: #FBE9E6;
+  --color-status-red-fg: #A93327;
+  --color-status-neutral-bg: #EFEFEF;
+  --color-status-neutral-fg: #6B6B6B;
+
+  /* Roadmap stage colors (background / foreground pairs) */
+  --color-roadmap-submitted-bg: #DCEBF7;
+  --color-roadmap-submitted-fg: #1D6FA5;
+  --color-roadmap-defining-bg: #FCEFDC;
+  --color-roadmap-defining-fg: #96530A;
+  --color-roadmap-next-bg: #EDE3F7;
+  --color-roadmap-next-fg: #6B3FA0;
+  --color-roadmap-shipped-bg: #DFF3E6;
+  --color-roadmap-shipped-fg: #067A3E;
+
+  /* 8px spacing scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 16px;
+  --space-4: 24px;
+  --space-5: 32px;
+  --space-6: 40px;
+  --space-7: 48px;
+
+  /* Type scale (odd half-pixel sizes collapsed to round values) */
+  --font-size-2xs: 10px;   /* was 10px */
+  --font-size-xs: 11px;    /* was 11px / 11.5px */
+  --font-size-sm: 12px;    /* was 12px / 12.5px */
+  --font-size-base: 14px;  /* was 13.5px / 14px */
+  --font-size-md: 15px;
+  --font-size-lg: 19px;
+
+  /* Border radius — 12px page-level, 8px inline (backlog: standardize component radius) */
+  --radius-page: 12px;
+  --radius-inline: 8px;
+}

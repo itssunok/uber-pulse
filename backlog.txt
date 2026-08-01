@@ -6,6 +6,13 @@ Prioritized MoSCoW-style following the full UX/UI/Brand design audit (Aug 2026),
 evaluated by Alex (PM) against the 4 locked personas: Maya, James, Priya, Tom.
 
 
+FOUNDATION (done, Aug 2026)
+----------------------------
+[done] Design tokens extracted to styles/tokens.css (colors, 8px spacing scale, type scale, radius) and wired into the base <style> block + shared style-builder functions. Includes the #9B9B9B→#6B6B6B contrast merge for everywhere those functions/block touch. Scoped as a demo-appropriate token extraction, not a full design-system/component migration — the 539 individual inline style="" attributes on markup were explicitly left untouched, so some old hex/pixel values still exist there (see notes on Should-tier items below).
+[done] Mock data (PIPELINES, CATALOG, ROADMAP_BASE, METRICS_BASE) moved out of Uber Pulse.dc.html into data/pipelines.js, data/catalog.js, data/roadmap.js, data/metrics.js — plain JS globals, no build step, loaded via <script src> before support.js. Each file has a JSDoc header documenting field shape/types. Values preserved exactly, no new fields added.
+[open] Full production foundation (Vite + React + TypeScript migration, real schema validation, component-level restructure) — scoped out for now, this is a demo project not a production build. Written plan exists (see conversation history) if this ever becomes real. ~3-4 weeks effort, do not start piecemeal.
+
+
 HIGH PRIORITY (Must)
 --------------------
 [open] Drop "real-time" claim on Pipeline Log; add Today/Yesterday/Last 7/30/90 day filters to Home and other relevant pages — subhead currently claims real-time status while validation is daily/weekly/monthly; date filters make actual freshness explicit instead of overclaiming. Medium effort.
@@ -22,11 +29,11 @@ HIGH PRIORITY (Must)
 
 MEDIUM PRIORITY (Should)
 -------------------------
-[open] Fix green misuse across ~7 components (Contribute/AI Assistant/Dev Tools submit buttons, Roadmap "NEW" badge, Documentation topic badges) — green is reserved for status-positive/logo/Contribute per CLAUDE.md, currently used as a generic accent. Small effort.
-[open] Merge #9B9B9B into #6B6B6B — fixes a WCAG contrast failure (2.7:1) reused in 58 places across the app. Small effort.
+[open] Fix green misuse across ~7 components (Contribute/AI Assistant/Dev Tools submit buttons, Roadmap "NEW" badge, Documentation topic badges) — green is reserved for status-positive/logo/Contribute per CLAUDE.md, currently used as a generic accent. Small effort. Tokens now exist (--color-green in styles/tokens.css) — this is now a value swap on the specific inline-styled buttons, not a hex hunt.
+[open] Merge remaining #9B9B9B occurrences into #6B6B6B — ~54 occurrences remain in inline style="" attributes (the shared functions/base style block are already done as part of the token extraction). Small effort, mechanical find-and-replace against styles/tokens.css's --color-gray-600.
 [open] Add empty-state messaging to Data Catalog and Pipeline Log tables — filtering to zero matches currently shows a floating header over blank space; Documentation and Chat search already handle this correctly elsewhere in the same file. Small effort.
-[open] Standardize typography scale and spacing rhythm — no documented type scale (odd half-pixel sizes like 12.5px, 11.5px in circulation) and no 8px spacing grid (30+ distinct padding pairs). Medium effort, many touchpoints.
-[open] Standardize component radius (12px page-level / 8px inline), add loading states ("Submitting…") to CSV download/API key creation/chat send/schema submission, add error/validation states to Contribute/Report wizards, chat, and API key creation beyond the login-only error treatment today. Medium effort.
+[open] Standardize typography scale and spacing rhythm on the remaining inline style="" attributes — the base style block and shared functions already reference styles/tokens.css's type/spacing scale; ~539 inline attributes still carry old ad-hoc values. Medium effort, many touchpoints.
+[open] Apply --radius-page/--radius-inline tokens (already defined in styles/tokens.css) to remaining inline-styled cards/components; add loading states ("Submitting…") to CSV download/API key creation/chat send/schema submission, add error/validation states to Contribute/Report wizards, chat, and API key creation beyond the login-only error treatment today. Medium effort.
 [open] Naming & voice pass — restore or confirm dropping the PRD's login tagline ("Pulse. Know your data."), rewrite the login heading ("What's your work email?" reads as generic consumer SaaS onboarding), switch Google/Apple auth buttons to monochrome marks. Small effort.
 [open] Unify the two separate chat UIs (topbar "Ask Pulse" side-sheet and full AI Assistant page) into one shared state — starting a conversation in one currently loses it when navigating to the other. Medium effort.
 
@@ -35,6 +42,7 @@ LOW PRIORITY (Could)
 ---------------------
 [open] Accessibility backlog: aria-labels on icon-only/dismiss buttons, role+tabindex on div-based rows (Report Issue picker, Documentation topic cards) to match the pattern already used elsewhere, dropdown/toast ARIA semantics (role="menu", aria-expanded, aria-live), touch target sizing on Dev Tools icon buttons and "✕" dismiss buttons. Medium effort, narrower impact.
 [open] Add a Dev Tools → pipeline jump link for developers debugging an API response. Small effort — deprioritized since this serves Carlos's workflow, and Carlos was assessed as not business-critical for this platform's core decisions.
+[open] Organize project folder structure — rename "Uber Pulse.dc.html" (odd filename, spaces + a stray ".dc" segment) to something conventional like index.html; move favicon.png and any other loose image assets into an assets/ or images/ folder instead of sitting at repo root. Cosmetic/hygiene, not business-critical, but cheap and makes the repo read as intentionally organized rather than assembled. Small effort.
 [open] Micro-interactions / motion pass (hover states, panel transitions) once core visual direction is validated
 [open] Enable login
 

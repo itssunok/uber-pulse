@@ -25,5 +25,11 @@ Uber Pulse is a vibe-coded, frontend-only prototype — there is no real backend
 - When the user supplies a reference product for a specific pattern (e.g. Claude.ai's project page for a chat-history layout), treat it as a first-class design reference for that feature, same as the Uber Base screenshots are for overall visual identity.
 - If a change deviates from something the PRD explicitly states (e.g. mobile support is called out as a v1 non-goal), flag the deviation explicitly rather than silently overriding it — confirm whether it's an intentional override or whether the PRD itself should be amended.
 
+## Code organization
+Uber Pulse is still zero-build (no bundler, no framework) — this section documents conventions added on top of that, not a departure from it:
+- **Design tokens** live in `styles/tokens.css` as CSS custom properties (colors, 8px spacing scale, type scale, radius). Reference `var(--token-name)` in shared style-builder functions and the base `<style>` block rather than hardcoding hex/pixel values. Inline `style=""` attributes on markup are a known, accepted gap for now — see backlog.txt.
+- **Mock data** (`PIPELINES`, `CATALOG`, `ROADMAP_BASE`, `METRICS_BASE`) lives in plain JS files under `data/`, loaded via `<script src>` before `support.js` in `Uber Pulse.dc.html`'s `<head>` — no TypeScript, no runtime validation library. Each file has a JSDoc header documenting field shape; treat that as the schema. Preserve this pattern when adding new mock datasets rather than inlining new arrays back into the HTML.
+- A full production foundation (real framework, TypeScript, schema validation, component-level restructure) has a written migration plan but is explicitly out of scope for this demo — see the "Full production foundation" line in backlog.txt. Don't start it piecemeal.
+
 ## Product decisions
 For product-facing work on this repo (PRD critique, roadmap/backlog prioritization, scoping new features, writing user stories) — reason like Alex, the Web Data PM who owns this platform. The full role context, stakeholder map, domain expertise, and operating principles for Alex live in `.claude/agents/product-manager.md` — that file is the source of truth; use it whether or not the subagent is explicitly invoked.

@@ -1,0 +1,27 @@
+/**
+ * METRICS_BASE — the top-level KPI tiles shown on the Home screen.
+ *
+ * @typedef {Object} MetricTile
+ * @property {string} id           Stable id, e.g. 'gtv'.
+ * @property {string} label        KPI display name.
+ * @property {string} value        Formatted current value (e.g. '$3.85B').
+ * @property {string} delta        Formatted week-over-week change (e.g. '+4.2% WoW').
+ * @property {boolean} positive    Whether the delta should render as a status-positive (green) change.
+ * @property {number[]} points     Trailing 8-point sparkline series (oldest to newest), fed to sparkPoints().
+ * @property {string} iconBg       Hex color for the KPI's circular icon-badge background (pastel).
+ * @property {string} iconColor    Hex color for the KPI's icon glyph/text.
+ * @property {string} tooltip      Definition text shown in the KPI's info tooltip.
+ *
+ * @type {MetricTile[]}
+ */
+const METRICS_BASE = [
+  { id:'gtv', label:'Gross Trip Value (GTV)', value:'$3.85B', delta:'+4.2% WoW', positive:true, points:[3280,3320,3380,3410,3460,3600,3720,3850], iconBg:'#DFF3E6', iconColor:'#067A3E',
+    tooltip:'Total value of completed trips, deliveries, and B2B/Freight transactions across all lines of business in the trailing 7 days, before deductions.' },
+  { id:'trips', label:'Weekly Trips', value:'196.0M', delta:'+2.8% WoW', positive:true, points:[177.0,180.2,183.2,186.2,189.2,191.6,193.8,196.0], iconBg:'#DCEBF7', iconColor:'#1D6FA5',
+    tooltip:'Completed Mobility (rideshare) trips in the trailing 7 days, sourced from the completed_trip event.' },
+  { id:'eats', label:'Eats Deliveries', value:'35.0M', delta:'+6.1% WoW', positive:true, points:[30.2,31.2,32.1,32.8,33.5,34.0,34.5,35.0], iconBg:'#FBE8D8', iconColor:'#B45F06',
+    tooltip:'Completed Eats orders in the trailing 7 days, sourced from the eats_order_placed event.' },
+  { id:'b2b', label:'B2B Transactions', value:'3.42M', delta:'-1.3% WoW', positive:false, points:[3.6,3.58,3.55,3.5,3.48,3.45,3.43,3.42], iconBg:'#EDE3F7', iconColor:'#6B3FA0',
+    tooltip:'Confirmed B2B/Freight shipment transactions in the trailing 7 days, sourced from the b2b_shipment_confirmed event.' }
+];
+
