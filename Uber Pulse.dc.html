@@ -24,14 +24,12 @@
     .pulse-tt:hover .pulse-tt-bubble { visibility:visible; opacity:1; }
 
     .pulse-bottom-nav, .pulse-mobile-sheet-overlay { display:none; }
-    .pulse-mobile-title, .pulse-mobile-label { display:none; }
+    .pulse-mobile-label { display:none; }
 
     @media (max-width:900px) {
       .pulse-desktop-sidebar { display:none !important; }
-      .pulse-desktop-topbar-wordmark { display:none !important; }
       .pulse-desktop-topbar-askpulse-label { display:none !important; }
       .pulse-desktop-topbar-account-label { display:none !important; }
-      .pulse-mobile-title { display:block !important; }
       .pulse-content-shell { max-width:none !important; padding:20px 16px 88px 16px !important; }
       .pulse-bottom-nav {
         display:flex; position:fixed; left:0; right:0; bottom:0; height:60px;
@@ -118,8 +116,7 @@
     <div style="display:flex; flex-direction:column; min-height:100vh;">
 
       <div style="display:flex; align-items:center; justify-content:space-between; height:60px; padding:0 28px; background:#FFFFFF; border-bottom:1px solid #E5E5E5; position:sticky; top:0; z-index:20; box-sizing:border-box;">
-        <span onClick="{{ goHome }}" class="pulse-desktop-topbar-wordmark" style="font-size:16px; font-weight:800; letter-spacing:-0.3px; color:#0A0A0A; cursor:pointer;">Pulse for Uber</span>
-        <span class="pulse-mobile-title" style="font-size:15px; font-weight:800; letter-spacing:-0.3px; color:#0A0A0A;">{{ mobileScreenTitle }}</span>
+        <span onClick="{{ goHome }}" style="font-size:16px; font-weight:800; letter-spacing:-0.3px; color:#0A0A0A; cursor:pointer;">Pulse for Uber</span>
         <div style="display:flex; align-items:center; gap:10px;">
           <button onClick="{{ openAskPulseSheet }}" style="display:flex; align-items:center; gap:8px; background:#0A0A0A; border:none; color:#FFFFFF; border-radius:999px; padding:8px 16px; font-size:13px; font-weight:700; cursor:pointer;">
             <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" style="flex-shrink:0;"><path d="M12 3l1.7 4.9L18.6 9.4l-4.9 1.7L12 16l-1.7-4.9L5.4 9.4l4.9-1.7L12 3z"/><path d="M18.5 14.5l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7.7-2z"/></svg>
@@ -1226,6 +1223,13 @@
 
 </x-dc>
 <script type="text/x-dc" data-dc-script>
+if (typeof history !== 'undefined' && 'scrollRestoration' in history) {
+  history.scrollRestoration = 'manual';
+}
+if (typeof window !== 'undefined') {
+  window.scrollTo(0, 0);
+}
+
 const LOB_COLORS = {
   Ridesharing: { bg:'#DCEBF7', color:'#1D6FA5' },
   Eats: { bg:'#FBE8D8', color:'#B45F06' },
@@ -2325,11 +2329,16 @@ class Component extends DCLogic {
 
   stopClick = (e) => e.stopPropagation();
 
+  componentDidUpdate(_prevProps) {
+    if (this.state.appScreen !== this._lastAppScreen) {
+      this._lastAppScreen = this.state.appScreen;
+      if (typeof window !== 'undefined') window.scrollTo(0, 0);
+    }
+  }
+
   renderVals() {
     const s = this.state;
     const navStyle = (active) => 'display:flex;align-items:center;gap:10px;width:100%;box-sizing:border-box;text-align:left;background:'+(active?'#F6F6F6':'none')+';border:none;color:'+(active?'#0A0A0A':'#6B6B6B')+';font-weight:'+(active?'700':'500')+';border-radius:10px;padding:10px 12px;font-size:13.5px;cursor:pointer;';
-    const MOBILE_SCREEN_TITLES = { home:'Home', catalog:'Data Catalog', assistant:'AI Assistant', roadmap:'Roadmap', developer:'Developer Tools', report:'Report Issue', contribute:'Contribute', docs:'Documentation' };
-    const mobileScreenTitle = MOBILE_SCREEN_TITLES[s.appScreen] || 'Pulse for Uber';
     const mobileMoreActive = ['assistant','developer','report','contribute','docs'].includes(s.appScreen);
     const mobileNavStyle = (active) => 'display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;flex:1;min-height:48px;background:none;border:none;color:'+(active?'#0A0A0A':'#6B6B6B')+';font-weight:'+(active?'700':'500')+';font-size:10.5px;cursor:pointer;padding:6px 4px;';
 
@@ -2613,7 +2622,7 @@ class Component extends DCLogic {
       closeAskPulseSheet: this.closeAskPulseSheet, expandAskPulseSheet: this.expandAskPulseSheet,
       askPulseSheetTitle: activeChatSession ? activeChatSession.title : 'Ask Pulse',
       mobileMoreOpen: s.mobileMoreOpen, openMobileMore: this.openMobileMore, closeMobileMore: this.closeMobileMore,
-      mobileScreenTitle, mobileMoreActive,
+      mobileMoreActive,
       mobileNavStyle_home: mobileNavStyle(s.appScreen==='home'), mobileNavStyle_catalog: mobileNavStyle(s.appScreen==='catalog'),
       mobileNavStyle_roadmap: mobileNavStyle(s.appScreen==='roadmap'), mobileNavStyle_more: mobileNavStyle(mobileMoreActive),
       navBtnStyle_home: navStyle(s.appScreen==='home'), navBtnStyle_catalog: navStyle(s.appScreen==='catalog'),
