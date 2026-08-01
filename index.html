@@ -268,6 +268,76 @@
             </div>
           </sc-if>
 
+          <sc-if value="{{ isDetail }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:4px;">
+              <button onClick="{{ closeDetailToOrigin }}" style="background:none; border:none; font-size:16px; cursor:pointer; color:#6B6B6B; padding:2px; flex-shrink:0;">←</button>
+              <sc-if value="{{ isDetailEvent }}" hint-placeholder-val="{{ false }}">
+                <h1 style="font-size:22px; font-weight:800; margin:0; letter-spacing:-0.4px; font-family:ui-monospace,monospace;">{{ selectedEntry.name }}</h1>
+              </sc-if>
+              <sc-if value="{{ isDetailPipeline }}" hint-placeholder-val="{{ false }}">
+                <h1 style="font-size:22px; font-weight:800; margin:0; letter-spacing:-0.4px;">{{ selectedPipeline.name }}</h1>
+              </sc-if>
+              <sc-if value="{{ isDetailMetric }}" hint-placeholder-val="{{ false }}">
+                <h1 style="font-size:22px; font-weight:800; margin:0; letter-spacing:-0.4px;">{{ selectedMetric.label }}</h1>
+              </sc-if>
+            </div>
+
+            <div style="display:flex; gap:8px; margin:0 0 20px 34px; flex-wrap:wrap;">
+              <sc-if value="{{ isDetailEvent }}" hint-placeholder-val="{{ false }}">
+                <span style="font-size:11px; color:#6B6B6B; background:#F6F6F6; border-radius:6px; padding:3px 8px; font-weight:600; text-transform:uppercase; letter-spacing:0.04em;">Event</span>
+                <span style="{{ selectedEntry.statusChipStyle }}">{{ selectedEntry.statusLabel }}</span>
+                <span style="{{ selectedEntry.lobChipStyle }}">{{ selectedEntry.lob }}</span>
+                <span style="font-size:12px; color:#6B6B6B; background:#F6F6F6; border-radius:6px; padding:3px 8px;">{{ selectedEntry.version }}</span>
+              </sc-if>
+              <sc-if value="{{ isDetailPipeline }}" hint-placeholder-val="{{ false }}">
+                <span style="font-size:11px; color:#6B6B6B; background:#F6F6F6; border-radius:6px; padding:3px 8px; font-weight:600; text-transform:uppercase; letter-spacing:0.04em;">Pipeline</span>
+                <span style="{{ selectedPipeline.statusChipStyle }}">{{ selectedPipeline.statusLabel }}</span>
+                <span style="{{ selectedPipeline.lobChipStyle }}">{{ selectedPipeline.lob }}</span>
+                <span style="font-size:12px; color:#6B6B6B; background:#F6F6F6; border-radius:6px; padding:3px 8px;">{{ selectedPipeline.weeklyVolumeLabel }}/wk</span>
+              </sc-if>
+              <sc-if value="{{ isDetailMetric }}" hint-placeholder-val="{{ false }}">
+                <span style="font-size:11px; color:#6B6B6B; background:#F6F6F6; border-radius:6px; padding:3px 8px; font-weight:600; text-transform:uppercase; letter-spacing:0.04em;">Metric</span>
+              </sc-if>
+            </div>
+
+            <sc-if value="{{ isDetailEvent }}" hint-placeholder-val="{{ false }}">
+              <sc-if value="{{ selectedEntry.warning }}" hint-placeholder-val="{{ false }}">
+                <div style="background:#FBE9E6; border:1px solid #F0C4BC; color:#8C332A; font-size:12px; border-radius:8px; padding:10px 12px; margin-bottom:16px; max-width:640px;">⚠ {{ selectedEntry.warningText }}</div>
+              </sc-if>
+              <p style="font-size:14px; line-height:1.6; color:#0A0A0A; max-width:640px; margin:0 0 24px 0;">{{ selectedEntry.definition }}</p>
+            </sc-if>
+            <sc-if value="{{ isDetailPipeline }}" hint-placeholder-val="{{ false }}">
+              <p style="font-size:14px; line-height:1.6; color:#0A0A0A; max-width:640px; margin:0 0 24px 0;">{{ selectedPipeline.description }}</p>
+            </sc-if>
+            <sc-if value="{{ isDetailMetric }}" hint-placeholder-val="{{ false }}">
+              <sc-if value="{{ selectedMetric.hasWarning }}" hint-placeholder-val="{{ false }}">
+                <div style="background:#FBE9E6; border:1px solid #F0C4BC; color:#8C332A; font-size:12px; border-radius:8px; padding:10px 12px; margin-bottom:16px; max-width:640px;">⚠ {{ selectedMetric.warningText }}</div>
+              </sc-if>
+              <div style="font-size:32px; font-weight:800; letter-spacing:-0.4px; margin-bottom:4px;">{{ selectedMetric.value }}</div>
+              <span style="{{ selectedMetric.deltaStyle }}">{{ selectedMetric.delta }}</span>
+              <p style="font-size:14px; line-height:1.6; color:#0A0A0A; max-width:640px; margin:14px 0 24px 0;">{{ selectedMetric.tooltip }}</p>
+            </sc-if>
+
+            <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:16px; max-width:800px; margin-bottom:32px;">
+              <sc-if value="{{ isDetailEvent }}" hint-placeholder-val="{{ false }}">
+                <div><div style="font-size:11px; color:#9B9B9B; font-weight:600; text-transform:uppercase; margin-bottom:3px;">Implementing team</div><div style="font-size:13px;">{{ selectedEntry.implementingTeam }}</div></div>
+                <div><div style="font-size:11px; color:#9B9B9B; font-weight:600; text-transform:uppercase; margin-bottom:3px;">Definition owner</div><div style="font-size:13px;">{{ selectedEntry.definitionOwner }}</div></div>
+                <div><div style="font-size:11px; color:#9B9B9B; font-weight:600; text-transform:uppercase; margin-bottom:3px;">Last updated</div><div style="font-size:13px;">{{ selectedEntry.lastUpdated }}</div></div>
+              </sc-if>
+              <sc-if value="{{ isDetailPipeline }}" hint-placeholder-val="{{ false }}">
+                <div><div style="font-size:11px; color:#9B9B9B; font-weight:600; text-transform:uppercase; margin-bottom:3px;">Owning team</div><div style="font-size:13px;">{{ selectedPipeline.owningTeam }}</div></div>
+                <div><div style="font-size:11px; color:#9B9B9B; font-weight:600; text-transform:uppercase; margin-bottom:3px;">Definition owner</div><div style="font-size:13px;">{{ selectedPipeline.definitionOwner }}</div></div>
+                <div><div style="font-size:11px; color:#9B9B9B; font-weight:600; text-transform:uppercase; margin-bottom:3px;">Freshness</div><div style="font-size:13px;">{{ selectedPipeline.freshness }}</div></div>
+                <div><div style="font-size:11px; color:#9B9B9B; font-weight:600; text-transform:uppercase; margin-bottom:3px;">SLA target / actual</div><div style="font-size:13px;">{{ selectedPipeline.slaTarget }} / <span style="{{ selectedPipeline.slaActualStyle }}">{{ selectedPipeline.slaActual }}</span></div></div>
+                <div><div style="font-size:11px; color:#9B9B9B; font-weight:600; text-transform:uppercase; margin-bottom:3px;">Quality score</div><div style="font-size:13px;">{{ selectedPipeline.quality }} / 100</div></div>
+              </sc-if>
+              <sc-if value="{{ isDetailMetric }}" hint-placeholder-val="{{ false }}">
+                <div><div style="font-size:11px; color:#9B9B9B; font-weight:600; text-transform:uppercase; margin-bottom:3px;">Implementing team</div><div style="font-size:13px;">{{ selectedMetric.implementingTeam }}</div></div>
+                <div><div style="font-size:11px; color:#9B9B9B; font-weight:600; text-transform:uppercase; margin-bottom:3px;">Definition owner</div><div style="font-size:13px;">{{ selectedMetric.definitionOwner }}</div></div>
+              </sc-if>
+            </div>
+          </sc-if>
+
           <sc-if value="{{ isCatalog }}" hint-placeholder-val="{{ false }}">
             <h1 style="font-size:24px; font-weight:800; margin:0 0 4px 0; letter-spacing:-0.5px;">Data & Pipeline Catalog</h1>
             <p style="font-size:14px; color:#6B6B6B; margin:0 0 16px 0;">The authoritative record of every metric, event, and pipeline on the platform.</p>
@@ -1046,7 +1116,7 @@
       </div>
     </sc-if>
 
-    <sc-if value="{{ selectedEntry }}" hint-placeholder-val="{{ false }}">
+    <sc-if value="{{ showEntrySheet }}" hint-placeholder-val="{{ false }}">
       <div style="position:fixed; inset:0; background:rgba(10,10,10,0.35); z-index:30;" onClick="{{ closeEntry }}"></div>
       <div class="pulse-side-sheet" style="position:fixed; top:0; right:0; bottom:0; width:440px; background:#FFFFFF; box-shadow:-8px 0 30px rgba(0,0,0,0.12); z-index:31; overflow-y:auto; padding:28px;">
         <div style="display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:16px;">
@@ -1119,7 +1189,7 @@
       </div>
     </sc-if>
 
-    <sc-if value="{{ selectedPipeline }}" hint-placeholder-val="{{ false }}">
+    <sc-if value="{{ showPipelineSheet }}" hint-placeholder-val="{{ false }}">
       <div style="position:fixed; inset:0; background:rgba(10,10,10,0.35); z-index:30;" onClick="{{ closePipeline }}"></div>
       <div class="pulse-side-sheet" style="position:fixed; top:0; right:0; bottom:0; width:440px; background:#FFFFFF; box-shadow:-8px 0 30px rgba(0,0,0,0.12); z-index:31; overflow-y:auto; padding:28px;">
         <div style="display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:16px;">
@@ -1299,7 +1369,7 @@
         </sc-if>
 
         <div style="font-size:28px; font-weight:800; letter-spacing:-0.4px; margin-bottom:4px;">{{ selectedMetric.value }}</div>
-        <span style="{{ selectedMetric.deltaStyle }}">{{ selectedMetric.deltaLabel }}</span>
+        <span style="{{ selectedMetric.deltaStyle }}">{{ selectedMetric.delta }}</span>
         <svg viewBox="0 0 100 30" style="width:100%; height:60px; margin:14px 0 20px 0; display:block;">
           <polyline points="{{ selectedMetric.sparkPoints }}" fill="none" stroke="{{ selectedMetric.sparkColor }}" stroke-width="2"></polyline>
         </svg>
@@ -1693,6 +1763,7 @@ class Component extends DCLogic {
     catalogQuery:'', catalogLob:'All', catalogStatus:'All', selectedEntryId:null, catalogTab:'data',
     pipelineQuery:'', pipelineLob:'All', pipelineHealth:'All', selectedPipelineId:null, selectedRoadmapItemId:null, selectedMetricId:null,
     expandedHistoryKey:null, sheetOrigin:null,
+    selectedDetailRef:null, detailReturnScreen:null,
     catalogPage:1, pipelineLogPage:1, selectedDocTopicId:null, docsQuery:'', docsCategory:'All',
     chatSessions: loadChatSessions(),
     assistantContext: loadAssistantContext(),
@@ -1724,15 +1795,15 @@ class Component extends DCLogic {
   };
   logout = () => this.setState({screen:'login', loginEmail:'', loginPassword:'', loginError:''});
 
-  goHome = () => this.setState({appScreen:'home', selectedEntryId:null, selectedPipelineId:null, mobileMoreOpen:false});
-  goCatalog = () => this.setState({appScreen:'catalog', selectedEntryId:null, selectedPipelineId:null, catalogTab:'data', catalogPage:1, pipelineLogPage:1, mobileMoreOpen:false});
-  goAssistant = () => this.setState({appScreen:'assistant', selectedEntryId:null, selectedPipelineId:null, activeChatId:null, attachMenuOpen:false, chatSearchQuery:'', askPulseSheetOpen:false, mobileMoreOpen:false});
+  goHome = () => this.setState({appScreen:'home', selectedEntryId:null, selectedPipelineId:null, selectedMetricId:null, selectedDetailRef:null, detailReturnScreen:null, mobileMoreOpen:false});
+  goCatalog = () => this.setState({appScreen:'catalog', selectedEntryId:null, selectedPipelineId:null, selectedDetailRef:null, detailReturnScreen:null, catalogTab:'data', catalogPage:1, pipelineLogPage:1, mobileMoreOpen:false});
+  goAssistant = () => this.setState({appScreen:'assistant', selectedEntryId:null, selectedPipelineId:null, selectedDetailRef:null, detailReturnScreen:null, activeChatId:null, attachMenuOpen:false, chatSearchQuery:'', askPulseSheetOpen:false, mobileMoreOpen:false});
   openAskPulseSheet = () => this.setState({askPulseSheetOpen:true, attachMenuOpen:false, mobileMoreOpen:false});
   closeAskPulseSheet = () => this.setState({askPulseSheetOpen:false, attachMenuOpen:false});
-  expandAskPulseSheet = () => this.setState({appScreen:'assistant', selectedEntryId:null, selectedPipelineId:null, askPulseSheetOpen:false, attachMenuOpen:false});
+  expandAskPulseSheet = () => this.setState({appScreen:'assistant', selectedEntryId:null, selectedPipelineId:null, selectedDetailRef:null, detailReturnScreen:null, askPulseSheetOpen:false, attachMenuOpen:false});
   openMobileMore = () => this.setState({mobileMoreOpen:true});
   closeMobileMore = () => this.setState({mobileMoreOpen:false});
-  goRoadmap = () => this.setState({appScreen:'roadmap', selectedEntryId:null, selectedPipelineId:null, selectedRoadmapItemId:null, mobileMoreOpen:false, roadmapActiveCol:0});
+  goRoadmap = () => this.setState({appScreen:'roadmap', selectedEntryId:null, selectedPipelineId:null, selectedDetailRef:null, detailReturnScreen:null, selectedRoadmapItemId:null, mobileMoreOpen:false, roadmapActiveCol:0});
   onRoadmapScroll = (e) => {
     const w = e.target.clientWidth || 1;
     const idx = Math.round(e.target.scrollLeft / w);
@@ -1744,22 +1815,22 @@ class Component extends DCLogic {
     this.setState({roadmapActiveCol: i});
   };
   goReport = () => this.setState({
-    appScreen:'report', selectedEntryId:null, selectedPipelineId:null, reportStep:1, reportDataPointQuery:'', reportAttachMenuOpen:false,
+    appScreen:'report', selectedEntryId:null, selectedPipelineId:null, selectedDetailRef:null, detailReturnScreen:null, reportStep:1, reportDataPointQuery:'', reportAttachMenuOpen:false,
     reportForm:{title:'',description:'',severity:'Medium',category:'Data Quality',generalIssue:false,linkedDataPointId:null,linkedDataPointType:null,jiraLink:'',prLink:'',attachedFileName:null},
     mobileMoreOpen:false
   });
   goContribute = () => this.setState({
-    appScreen:'contribute', selectedEntryId:null, selectedPipelineId:null, contributeStep:1,
+    appScreen:'contribute', selectedEntryId:null, selectedPipelineId:null, selectedDetailRef:null, detailReturnScreen:null, contributeStep:1,
     contributeForm:{name:'',lob:'Ridesharing',owningTeam:OWNING_TEAMS[0],description:'',repoLink:'',jiraLink:'',expectedVolume:'',payloadRows:[{field:'',value:''}]},
     mobileMoreOpen:false
   });
   goDeveloper = () => this.setState({
-    appScreen:'developer', selectedEntryId:null, selectedPipelineId:null,
+    appScreen:'developer', selectedEntryId:null, selectedPipelineId:null, selectedDetailRef:null, detailReturnScreen:null,
     showCreateKeyForm:false, newKeyName:'', justCreatedKey:null, confirmDeleteKeyId:null,
     mobileMoreOpen:false
   });
-  goDocs = () => this.setState({appScreen:'docs', selectedEntryId:null, selectedPipelineId:null, selectedDocTopicId:null, docsQuery:'', docsCategory:'All', mobileMoreOpen:false});
-  openApiReferenceDoc = () => this.setState({appScreen:'docs', selectedEntryId:null, selectedPipelineId:null, docsQuery:'', docsCategory:'All', selectedDocTopicId:'api-reference'});
+  goDocs = () => this.setState({appScreen:'docs', selectedEntryId:null, selectedPipelineId:null, selectedDetailRef:null, detailReturnScreen:null, selectedDocTopicId:null, docsQuery:'', docsCategory:'All', mobileMoreOpen:false});
+  openApiReferenceDoc = () => this.setState({appScreen:'docs', selectedEntryId:null, selectedPipelineId:null, selectedDetailRef:null, detailReturnScreen:null, docsQuery:'', docsCategory:'All', selectedDocTopicId:'api-reference'});
   selectDocTopic = (id) => this.setState({selectedDocTopicId:id});
   closeDocTopic = () => this.setState({selectedDocTopicId:null});
   onDocsQueryChange = (e) => this.setState({docsQuery:e.target.value});
@@ -1820,6 +1891,20 @@ class Component extends DCLogic {
   closeRoadmapItem = () => this.setState({selectedRoadmapItemId:null});
   selectMetric = (id) => this.setState({selectedMetricId:id});
   closeMetric = () => this.setState({selectedMetricId:null});
+  openDetail = (type, id) => this.setState(s => ({
+    appScreen:'detail',
+    selectedDetailRef:{type, id},
+    detailReturnScreen: s.appScreen === 'detail' ? s.detailReturnScreen : s.appScreen,
+    selectedEntryId: type === 'event' ? id : null,
+    selectedPipelineId: type === 'pipeline' ? id : null,
+    selectedMetricId: type === 'metric' ? id : null,
+    sheetOrigin:null
+  }));
+  closeDetailToOrigin = () => this.setState(s => ({
+    appScreen: s.detailReturnScreen || 'home',
+    selectedDetailRef:null, detailReturnScreen:null,
+    selectedEntryId:null, selectedPipelineId:null, selectedMetricId:null
+  }));
   viewCatalogRef = (id) => this.setState({appScreen:'catalog', catalogQuery:'', catalogLob:'All', catalogStatus:'All', selectedEntryId:id, catalogTab:'data', sheetOrigin:null, selectedMetricId:null});
   viewCatalogEntryFromPipeline = (id) => this.setState(s => ({appScreen:'catalog', catalogQuery:'', catalogLob:'All', catalogStatus:'All', selectedEntryId:id, catalogTab:'data', selectedPipelineId:null, sheetOrigin:{type:'pipeline', id:s.selectedPipelineId}}));
   viewPipelineFromCatalog = (id) => this.setState(s => ({selectedEntryId:null, selectedPipelineId:id, sheetOrigin:{type:'catalog', id:s.selectedEntryId}}));
@@ -2069,8 +2154,8 @@ class Component extends DCLogic {
       deltaStyle: 'font-size:12px;font-weight:600;color:'+(m.positive?'#067A3E':'#A93327')+';',
       sparkPoints: sparkPoints(m.points),
       sparkColor: m.positive ? '#06C167' : '#A93327',
-      onSelect: () => this.selectMetric(m.id),
-      onKeyDown: this.onRowKeyDown(() => this.selectMetric(m.id))
+      onSelect: () => this.openDetail('metric', m.id),
+      onKeyDown: this.onRowKeyDown(() => this.openDetail('metric', m.id))
     }));
     const homePipelines = pipelines.slice(0, 10).map((p,i) => ({ ...p, rowNumber: i+1 }));
 
@@ -2136,8 +2221,8 @@ class Component extends DCLogic {
       statusChipStyle: statusChipStyle(e.status),
       lobChipStyle: lobChipStyle(e.lob),
       weeklyVolumeLabel: e.weeklyVolume.toFixed(1)+'M',
-      onSelect: () => this.selectEntry(e.id),
-      onKeyDown: this.onRowKeyDown(() => this.selectEntry(e.id))
+      onSelect: () => this.openDetail('event', e.id),
+      onKeyDown: this.onRowKeyDown(() => this.openDetail('event', e.id))
     })).sort((a,b) => b.weeklyVolume - a.weeklyVolume);
 
     const catalogTotalPages = Math.max(1, Math.ceil(filteredCatalog.length / PAGE_SIZE));
@@ -2169,6 +2254,7 @@ class Component extends DCLogic {
     } : null;
 
     return {
+      showEntrySheet: !!selectedEntry && s.appScreen !== 'detail',
       isCatalog: s.appScreen === 'catalog',
       pipelineQuery: s.pipelineQuery, pipelineLob: s.pipelineLob, pipelineHealth: s.pipelineHealth,
       onPipelineQueryChange: this.onPipelineQueryChange, onPipelineLobChange: this.onPipelineLobChange, onPipelineHealthChange: this.onPipelineHealthChange,
@@ -2477,8 +2563,8 @@ class Component extends DCLogic {
         slaActualStyle: 'font-weight:600;color:'+(p.health==='green' ? '#067A3E' : p.health==='amber' ? '#96530A' : '#A93327')+';',
         qualityBarStyle: 'height:100%;border-radius:3px;width:'+p.quality+'%;background:'+(p.quality>=95?'#06C167':p.quality>=80?'#C98A1E':'#A93327')+';',
         weeklyVolumeLabel: weeklyVolume.toFixed(1)+'M',
-        onSelect: () => this.selectPipeline(p.id),
-        onKeyDown: this.onRowKeyDown(() => this.selectPipeline(p.id))
+        onSelect: () => this.openDetail('pipeline', p.id),
+        onKeyDown: this.onRowKeyDown(() => this.openDetail('pipeline', p.id))
       };
     }).sort((a,b) => b.weeklyVolume - a.weeklyVolume);
 
@@ -2531,8 +2617,14 @@ class Component extends DCLogic {
       ...this.renderDeveloperVals(s),
       ...this.renderDocsVals(s),
       pipelines, selectedPipeline, closePipeline: this.closePipeline,
+      showPipelineSheet: !!selectedPipeline && s.appScreen !== 'detail',
       showEntryBack: !!(s.selectedEntryId && s.sheetOrigin && s.sheetOrigin.type==='pipeline'), backFromEntry: this.backFromEntry,
       showPipelineBack: !!(s.selectedPipelineId && s.sheetOrigin && s.sheetOrigin.type==='catalog'), backFromPipeline: this.backFromPipeline,
+      isDetail: s.appScreen === 'detail',
+      isDetailEvent: s.appScreen === 'detail' && !!s.selectedDetailRef && s.selectedDetailRef.type === 'event',
+      isDetailPipeline: s.appScreen === 'detail' && !!s.selectedDetailRef && s.selectedDetailRef.type === 'pipeline',
+      isDetailMetric: s.appScreen === 'detail' && !!s.selectedDetailRef && s.selectedDetailRef.type === 'metric',
+      closeDetailToOrigin: this.closeDetailToOrigin,
       nextPlanningMeetingLabel,
       toast: s.toast,
       stopClick: this.stopClick
