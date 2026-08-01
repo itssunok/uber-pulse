@@ -58,6 +58,13 @@ Evidence:
 
 ## 4. User Personas & Stories
 
+**Locked primary personas (updated Aug 2026):** Of the five personas below, four are locked as business-critical — Maya, James, Priya, and Tom. Each was tested against one question: does this person's job depend on trusting this platform's data or acting on a decision tied to it, where failure has real business cost?
+
+- **Priya was re-evaluated and reinstated.** Originally her dependency read as workflow speed (measurement plan generation vs. waiting weeks) rather than a live trust dependency. On reconsideration: if a PM has to wait weeks for a measurement plan before a feature like a ride-booking change ships, the business genuinely cannot see that feature's impact promptly — that's an organizational cost, not a convenience. An AI-generated measurement plan also standardizes tracking at the platform level from day one instead of ad hoc per team, which is core fidelity/standardization work for this platform. That's business-critical by the same test the other three pass.
+- **Carlos remains out of the locked set.** His dependency is onboarding friction and status visibility on his own contribution — real, but nothing breaks for the business if this workflow is clunky; it costs Carlos and the data team time, not a decision made on bad data. His persona and story are kept below for completeness and may be reconsidered if Contribute-flow adoption becomes a bottleneck.
+
+All design and prioritization work on this repo should evaluate against the four locked personas unless a change specifically concerns Carlos's contribution workflow.
+
 ### Persona 1: Maya — Data Scientist, Ridesharing
 
 Maya builds churn prediction and demand forecasting models. She needs clean, reliable, well-defined event data as model inputs. Today she spends hours reverse-engineering what a field means or whether she can trust a metric before writing a single line of model code.
@@ -87,9 +94,11 @@ James needs to know which campaigns are driving orders and where to allocate bud
 - Given I land on the home page, I see a pipeline health tile for "Marketing Attribution" showing green, amber, or red status and last updated timestamp
 - Given the pipeline is degraded, I see an alert with estimated resolution time
 
-### Persona 3: Priya — Product Manager, Ridesharing Growth
+### Persona 3: Priya — Product Manager, Ridesharing Growth (locked, reinstated Aug 2026)
 
-Priya is launching a new scheduled rides feature and needs to define what to track before engineering starts building. Today this requires scheduling meetings with the data team, waiting for a measurement plan to be written, and going through multiple review rounds.
+Priya is launching a new scheduled rides feature and needs to define what to track before engineering starts building. Today this requires scheduling meetings with the data team, waiting for a measurement plan to be written, and going through multiple review rounds — often weeks before engineering can start building against a spec.
+
+**Why she's locked as business-critical:** every week a measurement plan takes to produce is a week the business can't see whether a shipped feature is actually working. A self-serve, AI-generated measurement plan doesn't just save Priya time — it standardizes how tracking gets defined across the platform from day one, instead of each team inventing its own ad hoc approach. That's the same platform-fidelity mandate the rest of this PRD is built around, applied at the point where new tracking is born rather than after the fact.
 
 **Story 1:** As Priya, I want to describe my new feature to the AI assistant and receive a draft measurement plan, so that I can start the logging spec review process without waiting for the data team.
 
@@ -106,7 +115,7 @@ Tom builds and maintains dashboards in Looker for the Eats leadership team. He n
 - Given I navigate to the home page monitoring table, I see a quality score, SLA status, and freshness timestamp for each pipeline
 - Given a pipeline's quality score drops below threshold, I receive a notification (Slack or email, based on my preference)
 
-### Persona 5: Carlos — Front-End Engineer, Rides App
+### Persona 5: Carlos — Front-End Engineer, Rides App (kept, not in locked set)
 
 Carlos is onboarding a new feature onto the data pipeline. Today this means back-and-forth with the data team over Slack, manual spec review, and no clear visibility into where his submission stands.
 
