@@ -213,7 +213,7 @@
 
             <div class="pulse-kpi-grid" style="display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:36px;">
               <sc-for list="{{ metrics }}" as="m" hint-placeholder-count="4">
-                <div style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; padding:18px;">
+                <div role="button" tabindex="0" onClick="{{ m.onSelect }}" onKeyDown="{{ m.onKeyDown }}" style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; padding:18px; cursor:pointer;">
                   <div style="display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:12px;">
                     <div class="pulse-tt" style="font-size:12px; color:#6B6B6B; font-weight:500;">{{ m.label }}<span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble">{{ m.tooltip }}</span></div>
                     <div style="width:34px; height:34px; border-radius:50%; background:{{ m.iconBg }}; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
@@ -1286,6 +1286,52 @@
       </div>
     </sc-if>
 
+    <sc-if value="{{ showMetricSheet }}" hint-placeholder-val="{{ false }}">
+      <div style="position:fixed; inset:0; background:rgba(10,10,10,0.35); z-index:30;" onClick="{{ closeMetric }}"></div>
+      <div class="pulse-side-sheet" style="position:fixed; top:0; right:0; bottom:0; width:440px; background:#FFFFFF; box-shadow:-8px 0 30px rgba(0,0,0,0.12); z-index:31; overflow-y:auto; padding:28px;">
+        <div style="display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:16px;">
+          <div style="font-size:16px; font-weight:700;">{{ selectedMetric.label }}</div>
+          <button onClick="{{ closeMetric }}" style="background:none; border:none; font-size:18px; cursor:pointer; color:#9B9B9B;">✕</button>
+        </div>
+
+        <sc-if value="{{ selectedMetric.hasWarning }}" hint-placeholder-val="{{ false }}">
+          <div style="background:#FBE9E6; border:1px solid #F0C4BC; color:#8C332A; font-size:12px; border-radius:8px; padding:10px 12px; margin-bottom:16px;">⚠ {{ selectedMetric.warningText }}</div>
+        </sc-if>
+
+        <div style="font-size:28px; font-weight:800; letter-spacing:-0.4px; margin-bottom:4px;">{{ selectedMetric.value }}</div>
+        <span style="{{ selectedMetric.deltaStyle }}">{{ selectedMetric.deltaLabel }}</span>
+        <svg viewBox="0 0 100 30" style="width:100%; height:60px; margin:14px 0 20px 0; display:block;">
+          <polyline points="{{ selectedMetric.sparkPoints }}" fill="none" stroke="{{ selectedMetric.sparkColor }}" stroke-width="2"></polyline>
+        </svg>
+
+        <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#6B6B6B; margin-bottom:10px;">Definition</div>
+        <div style="font-size:13px; line-height:1.6; color:#0A0A0A; margin-bottom:20px;">{{ selectedMetric.tooltip }}</div>
+
+        <sc-if value="{{ selectedMetric.sourceEventName }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-bottom:20px;">
+            <div style="font-size:11px; color:#9B9B9B; font-weight:600; text-transform:uppercase; margin-bottom:6px;">Source event</div>
+            <div role="button" tabindex="0" onClick="{{ selectedMetric.onViewSourceEvent }}" onKeyDown="{{ selectedMetric.onViewSourceEventKeyDown }}" style="display:inline-flex; align-items:center; gap:6px; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:7px; padding:6px 10px; font-size:12px; cursor:pointer;"><span style="font-family:ui-monospace,monospace;">{{ selectedMetric.sourceEventName }}</span> → open in catalog</div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ selectedMetric.freshnessLabel }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex; align-items:center; gap:5px; font-size:11px; color:#067A3E; margin-bottom:20px;"><span style="width:6px; height:6px; border-radius:50%; background:#06C167; flex-shrink:0;"></span>Live · pipeline data as of {{ selectedMetric.freshnessLabel }}</div>
+        </sc-if>
+
+        <sc-if value="{{ selectedMetric.verticalBreakdown }}" hint-placeholder-val="{{ false }}">
+          <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#6B6B6B; margin-bottom:10px;">Vertical breakdown</div>
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <sc-for list="{{ selectedMetric.verticalBreakdown }}" as="vb" hint-placeholder-count="3">
+              <div>
+                <div style="display:flex; justify-content:space-between; font-size:12.5px; margin-bottom:4px;"><span>{{ vb.label }}</span><span style="color:#6B6B6B;">{{ vb.value }}M · {{ vb.pct }}%</span></div>
+                <div style="background:#F0F0F0; border-radius:4px; height:6px; overflow:hidden;"><div style="{{ vb.barStyle }}"></div></div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+      </div>
+    </sc-if>
+
     <sc-if value="{{ askPulseSheetOpen }}" hint-placeholder-val="{{ false }}">
       <div style="position:fixed; inset:0; background:rgba(10,10,10,0.35); z-index:30;" onClick="{{ closeAskPulseSheet }}"></div>
       <div class="pulse-side-sheet" style="position:fixed; top:0; right:0; bottom:0; width:440px; background:#FFFFFF; box-shadow:-8px 0 30px rgba(0,0,0,0.12); z-index:31; display:flex; flex-direction:column;">
@@ -1645,7 +1691,7 @@ class Component extends DCLogic {
     screen:'app', loginEmail:'', loginPassword:'', loginError:'',
     appScreen:'home',
     catalogQuery:'', catalogLob:'All', catalogStatus:'All', selectedEntryId:null, catalogTab:'data',
-    pipelineQuery:'', pipelineLob:'All', pipelineHealth:'All', selectedPipelineId:null, selectedRoadmapItemId:null,
+    pipelineQuery:'', pipelineLob:'All', pipelineHealth:'All', selectedPipelineId:null, selectedRoadmapItemId:null, selectedMetricId:null,
     expandedHistoryKey:null, sheetOrigin:null,
     catalogPage:1, pipelineLogPage:1, selectedDocTopicId:null, docsQuery:'', docsCategory:'All',
     chatSessions: loadChatSessions(),
@@ -1772,7 +1818,9 @@ class Component extends DCLogic {
   closePipeline = () => this.setState({selectedPipelineId:null, sheetOrigin:null});
   selectRoadmapItem = (id) => this.setState({selectedRoadmapItemId:id});
   closeRoadmapItem = () => this.setState({selectedRoadmapItemId:null});
-  viewCatalogRef = (id) => this.setState({appScreen:'catalog', catalogQuery:'', catalogLob:'All', catalogStatus:'All', selectedEntryId:id, catalogTab:'data', sheetOrigin:null});
+  selectMetric = (id) => this.setState({selectedMetricId:id});
+  closeMetric = () => this.setState({selectedMetricId:null});
+  viewCatalogRef = (id) => this.setState({appScreen:'catalog', catalogQuery:'', catalogLob:'All', catalogStatus:'All', selectedEntryId:id, catalogTab:'data', sheetOrigin:null, selectedMetricId:null});
   viewCatalogEntryFromPipeline = (id) => this.setState(s => ({appScreen:'catalog', catalogQuery:'', catalogLob:'All', catalogStatus:'All', selectedEntryId:id, catalogTab:'data', selectedPipelineId:null, sheetOrigin:{type:'pipeline', id:s.selectedPipelineId}}));
   viewPipelineFromCatalog = (id) => this.setState(s => ({selectedEntryId:null, selectedPipelineId:id, sheetOrigin:{type:'catalog', id:s.selectedEntryId}}));
   backFromEntry = () => this.setState(s => s.sheetOrigin && s.sheetOrigin.type==='pipeline'
@@ -2020,12 +2068,33 @@ class Component extends DCLogic {
       deltaLabel: m.delta,
       deltaStyle: 'font-size:12px;font-weight:600;color:'+(m.positive?'#067A3E':'#A93327')+';',
       sparkPoints: sparkPoints(m.points),
-      sparkColor: m.positive ? '#06C167' : '#A93327'
+      sparkColor: m.positive ? '#06C167' : '#A93327',
+      onSelect: () => this.selectMetric(m.id),
+      onKeyDown: this.onRowKeyDown(() => this.selectMetric(m.id))
     }));
     const homePipelines = pipelines.slice(0, 10).map((p,i) => ({ ...p, rowNumber: i+1 }));
+
+    const rawSelectedMetric = METRICS_BASE.find(m => m.id === s.selectedMetricId) || null;
+    const metricSourceEvent = rawSelectedMetric && rawSelectedMetric.sourceEventId ? CATALOG.find(e => e.id === rawSelectedMetric.sourceEventId) || null : null;
+    const metricSourcePipeline = metricSourceEvent ? PIPELINES.find(p => p.id === metricSourceEvent.pipelineId) || null : null;
+    const selectedMetric = rawSelectedMetric ? {
+      ...rawSelectedMetric,
+      deltaStyle: 'font-size:13px;font-weight:600;color:'+(rawSelectedMetric.positive?'#067A3E':'#A93327')+';',
+      sparkPoints: sparkPoints(rawSelectedMetric.points),
+      sparkColor: rawSelectedMetric.positive ? '#06C167' : '#A93327',
+      sourceEventName: metricSourceEvent ? metricSourceEvent.name : null,
+      onViewSourceEvent: metricSourceEvent ? (() => this.viewCatalogRef(metricSourceEvent.id)) : null,
+      onViewSourceEventKeyDown: metricSourceEvent ? this.onRowKeyDown(() => this.viewCatalogRef(metricSourceEvent.id)) : null,
+      freshnessLabel: metricSourcePipeline ? metricSourcePipeline.freshness : null,
+      hasWarning: !!(metricSourceEvent && metricSourceEvent.warning),
+      warningText: metricSourceEvent ? metricSourceEvent.warningText : null,
+      verticalBreakdown: rawSelectedMetric.verticalBreakdown ? rawSelectedMetric.verticalBreakdown.map(vb => ({ ...vb, barStyle:'height:100%;border-radius:4px;width:'+vb.pct+'%;background:'+rawSelectedMetric.iconColor+';' })) : null
+    } : null;
+
     return {
       isHome: s.appScreen === 'home',
-      criticalPipeline, metrics, homePipelines
+      criticalPipeline, metrics, homePipelines,
+      selectedMetric, showMetricSheet: s.appScreen === 'home' && !!selectedMetric, closeMetric: this.closeMetric
     };
   }
 
