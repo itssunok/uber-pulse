@@ -22,6 +22,33 @@
     .pulse-tt .pulse-tt-icon { width:14px; height:14px; border-radius:50%; background:#EFEFEF; color:#6B6B6B; font-size:9.5px; font-weight:700; display:inline-flex; align-items:center; justify-content:center; cursor:help; margin-left:5px; flex-shrink:0; line-height:1; }
     .pulse-tt .pulse-tt-bubble { visibility:hidden; opacity:0; position:absolute; bottom:calc(100% + 8px); left:0; background:#0A0A0A; color:#FFFFFF; font-size:11.5px; font-weight:500; line-height:1.4; padding:8px 10px; border-radius:8px; width:200px; z-index:20; transition:opacity 0.12s ease; pointer-events:none; }
     .pulse-tt:hover .pulse-tt-bubble { visibility:visible; opacity:1; }
+
+    .pulse-bottom-nav, .pulse-mobile-sheet-overlay { display:none; }
+    .pulse-mobile-title { display:none; }
+
+    @media (max-width:900px) {
+      .pulse-desktop-sidebar { display:none !important; }
+      .pulse-desktop-topbar-wordmark { display:none !important; }
+      .pulse-desktop-topbar-askpulse-label { display:none !important; }
+      .pulse-desktop-topbar-account-label { display:none !important; }
+      .pulse-mobile-title { display:block !important; }
+      .pulse-content-shell { max-width:none !important; padding:20px 16px 88px 16px !important; }
+      .pulse-bottom-nav {
+        display:flex; position:fixed; left:0; right:0; bottom:0; height:60px;
+        background:#FFFFFF; border-top:1px solid #E5E5E5; z-index:30; box-sizing:border-box;
+      }
+      .pulse-mobile-sheet-overlay {
+        display:flex; position:fixed; inset:0; background:rgba(10,10,10,0.4); z-index:40;
+        align-items:flex-end; justify-content:center;
+      }
+      .pulse-mobile-sheet {
+        background:#FFFFFF; width:100%; max-width:600px; border-radius:16px 16px 0 0;
+        padding:8px 12px 24px 12px; box-sizing:border-box; max-height:70vh; overflow-y:auto;
+      }
+      .pulse-mobile-sheet button {
+        min-height:44px;
+      }
+    }
   </style>
 </helmet>
 
@@ -81,22 +108,23 @@
     <div style="display:flex; flex-direction:column; min-height:100vh;">
 
       <div style="display:flex; align-items:center; justify-content:space-between; height:60px; padding:0 28px; background:#FFFFFF; border-bottom:1px solid #E5E5E5; position:sticky; top:0; z-index:20; box-sizing:border-box;">
-        <span onClick="{{ goHome }}" style="font-size:16px; font-weight:800; letter-spacing:-0.3px; color:#0A0A0A; cursor:pointer;">Pulse for Uber</span>
+        <span onClick="{{ goHome }}" class="pulse-desktop-topbar-wordmark" style="font-size:16px; font-weight:800; letter-spacing:-0.3px; color:#0A0A0A; cursor:pointer;">Pulse for Uber</span>
+        <span class="pulse-mobile-title" style="font-size:15px; font-weight:800; letter-spacing:-0.3px; color:#0A0A0A;">{{ mobileScreenTitle }}</span>
         <div style="display:flex; align-items:center; gap:10px;">
           <button onClick="{{ openAskPulseSheet }}" style="display:flex; align-items:center; gap:8px; background:#0A0A0A; border:none; color:#FFFFFF; border-radius:999px; padding:8px 16px; font-size:13px; font-weight:700; cursor:pointer;">
             <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" style="flex-shrink:0;"><path d="M12 3l1.7 4.9L18.6 9.4l-4.9 1.7L12 16l-1.7-4.9L5.4 9.4l4.9-1.7L12 3z"/><path d="M18.5 14.5l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7.7-2z"/></svg>
-            Ask Pulse
+            <span class="pulse-desktop-topbar-askpulse-label">Ask Pulse</span>
           </button>
           <div style="display:flex; align-items:center; gap:8px; margin-left:4px; padding-left:14px; border-left:1px solid #E5E5E5; cursor:pointer;" onClick="{{ logout }}">
             <div style="width:30px; height:30px; border-radius:50%; background:#DFF3E6; color:#067A3E; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700;">PD</div>
-            <div style="font-size:12px; color:#6B6B6B; line-height:1.3;">Data Consumer<div style="font-size:10px; color:#9B9B9B;">Click to log out</div></div>
+            <div class="pulse-desktop-topbar-account-label" style="font-size:12px; color:#6B6B6B; line-height:1.3;">Data Consumer<div style="font-size:10px; color:#9B9B9B;">Click to log out</div></div>
           </div>
         </div>
       </div>
 
       <div style="display:flex; flex:1; min-height:0;">
 
-        <div style="width:232px; flex-shrink:0; background:#FFFFFF; border-right:1px solid #E5E5E5; display:flex; flex-direction:column; padding:16px 12px; position:sticky; top:60px; align-self:flex-start; height:calc(100vh - 60px); box-sizing:border-box;">
+        <div class="pulse-desktop-sidebar" style="width:232px; flex-shrink:0; background:#FFFFFF; border-right:1px solid #E5E5E5; display:flex; flex-direction:column; padding:16px 12px; position:sticky; top:60px; align-self:flex-start; height:calc(100vh - 60px); box-sizing:border-box;">
           <div style="display:flex; flex-direction:column; gap:2px;">
             <button onClick="{{ goHome }}" style="{{ navBtnStyle_home }}">
               <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9a1 1 0 0 0 1 1h4v-6h3v6h4a1 1 0 0 0 1-1v-9"/></svg>
@@ -134,7 +162,7 @@
         </div>
 
         <div style="flex:1; min-width:0; display:flex; flex-direction:column; min-height:0;">
-          <div style="max-width:1180px; margin:0 auto; padding:32px 32px 80px 32px; width:100%; box-sizing:border-box; display:flex; flex-direction:column; flex:1; min-height:0;">
+          <div class="pulse-content-shell" style="max-width:1180px; margin:0 auto; padding:32px 32px 80px 32px; width:100%; box-sizing:border-box; display:flex; flex-direction:column; flex:1; min-height:0;">
 
           <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
             <sc-if value="{{ criticalPipeline }}" hint-placeholder-val="{{ false }}">
@@ -1139,6 +1167,41 @@
       </div>
     </sc-if>
 
+    <div class="pulse-bottom-nav">
+      <button onClick="{{ goHome }}" style="{{ mobileNavStyle_home }}">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9a1 1 0 0 0 1 1h4v-6h3v6h4a1 1 0 0 0 1-1v-9"/></svg>
+        <span>Home</span>
+      </button>
+      <button onClick="{{ goCatalog }}" style="{{ mobileNavStyle_catalog }}">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4" width="17" height="16" rx="2.5"/><path d="M3.5 9.5h17M9.5 9.5V20"/></svg>
+        <span>Catalog</span>
+      </button>
+      <button onClick="{{ goRoadmap }}" style="{{ mobileNavStyle_roadmap }}">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3v18"/><path d="M5 4.5h11.5l-2.2 3.75L16.5 12H5"/></svg>
+        <span>Roadmap</span>
+      </button>
+      <button onClick="{{ openMobileMore }}" style="{{ mobileNavStyle_more }}">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="1.5" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/><circle cx="19" cy="12" r="1.5" fill="currentColor" stroke="none"/></svg>
+        <span>More</span>
+      </button>
+    </div>
+
+    <sc-if value="{{ mobileMoreOpen }}" hint-placeholder-val="{{ false }}">
+      <div class="pulse-mobile-sheet-overlay" onClick="{{ closeMobileMore }}">
+        <div class="pulse-mobile-sheet" onClick="{{ stopClick }}">
+          <div style="width:36px; height:4px; background:#E5E5E5; border-radius:2px; margin:6px auto 14px auto;"></div>
+          <button onClick="{{ goCatalog }}" style="display:flex; align-items:center; gap:12px; width:100%; box-sizing:border-box; text-align:left; background:none; border:none; padding:12px 8px; font-size:14px; font-weight:600; color:#0A0A0A; cursor:pointer;">Data Catalog</button>
+          <button onClick="{{ goAssistant }}" style="display:flex; align-items:center; gap:12px; width:100%; box-sizing:border-box; text-align:left; background:none; border:none; padding:12px 8px; font-size:14px; font-weight:600; color:#0A0A0A; cursor:pointer;">AI Assistant / Ask Pulse</button>
+          <button onClick="{{ goDeveloper }}" style="display:flex; align-items:center; gap:12px; width:100%; box-sizing:border-box; text-align:left; background:none; border:none; padding:12px 8px; font-size:14px; font-weight:600; color:#0A0A0A; cursor:pointer;">Developer Tools</button>
+          <button onClick="{{ goDocs }}" style="display:flex; align-items:center; gap:12px; width:100%; box-sizing:border-box; text-align:left; background:none; border:none; padding:12px 8px; font-size:14px; font-weight:600; color:#0A0A0A; cursor:pointer;">Documentation</button>
+          <button onClick="{{ goReport }}" style="display:flex; align-items:center; gap:12px; width:100%; box-sizing:border-box; text-align:left; background:none; border:none; padding:12px 8px; font-size:14px; font-weight:600; color:#0A0A0A; cursor:pointer;">Report Issue</button>
+          <button onClick="{{ goContribute }}" style="display:flex; align-items:center; gap:12px; width:100%; box-sizing:border-box; text-align:left; background:none; border:none; padding:12px 8px; font-size:14px; font-weight:600; color:#0A0A0A; cursor:pointer;">Contribute</button>
+          <div style="height:1px; background:#EFEFEF; margin:8px 0;"></div>
+          <button onClick="{{ logout }}" style="display:flex; align-items:center; gap:12px; width:100%; box-sizing:border-box; text-align:left; background:none; border:none; padding:12px 8px; font-size:14px; font-weight:600; color:#A93327; cursor:pointer;">Log out</button>
+        </div>
+      </div>
+    </sc-if>
+
     <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
       <div style="position:fixed; bottom:24px; right:24px; background:#0A0A0A; color:#FFF; font-size:13px; padding:12px 18px; border-radius:9px; box-shadow:0 10px 30px rgba(0,0,0,0.25); z-index:50; max-width:320px;">{{ toast }}</div>
     </sc-if>
@@ -1985,6 +2048,7 @@ class Component extends DCLogic {
     chatSessions: loadChatSessions(),
     activeChatId: null,
     askPulseSheetOpen: false,
+    mobileMoreOpen: false,
     chatInput:'', attachedFileName:null, attachMenuOpen:false, chatSearchQuery:'',
     contributeStep:1,
     contributeForm:{name:'',lob:'Ridesharing',owningTeam:OWNING_TEAMS[0],description:'',repoLink:'',jiraLink:'',expectedVolume:'',payloadRows:[{field:'',value:''}]},
@@ -2009,26 +2073,31 @@ class Component extends DCLogic {
   };
   logout = () => this.setState({screen:'login', loginEmail:'', loginPassword:'', loginError:''});
 
-  goHome = () => this.setState({appScreen:'home', selectedEntryId:null, selectedPipelineId:null});
-  goCatalog = () => this.setState({appScreen:'catalog', selectedEntryId:null, selectedPipelineId:null, catalogTab:'data', catalogPage:1, pipelineLogPage:1});
-  goAssistant = () => this.setState({appScreen:'assistant', selectedEntryId:null, selectedPipelineId:null, activeChatId:null, attachMenuOpen:false, chatSearchQuery:'', askPulseSheetOpen:false});
-  openAskPulseSheet = () => this.setState({askPulseSheetOpen:true, attachMenuOpen:false});
+  goHome = () => this.setState({appScreen:'home', selectedEntryId:null, selectedPipelineId:null, mobileMoreOpen:false});
+  goCatalog = () => this.setState({appScreen:'catalog', selectedEntryId:null, selectedPipelineId:null, catalogTab:'data', catalogPage:1, pipelineLogPage:1, mobileMoreOpen:false});
+  goAssistant = () => this.setState({appScreen:'assistant', selectedEntryId:null, selectedPipelineId:null, activeChatId:null, attachMenuOpen:false, chatSearchQuery:'', askPulseSheetOpen:false, mobileMoreOpen:false});
+  openAskPulseSheet = () => this.setState({askPulseSheetOpen:true, attachMenuOpen:false, mobileMoreOpen:false});
   closeAskPulseSheet = () => this.setState({askPulseSheetOpen:false, attachMenuOpen:false});
   expandAskPulseSheet = () => this.setState({appScreen:'assistant', selectedEntryId:null, selectedPipelineId:null, askPulseSheetOpen:false, attachMenuOpen:false});
-  goRoadmap = () => this.setState({appScreen:'roadmap', selectedEntryId:null, selectedPipelineId:null, selectedRoadmapItemId:null});
+  openMobileMore = () => this.setState({mobileMoreOpen:true});
+  closeMobileMore = () => this.setState({mobileMoreOpen:false});
+  goRoadmap = () => this.setState({appScreen:'roadmap', selectedEntryId:null, selectedPipelineId:null, selectedRoadmapItemId:null, mobileMoreOpen:false});
   goReport = () => this.setState({
     appScreen:'report', selectedEntryId:null, selectedPipelineId:null, reportStep:1, reportDataPointQuery:'',
-    reportForm:{title:'',description:'',severity:'Medium',category:'Data Quality',generalIssue:false,linkedDataPointId:null,linkedDataPointType:null,jiraLink:'',prLink:''}
+    reportForm:{title:'',description:'',severity:'Medium',category:'Data Quality',generalIssue:false,linkedDataPointId:null,linkedDataPointType:null,jiraLink:'',prLink:''},
+    mobileMoreOpen:false
   });
   goContribute = () => this.setState({
     appScreen:'contribute', selectedEntryId:null, selectedPipelineId:null, contributeStep:1,
-    contributeForm:{name:'',lob:'Ridesharing',owningTeam:OWNING_TEAMS[0],description:'',repoLink:'',jiraLink:'',expectedVolume:'',payloadRows:[{field:'',value:''}]}
+    contributeForm:{name:'',lob:'Ridesharing',owningTeam:OWNING_TEAMS[0],description:'',repoLink:'',jiraLink:'',expectedVolume:'',payloadRows:[{field:'',value:''}]},
+    mobileMoreOpen:false
   });
   goDeveloper = () => this.setState({
     appScreen:'developer', selectedEntryId:null, selectedPipelineId:null,
-    showCreateKeyForm:false, newKeyName:'', justCreatedKey:null, confirmDeleteKeyId:null
+    showCreateKeyForm:false, newKeyName:'', justCreatedKey:null, confirmDeleteKeyId:null,
+    mobileMoreOpen:false
   });
-  goDocs = () => this.setState({appScreen:'docs', selectedEntryId:null, selectedPipelineId:null, selectedDocTopicId:null, docsQuery:'', docsCategory:'All'});
+  goDocs = () => this.setState({appScreen:'docs', selectedEntryId:null, selectedPipelineId:null, selectedDocTopicId:null, docsQuery:'', docsCategory:'All', mobileMoreOpen:false});
   openApiReferenceDoc = () => this.setState({appScreen:'docs', selectedEntryId:null, selectedPipelineId:null, docsQuery:'', docsCategory:'All', selectedDocTopicId:'api-reference'});
   selectDocTopic = (id) => this.setState({selectedDocTopicId:id});
   closeDocTopic = () => this.setState({selectedDocTopicId:null});
@@ -2243,6 +2312,10 @@ class Component extends DCLogic {
   renderVals() {
     const s = this.state;
     const navStyle = (active) => 'display:flex;align-items:center;gap:10px;width:100%;box-sizing:border-box;text-align:left;background:'+(active?'#F6F6F6':'none')+';border:none;color:'+(active?'#0A0A0A':'#6B6B6B')+';font-weight:'+(active?'700':'500')+';border-radius:10px;padding:10px 12px;font-size:13.5px;cursor:pointer;';
+    const MOBILE_SCREEN_TITLES = { home:'Home', catalog:'Data Catalog', assistant:'AI Assistant', roadmap:'Roadmap', developer:'Developer Tools', report:'Report Issue', contribute:'Contribute', docs:'Documentation' };
+    const mobileScreenTitle = MOBILE_SCREEN_TITLES[s.appScreen] || 'Pulse for Uber';
+    const mobileMoreActive = ['assistant','developer','report','contribute','docs'].includes(s.appScreen);
+    const mobileNavStyle = (active) => 'display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;flex:1;min-height:48px;background:none;border:none;color:'+(active?'#0A0A0A':'#6B6B6B')+';font-weight:'+(active?'700':'500')+';font-size:10.5px;cursor:pointer;padding:6px 4px;';
 
     const criticalPipeline = PIPELINES.find(p => p.health === 'red') || null;
 
@@ -2523,6 +2596,10 @@ class Component extends DCLogic {
       askPulseSheetOpen: s.askPulseSheetOpen, openAskPulseSheet: this.openAskPulseSheet,
       closeAskPulseSheet: this.closeAskPulseSheet, expandAskPulseSheet: this.expandAskPulseSheet,
       askPulseSheetTitle: activeChatSession ? activeChatSession.title : 'Ask Pulse',
+      mobileMoreOpen: s.mobileMoreOpen, openMobileMore: this.openMobileMore, closeMobileMore: this.closeMobileMore,
+      mobileScreenTitle, mobileMoreActive,
+      mobileNavStyle_home: mobileNavStyle(s.appScreen==='home'), mobileNavStyle_catalog: mobileNavStyle(s.appScreen==='catalog'),
+      mobileNavStyle_roadmap: mobileNavStyle(s.appScreen==='roadmap'), mobileNavStyle_more: mobileNavStyle(mobileMoreActive),
       navBtnStyle_home: navStyle(s.appScreen==='home'), navBtnStyle_catalog: navStyle(s.appScreen==='catalog'),
       navBtnStyle_assistant: navStyle(s.appScreen==='assistant'), navBtnStyle_roadmap: navStyle(s.appScreen==='roadmap'),
       navBtnStyle_report: navStyle(s.appScreen==='report'), navBtnStyle_contribute: navStyle(s.appScreen==='contribute'),
