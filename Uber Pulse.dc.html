@@ -26,6 +26,7 @@
     .pulse-bottom-nav, .pulse-mobile-sheet-overlay { display:none; }
     .pulse-mobile-label { display:none; }
     .pulse-roadmap-dots { display:none; }
+    .pulse-side-sheet { box-sizing:border-box; }
 
     @media (max-width:900px) {
       .pulse-desktop-sidebar { display:none !important; }
@@ -974,7 +975,7 @@
           <div style="background:#FBE9E6; border:1px solid #F0C4BC; color:#8C332A; font-size:12px; border-radius:8px; padding:10px 12px; margin-bottom:16px;">⚠ {{ selectedEntry.warningText }}</div>
         </sc-if>
         <div style="font-size:13px; line-height:1.6; color:#0A0A0A; margin-bottom:18px;">{{ selectedEntry.definition }}</div>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:20px;">
+        <div class="pulse-wizard-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:20px;">
           <div><div style="font-size:11px; color:#9B9B9B; font-weight:600; text-transform:uppercase; margin-bottom:3px;">Implementing team</div><div style="font-size:13px;">{{ selectedEntry.implementingTeam }}</div></div>
           <div><div style="font-size:11px; color:#9B9B9B; font-weight:600; text-transform:uppercase; margin-bottom:3px;">Definition owner</div><div style="font-size:13px;">{{ selectedEntry.definitionOwner }}</div></div>
           <div><div style="font-size:11px; color:#9B9B9B; font-weight:600; text-transform:uppercase; margin-bottom:3px;">Last updated</div><div style="font-size:13px;">{{ selectedEntry.lastUpdated }}</div></div>
@@ -1013,7 +1014,7 @@
           <span style="font-size:12px; color:#6B6B6B; background:#F6F6F6; border-radius:6px; padding:3px 8px;">{{ selectedPipeline.weeklyVolumeLabel }}/wk</span>
         </div>
         <div style="font-size:13px; line-height:1.6; color:#0A0A0A; margin-bottom:18px;">{{ selectedPipeline.description }}</div>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:20px;">
+        <div class="pulse-wizard-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:20px;">
           <div><div style="font-size:11px; color:#9B9B9B; font-weight:600; text-transform:uppercase; margin-bottom:3px;">Owning team</div><div style="font-size:13px;">{{ selectedPipeline.owningTeam }}</div></div>
           <div><div style="font-size:11px; color:#9B9B9B; font-weight:600; text-transform:uppercase; margin-bottom:3px;">Freshness</div><div style="font-size:13px;">{{ selectedPipeline.freshness }}</div></div>
           <div><div style="font-size:11px; color:#9B9B9B; font-weight:600; text-transform:uppercase; margin-bottom:3px;">SLA target / actual</div><div style="font-size:13px;">{{ selectedPipeline.slaTarget }} / <span style="{{ selectedPipeline.slaActualStyle }}">{{ selectedPipeline.slaActual }}</span></div></div>
@@ -1061,7 +1062,7 @@
         </div>
         <div style="font-size:13px; line-height:1.6; color:#0A0A0A; margin-bottom:18px;">{{ selectedRoadmapItem.description }}</div>
 
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:20px;">
+        <div class="pulse-wizard-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:20px;">
           <sc-if value="{{ selectedRoadmapItem.hasOwner }}" hint-placeholder-val="{{ false }}">
             <div><div style="font-size:11px; color:#9B9B9B; font-weight:600; text-transform:uppercase; margin-bottom:3px;">Owner</div><div style="font-size:13px;">{{ selectedRoadmapItem.owner }}</div></div>
           </sc-if>
