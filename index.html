@@ -299,7 +299,7 @@
           </sc-if>
 
           <sc-if value="{{ isDetail }}" hint-placeholder-val="{{ false }}">
-            <div style="display:flex; align-items:center; gap:10px; margin-bottom:4px;">
+            <div class="flex-row gap-10" style="margin-bottom:4px;">
               <button onClick="{{ closeDetailToOrigin }}" style="background:none; border:none; font-size:var(--font-size-16); cursor:pointer; color:var(--color-gray-600); padding:2px; flex-shrink:0;">←</button>
               <sc-if value="{{ isDetailEvent }}" hint-placeholder-val="{{ false }}">
                 <h1 style="font-size:var(--font-size-h1); font-weight:var(--font-weight-h1); margin:0; letter-spacing:-0.4px; font-family:ui-monospace,monospace;">{{ selectedEntry.name }}</h1>
@@ -339,7 +339,7 @@
                     <div style="background:#FBE9E6; border:1px solid #F0C4BC; color:var(--color-status-red-fg); font-size:var(--font-size-sm); border-radius:8px; padding:10px 12px; margin-bottom:16px;">⚠ {{ selectedEntry.warningText }}</div>
                   </sc-if>
                   <sc-if value="{{ selectedEntry.roadmapLink }}" hint-placeholder-val="{{ false }}">
-                    <div role="button" tabindex="0" onClick="{{ selectedEntry.roadmapLink.onSelect }}" onKeyDown="{{ selectedEntry.roadmapLink.onKeyDown }}" style="display:flex; align-items:center; gap:12px; background:#DFF3E6; border:1px solid #BFE6D0; color:var(--color-status-green-fg); font-size:var(--font-size-sm); border-radius:10px; padding:10px 12px; margin-bottom:16px; cursor:pointer;">On the roadmap: <strong>{{ selectedEntry.roadmapLink.name }}</strong> ({{ selectedEntry.roadmapLink.stage }}) →</div>
+                    <div role="button" tabindex="0" onClick="{{ selectedEntry.roadmapLink.onSelect }}" onKeyDown="{{ selectedEntry.roadmapLink.onKeyDown }}" class="flex-row gap-12" style="background:#DFF3E6; border:1px solid #BFE6D0; color:var(--color-status-green-fg); font-size:var(--font-size-sm); border-radius:10px; padding:10px 12px; margin-bottom:16px; cursor:pointer;">On the roadmap: <strong>{{ selectedEntry.roadmapLink.name }}</strong> ({{ selectedEntry.roadmapLink.stage }}) →</div>
                   </sc-if>
                   <p style="font-size:var(--font-size-body-lead); line-height:1.6; color:var(--color-black); margin:0 0 24px 0;">{{ selectedEntry.definition }}</p>
                 </sc-if>
@@ -348,7 +348,7 @@
                     <div style="background:#FBE9E6; border:1px solid #F0C4BC; color:var(--color-status-red-fg); font-size:var(--font-size-sm); border-radius:8px; padding:10px 12px; margin-bottom:16px;">⚠ {{ selectedPipeline.warningText }}</div>
                   </sc-if>
                   <sc-if value="{{ selectedPipeline.roadmapLink }}" hint-placeholder-val="{{ false }}">
-                    <div role="button" tabindex="0" onClick="{{ selectedPipeline.roadmapLink.onSelect }}" onKeyDown="{{ selectedPipeline.roadmapLink.onKeyDown }}" style="display:flex; align-items:center; gap:12px; background:#DFF3E6; border:1px solid #BFE6D0; color:var(--color-status-green-fg); font-size:var(--font-size-sm); border-radius:10px; padding:10px 12px; margin-bottom:16px; cursor:pointer;">On the roadmap: <strong>{{ selectedPipeline.roadmapLink.name }}</strong> ({{ selectedPipeline.roadmapLink.stage }}) →</div>
+                    <div role="button" tabindex="0" onClick="{{ selectedPipeline.roadmapLink.onSelect }}" onKeyDown="{{ selectedPipeline.roadmapLink.onKeyDown }}" class="flex-row gap-12" style="background:#DFF3E6; border:1px solid #BFE6D0; color:var(--color-status-green-fg); font-size:var(--font-size-sm); border-radius:10px; padding:10px 12px; margin-bottom:16px; cursor:pointer;">On the roadmap: <strong>{{ selectedPipeline.roadmapLink.name }}</strong> ({{ selectedPipeline.roadmapLink.stage }}) →</div>
                   </sc-if>
                   <p style="font-size:var(--font-size-body-lead); line-height:1.6; color:var(--color-black); margin:0 0 24px 0;">{{ selectedPipeline.description }}</p>
                 </sc-if>
@@ -357,25 +357,25 @@
                     <div style="background:#FBE9E6; border:1px solid #F0C4BC; color:var(--color-status-red-fg); font-size:var(--font-size-sm); border-radius:8px; padding:10px 12px; margin-bottom:16px;">⚠ {{ selectedMetric.warningText }}</div>
                   </sc-if>
                   <sc-if value="{{ selectedMetric.roadmapLink }}" hint-placeholder-val="{{ false }}">
-                    <div role="button" tabindex="0" onClick="{{ selectedMetric.roadmapLink.onSelect }}" onKeyDown="{{ selectedMetric.roadmapLink.onKeyDown }}" style="display:flex; align-items:center; gap:12px; background:#DFF3E6; border:1px solid #BFE6D0; color:var(--color-status-green-fg); font-size:var(--font-size-sm); border-radius:10px; padding:10px 12px; margin-bottom:16px; cursor:pointer;">On the roadmap: <strong>{{ selectedMetric.roadmapLink.name }}</strong> ({{ selectedMetric.roadmapLink.stage }}) →</div>
+                    <div role="button" tabindex="0" onClick="{{ selectedMetric.roadmapLink.onSelect }}" onKeyDown="{{ selectedMetric.roadmapLink.onKeyDown }}" class="flex-row gap-12" style="background:#DFF3E6; border:1px solid #BFE6D0; color:var(--color-status-green-fg); font-size:var(--font-size-sm); border-radius:10px; padding:10px 12px; margin-bottom:16px; cursor:pointer;">On the roadmap: <strong>{{ selectedMetric.roadmapLink.name }}</strong> ({{ selectedMetric.roadmapLink.stage }}) →</div>
                   </sc-if>
                   <div style="font-size:var(--font-size-32); font-weight:var(--font-weight-heavy); letter-spacing:-0.4px; margin-bottom:4px;">{{ selectedMetric.value }}</div>
                   <span style="{{ selectedMetric.deltaStyle }}">{{ selectedMetric.delta }}</span>
                   <p style="font-size:var(--font-size-body-lead); line-height:1.6; color:var(--color-black); margin:14px 0 20px 0;">{{ selectedMetric.tooltip }}</p>
                   <sc-if value="{{ selectedMetric.freshnessLabel }}" hint-placeholder-val="{{ false }}">
-                    <div style="display:flex; align-items:center; gap:5px; font-size:var(--font-size-xs); color:var(--color-status-green-fg); margin-bottom:20px;"><span style="width:6px; height:6px; border-radius:50%; background:#06C167; flex-shrink:0;"></span>Live · pipeline data as of {{ selectedMetric.freshnessLabel }}</div>
+                    <div class="flex-row" style="gap:5px; font-size:var(--font-size-xs); color:var(--color-status-green-fg); margin-bottom:20px;"><span style="width:6px; height:6px; border-radius:50%; background:#06C167; flex-shrink:0;"></span>Live · pipeline data as of {{ selectedMetric.freshnessLabel }}</div>
                   </sc-if>
                   <sc-if value="{{ selectedMetric.compositeFreshnessNote }}" hint-placeholder-val="{{ false }}">
-                    <div style="display:flex; align-items:center; gap:5px; font-size:var(--font-size-xs); color:var(--color-gray-600); margin-bottom:20px;"><span style="width:6px; height:6px; border-radius:50%; background:#6B6B6B; flex-shrink:0;"></span>{{ selectedMetric.compositeFreshnessNote }}</div>
+                    <div class="flex-row" style="gap:5px; font-size:var(--font-size-xs); color:var(--color-gray-600); margin-bottom:20px;"><span style="width:6px; height:6px; border-radius:50%; background:#6B6B6B; flex-shrink:0;"></span>{{ selectedMetric.compositeFreshnessNote }}</div>
                   </sc-if>
                 </sc-if>
 
                 <sc-if value="{{ isDetailMetric }}" hint-placeholder-val="{{ false }}">
-                  <div style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; padding:18px; margin-bottom:20px;">
+                  <div class="card">
                     <div class="pulse-heading-label" style="margin-bottom:22px;">4-week trend by category</div>
                     <div style="display:flex; align-items:flex-end; gap:22px; height:130px; border-bottom:1px solid #E5E5E5;">
                       <sc-for list="{{ selectedMetric.trendChart.weeks }}" as="wk" hint-placeholder-count="4">
-                        <div style="display:flex; align-items:flex-end; justify-content:center; flex:1; min-width:0; height:100%;">
+                        <div class="flex-row" style="align-items:flex-end; justify-content:center; flex:1; min-width:0; height:100%;">
                           <div style="width:100%; max-width:70px; display:flex; flex-direction:column-reverse; {{ wk.barWrapStyle }} border-radius:4px 4px 0 0; overflow:hidden;">
                             <sc-for list="{{ wk.segments }}" as="seg" hint-placeholder-count="3">
                               <div style="{{ seg.barStyle }}"></div>
@@ -386,15 +386,15 @@
                     </div>
                     <div style="display:flex; gap:22px; margin-top:8px;">
                       <sc-for list="{{ selectedMetric.trendChart.weeks }}" as="wk" hint-placeholder-count="4">
-                        <div style="display:flex; flex-direction:column; align-items:center; gap:4px; flex:1; min-width:0;">
+                        <div class="flex-col" style="align-items:center; gap:4px; flex:1; min-width:0;">
                           <div style="font-size:var(--font-size-2xs); color:var(--color-gray-600); text-align:center;">{{ wk.dateLabel }}</div>
                           <div style="font-size:var(--font-size-xs); font-weight:var(--font-weight-semibold); text-align:center;">{{ wk.totalLabel }}</div>
                         </div>
                       </sc-for>
                     </div>
-                    <div style="display:flex; flex-direction:column; gap:6px; margin-top:14px;">
+                    <div class="flex-col" style="gap:6px; margin-top:14px;">
                       <sc-for list="{{ selectedMetric.trendChart.legend }}" as="lg" hint-placeholder-count="3">
-                        <div style="display:flex; align-items:center; gap:6px; font-size:var(--font-size-sm); color:var(--color-gray-600);">
+                        <div class="flex-row gap-6" style="font-size:var(--font-size-sm); color:var(--color-gray-600);">
                           <span style="width:9px; height:9px; border-radius:2px; background:{{ lg.color }}; display:inline-block; flex-shrink:0;"></span>{{ lg.label }}
                         </div>
                       </sc-for>
@@ -404,7 +404,7 @@
                 </sc-if>
 
                 <sc-if value="{{ isDetailMetric }}" hint-placeholder-val="{{ false }}">
-                  <div style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; padding:18px; margin-bottom:20px;">
+                  <div class="card">
                     <div class="pulse-heading-label" style="margin-bottom:14px;">Sample weekly rollup</div>
                     <p style="font-size:var(--font-size-body); color:var(--color-gray-600); line-height:1.5; margin:0 0 14px 0;">Export a weekly rollup of this metric for offline analysis.</p>
                     <button onClick="{{ selectedMetric.onDownloadSample }}" style="width:100%; box-sizing:border-box; background:#0A0A0A; color:#FFF; border:none; border-radius:999px; padding:10px; font-size:var(--font-size-sm); font-weight:var(--font-weight-semibold); cursor:pointer;">Download sample (CSV)</button>
@@ -412,11 +412,11 @@
                 </sc-if>
 
                 <sc-if value="{{ isDetailPipeline }}" hint-placeholder-val="{{ false }}">
-                  <div style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; padding:18px; margin-bottom:20px;">
+                  <div class="card">
                     <div class="pulse-heading-label" style="margin-bottom:22px;">4-week trend by event</div>
                     <div style="display:flex; align-items:flex-end; gap:22px; height:130px; border-bottom:1px solid #E5E5E5;">
                       <sc-for list="{{ selectedPipeline.trendChart.weeks }}" as="wk" hint-placeholder-count="4">
-                        <div style="display:flex; align-items:flex-end; justify-content:center; flex:1; min-width:0; height:100%;">
+                        <div class="flex-row" style="align-items:flex-end; justify-content:center; flex:1; min-width:0; height:100%;">
                           <div style="width:100%; max-width:70px; display:flex; flex-direction:column-reverse; {{ wk.barWrapStyle }} border-radius:4px 4px 0 0; overflow:hidden;">
                             <sc-for list="{{ wk.segments }}" as="seg" hint-placeholder-count="3">
                               <div style="{{ seg.barStyle }}"></div>
@@ -427,15 +427,15 @@
                     </div>
                     <div style="display:flex; gap:22px; margin-top:8px;">
                       <sc-for list="{{ selectedPipeline.trendChart.weeks }}" as="wk" hint-placeholder-count="4">
-                        <div style="display:flex; flex-direction:column; align-items:center; gap:4px; flex:1; min-width:0;">
+                        <div class="flex-col" style="align-items:center; gap:4px; flex:1; min-width:0;">
                           <div style="font-size:var(--font-size-2xs); color:var(--color-gray-600); text-align:center;">{{ wk.dateLabel }}</div>
                           <div style="font-size:var(--font-size-xs); font-weight:var(--font-weight-semibold); text-align:center;">{{ wk.totalLabel }}</div>
                         </div>
                       </sc-for>
                     </div>
-                    <div style="display:flex; flex-direction:column; gap:6px; margin-top:14px;">
+                    <div class="flex-col" style="gap:6px; margin-top:14px;">
                       <sc-for list="{{ selectedPipeline.trendChart.legend }}" as="lg" hint-placeholder-count="3">
-                        <div style="display:flex; align-items:center; gap:6px; font-size:var(--font-size-sm); color:var(--color-gray-600);">
+                        <div class="flex-row gap-6" style="font-size:var(--font-size-sm); color:var(--color-gray-600);">
                           <span style="width:9px; height:9px; border-radius:2px; background:{{ lg.color }}; display:inline-block; flex-shrink:0;"></span>{{ lg.label }}
                         </div>
                       </sc-for>
@@ -445,7 +445,7 @@
                 </sc-if>
 
                 <sc-if value="{{ isDetailPipeline }}" hint-placeholder-val="{{ false }}">
-                  <div style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; padding:18px; margin-bottom:20px;">
+                  <div class="card">
                     <div class="pulse-heading-label" style="margin-bottom:14px;">Sample pipeline log</div>
                     <p style="font-size:var(--font-size-body); color:var(--color-gray-600); line-height:1.5; margin:0 0 14px 0;">Export a sample of raw log rows for offline analysis.</p>
                     <button onClick="{{ selectedPipeline.onDownloadSample }}" style="width:100%; box-sizing:border-box; background:#0A0A0A; color:#FFF; border:none; border-radius:999px; padding:10px; font-size:var(--font-size-sm); font-weight:var(--font-weight-semibold); cursor:pointer;">Download sample (CSV)</button>
@@ -454,11 +454,11 @@
 
                 <sc-if value="{{ isDetailEvent }}" hint-placeholder-val="{{ false }}">
                   <sc-if value="{{ selectedEntry.trendChart }}" hint-placeholder-val="{{ false }}">
-                    <div style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; padding:18px; margin-bottom:20px;">
+                    <div class="card">
                       <div class="pulse-heading-label" style="margin-bottom:22px;">4-week trend</div>
                       <div style="display:flex; align-items:flex-end; gap:22px; height:130px; border-bottom:1px solid #E5E5E5;">
                         <sc-for list="{{ selectedEntry.trendChart.weeks }}" as="wk" hint-placeholder-count="4">
-                          <div style="display:flex; align-items:flex-end; justify-content:center; flex:1; min-width:0; height:100%;">
+                          <div class="flex-row" style="align-items:flex-end; justify-content:center; flex:1; min-width:0; height:100%;">
                             <div style="width:100%; max-width:70px; display:flex; flex-direction:column-reverse; {{ wk.barWrapStyle }} border-radius:4px 4px 0 0; overflow:hidden;">
                               <sc-for list="{{ wk.segments }}" as="seg" hint-placeholder-count="3">
                                 <div style="{{ seg.barStyle }}"></div>
@@ -469,7 +469,7 @@
                       </div>
                       <div style="display:flex; gap:22px; margin-top:8px;">
                         <sc-for list="{{ selectedEntry.trendChart.weeks }}" as="wk" hint-placeholder-count="4">
-                          <div style="display:flex; flex-direction:column; align-items:center; gap:4px; flex:1; min-width:0;">
+                          <div class="flex-col" style="align-items:center; gap:4px; flex:1; min-width:0;">
                             <div style="font-size:var(--font-size-2xs); color:var(--color-gray-600); text-align:center;">{{ wk.dateLabel }}</div>
                             <div style="font-size:var(--font-size-xs); font-weight:var(--font-weight-semibold); text-align:center;">{{ wk.totalLabel }}</div>
                           </div>
@@ -498,16 +498,16 @@
                   <div class="pulse-heading-label" style="margin-bottom:8px;">Ownership</div>
                   <div style="display:flex; gap:8px; flex-wrap:wrap;">
                     <sc-if value="{{ isDetailEvent }}" hint-placeholder-val="{{ false }}">
-                      <span style="font-size:var(--font-size-sm); color:var(--color-black); background:#F6F6F6; border:1px solid #E5E5E5; border-radius:999px; padding:4px 11px;">Implementing team: {{ selectedEntry.implementingTeam }}</span>
-                      <span style="font-size:var(--font-size-sm); color:var(--color-black); background:#F6F6F6; border:1px solid #E5E5E5; border-radius:999px; padding:4px 11px;">Definition owner: {{ selectedEntry.definitionOwner }}</span>
+                      <span class="chip-pill" style="color:var(--color-black); background:#F6F6F6; border:1px solid #E5E5E5;">Implementing team: {{ selectedEntry.implementingTeam }}</span>
+                      <span class="chip-pill" style="color:var(--color-black); background:#F6F6F6; border:1px solid #E5E5E5;">Definition owner: {{ selectedEntry.definitionOwner }}</span>
                     </sc-if>
                     <sc-if value="{{ isDetailPipeline }}" hint-placeholder-val="{{ false }}">
-                      <span style="font-size:var(--font-size-sm); color:var(--color-black); background:#F6F6F6; border:1px solid #E5E5E5; border-radius:999px; padding:4px 11px;">Owning team: {{ selectedPipeline.owningTeam }}</span>
-                      <span style="font-size:var(--font-size-sm); color:var(--color-black); background:#F6F6F6; border:1px solid #E5E5E5; border-radius:999px; padding:4px 11px;">Definition owner: {{ selectedPipeline.definitionOwner }}</span>
+                      <span class="chip-pill" style="color:var(--color-black); background:#F6F6F6; border:1px solid #E5E5E5;">Owning team: {{ selectedPipeline.owningTeam }}</span>
+                      <span class="chip-pill" style="color:var(--color-black); background:#F6F6F6; border:1px solid #E5E5E5;">Definition owner: {{ selectedPipeline.definitionOwner }}</span>
                     </sc-if>
                     <sc-if value="{{ isDetailMetric }}" hint-placeholder-val="{{ false }}">
-                      <span style="font-size:var(--font-size-sm); color:var(--color-black); background:#F6F6F6; border:1px solid #E5E5E5; border-radius:999px; padding:4px 11px;">Implementing team: {{ selectedMetric.implementingTeam }}</span>
-                      <span style="font-size:var(--font-size-sm); color:var(--color-black); background:#F6F6F6; border:1px solid #E5E5E5; border-radius:999px; padding:4px 11px;">Definition owner: {{ selectedMetric.definitionOwner }}</span>
+                      <span class="chip-pill" style="color:var(--color-black); background:#F6F6F6; border:1px solid #E5E5E5;">Implementing team: {{ selectedMetric.implementingTeam }}</span>
+                      <span class="chip-pill" style="color:var(--color-black); background:#F6F6F6; border:1px solid #E5E5E5;">Definition owner: {{ selectedMetric.definitionOwner }}</span>
                     </sc-if>
                   </div>
                 </div>
@@ -517,17 +517,17 @@
                   <div style="display:flex; gap:8px; flex-wrap:wrap;">
                     <sc-if value="{{ isDetailEvent }}" hint-placeholder-val="{{ false }}">
                       <sc-for list="{{ selectedEntry.downstreamConsumers }}" as="dc" hint-placeholder-count="2">
-                        <span style="font-size:var(--font-size-sm); color:var(--color-black); background:#F6F6F6; border:1px solid #E5E5E5; border-radius:999px; padding:4px 11px;">{{ dc }}</span>
+                        <span class="chip-pill" style="color:var(--color-black); background:#F6F6F6; border:1px solid #E5E5E5;">{{ dc }}</span>
                       </sc-for>
                     </sc-if>
                     <sc-if value="{{ isDetailPipeline }}" hint-placeholder-val="{{ false }}">
                       <sc-for list="{{ selectedPipeline.downstreamConsumers }}" as="dc" hint-placeholder-count="2">
-                        <span style="font-size:var(--font-size-sm); color:var(--color-black); background:#F6F6F6; border:1px solid #E5E5E5; border-radius:999px; padding:4px 11px;">{{ dc }}</span>
+                        <span class="chip-pill" style="color:var(--color-black); background:#F6F6F6; border:1px solid #E5E5E5;">{{ dc }}</span>
                       </sc-for>
                     </sc-if>
                     <sc-if value="{{ isDetailMetric }}" hint-placeholder-val="{{ false }}">
                       <sc-for list="{{ selectedMetric.downstreamConsumers }}" as="dc" hint-placeholder-count="2">
-                        <span style="font-size:var(--font-size-sm); color:var(--color-black); background:#F6F6F6; border:1px solid #E5E5E5; border-radius:999px; padding:4px 11px;">{{ dc }}</span>
+                        <span class="chip-pill" style="color:var(--color-black); background:#F6F6F6; border:1px solid #E5E5E5;">{{ dc }}</span>
                       </sc-for>
                     </sc-if>
                   </div>
@@ -540,23 +540,23 @@
                     <div style="display:flex; align-items:baseline; gap:24px; border:1px solid #E5E5E5; border-radius:10px; padding:14px 16px; margin-bottom:16px;">
                       <div>
                         <div style="font-size:var(--font-size-2xs); color:var(--color-gray-600); text-transform:uppercase; letter-spacing:0.04em; margin-bottom:2px;">Freshness</div>
-                        <div style="font-size:var(--font-size-h2); font-weight:var(--font-weight-h2);">{{ selectedPipeline.freshness }}</div>
+                        <div class="title-h2">{{ selectedPipeline.freshness }}</div>
                       </div>
                       <div>
                         <div style="font-size:var(--font-size-2xs); color:var(--color-gray-600); text-transform:uppercase; letter-spacing:0.04em; margin-bottom:2px;">SLA target</div>
-                        <div style="font-size:var(--font-size-h2); font-weight:var(--font-weight-h2);">{{ selectedPipeline.slaTarget }}</div>
+                        <div class="title-h2">{{ selectedPipeline.slaTarget }}</div>
                       </div>
                       <div>
                         <div style="font-size:var(--font-size-2xs); color:var(--color-gray-600); text-transform:uppercase; letter-spacing:0.04em; margin-bottom:2px;">SLA actual</div>
                         <div style="font-size:var(--font-size-h2); font-weight:var(--font-weight-h2); {{ selectedPipeline.slaActualStyle }}">{{ selectedPipeline.slaActual }}</div>
                       </div>
                     </div>
-                    <div style="display:flex; flex-direction:column; gap:8px;">
+                    <div class="flex-col gap-8">
                       <sc-for list="{{ selectedPipeline.history }}" as="h" hint-placeholder-count="5">
                         <div role="button" tabindex="0" onClick="{{ h.onToggle }}" onKeyDown="{{ h.onToggleKeyDown }}" style="border:1px solid #E5E5E5; border-radius:8px; padding:9px 12px; cursor:pointer;">
-                          <div style="display:flex; align-items:center; justify-content:space-between;">
+                          <div class="flex-row-between">
                             <span style="font-size:var(--font-size-sm); color:var(--color-gray-600);">{{ h.date }}</span>
-                            <div style="display:flex; align-items:center; gap:8px;">
+                            <div class="flex-row gap-8">
                               <span style="font-size:var(--font-size-sm); font-weight:var(--font-weight-semibold);">Quality {{ h.quality }}</span>
                               <span style="width:8px; height:8px; border-radius:50%; background:{{ h.dotColor }};"></span>
                             </div>
@@ -565,7 +565,7 @@
                             <div style="margin-top:6px; font-size:var(--font-size-body); color:var(--color-gray-600); line-height:1.5;">{{ h.note }}</div>
                             <div style="margin-top:8px; display:flex; flex-direction:column; gap:6px;">
                               <sc-for list="{{ h.checks }}" as="c" hint-placeholder-count="3">
-                                <div style="display:flex; align-items:center; justify-content:space-between;">
+                                <div class="flex-row-between">
                                   <span style="font-size:var(--font-size-xs); color:var(--color-gray-600);">{{ c.name }}</span>
                                   <span style="{{ c.chipStyle }}">{{ c.status }}</span>
                                 </div>
@@ -581,7 +581,7 @@
                 <sc-if value="{{ isDetailPipeline }}" hint-placeholder-val="{{ false }}">
                   <div style="margin-bottom:32px;">
                     <div class="pulse-heading-label" style="margin-bottom:10px;">Version history</div>
-                    <div style="display:flex; flex-direction:column; gap:12px;">
+                    <div class="flex-col gap-12">
                       <sc-for list="{{ selectedPipeline.changelog }}" as="c" hint-placeholder-count="3">
                         <div style="border-left:2px solid #E5E5E5; padding-left:12px;">
                           <div style="font-size:var(--font-size-sm); font-weight:var(--font-weight-semibold);">{{ c.version }} · <span style="color:var(--color-gray-600); font-weight:var(--font-weight-regular);">{{ c.date }}</span></div>
@@ -595,7 +595,7 @@
                 <sc-if value="{{ isDetailEvent }}" hint-placeholder-val="{{ false }}">
                   <div style="margin-bottom:32px;">
                     <div class="pulse-heading-label" style="margin-bottom:10px;">Version history</div>
-                    <div style="display:flex; flex-direction:column; gap:12px;">
+                    <div class="flex-col gap-12">
                       <sc-for list="{{ selectedEntry.changelog }}" as="c" hint-placeholder-count="3">
                         <div style="border-left:2px solid #E5E5E5; padding-left:12px;">
                           <div style="font-size:var(--font-size-sm); font-weight:var(--font-weight-semibold);">{{ c.version }} · <span style="color:var(--color-gray-600); font-weight:var(--font-weight-regular);">{{ c.date }}</span></div>
@@ -615,11 +615,11 @@
                         <div style="display:flex; align-items:baseline; gap:24px; border:1px solid #E5E5E5; border-radius:10px; padding:14px 16px; margin-bottom:16px;">
                           <div>
                             <div style="font-size:var(--font-size-2xs); color:var(--color-gray-600); text-transform:uppercase; letter-spacing:0.04em; margin-bottom:2px;">Freshness</div>
-                            <div style="font-size:var(--font-size-h2); font-weight:var(--font-weight-h2);">{{ selectedEntry.freshness }}</div>
+                            <div class="title-h2">{{ selectedEntry.freshness }}</div>
                           </div>
                           <div>
                             <div style="font-size:var(--font-size-2xs); color:var(--color-gray-600); text-transform:uppercase; letter-spacing:0.04em; margin-bottom:2px;">SLA target</div>
-                            <div style="font-size:var(--font-size-h2); font-weight:var(--font-weight-h2);">{{ selectedEntry.slaTarget }}</div>
+                            <div class="title-h2">{{ selectedEntry.slaTarget }}</div>
                           </div>
                           <div>
                             <div style="font-size:var(--font-size-2xs); color:var(--color-gray-600); text-transform:uppercase; letter-spacing:0.04em; margin-bottom:2px;">SLA actual</div>
@@ -627,12 +627,12 @@
                           </div>
                         </div>
                       </sc-if>
-                      <div style="display:flex; flex-direction:column; gap:8px;">
+                      <div class="flex-col gap-8">
                         <sc-for list="{{ selectedEntry.pipelineHistory }}" as="h" hint-placeholder-count="5">
                           <div role="button" tabindex="0" onClick="{{ h.onToggle }}" onKeyDown="{{ h.onToggleKeyDown }}" style="border:1px solid #E5E5E5; border-radius:8px; padding:9px 12px; cursor:pointer;">
-                            <div style="display:flex; align-items:center; justify-content:space-between;">
+                            <div class="flex-row-between">
                               <span style="font-size:var(--font-size-sm); color:var(--color-gray-600);">{{ h.date }}</span>
-                              <div style="display:flex; align-items:center; gap:8px;">
+                              <div class="flex-row gap-8">
                                 <span style="font-size:var(--font-size-sm); font-weight:var(--font-weight-semibold);">Quality {{ h.quality }}</span>
                                 <span style="width:8px; height:8px; border-radius:50%; background:{{ h.dotColor }};"></span>
                               </div>
@@ -641,7 +641,7 @@
                               <div style="margin-top:6px; font-size:var(--font-size-body); color:var(--color-gray-600); line-height:1.5;">{{ h.note }}</div>
                               <div style="margin-top:8px; display:flex; flex-direction:column; gap:6px;">
                                 <sc-for list="{{ h.checks }}" as="c" hint-placeholder-count="3">
-                                  <div style="display:flex; align-items:center; justify-content:space-between;">
+                                  <div class="flex-row-between">
                                     <span style="font-size:var(--font-size-xs); color:var(--color-gray-600);">{{ c.name }}</span>
                                     <span style="{{ c.chipStyle }}">{{ c.status }}</span>
                                   </div>
@@ -670,11 +670,11 @@
                         <div style="display:flex; align-items:baseline; gap:24px; border:1px solid #E5E5E5; border-radius:10px; padding:14px 16px; margin-bottom:16px;">
                           <div>
                             <div style="font-size:var(--font-size-2xs); color:var(--color-gray-600); text-transform:uppercase; letter-spacing:0.04em; margin-bottom:2px;">Freshness</div>
-                            <div style="font-size:var(--font-size-h2); font-weight:var(--font-weight-h2);">{{ selectedMetric.freshnessLabel }}</div>
+                            <div class="title-h2">{{ selectedMetric.freshnessLabel }}</div>
                           </div>
                           <div>
                             <div style="font-size:var(--font-size-2xs); color:var(--color-gray-600); text-transform:uppercase; letter-spacing:0.04em; margin-bottom:2px;">SLA target</div>
-                            <div style="font-size:var(--font-size-h2); font-weight:var(--font-weight-h2);">{{ selectedMetric.slaTarget }}</div>
+                            <div class="title-h2">{{ selectedMetric.slaTarget }}</div>
                           </div>
                           <div>
                             <div style="font-size:var(--font-size-2xs); color:var(--color-gray-600); text-transform:uppercase; letter-spacing:0.04em; margin-bottom:2px;">SLA actual</div>
@@ -682,12 +682,12 @@
                           </div>
                         </div>
                       </sc-if>
-                      <div style="display:flex; flex-direction:column; gap:8px;">
+                      <div class="flex-col gap-8">
                         <sc-for list="{{ selectedMetric.pipelineHistory }}" as="h" hint-placeholder-count="5">
                           <div role="button" tabindex="0" onClick="{{ h.onToggle }}" onKeyDown="{{ h.onToggleKeyDown }}" style="border:1px solid #E5E5E5; border-radius:8px; padding:9px 12px; cursor:pointer;">
-                            <div style="display:flex; align-items:center; justify-content:space-between;">
+                            <div class="flex-row-between">
                               <span style="font-size:var(--font-size-sm); color:var(--color-gray-600);">{{ h.date }}</span>
-                              <div style="display:flex; align-items:center; gap:8px;">
+                              <div class="flex-row gap-8">
                                 <span style="font-size:var(--font-size-sm); font-weight:var(--font-weight-semibold);">Quality {{ h.quality }}</span>
                                 <span style="width:8px; height:8px; border-radius:50%; background:{{ h.dotColor }};"></span>
                               </div>
@@ -696,7 +696,7 @@
                               <div style="margin-top:6px; font-size:var(--font-size-body); color:var(--color-gray-600); line-height:1.5;">{{ h.note }}</div>
                               <div style="margin-top:8px; display:flex; flex-direction:column; gap:6px;">
                                 <sc-for list="{{ h.checks }}" as="c" hint-placeholder-count="3">
-                                  <div style="display:flex; align-items:center; justify-content:space-between;">
+                                  <div class="flex-row-between">
                                     <span style="font-size:var(--font-size-xs); color:var(--color-gray-600);">{{ c.name }}</span>
                                     <span style="{{ c.chipStyle }}">{{ c.status }}</span>
                                   </div>
@@ -713,7 +713,7 @@
                 <sc-if value="{{ isDetailMetric }}" hint-placeholder-val="{{ false }}">
                   <div style="margin-bottom:32px;">
                     <div class="pulse-heading-label" style="margin-bottom:10px;">Version history</div>
-                    <div style="display:flex; flex-direction:column; gap:12px;">
+                    <div class="flex-col gap-12">
                       <sc-for list="{{ selectedMetric.changelog }}" as="c" hint-placeholder-count="3">
                         <div style="border-left:2px solid #E5E5E5; padding-left:12px;">
                           <div style="font-size:var(--font-size-sm); font-weight:var(--font-weight-semibold);">{{ c.version }} · <span style="color:var(--color-gray-600); font-weight:var(--font-weight-regular);">{{ c.date }}</span></div>
@@ -726,7 +726,7 @@
 
                 <sc-if value="{{ isDetailEvent }}" hint-placeholder-val="{{ false }}">
                   <sc-if value="{{ selectedEntry.hasRelationships }}" hint-placeholder-val="{{ false }}">
-                    <div style="margin-bottom:32px; display:flex; flex-direction:column; gap:16px;">
+                    <div class="flex-col" style="margin-bottom:32px; gap:16px;">
                       <sc-if value="{{ selectedEntry.pipelineName }}" hint-placeholder-val="{{ false }}">
                         <div>
                           <div class="pulse-heading-label" style="margin-bottom:8px;">Linked pipeline</div>
@@ -762,7 +762,7 @@
 
                 <sc-if value="{{ isDetailMetric }}" hint-placeholder-val="{{ false }}">
                   <sc-if value="{{ selectedMetric.hasRelationships }}" hint-placeholder-val="{{ false }}">
-                    <div style="margin-bottom:32px; display:flex; flex-direction:column; gap:16px;">
+                    <div class="flex-col" style="margin-bottom:32px; gap:16px;">
                       <sc-if value="{{ selectedMetric.sourceEventName }}" hint-placeholder-val="{{ false }}">
                         <div>
                           <div class="pulse-heading-label" style="margin-bottom:8px;">Linked event</div>
