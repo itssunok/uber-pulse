@@ -309,6 +309,9 @@
                   <p style="font-size:14px; line-height:1.6; color:#0A0A0A; margin:0 0 24px 0;">{{ selectedEntry.definition }}</p>
                 </sc-if>
                 <sc-if value="{{ isDetailPipeline }}" hint-placeholder-val="{{ false }}">
+                  <sc-if value="{{ selectedPipeline.hasWarning }}" hint-placeholder-val="{{ false }}">
+                    <div style="background:#FBE9E6; border:1px solid #F0C4BC; color:#8C332A; font-size:12px; border-radius:8px; padding:10px 12px; margin-bottom:16px;">⚠ {{ selectedPipeline.warningText }}</div>
+                  </sc-if>
                   <p style="font-size:14px; line-height:1.6; color:#0A0A0A; margin:0 0 24px 0;">{{ selectedPipeline.description }}</p>
                 </sc-if>
                 <sc-if value="{{ isDetailMetric }}" hint-placeholder-val="{{ false }}">
@@ -2781,6 +2784,7 @@ class Component extends DCLogic {
       ...rawSelectedPipeline,
       statusLabel: statusLabel(rawSelectedPipeline.health),
       statusChipStyle: statusChipStyle(rawSelectedPipeline.health),
+      hasWarning: !!rawSelectedPipeline.warningText,
       lobChipStyle: lobChipStyle(rawSelectedPipeline.lob),
       slaActualStyle: 'font-weight:600;color:'+(rawSelectedPipeline.health==='green' ? '#067A3E' : rawSelectedPipeline.health==='amber' ? '#96530A' : '#A93327')+';',
       weeklyVolumeLabel: pipelineVolume(rawSelectedPipeline.id).toFixed(1)+'M',
