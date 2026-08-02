@@ -2282,7 +2282,7 @@ class Component extends DCLogic {
 
   goHome = () => this.setState({appScreen:'home', selectedEntryId:null, selectedPipelineId:null, selectedMetricId:null, selectedDetailRef:null, detailReturnScreen:null, mobileMoreOpen:false});
   goCatalog = () => this.setState({appScreen:'catalog', selectedEntryId:null, selectedPipelineId:null, selectedDetailRef:null, detailReturnScreen:null, catalogTab:'data', catalogPage:1, pipelineLogPage:1, mobileMoreOpen:false});
-  goAssistant = () => this.setState({appScreen:'assistant', selectedEntryId:null, selectedPipelineId:null, selectedDetailRef:null, detailReturnScreen:null, activeChatId:null, attachMenuOpen:false, chatSearchQuery:'', askPulseSheetOpen:false, mobileMoreOpen:false});
+  goAssistant = () => this.setState({appScreen:'assistant', selectedEntryId:null, selectedPipelineId:null, selectedDetailRef:null, detailReturnScreen:null, attachMenuOpen:false, chatSearchQuery:'', askPulseSheetOpen:false, mobileMoreOpen:false});
   openAskPulseSheet = () => this.setState({askPulseSheetOpen:true, attachMenuOpen:false, mobileMoreOpen:false});
   closeAskPulseSheet = () => this.setState({askPulseSheetOpen:false, attachMenuOpen:false});
   expandAskPulseSheet = () => this.setState({appScreen:'assistant', selectedEntryId:null, selectedPipelineId:null, selectedDetailRef:null, detailReturnScreen:null, askPulseSheetOpen:false, attachMenuOpen:false});
