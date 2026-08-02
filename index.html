@@ -393,6 +393,20 @@
                   </div>
                 </sc-if>
 
+                <sc-if value="{{ isDetailPipeline }}" hint-placeholder-val="{{ false }}">
+                  <div style="margin-bottom:32px;">
+                    <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#6B6B6B; margin-bottom:10px;">Version history</div>
+                    <div style="display:flex; flex-direction:column; gap:12px;">
+                      <sc-for list="{{ selectedPipeline.changelog }}" as="c" hint-placeholder-count="3">
+                        <div style="border-left:2px solid #E5E5E5; padding-left:12px;">
+                          <div style="font-size:12px; font-weight:600;">{{ c.version }} · <span style="color:#9B9B9B; font-weight:400;">{{ c.date }}</span></div>
+                          <div style="font-size:12px; color:#6B6B6B; margin-top:2px;">{{ c.change }}</div>
+                        </div>
+                      </sc-for>
+                    </div>
+                  </div>
+                </sc-if>
+
                 <sc-if value="{{ isDetailEvent }}" hint-placeholder-val="{{ false }}">
                   <div style="margin-bottom:32px;">
                     <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#6B6B6B; margin-bottom:10px;">Version history</div>
@@ -471,6 +485,20 @@
                       </div>
                     </div>
                   </sc-if>
+                </sc-if>
+
+                <sc-if value="{{ isDetailMetric }}" hint-placeholder-val="{{ false }}">
+                  <div style="margin-bottom:32px;">
+                    <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#6B6B6B; margin-bottom:10px;">Version history</div>
+                    <div style="display:flex; flex-direction:column; gap:12px;">
+                      <sc-for list="{{ selectedMetric.changelog }}" as="c" hint-placeholder-count="3">
+                        <div style="border-left:2px solid #E5E5E5; padding-left:12px;">
+                          <div style="font-size:12px; font-weight:600;">{{ c.version }} · <span style="color:#9B9B9B; font-weight:400;">{{ c.date }}</span></div>
+                          <div style="font-size:12px; color:#6B6B6B; margin-top:2px;">{{ c.change }}</div>
+                        </div>
+                      </sc-for>
+                    </div>
+                  </div>
                 </sc-if>
 
                 <sc-if value="{{ isDetailEvent }}" hint-placeholder-val="{{ false }}">
