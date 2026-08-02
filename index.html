@@ -792,7 +792,7 @@
           </sc-if>
 
           <sc-if value="{{ isCatalog }}" hint-placeholder-val="{{ false }}">
-            <h1 style="font-size:var(--font-size-h1); font-weight:var(--font-weight-h1); margin:0 0 4px 0; letter-spacing:-0.5px;">Data & Pipeline Catalog</h1>
+            <h1 class="title-h1">Data & Pipeline Catalog</h1>
             <p style="font-size:var(--font-size-base); color:var(--color-gray-600); margin:0 0 16px 0;">The authoritative record of every metric, event, and pipeline on the platform.</p>
 
             <div style="display:flex; border-bottom:1px solid #E5E5E5; margin-bottom:20px;">
@@ -804,15 +804,15 @@
               <p style="font-size:var(--font-size-sm); color:var(--color-gray-600); margin:-6px 0 14px 0;">Definitions, ownership, and versioning for every metric and event on the platform.</p>
 
               <div style="display:flex; gap:10px; margin-bottom:16px; flex-wrap:wrap;">
-                <input value="{{ catalogQuery }}" onChange="{{ onCatalogQueryChange }}" placeholder="Search events, metrics, definitions…" style="flex:1; min-width:220px; box-sizing:border-box; background:#FFFFFF; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:var(--font-size-sm);" />
-                <select value="{{ catalogLob }}" onChange="{{ onCatalogLobChange }}" style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:var(--font-size-sm);">
+                <input value="{{ catalogQuery }}" onChange="{{ onCatalogQueryChange }}" placeholder="Search events, metrics, definitions…" class="form-input" style="flex:1; min-width:220px; box-sizing:border-box;" />
+                <select value="{{ catalogLob }}" onChange="{{ onCatalogLobChange }}" class="form-input">
                   <option value="All">All LOBs</option>
                   <option value="Ridesharing">Ridesharing</option>
                   <option value="Eats">Eats</option>
                   <option value="B2B">B2B</option>
                   <option value="Platform">Platform</option>
                 </select>
-                <select value="{{ catalogStatus }}" onChange="{{ onCatalogStatusChange }}" style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:var(--font-size-sm);">
+                <select value="{{ catalogStatus }}" onChange="{{ onCatalogStatusChange }}" class="form-input">
                   <option value="All">All statuses</option>
                   <option value="active">Active</option>
                   <option value="under review">Under review</option>
@@ -834,7 +834,7 @@
                 <sc-for list="{{ pagedCatalog }}" as="e" hint-placeholder-count="30">
                   <div class="pulse-pipeline-row pulse-row-desktop" role="button" tabindex="0" onClick="{{ e.onSelect }}" onKeyDown="{{ e.onKeyDown }}" style="display:grid; grid-template-columns:0.3fr 2fr 0.9fr 1fr 1fr 1.6fr 1fr; gap:10px; padding:14px 18px; font-size:var(--font-size-sm); border-bottom:1px solid #F0F0F0; align-items:center; cursor:pointer;">
                     <div class="pulse-row-num" style="color:var(--color-gray-600);">{{ e.rowNumber }}</div>
-                    <div class="pulse-row-name" style="display:flex; align-items:center; gap:8px;">
+                    <div class="pulse-row-name flex-row gap-8">
                       <span style="font-weight:var(--font-weight-semibold); font-family:ui-monospace,monospace;">{{ e.name }}</span>
                       <sc-if value="{{ e.canonical }}" hint-placeholder-val="{{ false }}">
                         <span title="The agreed, official definition for this concept" style="display:inline-flex; align-items:center; gap:3px; font-size:var(--font-size-xs); font-weight:var(--font-weight-bold); color:var(--color-status-green-fg); background:var(--color-status-green-bg); border-radius:999px; padding:2px 8px; flex-shrink:0;">✓ Canonical</span>
@@ -865,7 +865,7 @@
                 </sc-if>
               </div>
               <sc-if value="{{ hasCatalogResults }}" hint-placeholder-val="{{ true }}">
-                <div style="display:flex; align-items:center; justify-content:flex-end; gap:12px; margin-top:14px;">
+                <div class="flex-row gap-12" style="justify-content:flex-end; margin-top:14px;">
                   <span style="font-size:var(--font-size-sm); color:var(--color-gray-600);">{{ catalogPageLabel }}</span>
                   <button onClick="{{ onCatalogPrevPage }}" disabled="{{ catalogPrevDisabled }}" style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:999px; padding:7px 16px; font-size:var(--font-size-sm); font-weight:var(--font-weight-semibold); cursor:pointer; opacity:{{ catalogPrevDisabled ? 0.4 : 1 }};">Previous</button>
                   <button onClick="{{ onCatalogNextPage }}" disabled="{{ catalogNextDisabled }}" style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:999px; padding:7px 16px; font-size:var(--font-size-sm); font-weight:var(--font-weight-semibold); cursor:pointer; opacity:{{ catalogNextDisabled ? 0.4 : 1 }};">Next</button>
@@ -877,15 +877,15 @@
               <p style="font-size:var(--font-size-sm); color:var(--color-gray-600); margin:-6px 0 14px 0;">Current status across every core web data pipeline, based on daily, weekly, and monthly validation checks.</p>
 
               <div style="display:flex; gap:10px; margin-bottom:16px; flex-wrap:wrap;">
-                <input value="{{ pipelineQuery }}" onChange="{{ onPipelineQueryChange }}" placeholder="Search pipelines…" style="flex:1; min-width:220px; box-sizing:border-box; background:#FFFFFF; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:var(--font-size-sm);" />
-                <select value="{{ pipelineLob }}" onChange="{{ onPipelineLobChange }}" style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:var(--font-size-sm);">
+                <input value="{{ pipelineQuery }}" onChange="{{ onPipelineQueryChange }}" placeholder="Search pipelines…" class="form-input" style="flex:1; min-width:220px; box-sizing:border-box;" />
+                <select value="{{ pipelineLob }}" onChange="{{ onPipelineLobChange }}" class="form-input">
                   <option value="All">All LOBs</option>
                   <option value="Ridesharing">Ridesharing</option>
                   <option value="Eats">Eats</option>
                   <option value="B2B">B2B</option>
                   <option value="Platform">Platform</option>
                 </select>
-                <select value="{{ pipelineHealth }}" onChange="{{ onPipelineHealthChange }}" style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:var(--font-size-sm);">
+                <select value="{{ pipelineHealth }}" onChange="{{ onPipelineHealthChange }}" class="form-input">
                   <option value="All">All statuses</option>
                   <option value="green">Healthy</option>
                   <option value="amber">Degraded</option>
@@ -916,7 +916,7 @@
                     <div class="pulse-row-field" style="color:var(--color-gray-600);"><span class="pulse-mobile-label">Freshness</span>{{ p.freshness }}</div>
                     <div class="pulse-row-field">
                       <span class="pulse-mobile-label">Quality</span>
-                      <div style="display:flex; align-items:center; gap:8px;">
+                      <div class="flex-row gap-8">
                         <span style="font-weight:var(--font-weight-semibold);">{{ p.quality }}</span>
                         <div style="width:44px; height:5px; background:#EFEFEF; border-radius:3px; overflow:hidden;">
                           <div style="{{ p.qualityBarStyle }}"></div>
@@ -935,7 +935,7 @@
                     <div class="pulse-row-mobile-field"><span class="pulse-row-mobile-field-label">Freshness</span><span class="pulse-row-mobile-field-value">{{ p.freshness }}</span></div>
                     <div class="pulse-row-mobile-field">
                       <span class="pulse-row-mobile-field-label">Quality</span>
-                      <span class="pulse-row-mobile-field-value" style="display:flex; align-items:center; gap:8px;">
+                      <span class="pulse-row-mobile-field-value flex-row gap-8">
                         {{ p.quality }}
                         <span style="width:44px; height:5px; background:#EFEFEF; border-radius:3px; overflow:hidden; display:inline-block;"><span style="{{ p.qualityBarStyle }}display:block;"></span></span>
                       </span>
@@ -947,7 +947,7 @@
                 </sc-if>
               </div>
               <sc-if value="{{ hasPipelineResults }}" hint-placeholder-val="{{ true }}">
-                <div style="display:flex; align-items:center; justify-content:flex-end; gap:12px; margin-top:14px;">
+                <div class="flex-row gap-12" style="justify-content:flex-end; margin-top:14px;">
                   <span style="font-size:var(--font-size-sm); color:var(--color-gray-600);">{{ pipelineLogPageLabel }}</span>
                   <button onClick="{{ onPipelineLogPrevPage }}" disabled="{{ pipelineLogPrevDisabled }}" style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:999px; padding:7px 16px; font-size:var(--font-size-sm); font-weight:var(--font-weight-semibold); cursor:pointer; opacity:{{ pipelineLogPrevDisabled ? 0.4 : 1 }};">Previous</button>
                   <button onClick="{{ onPipelineLogNextPage }}" disabled="{{ pipelineLogNextDisabled }}" style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:999px; padding:7px 16px; font-size:var(--font-size-sm); font-weight:var(--font-weight-semibold); cursor:pointer; opacity:{{ pipelineLogNextDisabled ? 0.4 : 1 }};">Next</button>
