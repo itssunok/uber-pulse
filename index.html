@@ -1140,7 +1140,7 @@
             <div style="display:flex; flex-direction:column; flex:1; min-height:0; width:100%;">
               <div style="display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:20px; flex-shrink:0; flex-wrap:wrap; gap:10px;">
                 <div>
-                  <h1 style="font-size:var(--font-size-h1); font-weight:var(--font-weight-h1); margin:0 0 4px 0; letter-spacing:-0.5px;">Roadmap</h1>
+                  <h1 class="title-h1">Roadmap</h1>
                   <p style="font-size:var(--font-size-base); color:var(--color-gray-600); margin:0;">What the data team is working on, and what's coming next.</p>
                 </div>
                 <a href="#" style="font-size:var(--font-size-sm); font-weight:var(--font-weight-semibold); background:#FFFFFF; border:1px solid #E5E5E5; border-radius:999px; padding:8px 16px; text-decoration:none;">View full roadmap in Jira ↗</a>
@@ -1149,7 +1149,7 @@
               <div id="pulse-roadmap-track" class="pulse-roadmap-grid" onScroll="{{ onRoadmapScroll }}" style="display:grid; grid-template-columns:repeat(4,1fr); grid-template-rows:1fr; gap:14px; width:100%; flex:1; min-height:0;">
                 <sc-for list="{{ roadmapColumns }}" as="col" hint-placeholder-count="4">
                   <div class="pulse-roadmap-col" style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; padding:16px; box-sizing:border-box; height:100%; min-width:0; display:flex; flex-direction:column; overflow:hidden;">
-                    <div class="pulse-heading-label" style="margin-bottom:10px; flex-shrink:0;">{{ col.title }} · {{ col.count }}</div>
+                    <div class="pulse-heading-label flex-shrink-0" style="margin-bottom:10px;">{{ col.title }} · {{ col.count }}</div>
                     <div class="pulse-roadmap-col-items" style="display:flex; flex-direction:column; gap:10px; overflow-y:auto; overflow-x:hidden; flex:1; min-height:0; padding-right:4px;">
                       <sc-for list="{{ col.items }}" as="it" hint-placeholder-count="2">
                         <div role="button" tabindex="0" style="{{ it.cardStyle }}" onClick="{{ it.onSelect }}" onKeyDown="{{ it.onKeyDown }}">
@@ -1157,7 +1157,7 @@
                             <span style="font-weight:var(--font-weight-semibold); font-size:var(--font-size-sm); font-family:ui-monospace,monospace; word-break:break-word; overflow-wrap:anywhere; min-width:0;">{{ it.name }}</span>
                             <sc-if value="{{ it.isNew }}" hint-placeholder-val="{{ false }}"><span style="background:#DFF3E6; color:var(--color-status-green-fg); font-size:var(--font-size-2xs); font-weight:var(--font-weight-bold); padding:2px 6px; border-radius:5px; margin-left:6px; flex-shrink:0;">NEW</span></sc-if>
                           </div>
-                          <div style="display:flex; align-items:center; gap:6px; margin-top:8px; min-width:0; flex-wrap:wrap;">
+                          <div class="flex-row gap-6" style="margin-top:8px; min-width:0; flex-wrap:wrap;">
                             <span style="{{ it.typeChipStyle }} flex-shrink:0;">{{ it.typeLabel }}</span>
                             <span style="{{ it.lobChipStyle }} flex-shrink:0;">{{ it.lob }}</span>
                             <span style="font-size:var(--font-size-sm); color:var(--color-gray-600); min-width:0; overflow-wrap:anywhere;">{{ it.team }}</span>
