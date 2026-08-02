@@ -1141,7 +1141,7 @@
                             <div class="pulse-heading-label">Recent chats</div>
                           </div>
                           <input value="{{ chatSearchQuery }}" onChange="{{ onChatSearchChange }}" placeholder="Search chats…" class="form-input flex-shrink-0" style="width:100%; box-sizing:border-box; margin-bottom:12px;" />
-                          <div style="flex:1; min-height:150px; overflow-y:auto; margin-bottom:20px;">
+                          <div style="flex-shrink:0; margin-bottom:12px;">
                             <sc-if value="{{ hasChatSearchResults }}" hint-placeholder-val="{{ true }}">
               <div class="flex-col gap-8">
                                 <sc-for list="{{ chatSessionsView }}" as="cs" hint-placeholder-count="3">
@@ -1154,6 +1154,13 @@
                                   </div>
                                 </sc-for>
                               </div>
+                              <sc-if value="{{ hasChatListMultiplePages }}" hint-placeholder-val="{{ false }}">
+                                <div class="flex-row gap-12" style="justify-content:flex-end; margin-top:12px;">
+                                  <span style="font-size:var(--font-size-sm); color:var(--color-gray-600);">{{ chatListPageLabel }}</span>
+                                  <button onClick="{{ onChatListPrevPage }}" disabled="{{ chatListPrevDisabled }}" style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:999px; padding:7px 16px; font-size:var(--font-size-sm); font-weight:var(--font-weight-semibold); cursor:pointer; opacity:{{ chatListPrevDisabled ? 0.4 : 1 }};">Previous</button>
+                                  <button onClick="{{ onChatListNextPage }}" disabled="{{ chatListNextDisabled }}" style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:999px; padding:7px 16px; font-size:var(--font-size-sm); font-weight:var(--font-weight-semibold); cursor:pointer; opacity:{{ chatListNextDisabled ? 0.4 : 1 }};">Next</button>
+                                </div>
+                              </sc-if>
                             </sc-if>
                             <sc-if value="{{ noChatSearchResults }}" hint-placeholder-val="{{ false }}">
                               <div style="font-size:var(--font-size-sm); color:var(--color-gray-600); padding:12px 2px;">No chats match "{{ chatSearchQuery }}".</div>
@@ -2441,7 +2448,7 @@ class Component extends DCLogic {
     askPulseSheetOpen: false,
     mobileMoreOpen: false,
     roadmapActiveCol: 0,
-    chatInput:'', attachedFileName:null, attachMenuOpen:false, chatSearchQuery:'',
+    chatInput:'', attachedFileName:null, attachMenuOpen:false, chatSearchQuery:'', chatListPage:1,
     contributeStep:1, contributeErrors:{},
     contributeForm:{name:'',lob:'Ridesharing',owningTeam:OWNING_TEAMS[0],description:'',repoLink:'',jiraLink:'',expectedVolume:'',payloadRows:[{field:'',value:''}]},
     reportStep:1, reportDataPointQuery:'', reportAttachMenuOpen:false, reportErrors:{},
@@ -2479,7 +2486,7 @@ class Component extends DCLogic {
 
   goHome = () => { trackScreenView('home'); this.setState({appScreen:'home', selectedEntryId:null, selectedPipelineId:null, selectedMetricId:null, selectedDetailRef:null, detailReturnScreen:null, mobileMoreOpen:false}); };
   goCatalog = () => { trackScreenView('catalog'); this.setState({appScreen:'catalog', selectedEntryId:null, selectedPipelineId:null, selectedDetailRef:null, detailReturnScreen:null, catalogTab:'data', catalogPage:1, pipelineLogPage:1, mobileMoreOpen:false}); };
-  goAssistant = () => { trackScreenView('assistant'); this.setState({appScreen:'assistant', selectedEntryId:null, selectedPipelineId:null, selectedDetailRef:null, detailReturnScreen:null, attachMenuOpen:false, chatSearchQuery:'', askPulseSheetOpen:false, mobileMoreOpen:false}); };
+  goAssistant = () => { trackScreenView('assistant'); this.setState({appScreen:'assistant', selectedEntryId:null, selectedPipelineId:null, selectedDetailRef:null, detailReturnScreen:null, attachMenuOpen:false, chatSearchQuery:'', chatListPage:1, askPulseSheetOpen:false, mobileMoreOpen:false}); };
   openAskPulseSheet = () => this.setState({askPulseSheetOpen:true, attachMenuOpen:false, mobileMoreOpen:false});
   closeAskPulseSheet = () => this.setState({askPulseSheetOpen:false, attachMenuOpen:false});
   expandAskPulseSheet = () => this.setState({appScreen:'assistant', selectedEntryId:null, selectedPipelineId:null, selectedDetailRef:null, detailReturnScreen:null, askPulseSheetOpen:false, attachMenuOpen:false});
@@ -2661,7 +2668,8 @@ class Component extends DCLogic {
 
   onChatInputChange = (e) => this.setState({chatInput:e.target.value});
   onChatKeyDown = (e) => { if(e.key === 'Enter'){ this.sendChat(); } };
-  onChatSearchChange = (e) => this.setState({chatSearchQuery:e.target.value});
+  onChatSearchChange = (e) => this.setState({chatSearchQuery:e.target.value, chatListPage:1});
+  setChatListPage = (page) => this.setState({chatListPage:page});
 
   getAssistantResponse = (text) => {
     const lower = text.toLowerCase();
@@ -3153,10 +3161,21 @@ class Component extends DCLogic {
       };
     });
     const chatSearchQuery = s.chatSearchQuery.trim().toLowerCase();
-    const chatSessionsView = allChatSessionsView.filter(sess => chatSearchQuery === '' || sess.searchBlob.includes(chatSearchQuery));
+    const filteredChatSessionsView = allChatSessionsView.filter(sess => chatSearchQuery === '' || sess.searchBlob.includes(chatSearchQuery));
     const hasChatSessions = s.chatSessions.length > 0;
-    const hasChatSearchResults = chatSessionsView.length > 0;
+    const hasChatSearchResults = filteredChatSessionsView.length > 0;
     const noChatSearchResults = chatSearchQuery !== '' && !hasChatSearchResults;
+    const CHAT_PAGE_SIZE = 6;
+    const chatListTotalPages = Math.max(1, Math.ceil(filteredChatSessionsView.length / CHAT_PAGE_SIZE));
+    const chatListPageClamped = Math.min(s.chatListPage, chatListTotalPages);
+    const chatListRowOffset = (chatListPageClamped-1)*CHAT_PAGE_SIZE;
+    const chatSessionsView = filteredChatSessionsView.slice(chatListRowOffset, chatListRowOffset+CHAT_PAGE_SIZE);
+    const chatListPageLabel = 'Page '+chatListPageClamped+' of '+chatListTotalPages;
+    const onChatListPrevPage = () => this.setChatListPage(Math.max(1, chatListPageClamped-1));
+    const onChatListNextPage = () => this.setChatListPage(Math.min(chatListTotalPages, chatListPageClamped+1));
+    const chatListPrevDisabled = chatListPageClamped<=1;
+    const chatListNextDisabled = chatListPageClamped>=chatListTotalPages;
+    const hasChatListMultiplePages = chatListTotalPages > 1;
     const hasAttachedFile = !!s.attachedFileName;
 
     const suggestionItems = [
@@ -3179,6 +3198,7 @@ class Component extends DCLogic {
       isChatLanding, isChatActive, activeChatSession,
       chatMessages, chatInput: s.chatInput, onChatInputChange: this.onChatInputChange, onChatKeyDown: this.onChatKeyDown, sendChat: this.sendChat,
       chatSessionsView, hasChatSessions, hasNoChatSessions: !hasChatSessions, hasChatSearchResults, noChatSearchResults,
+      chatListPageLabel, onChatListPrevPage, onChatListNextPage, chatListPrevDisabled, chatListNextDisabled, hasChatListMultiplePages,
       chatSearchQuery: s.chatSearchQuery, onChatSearchChange: this.onChatSearchChange,
       startNewChat: this.startNewChat, openChatSession: this.openChatSession,
       hasAttachedFile, attachedFileName: s.attachedFileName, clearAttachedFile: this.clearAttachedFile,
