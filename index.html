@@ -52,11 +52,15 @@
       .pulse-mobile-sheet-overlay {
         display:flex; position:fixed; inset:0; background:rgba(10,10,10,0.4); z-index:40;
         align-items:flex-end; justify-content:center;
+        animation:pulse-overlay-fade-in var(--transition-fast);
       }
       .pulse-mobile-sheet {
         background:var(--color-white); width:100%; max-width:600px; border-radius:16px 16px 0 0;
         padding:8px 12px 24px 12px; box-sizing:border-box; max-height:70vh; overflow-y:auto;
+        animation:pulse-sheet-slide-up var(--transition-base);
       }
+      @keyframes pulse-overlay-fade-in { from { opacity:0; } to { opacity:1; } }
+      @keyframes pulse-sheet-slide-up { from { transform:translateY(24px); opacity:0; } to { transform:translateY(0); opacity:1; } }
       .pulse-mobile-sheet button {
         min-height:44px;
       }

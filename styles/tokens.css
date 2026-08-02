@@ -114,6 +114,11 @@
 
   /* Default hairline border color — previously used raw (#E5E5E5) on ~40+ cards/inputs/buttons */
   --color-border-default: var(--color-gray-200);
+
+  /* Motion — kept short and consistent; used for hover/focus/press feedback
+     and the small number of enter animations (side sheets, sheet overlays). */
+  --transition-fast: 140ms ease;
+  --transition-base: 200ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* ---------------------------------------------------------------------
@@ -141,6 +146,10 @@
   border-radius: var(--radius-page);
   padding: 18px;
   margin-bottom: 20px;
+  transition: border-color var(--transition-fast);
+}
+.card:hover {
+  border-color: var(--color-gray-300);
 }
 
 /* ---------------------------------------------------------------------
@@ -177,6 +186,11 @@
   border-radius: var(--radius-inline);
   padding: 10px 12px;
   font-size: var(--font-size-sm);
+  transition: border-color var(--transition-fast);
+}
+.form-input:focus {
+  border-color: var(--color-black);
+  outline: none;
 }
 
 /* ---------------------------------------------------------------------
@@ -209,6 +223,13 @@
   border: 1px solid var(--color-border-default);
   border-radius: var(--radius-pill);
   cursor: pointer;
+  transition: border-color var(--transition-fast), transform var(--transition-fast);
+}
+.btn-icon-round:hover {
+  border-color: var(--color-gray-300);
+}
+.btn-icon-round:active {
+  transform: scale(0.93);
 }
 
 /* ---------------------------------------------------------------------
@@ -221,4 +242,38 @@
   padding: 12px 8px;
   font-weight: var(--font-weight-semibold);
   cursor: pointer;
+}
+
+/* ---------------------------------------------------------------------
+ * Motion — global interactive feedback and panel enter animation.
+ * Deliberately restrained: opacity/border/transform only, no drop
+ * shadows, matching the hairline-border visual identity.
+ * ------------------------------------------------------------------- */
+button {
+  transition: transform var(--transition-fast), opacity var(--transition-fast);
+}
+button:not(:disabled):hover {
+  opacity: 0.82;
+}
+button:not(:disabled):active {
+  transform: scale(0.97);
+  opacity: 1;
+}
+button:disabled {
+  cursor: not-allowed;
+}
+
+[style*="cursor:pointer"] {
+  transition: opacity var(--transition-fast);
+}
+[style*="cursor:pointer"]:hover {
+  opacity: 0.85;
+}
+
+@keyframes panel-slide-in {
+  from { transform: translateX(16px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+.pulse-side-sheet {
+  animation: panel-slide-in var(--transition-base);
 }
