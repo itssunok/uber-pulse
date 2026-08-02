@@ -62,13 +62,49 @@
   --space-6: 40px;
   --space-7: 48px;
 
-  /* Type scale (odd half-pixel sizes collapsed to round values) */
-  --font-size-2xs: 10px;   /* was 10px */
+  /* Body-text type scale (near-duplicate sizes collapsed to one value per tier —
+     applied app-wide Aug 2026, see docs/backlog.md for the pre-collapse audit). */
+  --font-size-2xs: 10px;   /* was 10px / 10.5px */
   --font-size-xs: 11px;    /* was 11px / 11.5px */
-  --font-size-sm: 12px;    /* was 12px / 12.5px */
-  --font-size-base: 14px;  /* was 13.5px / 14px */
+  --font-size-sm: 12px;    /* was 12px / 12.5px / 13px */
+  --font-size-base: 14px;
   --font-size-md: 15px;
   --font-size-lg: 19px;
+
+  /* Display type scale — large one-off numerals (KPI values, hero stats).
+     Not collapsed like the body scale above since each size is a deliberate,
+     distinct step, not drift. */
+  --font-size-16: 16px;
+  --font-size-18: 18px;
+  --font-size-22: 22px;
+  --font-size-24: 24px;
+  --font-size-28: 28px;
+  --font-size-30: 30px;
+  --font-size-32: 32px;
+
+  /* Font weight scale */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-heavy: 800;
+
+  /* Heading/body typographic roles — the actual named hierarchy (h1/h2/h3/body).
+     Aliased onto the raw scale above so there's one place that defines "what size
+     is a page title" vs. "what size is 24px" — use these for real heading/paragraph
+     elements; keep using the raw --font-size-* scale for non-heading text (chips,
+     buttons, table cells, badges) where a heading role doesn't apply. */
+  --font-size-h1: var(--font-size-24);       /* page/detail-page title */
+  --font-weight-h1: var(--font-weight-heavy);
+  --font-size-h2: var(--font-size-16);       /* card/panel/side-sheet section title */
+  --font-weight-h2: var(--font-weight-bold);
+  --font-size-h3: var(--font-size-md);       /* subsection / wizard-step title */
+  --font-weight-h3: var(--font-weight-bold);
+  --font-size-body-lead: var(--font-size-base); /* primary definition/description paragraph */
+  --font-size-body: var(--font-size-sm);        /* standard body/paragraph text */
+  --font-weight-body: var(--font-weight-regular);
+  --font-size-logo: var(--font-size-lg);        /* "Pulse for Uber" wordmark, login + app topbar */
+  --font-weight-logo: var(--font-weight-bold);
 
   /* Border radius — 12px page-level, 8px inline (backlog: standardize component radius) */
   --radius-page: 12px;
