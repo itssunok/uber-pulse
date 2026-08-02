@@ -36,11 +36,12 @@ Four personas, each locked as business-critical against one test: *does this per
 ## What's in the product
 
 - **Home** — the first question any consumer has: *is the data healthy today?* Headline KPI cards with trendlines, a pipeline monitoring table (health, SLA target vs. actual, freshness, quality score), and an alert banner when something critical is degraded.
-- **Data & Pipeline Catalog** — a searchable, filterable system of record for every event, metric, and pipeline: official definition, implementing team, definition owner, version history with change logs, and a downloadable sample payload. No more tribal knowledge or stale Confluence docs.
+- **Data & Pipeline Catalog** — a searchable, filterable system of record for every event, metric, and pipeline: official definition, implementing team, definition owner, version history with change logs, and a downloadable sample payload. Each entry also has an opt-in quality-alert toggle, notifying the consumer when that pipeline, event, or metric's quality score drops below threshold — proactive instead of only discovering it in a degraded dashboard. No more tribal knowledge or stale Confluence docs.
 - **AI Assistant ("Ask Pulse")** — answers plain-English questions about data availability, returns downloadable query results, and — its highest-leverage feature — drafts a measurement plan from a feature description, feeding straight into the contribution/review flow.
 - **Roadmap** — three columns (being defined / coming next / recently shipped) so consumers can see what the data team is building without pinging Slack, deep-linking into the real catalog/pipeline detail pages where they exist.
 - **Contribute & Report Issue** — always one click away in the nav: a guided schema/measurement-plan submission flow, and a structured issue report that creates a tracked ticket instead of a Slack message into the void.
 - **Developer Tools** — a mocked API-key management surface, because "give me programmatic access" is a real ask even in v1.
+- **First-login welcome** — a one-time modal (shown once per browser via `localStorage`) that frames the platform against the problem it solves — fragmented definitions, invisible pipeline health, slow onboarding — rather than just listing features.
 
 ---
 
@@ -89,6 +90,7 @@ Built to sit believably alongside Uber's real internal product ecosystem (Base, 
 - True black/white/green — black is the default primary action color, green (`#06C167`) is reserved for status-positive states, the logo, and Contribute
 - Pill-shaped buttons, pastel circular icon-badge KPI tiles, hairline borders over drop shadows
 - Figtree (geometric grotesk) typography
+- Shared motion tokens (`--transition-fast` / `--transition-base`) drive hover/press feedback, focus states, and side-sheet slide/fade-in — no one-off animation values
 - Design tokens live in [`styles/tokens.css`](styles/tokens.css); mock datasets live under [`data/`](data) with a JSDoc-documented schema per file
 
 ---

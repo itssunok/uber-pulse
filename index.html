@@ -2137,8 +2137,8 @@ const DOC_TOPICS = [
   { id:'catalog', title:'Data & Pipeline Catalog', badgeBg:'#EDE3F7', badgeColor:'#6B3FA0', category:'Core Features',
     blurb:'Browse every event, metric, and pipeline with full definitions and version history.',
     sections:[
-      { heading:'What it shows', body:'Two tabs: Data Log (every event/metric — name, LOB, status, weekly volume) and Pipeline Log (the pipelines that ingest and process them — health, SLA, freshness). Filter by LOB and status, or search by name.' },
-      { heading:'How to use it', body:'Click any row to open its detail sidesheet: full definition, implementing team, definition owner, version history (changelog), quality/health history, and — for catalog entries — the pipeline that carries them, plus a sample payload you can download as CSV.' },
+      { heading:'What it shows', body:'Three tabs: Data Log (every event — name, LOB, status), Metrics Log (every defined metric, kept separate so definitions aren\'t buried inside pipeline entries), and Pipeline Log (the pipelines that ingest and process them — health, SLA, freshness). Filter by LOB and status, or search across all three from a single entry point.' },
+      { heading:'How to use it', body:'Click any row to open its detail sidesheet: full definition, implementing team, definition owner, version history (changelog), quality/health history, and — for catalog entries — the pipeline that carries them, plus a sample payload you can download as CSV. Toggle "Notify me if quality drops below threshold" on any entry to get a Slack/email alert the moment it degrades, instead of finding out from a broken dashboard.' },
       { heading:'Tips', body:'Always check the Data & Pipeline Catalog before filing a "missing data" report or proposing a new schema via Contribute — what you need may already exist under a different name.' }
     ] },
   { id:'assistant', title:'AI Assistant', badgeBg:'#FBE8D8', badgeColor:'#B45F06', category:'Core Features',

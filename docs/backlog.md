@@ -16,7 +16,6 @@ Prioritized MoSCoW-style following the full UX/UI/Brand design audit (Aug 2026),
 ---
 
 ## Low Priority (Could)
-- `[open]` Micro-interactions / motion pass (hover states, panel transitions) once core visual direction is validated
 
 ---
 
