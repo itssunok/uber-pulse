@@ -821,12 +821,17 @@
                     <div class="pulse-row-field" style="color:var(--color-gray-600);"><span class="pulse-mobile-label">Last Updated</span>{{ e.lastUpdated }}</div>
                   </div>
                 </sc-for>
+                <sc-if value="{{ noCatalogResults }}" hint-placeholder-val="{{ false }}">
+                  <div style="font-size:var(--font-size-sm); color:var(--color-gray-600); padding:32px 18px; text-align:center;">No events or metrics match your search or filters.</div>
+                </sc-if>
               </div>
-              <div style="display:flex; align-items:center; justify-content:flex-end; gap:12px; margin-top:14px;">
-                <span style="font-size:var(--font-size-sm); color:var(--color-gray-600);">{{ catalogPageLabel }}</span>
-                <button onClick="{{ onCatalogPrevPage }}" disabled="{{ catalogPrevDisabled }}" style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:999px; padding:7px 16px; font-size:var(--font-size-sm); font-weight:var(--font-weight-semibold); cursor:pointer; opacity:{{ catalogPrevDisabled ? 0.4 : 1 }};">Previous</button>
-                <button onClick="{{ onCatalogNextPage }}" disabled="{{ catalogNextDisabled }}" style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:999px; padding:7px 16px; font-size:var(--font-size-sm); font-weight:var(--font-weight-semibold); cursor:pointer; opacity:{{ catalogNextDisabled ? 0.4 : 1 }};">Next</button>
-              </div>
+              <sc-if value="{{ hasCatalogResults }}" hint-placeholder-val="{{ true }}">
+                <div style="display:flex; align-items:center; justify-content:flex-end; gap:12px; margin-top:14px;">
+                  <span style="font-size:var(--font-size-sm); color:var(--color-gray-600);">{{ catalogPageLabel }}</span>
+                  <button onClick="{{ onCatalogPrevPage }}" disabled="{{ catalogPrevDisabled }}" style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:999px; padding:7px 16px; font-size:var(--font-size-sm); font-weight:var(--font-weight-semibold); cursor:pointer; opacity:{{ catalogPrevDisabled ? 0.4 : 1 }};">Previous</button>
+                  <button onClick="{{ onCatalogNextPage }}" disabled="{{ catalogNextDisabled }}" style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:999px; padding:7px 16px; font-size:var(--font-size-sm); font-weight:var(--font-weight-semibold); cursor:pointer; opacity:{{ catalogNextDisabled ? 0.4 : 1 }};">Next</button>
+                </div>
+              </sc-if>
             </sc-if>
 
             <sc-if value="{{ isCatalogPipelineTab }}" hint-placeholder-val="{{ false }}">
@@ -881,12 +886,17 @@
                     </div>
                   </div>
                 </sc-for>
+                <sc-if value="{{ noPipelineResults }}" hint-placeholder-val="{{ false }}">
+                  <div style="font-size:var(--font-size-sm); color:var(--color-gray-600); padding:32px 18px; text-align:center;">No pipelines match your search or filters.</div>
+                </sc-if>
               </div>
-              <div style="display:flex; align-items:center; justify-content:flex-end; gap:12px; margin-top:14px;">
-                <span style="font-size:var(--font-size-sm); color:var(--color-gray-600);">{{ pipelineLogPageLabel }}</span>
-                <button onClick="{{ onPipelineLogPrevPage }}" disabled="{{ pipelineLogPrevDisabled }}" style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:999px; padding:7px 16px; font-size:var(--font-size-sm); font-weight:var(--font-weight-semibold); cursor:pointer; opacity:{{ pipelineLogPrevDisabled ? 0.4 : 1 }};">Previous</button>
-                <button onClick="{{ onPipelineLogNextPage }}" disabled="{{ pipelineLogNextDisabled }}" style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:999px; padding:7px 16px; font-size:var(--font-size-sm); font-weight:var(--font-weight-semibold); cursor:pointer; opacity:{{ pipelineLogNextDisabled ? 0.4 : 1 }};">Next</button>
-              </div>
+              <sc-if value="{{ hasPipelineResults }}" hint-placeholder-val="{{ true }}">
+                <div style="display:flex; align-items:center; justify-content:flex-end; gap:12px; margin-top:14px;">
+                  <span style="font-size:var(--font-size-sm); color:var(--color-gray-600);">{{ pipelineLogPageLabel }}</span>
+                  <button onClick="{{ onPipelineLogPrevPage }}" disabled="{{ pipelineLogPrevDisabled }}" style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:999px; padding:7px 16px; font-size:var(--font-size-sm); font-weight:var(--font-weight-semibold); cursor:pointer; opacity:{{ pipelineLogPrevDisabled ? 0.4 : 1 }};">Previous</button>
+                  <button onClick="{{ onPipelineLogNextPage }}" disabled="{{ pipelineLogNextDisabled }}" style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:999px; padding:7px 16px; font-size:var(--font-size-sm); font-weight:var(--font-weight-semibold); cursor:pointer; opacity:{{ pipelineLogNextDisabled ? 0.4 : 1 }};">Next</button>
+                </div>
+              </sc-if>
             </sc-if>
           </sc-if>
 
@@ -2620,7 +2630,9 @@ class Component extends DCLogic {
       onCatalogTabData, onCatalogTabPipeline,
       onCatalogQueryChange: this.onCatalogQueryChange, onCatalogLobChange: this.onCatalogLobChange, onCatalogStatusChange: this.onCatalogStatusChange,
       catalogCountLabel: filteredCatalog.length + (filteredCatalog.length===1 ? ' result' : ' results'),
-      filteredCatalog, selectedEntry
+      filteredCatalog, selectedEntry,
+      hasCatalogResults: filteredCatalog.length > 0, noCatalogResults: filteredCatalog.length === 0,
+      hasPipelineResults: filteredPipelines.length > 0, noPipelineResults: filteredPipelines.length === 0
     };
   }
 
