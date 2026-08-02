@@ -333,6 +333,9 @@
                   <sc-if value="{{ selectedMetric.freshnessLabel }}" hint-placeholder-val="{{ false }}">
                     <div style="display:flex; align-items:center; gap:5px; font-size:11px; color:#067A3E; margin-bottom:20px;"><span style="width:6px; height:6px; border-radius:50%; background:#06C167; flex-shrink:0;"></span>Live · pipeline data as of {{ selectedMetric.freshnessLabel }}</div>
                   </sc-if>
+                  <sc-if value="{{ selectedMetric.compositeFreshnessNote }}" hint-placeholder-val="{{ false }}">
+                    <div style="display:flex; align-items:center; gap:5px; font-size:11px; color:#9B9B9B; margin-bottom:20px;"><span style="width:6px; height:6px; border-radius:50%; background:#9B9B9B; flex-shrink:0;"></span>{{ selectedMetric.compositeFreshnessNote }}</div>
+                  </sc-if>
                 </sc-if>
 
                 <sc-if value="{{ isDetailMetric }}" hint-placeholder-val="{{ false }}">
@@ -484,18 +487,22 @@
 
                 <sc-if value="{{ isDetailPipeline }}" hint-placeholder-val="{{ false }}">
                   <div style="margin-bottom:32px;">
-                    <div style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#9B9B9B; margin-bottom:8px;">Operational</div>
-                    <div style="display:flex; gap:8px; flex-wrap:wrap;">
-                      <span style="font-size:12px; color:#0A0A0A; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:999px; padding:4px 11px;">Freshness: {{ selectedPipeline.freshness }}</span>
-                      <span style="font-size:12px; color:#0A0A0A; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:999px; padding:4px 11px;">SLA: {{ selectedPipeline.slaTarget }} / <span style="{{ selectedPipeline.slaActualStyle }}">{{ selectedPipeline.slaActual }}</span></span>
-                      <span style="font-size:12px; color:#0A0A0A; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:999px; padding:4px 11px;">Quality: {{ selectedPipeline.quality }} / 100</span>
+                    <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#6B6B6B; margin-bottom:4px;">Data health</div>
+                    <p style="font-size:12.5px; color:#6B6B6B; line-height:1.5; margin:0 0 12px 0;">SLA is the share of runs delivered within this pipeline's committed freshness window, measured over the trailing 7 days.</p>
+                    <div style="display:flex; align-items:baseline; gap:24px; border:1px solid #E5E5E5; border-radius:10px; padding:14px 16px; margin-bottom:16px;">
+                      <div>
+                        <div style="font-size:10.5px; color:#9B9B9B; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:2px;">Freshness</div>
+                        <div style="font-size:16px; font-weight:700;">{{ selectedPipeline.freshness }}</div>
+                      </div>
+                      <div>
+                        <div style="font-size:10.5px; color:#9B9B9B; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:2px;">SLA target</div>
+                        <div style="font-size:16px; font-weight:700;">{{ selectedPipeline.slaTarget }}</div>
+                      </div>
+                      <div>
+                        <div style="font-size:10.5px; color:#9B9B9B; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:2px;">SLA actual</div>
+                        <div style="font-size:16px; font-weight:700; {{ selectedPipeline.slaActualStyle }}">{{ selectedPipeline.slaActual }}</div>
+                      </div>
                     </div>
-                  </div>
-                </sc-if>
-
-                <sc-if value="{{ isDetailPipeline }}" hint-placeholder-val="{{ false }}">
-                  <div style="margin-bottom:32px;">
-                    <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#6B6B6B; margin-bottom:10px;">Health history</div>
                     <div style="display:flex; flex-direction:column; gap:8px;">
                       <sc-for list="{{ selectedPipeline.history }}" as="h" hint-placeholder-count="5">
                         <div role="button" tabindex="0" onClick="{{ h.onToggle }}" onKeyDown="{{ h.onToggleKeyDown }}" style="border:1px solid #E5E5E5; border-radius:8px; padding:9px 12px; cursor:pointer;">
@@ -554,8 +561,24 @@
                 <sc-if value="{{ isDetailEvent }}" hint-placeholder-val="{{ false }}">
                   <sc-if value="{{ selectedEntry.pipelineHistory }}" hint-placeholder-val="{{ false }}">
                     <div style="margin-bottom:32px;">
-                      <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#6B6B6B; margin-bottom:4px;">Health history</div>
+                      <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#6B6B6B; margin-bottom:4px;">Data health</div>
                       <div style="font-size:11.5px; color:#9B9B9B; margin-bottom:10px;">Inherited from the {{ selectedEntry.pipelineName }} pipeline</div>
+                      <sc-if value="{{ selectedEntry.slaTarget }}" hint-placeholder-val="{{ false }}">
+                        <div style="display:flex; align-items:baseline; gap:24px; border:1px solid #E5E5E5; border-radius:10px; padding:14px 16px; margin-bottom:16px;">
+                          <div>
+                            <div style="font-size:10.5px; color:#9B9B9B; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:2px;">Freshness</div>
+                            <div style="font-size:16px; font-weight:700;">{{ selectedEntry.freshness }}</div>
+                          </div>
+                          <div>
+                            <div style="font-size:10.5px; color:#9B9B9B; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:2px;">SLA target</div>
+                            <div style="font-size:16px; font-weight:700;">{{ selectedEntry.slaTarget }}</div>
+                          </div>
+                          <div>
+                            <div style="font-size:10.5px; color:#9B9B9B; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:2px;">SLA actual</div>
+                            <div style="font-size:16px; font-weight:700; {{ selectedEntry.slaActualStyle }}">{{ selectedEntry.slaActual }}</div>
+                          </div>
+                        </div>
+                      </sc-if>
                       <div style="display:flex; flex-direction:column; gap:8px;">
                         <sc-for list="{{ selectedEntry.pipelineHistory }}" as="h" hint-placeholder-count="5">
                           <div role="button" tabindex="0" onClick="{{ h.onToggle }}" onKeyDown="{{ h.onToggleKeyDown }}" style="border:1px solid #E5E5E5; border-radius:8px; padding:9px 12px; cursor:pointer;">
@@ -593,8 +616,24 @@
                 <sc-if value="{{ isDetailMetric }}" hint-placeholder-val="{{ false }}">
                   <sc-if value="{{ selectedMetric.pipelineHistory }}" hint-placeholder-val="{{ false }}">
                     <div style="margin-bottom:32px;">
-                      <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#6B6B6B; margin-bottom:4px;">Health history</div>
+                      <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#6B6B6B; margin-bottom:4px;">Data health</div>
                       <div style="font-size:11.5px; color:#9B9B9B; margin-bottom:10px;">{{ selectedMetric.pipelineHistoryCaption }}</div>
+                      <sc-if value="{{ selectedMetric.slaTarget }}" hint-placeholder-val="{{ false }}">
+                        <div style="display:flex; align-items:baseline; gap:24px; border:1px solid #E5E5E5; border-radius:10px; padding:14px 16px; margin-bottom:16px;">
+                          <div>
+                            <div style="font-size:10.5px; color:#9B9B9B; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:2px;">Freshness</div>
+                            <div style="font-size:16px; font-weight:700;">{{ selectedMetric.freshnessLabel }}</div>
+                          </div>
+                          <div>
+                            <div style="font-size:10.5px; color:#9B9B9B; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:2px;">SLA target</div>
+                            <div style="font-size:16px; font-weight:700;">{{ selectedMetric.slaTarget }}</div>
+                          </div>
+                          <div>
+                            <div style="font-size:10.5px; color:#9B9B9B; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:2px;">SLA actual</div>
+                            <div style="font-size:16px; font-weight:700; {{ selectedMetric.slaActualStyle }}">{{ selectedMetric.slaActual }}</div>
+                          </div>
+                        </div>
+                      </sc-if>
                       <div style="display:flex; flex-direction:column; gap:8px;">
                         <sc-for list="{{ selectedMetric.pipelineHistory }}" as="h" hint-placeholder-count="5">
                           <div role="button" tabindex="0" onClick="{{ h.onToggle }}" onKeyDown="{{ h.onToggleKeyDown }}" style="border:1px solid #E5E5E5; border-radius:8px; padding:9px 12px; cursor:pointer;">
@@ -2406,6 +2445,10 @@ class Component extends DCLogic {
       })(),
       hasRelationships: !!(metricSourceEvent || metricSourcePipeline || compositeConstituentPipelines.length || findRoadmapItem('metricId', rawSelectedMetric.id)),
       freshnessLabel: metricSourcePipeline ? metricSourcePipeline.freshness : null,
+      compositeFreshnessNote: (!metricSourcePipeline && compositeCaption) ? (compositeCaption+' — freshness varies by source pipeline') : null,
+      slaTarget: metricSourcePipeline ? metricSourcePipeline.slaTarget : null,
+      slaActual: metricSourcePipeline ? metricSourcePipeline.slaActual : null,
+      slaActualStyle: metricSourcePipeline ? ('font-weight:600;color:'+(metricSourcePipeline.health==='green' ? '#067A3E' : metricSourcePipeline.health==='amber' ? '#96530A' : '#A93327')+';') : null,
       hasWarning: !!(metricSourceEvent && metricSourceEvent.warning),
       warningText: metricSourceEvent ? metricSourceEvent.warningText : null,
       verticalBreakdown: rawSelectedMetric.verticalBreakdown ? rawSelectedMetric.verticalBreakdown.map(vb => ({ ...vb, barStyle:'height:100%;border-radius:4px;width:'+vb.pct+'%;background:'+rawSelectedMetric.iconColor+';' })) : null,
@@ -2502,6 +2545,10 @@ class Component extends DCLogic {
       onViewPipeline: entryPipeline ? (() => this.openDetail('pipeline', entryPipeline.id)) : null,
       onViewPipelineKeyDown: entryPipeline ? this.onRowKeyDown(() => this.openDetail('pipeline', entryPipeline.id)) : null,
       pipelineHistory: entryPipeline ? this.healthHistoryRows(entryPipeline, s) : null,
+      freshness: entryPipeline ? entryPipeline.freshness : null,
+      slaTarget: entryPipeline ? entryPipeline.slaTarget : null,
+      slaActual: entryPipeline ? entryPipeline.slaActual : null,
+      slaActualStyle: entryPipeline ? ('font-weight:600;color:'+(entryPipeline.health==='green' ? '#067A3E' : entryPipeline.health==='amber' ? '#96530A' : '#A93327')+';') : null,
       notPipelineMonitored: !entryPipeline,
       relatedMetrics: METRICS_BASE.filter(m => m.sourceEventId === rawSelected.id).map(m => ({
         label: m.label,
