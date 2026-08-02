@@ -7,20 +7,6 @@ Prioritized MoSCoW-style following the full UX/UI/Brand design audit (Aug 2026),
 
 ---
 
-## Detail Page Redesign (Stage 2 — data model already shipped)
-
-Follow-up from a design review with Alex against the event/pipeline/metric detail pages shipped earlier. Data-model groundwork (catalog event trend, pipeline/metric changelogs, pipeline warning text, roadmap FKs) is already committed; these are the remaining UI items, in build order.
-
-- `[open]` Health history — restructure into one section titled exactly "Health history" on all three page types (no "Pipeline health history" / "Source pipeline health history" variants). Remove the separate "Quality checks" section; instead each history row expands into its own schema-validation/duplicate-detection/completeness composition breakdown, computed from that row's own historical health value (not just the pipeline's current health), reusing the same chart visual language as the volume charts. Event/metric pages get a one-line caption naming the pipeline health is inherited from. Medium effort.
-- `[open]` Version history — build the UI section (titled "Version history") for pipeline and metric detail pages, reading the `changelog` field already added to both. Events already render this. Small-medium effort.
-- `[open]` Chart unification — give events a real trend chart from `weeklyTrend`; give pipelines a trend stacked by top constituent event (summed from those events' `weeklyTrend`); metrics keep the existing category-stacked trend. One shared chart component/visual language across all three. Also: reduce bar width from 100px to 70px, fix bars overlapping the chart title. Medium-large effort.
-- `[open]` Layout restructure — column 1: title/definition + the chart above. Column 2: tags/status row, then owner/team/downstream-consumer fields restyled as pill chips (matching downstream consumers' existing style, not plain text). Medium effort.
-- `[open]` Red banner on all 3 types — reuse the existing event warning-banner component, wire it for pipelines (using the `warningText` already added) and metrics. Small-medium effort.
-- `[open]` Roadmap linkage — surface a roadmap-item link inside the existing Relationships section wherever a real FK exists (now true for `p6`/`p8`/`p9`, `campaign_started`/`session_started`, and the `trips` metric). Small effort.
-- `[open]` Not-pipeline-monitored label — for the ~20 events with no carrying pipeline, show this instead of a blank Health history section. Folds in the equivalent item previously listed under High Priority. Small effort.
-
----
-
 ## High Priority (Must)
 
 - `[open]` Fix elevation inconsistency — side-sheets, dropdowns, toast, and the AI Assistant composer mix box-shadow with no border, violating "hairline borders over drop shadows." Replace side-sheet shadows with borders; standardize dropdowns/toast to one lighter "floating" shadow level. Small effort.
@@ -40,6 +26,7 @@ Follow-up from a design review with Alex against the event/pipeline/metric detai
 - `[open]` Add error/validation states to the Contribute and Report Issue wizards specifically (the two most visible multi-step flows) — scoped down from "chat, API key creation, everywhere" to these two. Small-medium effort.
 - `[open]` Naming & voice pass — restore or confirm dropping the PRD's login tagline ("Pulse. Know your data."), rewrite the login heading ("What's your work email?" reads as generic consumer SaaS onboarding), switch Google/Apple auth buttons to monochrome marks. Small effort.
 - `[open]` Share the same underlying chat session data between the topbar "Ask Pulse" side-sheet and the full AI Assistant page, so starting a conversation in one doesn't lose it in the other — scoped down from a full state-architecture unification to just sharing the data source. Small-medium effort.
+- `[open]` Revisit GTV/GMV/revenue metric definitions — GTV is currently a derived composite of the Ridesharing/Eats/B2B pipelines with no independent monetary metric of its own; clarify whether GMV and/or a distinct revenue metric should exist alongside it, and whether GTV's definition still matches real-world usage (ref: Uber's Q4/FY2025 investor results press release). Not scoped or built yet — just captured so it isn't lost.
 
 ---
 
