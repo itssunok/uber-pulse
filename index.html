@@ -1575,12 +1575,12 @@
           </sc-if>
 
           <sc-if value="{{ isDocs }}" hint-placeholder-val="{{ false }}">
-            <h1 style="font-size:var(--font-size-h1); font-weight:var(--font-weight-h1); margin:0 0 4px 0; letter-spacing:-0.5px;">Documentation</h1>
+            <h1 class="title-h1">Documentation</h1>
             <p style="font-size:var(--font-size-base); color:var(--color-gray-600); margin:0 0 20px 0;">How to use every part of Pulse — from browsing the catalog to getting data out via the API.</p>
 
             <div style="display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap;">
-              <input value="{{ docsQuery }}" onChange="{{ onDocsQueryChange }}" placeholder="Search documentation…" style="flex:1; min-width:220px; box-sizing:border-box; background:#FFFFFF; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:var(--font-size-sm);" />
-              <select value="{{ docsCategory }}" onChange="{{ onDocsCategoryChange }}" style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:var(--font-size-sm);">
+              <input value="{{ docsQuery }}" onChange="{{ onDocsQueryChange }}" placeholder="Search documentation…" class="form-input" style="flex:1; min-width:220px; box-sizing:border-box;" />
+              <select value="{{ docsCategory }}" onChange="{{ onDocsCategoryChange }}" class="form-input">
                 <sc-for list="{{ docsCategoryOptions }}" as="cat" hint-placeholder-count="4">
                   <option value="{{ cat }}">{{ cat }}</option>
                 </sc-for>
@@ -1591,7 +1591,7 @@
               <div class="pulse-grid-1col" style="display:grid; grid-template-columns:repeat(3,1fr); gap:14px;">
                 <sc-for list="{{ docTopicsView }}" as="dt" hint-placeholder-count="8">
                   <div onClick="{{ dt.onSelect }}" style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; padding:18px; cursor:pointer; min-width:0;">
-                    <div style="width:32px; height:32px; border-radius:9px; background:{{ dt.badgeBg }}; display:flex; align-items:center; justify-content:center; margin-bottom:12px;">
+                    <div class="flex-row" style="width:32px; height:32px; border-radius:9px; background:{{ dt.badgeBg }}; justify-content:center; margin-bottom:12px;">
                       <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="{{ dt.badgeColor }}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 4h9.5a1 1 0 0 1 1 1v15l-5.5-3-5.5 3V5a1 1 0 0 1 1-1z"/></svg>
                     </div>
                     <div style="font-size:var(--font-size-2xs); font-weight:var(--font-weight-bold); text-transform:uppercase; letter-spacing:0.04em; color:{{ dt.badgeColor }}; margin-bottom:6px;">{{ dt.category }}</div>
@@ -1613,16 +1613,16 @@
     <sc-if value="{{ selectedDocTopic }}" hint-placeholder-val="{{ false }}">
       <div style="position:fixed; inset:0; background:rgba(10,10,10,0.35); z-index:30;" onClick="{{ closeDocTopic }}"></div>
       <div class="pulse-side-sheet" style="position:fixed; top:0; right:0; bottom:0; width:440px; background:#FFFFFF; border-left:1px solid #E5E5E5; z-index:31; overflow-y:auto; padding:28px;">
-        <div style="display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:20px;">
-          <div style="display:flex; align-items:center; gap:10px; min-width:0;">
-            <div style="width:32px; height:32px; border-radius:9px; background:{{ selectedDocTopic.badgeBg }}; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+        <div class="flex-row-between" style="margin-bottom:20px;">
+          <div class="flex-row gap-10" style="min-width:0;">
+            <div class="flex-row flex-shrink-0" style="width:32px; height:32px; border-radius:9px; background:{{ selectedDocTopic.badgeBg }}; justify-content:center;">
               <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="{{ selectedDocTopic.badgeColor }}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 4h9.5a1 1 0 0 1 1 1v15l-5.5-3-5.5 3V5a1 1 0 0 1 1-1z"/></svg>
             </div>
-            <div style="font-size:var(--font-size-h2); font-weight:var(--font-weight-h2);">{{ selectedDocTopic.title }}</div>
+            <div class="title-h2">{{ selectedDocTopic.title }}</div>
           </div>
           <button onClick="{{ closeDocTopic }}" style="background:none; border:none; font-size:var(--font-size-18); cursor:pointer; color:var(--color-gray-600); flex-shrink:0;">✕</button>
         </div>
-        <div style="display:flex; flex-direction:column; gap:20px;">
+        <div class="flex-col" style="gap:20px;">
           <sc-for list="{{ selectedDocTopic.sections }}" as="sec" hint-placeholder-count="3">
             <div>
               <div class="pulse-heading-label" style="margin-bottom:6px;">{{ sec.heading }}</div>
