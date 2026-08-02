@@ -38,6 +38,7 @@
     /* Shared uppercase section/field-label style — reused for detail-page section
        headings, table column headers, card titles, and form field labels. */
     .pulse-heading-label, .pulse-pipeline-header { font-size:var(--font-size-sm); font-weight:var(--font-weight-bold); text-transform:uppercase; letter-spacing:0.04em; color:var(--color-gray-600); }
+    label.pulse-heading-label { display:block; margin-bottom:6px; }
 
     @media (max-width:900px) {
       .pulse-desktop-sidebar { display:none !important; }
@@ -145,8 +146,8 @@
           <div style="margin-top:28px; background:#F6F6F6; border:1px dashed #E0E0E0; border-radius:12px; padding:16px 18px;">
             <div style="font-size:var(--font-size-xs); color:var(--color-gray-600); text-transform:uppercase; letter-spacing:0.06em; font-weight:var(--font-weight-semibold); margin-bottom:8px;">Demo account</div>
             <div style="font-size:var(--font-size-body); color:var(--color-gray-700); line-height:1.7;">
-              <div><span style="color:var(--color-gray-600);">Username:</span> pulse-demo@uber.com</div>
-              <div><span style="color:var(--color-gray-600);">Password:</span> Pulse2026</div>
+              <div><span class="text-muted">Username:</span> pulse-demo@uber.com</div>
+              <div><span class="text-muted">Password:</span> Pulse2026</div>
             </div>
           </div>
         </div>
@@ -161,7 +162,7 @@
         <span onClick="{{ goHome }}" style="font-size:var(--font-size-logo); font-weight:var(--font-weight-logo); letter-spacing:-0.3px; color:var(--color-black); cursor:pointer;">Pulse for Uber</span>
         <div class="flex-row gap-10">
           <button onClick="{{ openAskPulseSheet }}" class="flex-row gap-8" style="background:#0A0A0A; border:none; color:var(--color-white); border-radius:999px; padding:8px 16px; font-size:var(--font-size-sm); font-weight:var(--font-weight-bold); cursor:pointer;">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" style="flex-shrink:0;"><path d="M12 3l1.7 4.9L18.6 9.4l-4.9 1.7L12 16l-1.7-4.9L5.4 9.4l4.9-1.7L12 3z"/><path d="M18.5 14.5l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7.7-2z"/></svg>
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" class="flex-shrink-0"><path d="M12 3l1.7 4.9L18.6 9.4l-4.9 1.7L12 16l-1.7-4.9L5.4 9.4l4.9-1.7L12 3z"/><path d="M18.5 14.5l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7.7-2z"/></svg>
             <span class="pulse-desktop-topbar-askpulse-label">Ask Pulse</span>
           </button>
           <div role="button" tabindex="0" class="flex-row gap-8" style="margin-left:4px; padding-left:14px; border-left:1px solid #E5E5E5; cursor:pointer;" onClick="{{ logout }}" onKeyDown="{{ logoutKeyDown }}">
@@ -176,35 +177,35 @@
         <div class="pulse-desktop-sidebar" style="width:232px; flex-shrink:0; background:#FFFFFF; border-right:1px solid #E5E5E5; display:flex; flex-direction:column; padding:16px 12px; position:sticky; top:60px; align-self:flex-start; height:calc(100vh - 60px); box-sizing:border-box;">
           <div style="display:flex; flex-direction:column; gap:2px;">
             <button onClick="{{ goHome }}" style="{{ navBtnStyle_home }}">
-              <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9a1 1 0 0 0 1 1h4v-6h3v6h4a1 1 0 0 0 1-1v-9"/></svg>
+              <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9a1 1 0 0 0 1 1h4v-6h3v6h4a1 1 0 0 0 1-1v-9"/></svg>
               <span>Home</span>
             </button>
             <button onClick="{{ goCatalog }}" style="{{ navBtnStyle_catalog }}">
-              <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><rect x="3.5" y="4" width="17" height="16" rx="2.5"/><path d="M3.5 9.5h17M9.5 9.5V20"/></svg>
+              <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0"><rect x="3.5" y="4" width="17" height="16" rx="2.5"/><path d="M3.5 9.5h17M9.5 9.5V20"/></svg>
               <span>Data & Pipeline Catalog</span>
             </button>
             <button onClick="{{ goAssistant }}" style="{{ navBtnStyle_assistant }}">
-              <svg viewBox="0 0 24 24" width="21" height="21" fill="currentColor" style="flex-shrink:0;"><path d="M12 3l1.7 4.9L18.6 9.4l-4.9 1.7L12 16l-1.7-4.9L5.4 9.4l4.9-1.7L12 3z"/><path d="M18.5 14.5l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7.7-2z"/></svg>
+              <svg viewBox="0 0 24 24" width="21" height="21" fill="currentColor" class="flex-shrink-0"><path d="M12 3l1.7 4.9L18.6 9.4l-4.9 1.7L12 16l-1.7-4.9L5.4 9.4l4.9-1.7L12 3z"/><path d="M18.5 14.5l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7.7-2z"/></svg>
               <span>AI Assistant</span>
             </button>
             <button onClick="{{ goRoadmap }}" style="{{ navBtnStyle_roadmap }}">
-              <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M5 3v18"/><path d="M5 4.5h11.5l-2.2 3.75L16.5 12H5"/></svg>
+              <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0"><path d="M5 3v18"/><path d="M5 4.5h11.5l-2.2 3.75L16.5 12H5"/></svg>
               <span>Roadmap</span>
             </button>
             <button onClick="{{ goDeveloper }}" style="{{ navBtnStyle_developer }}">
-              <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><circle cx="7.5" cy="15.5" r="4.5"/><path d="M11 12l9-9M16 7l3 3M13 10l2 2"/></svg>
+              <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0"><circle cx="7.5" cy="15.5" r="4.5"/><path d="M11 12l9-9M16 7l3 3M13 10l2 2"/></svg>
               <span>Developer Tools</span>
             </button>
             <button onClick="{{ goReport }}" style="{{ navBtnStyle_report }}">
-              <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M12 4 3 20h18L12 4z"/><path d="M12 10.5v3.5"/><circle cx="12" cy="17" r="0.6" fill="currentColor" stroke="none"/></svg>
+              <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0"><path d="M12 4 3 20h18L12 4z"/><path d="M12 10.5v3.5"/><circle cx="12" cy="17" r="0.6" fill="currentColor" stroke="none"/></svg>
               <span>Report Issue</span>
             </button>
             <button onClick="{{ goContribute }}" style="{{ navBtnStyle_contribute }}">
-              <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>
+              <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>
               <span>Contribute</span>
             </button>
             <button onClick="{{ goDocs }}" style="{{ navBtnStyle_docs }}">
-              <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M6.5 4h9.5a1 1 0 0 1 1 1v15l-5.5-3-5.5 3V5a1 1 0 0 1 1-1z"/></svg>
+              <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0"><path d="M6.5 4h9.5a1 1 0 0 1 1 1v15l-5.5-3-5.5 3V5a1 1 0 0 1 1-1z"/></svg>
               <span>Documentation</span>
             </button>
           </div>
@@ -250,23 +251,23 @@
             <div class="pulse-table-wrap" style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; overflow:hidden;">
               <div class="pulse-pipeline-header" style="display:grid; grid-template-columns:0.3fr 2fr 0.9fr 1fr 1fr 1.4fr 1.1fr 1fr; gap:8px; padding:10px 18px; border-bottom:1px solid #EFEFEF;">
                 <div>#</div>
-                <div>Pipeline<span class="pulse-tt" style="display:inline-flex;"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; left:0; text-transform:none; letter-spacing:normal; font-weight:var(--font-weight-medium);">The name of the data pipeline processing this event stream.</span></span></div>
-                <div>Weekly Volume<span class="pulse-tt" style="display:inline-flex;"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; left:0; text-transform:none; letter-spacing:normal; font-weight:var(--font-weight-medium);">Records processed by this pipeline in the trailing 7 days.</span></span></div>
-                <div>LOB<span class="pulse-tt" style="display:inline-flex;"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; left:0; text-transform:none; letter-spacing:normal; font-weight:var(--font-weight-medium);">Line of business this pipeline's data belongs to.</span></span></div>
-                <div>Status<span class="pulse-tt" style="display:inline-flex;"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; left:0; text-transform:none; letter-spacing:normal; font-weight:var(--font-weight-medium);">Overall pipeline health, derived from current SLA attainment and data freshness.</span></span></div>
-                <div>SLA (target / actual)<span class="pulse-tt" style="display:inline-flex;"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; left:0; text-transform:none; letter-spacing:normal; font-weight:var(--font-weight-medium);">Target delivery reliability for this pipeline vs. the actual rate observed this week.</span></span></div>
-                <div>Freshness<span class="pulse-tt" style="display:inline-flex;"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; right:0; left:auto; text-transform:none; letter-spacing:normal; font-weight:var(--font-weight-medium);">Time since the most recent successful data load for this pipeline.</span></span></div>
-                <div>Quality<span class="pulse-tt" style="display:inline-flex;"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; right:0; left:auto; text-transform:none; letter-spacing:normal; font-weight:var(--font-weight-medium);">Composite score (0-100) from schema, completeness, and duplication checks.</span></span></div>
+                <div>Pipeline<span class="pulse-tt inline-flex"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; left:0; text-transform:none; letter-spacing:normal; font-weight:var(--font-weight-medium);">The name of the data pipeline processing this event stream.</span></span></div>
+                <div>Weekly Volume<span class="pulse-tt inline-flex"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; left:0; text-transform:none; letter-spacing:normal; font-weight:var(--font-weight-medium);">Records processed by this pipeline in the trailing 7 days.</span></span></div>
+                <div>LOB<span class="pulse-tt inline-flex"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; left:0; text-transform:none; letter-spacing:normal; font-weight:var(--font-weight-medium);">Line of business this pipeline's data belongs to.</span></span></div>
+                <div>Status<span class="pulse-tt inline-flex"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; left:0; text-transform:none; letter-spacing:normal; font-weight:var(--font-weight-medium);">Overall pipeline health, derived from current SLA attainment and data freshness.</span></span></div>
+                <div>SLA (target / actual)<span class="pulse-tt inline-flex"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; left:0; text-transform:none; letter-spacing:normal; font-weight:var(--font-weight-medium);">Target delivery reliability for this pipeline vs. the actual rate observed this week.</span></span></div>
+                <div>Freshness<span class="pulse-tt inline-flex"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; right:0; left:auto; text-transform:none; letter-spacing:normal; font-weight:var(--font-weight-medium);">Time since the most recent successful data load for this pipeline.</span></span></div>
+                <div>Quality<span class="pulse-tt inline-flex"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; right:0; left:auto; text-transform:none; letter-spacing:normal; font-weight:var(--font-weight-medium);">Composite score (0-100) from schema, completeness, and duplication checks.</span></span></div>
               </div>
               <sc-for list="{{ homePipelines }}" as="p" hint-placeholder-count="10">
                 <div class="pulse-pipeline-row pulse-row-desktop" role="button" tabindex="0" style="display:grid; grid-template-columns:0.3fr 2fr 0.9fr 1fr 1fr 1.4fr 1.1fr 1fr; gap:8px; padding:13px 18px; font-size:var(--font-size-sm); border-bottom:1px solid #F0F0F0; align-items:center; cursor:pointer;" onClick="{{ p.onSelect }}" onKeyDown="{{ p.onKeyDown }}">
-                  <div class="pulse-row-num" style="color:var(--color-gray-600);">{{ p.rowNumber }}</div>
+                  <div class="pulse-row-num text-muted">{{ p.rowNumber }}</div>
                   <div class="pulse-row-name" style="font-weight:var(--font-weight-semibold);">{{ p.name }}</div>
-                  <div class="pulse-row-field" style="color:var(--color-gray-600);"><span class="pulse-mobile-label">Weekly Volume</span>{{ p.weeklyVolumeLabel }}</div>
+                  <div class="pulse-row-field text-muted"><span class="pulse-mobile-label">Weekly Volume</span>{{ p.weeklyVolumeLabel }}</div>
                   <div class="pulse-row-field"><span class="pulse-mobile-label">LOB</span><span style="{{ p.lobChipStyle }}">{{ p.lob }}</span></div>
                   <div class="pulse-row-field"><span class="pulse-mobile-label">Status</span><span style="{{ p.statusChipStyle }}">{{ p.statusLabel }}</span></div>
-                  <div class="pulse-row-field" style="color:var(--color-gray-600);"><span class="pulse-mobile-label">SLA (target / actual)</span>{{ p.slaTarget }} / <span style="{{ p.slaActualStyle }}">{{ p.slaActual }}</span></div>
-                  <div class="pulse-row-field" style="color:var(--color-gray-600);"><span class="pulse-mobile-label">Freshness</span>{{ p.freshness }}</div>
+                  <div class="pulse-row-field text-muted"><span class="pulse-mobile-label">SLA (target / actual)</span>{{ p.slaTarget }} / <span style="{{ p.slaActualStyle }}">{{ p.slaActual }}</span></div>
+                  <div class="pulse-row-field text-muted"><span class="pulse-mobile-label">Freshness</span>{{ p.freshness }}</div>
                   <div class="pulse-row-field">
                     <span class="pulse-mobile-label">Quality</span>
                     <div class="flex-row gap-8">
@@ -485,7 +486,7 @@
                     <div class="pulse-heading-label" style="margin-bottom:14px;">Sample payload</div>
                     <div style="background:#F6F6F6; border-radius:8px; padding:12px; font-family:ui-monospace,monospace; font-size:var(--font-size-sm); line-height:1.7; margin-bottom:14px;">
                       <sc-for list="{{ selectedEntry.payload }}" as="f" hint-placeholder-count="4">
-                        <div><span style="color:var(--color-gray-600);">{{ f.field }}:</span> {{ f.value }}</div>
+                        <div><span class="text-muted">{{ f.field }}:</span> {{ f.value }}</div>
                       </sc-for>
                     </div>
                     <button onClick="{{ selectedEntry.onDownload }}" style="width:100%; box-sizing:border-box; background:#0A0A0A; color:#FFF; border:none; border-radius:999px; padding:10px; font-size:var(--font-size-sm); font-weight:var(--font-weight-semibold); cursor:pointer;">Download sample (CSV)</button>
@@ -767,7 +768,7 @@
                         <div>
                           <div class="pulse-heading-label" style="margin-bottom:8px;">Linked event</div>
                           <div style="display:flex; gap:8px; flex-wrap:wrap;">
-                            <div role="button" tabindex="0" onClick="{{ selectedMetric.onViewSourceEvent }}" onKeyDown="{{ selectedMetric.onViewSourceEventKeyDown }}" style="display:inline-flex; align-items:center; gap:6px; background:#F6F6F6; border:1px solid #E5E5E5; border-left:3px solid #6B6B6B; border-radius:7px; padding:6px 10px; font-size:var(--font-size-sm); cursor:pointer;"><span style="color:var(--color-gray-600);">●</span> {{ selectedMetric.sourceEventName }} →</div>
+                            <div role="button" tabindex="0" onClick="{{ selectedMetric.onViewSourceEvent }}" onKeyDown="{{ selectedMetric.onViewSourceEventKeyDown }}" style="display:inline-flex; align-items:center; gap:6px; background:#F6F6F6; border:1px solid #E5E5E5; border-left:3px solid #6B6B6B; border-radius:7px; padding:6px 10px; font-size:var(--font-size-sm); cursor:pointer;"><span class="text-muted">●</span> {{ selectedMetric.sourceEventName }} →</div>
                           </div>
                         </div>
                       </sc-if>
@@ -824,27 +825,27 @@
               <div class="pulse-table-wrap" style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; overflow:hidden;">
                 <div class="pulse-pipeline-header" style="display:grid; grid-template-columns:0.3fr 2fr 0.9fr 1fr 1fr 1.6fr 1fr; gap:10px; padding:10px 18px; border-bottom:1px solid #EFEFEF;">
                   <div>#</div>
-                  <div>Event Name<span class="pulse-tt" style="display:inline-flex;"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; left:0; text-transform:none; letter-spacing:normal; font-weight:var(--font-weight-medium);">The unique event or metric name, as it appears in the data warehouse. A dot indicates an active data quality warning.</span></span></div>
-                  <div>Weekly Volume<span class="pulse-tt" style="display:inline-flex;"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; left:0; text-transform:none; letter-spacing:normal; font-weight:var(--font-weight-medium);">Times this event fired in the trailing 7 days.</span></span></div>
-                  <div>LOB<span class="pulse-tt" style="display:inline-flex;"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; left:0; text-transform:none; letter-spacing:normal; font-weight:var(--font-weight-medium);">Line of business this event or metric belongs to.</span></span></div>
-                  <div>Status<span class="pulse-tt" style="display:inline-flex;"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; left:0; text-transform:none; letter-spacing:normal; font-weight:var(--font-weight-medium);">Whether this definition is active, under review, or deprecated in favor of a newer version.</span></span></div>
-                  <div>Definition Owner<span class="pulse-tt" style="display:inline-flex;"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; left:0; text-transform:none; letter-spacing:normal; font-weight:var(--font-weight-medium);">The person or team accountable for this definition's accuracy — contact them with definition questions.</span></span></div>
-                  <div>Last Updated<span class="pulse-tt" style="display:inline-flex;"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; right:0; left:auto; text-transform:none; letter-spacing:normal; font-weight:var(--font-weight-medium);">Date this definition's payload or logic was last changed.</span></span></div>
+                  <div>Event Name<span class="pulse-tt inline-flex"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; left:0; text-transform:none; letter-spacing:normal; font-weight:var(--font-weight-medium);">The unique event or metric name, as it appears in the data warehouse. A dot indicates an active data quality warning.</span></span></div>
+                  <div>Weekly Volume<span class="pulse-tt inline-flex"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; left:0; text-transform:none; letter-spacing:normal; font-weight:var(--font-weight-medium);">Times this event fired in the trailing 7 days.</span></span></div>
+                  <div>LOB<span class="pulse-tt inline-flex"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; left:0; text-transform:none; letter-spacing:normal; font-weight:var(--font-weight-medium);">Line of business this event or metric belongs to.</span></span></div>
+                  <div>Status<span class="pulse-tt inline-flex"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; left:0; text-transform:none; letter-spacing:normal; font-weight:var(--font-weight-medium);">Whether this definition is active, under review, or deprecated in favor of a newer version.</span></span></div>
+                  <div>Definition Owner<span class="pulse-tt inline-flex"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; left:0; text-transform:none; letter-spacing:normal; font-weight:var(--font-weight-medium);">The person or team accountable for this definition's accuracy — contact them with definition questions.</span></span></div>
+                  <div>Last Updated<span class="pulse-tt inline-flex"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; right:0; left:auto; text-transform:none; letter-spacing:normal; font-weight:var(--font-weight-medium);">Date this definition's payload or logic was last changed.</span></span></div>
                 </div>
                 <sc-for list="{{ pagedCatalog }}" as="e" hint-placeholder-count="30">
                   <div class="pulse-pipeline-row pulse-row-desktop" role="button" tabindex="0" onClick="{{ e.onSelect }}" onKeyDown="{{ e.onKeyDown }}" style="display:grid; grid-template-columns:0.3fr 2fr 0.9fr 1fr 1fr 1.6fr 1fr; gap:10px; padding:14px 18px; font-size:var(--font-size-sm); border-bottom:1px solid #F0F0F0; align-items:center; cursor:pointer;">
-                    <div class="pulse-row-num" style="color:var(--color-gray-600);">{{ e.rowNumber }}</div>
+                    <div class="pulse-row-num text-muted">{{ e.rowNumber }}</div>
                     <div class="pulse-row-name flex-row gap-8">
                       <span style="font-weight:var(--font-weight-semibold); font-family:ui-monospace,monospace;">{{ e.name }}</span>
                       <sc-if value="{{ e.canonical }}" hint-placeholder-val="{{ false }}">
                         <span title="The agreed, official definition for this concept" style="display:inline-flex; align-items:center; gap:3px; font-size:var(--font-size-xs); font-weight:var(--font-weight-bold); color:var(--color-status-green-fg); background:var(--color-status-green-bg); border-radius:999px; padding:2px 8px; flex-shrink:0;">✓ Canonical</span>
                       </sc-if>
                     </div>
-                    <div class="pulse-row-field" style="color:var(--color-gray-600);"><span class="pulse-mobile-label">Weekly Volume</span>{{ e.weeklyVolumeLabel }}</div>
+                    <div class="pulse-row-field text-muted"><span class="pulse-mobile-label">Weekly Volume</span>{{ e.weeklyVolumeLabel }}</div>
                     <div class="pulse-row-field"><span class="pulse-mobile-label">LOB</span><span style="{{ e.lobChipStyle }}">{{ e.lob }}</span></div>
                     <div class="pulse-row-field"><span class="pulse-mobile-label">Status</span><span style="{{ e.statusChipStyle }}">{{ e.statusLabel }}</span></div>
-                    <div class="pulse-row-field" style="color:var(--color-gray-600);"><span class="pulse-mobile-label">Definition Owner</span>{{ e.definitionOwner }}</div>
-                    <div class="pulse-row-field" style="color:var(--color-gray-600);"><span class="pulse-mobile-label">Last Updated</span>{{ e.lastUpdated }}</div>
+                    <div class="pulse-row-field text-muted"><span class="pulse-mobile-label">Definition Owner</span>{{ e.definitionOwner }}</div>
+                    <div class="pulse-row-field text-muted"><span class="pulse-mobile-label">Last Updated</span>{{ e.lastUpdated }}</div>
                   </div>
                   <div class="pulse-row-mobile" role="button" tabindex="0" onClick="{{ e.onSelect }}" onKeyDown="{{ e.onKeyDown }}">
                     <div class="pulse-row-mobile-header">
@@ -897,23 +898,23 @@
               <div class="pulse-table-wrap" style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; overflow:hidden;">
                 <div class="pulse-pipeline-header" style="display:grid; grid-template-columns:0.3fr 2fr 0.9fr 1fr 1fr 1.4fr 1.1fr 1fr; gap:8px; padding:10px 18px; border-bottom:1px solid #EFEFEF;">
                   <div>#</div>
-                <div>Pipeline<span class="pulse-tt" style="display:inline-flex;"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; left:0; text-transform:none; letter-spacing:normal; font-weight:var(--font-weight-medium);">The name of the data pipeline processing this event stream.</span></span></div>
-                <div>Weekly Volume<span class="pulse-tt" style="display:inline-flex;"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; left:0; text-transform:none; letter-spacing:normal; font-weight:var(--font-weight-medium);">Records processed by this pipeline in the trailing 7 days.</span></span></div>
-                  <div>LOB<span class="pulse-tt" style="display:inline-flex;"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; left:0; text-transform:none; letter-spacing:normal; font-weight:var(--font-weight-medium);">Line of business this pipeline's data belongs to.</span></span></div>
-                  <div>Status<span class="pulse-tt" style="display:inline-flex;"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; left:0; text-transform:none; letter-spacing:normal; font-weight:var(--font-weight-medium);">Overall pipeline health, derived from current SLA attainment and data freshness.</span></span></div>
-                  <div>SLA (target / actual)<span class="pulse-tt" style="display:inline-flex;"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; left:0; text-transform:none; letter-spacing:normal; font-weight:var(--font-weight-medium);">Target delivery reliability for this pipeline vs. the actual rate observed this week.</span></span></div>
-                  <div>Freshness<span class="pulse-tt" style="display:inline-flex;"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; right:0; left:auto; text-transform:none; letter-spacing:normal; font-weight:var(--font-weight-medium);">Time since the most recent successful data load for this pipeline.</span></span></div>
-                  <div>Quality<span class="pulse-tt" style="display:inline-flex;"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; right:0; left:auto; text-transform:none; letter-spacing:normal; font-weight:var(--font-weight-medium);">Composite score (0-100) from schema, completeness, and duplication checks.</span></span></div>
+                <div>Pipeline<span class="pulse-tt inline-flex"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; left:0; text-transform:none; letter-spacing:normal; font-weight:var(--font-weight-medium);">The name of the data pipeline processing this event stream.</span></span></div>
+                <div>Weekly Volume<span class="pulse-tt inline-flex"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; left:0; text-transform:none; letter-spacing:normal; font-weight:var(--font-weight-medium);">Records processed by this pipeline in the trailing 7 days.</span></span></div>
+                  <div>LOB<span class="pulse-tt inline-flex"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; left:0; text-transform:none; letter-spacing:normal; font-weight:var(--font-weight-medium);">Line of business this pipeline's data belongs to.</span></span></div>
+                  <div>Status<span class="pulse-tt inline-flex"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; left:0; text-transform:none; letter-spacing:normal; font-weight:var(--font-weight-medium);">Overall pipeline health, derived from current SLA attainment and data freshness.</span></span></div>
+                  <div>SLA (target / actual)<span class="pulse-tt inline-flex"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; left:0; text-transform:none; letter-spacing:normal; font-weight:var(--font-weight-medium);">Target delivery reliability for this pipeline vs. the actual rate observed this week.</span></span></div>
+                  <div>Freshness<span class="pulse-tt inline-flex"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; right:0; left:auto; text-transform:none; letter-spacing:normal; font-weight:var(--font-weight-medium);">Time since the most recent successful data load for this pipeline.</span></span></div>
+                  <div>Quality<span class="pulse-tt inline-flex"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; right:0; left:auto; text-transform:none; letter-spacing:normal; font-weight:var(--font-weight-medium);">Composite score (0-100) from schema, completeness, and duplication checks.</span></span></div>
                 </div>
                 <sc-for list="{{ pagedPipelines }}" as="p" hint-placeholder-count="30">
                   <div class="pulse-pipeline-row pulse-row-desktop" role="button" tabindex="0" style="display:grid; grid-template-columns:0.3fr 2fr 0.9fr 1fr 1fr 1.4fr 1.1fr 1fr; gap:8px; padding:13px 18px; font-size:var(--font-size-sm); border-bottom:1px solid #F0F0F0; align-items:center; cursor:pointer;" onClick="{{ p.onSelect }}" onKeyDown="{{ p.onKeyDown }}">
-                    <div class="pulse-row-num" style="color:var(--color-gray-600);">{{ p.rowNumber }}</div>
+                    <div class="pulse-row-num text-muted">{{ p.rowNumber }}</div>
                     <div class="pulse-row-name" style="font-weight:var(--font-weight-semibold);">{{ p.name }}</div>
-                    <div class="pulse-row-field" style="color:var(--color-gray-600);"><span class="pulse-mobile-label">Weekly Volume</span>{{ p.weeklyVolumeLabel }}</div>
+                    <div class="pulse-row-field text-muted"><span class="pulse-mobile-label">Weekly Volume</span>{{ p.weeklyVolumeLabel }}</div>
                     <div class="pulse-row-field"><span class="pulse-mobile-label">LOB</span><span style="{{ p.lobChipStyle }}">{{ p.lob }}</span></div>
                     <div class="pulse-row-field"><span class="pulse-mobile-label">Status</span><span style="{{ p.statusChipStyle }}">{{ p.statusLabel }}</span></div>
-                    <div class="pulse-row-field" style="color:var(--color-gray-600);"><span class="pulse-mobile-label">SLA (target / actual)</span>{{ p.slaTarget }} / <span style="{{ p.slaActualStyle }}">{{ p.slaActual }}</span></div>
-                    <div class="pulse-row-field" style="color:var(--color-gray-600);"><span class="pulse-mobile-label">Freshness</span>{{ p.freshness }}</div>
+                    <div class="pulse-row-field text-muted"><span class="pulse-mobile-label">SLA (target / actual)</span>{{ p.slaTarget }} / <span style="{{ p.slaActualStyle }}">{{ p.slaActual }}</span></div>
+                    <div class="pulse-row-field text-muted"><span class="pulse-mobile-label">Freshness</span>{{ p.freshness }}</div>
                     <div class="pulse-row-field">
                       <span class="pulse-mobile-label">Quality</span>
                       <div class="flex-row gap-8">
@@ -969,7 +970,7 @@
                         <div style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:16px; padding:14px 16px; flex:1; display:flex; flex-direction:column; justify-content:space-between; min-height:120px;">
                           <sc-if value="{{ hasAttachedFile }}" hint-placeholder-val="{{ false }}">
                             <div style="display:inline-flex; align-items:center; gap:6px; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:7px; padding:5px 10px; font-size:var(--font-size-sm); margin-bottom:10px;">
-                              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M21 10.5v6a5.5 5.5 0 0 1-11 0v-9a3.5 3.5 0 1 1 7 0v8a1.5 1.5 0 0 1-3 0v-7"/></svg> {{ attachedFileName }}
+                              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0"><path d="M21 10.5v6a5.5 5.5 0 0 1-11 0v-9a3.5 3.5 0 1 1 7 0v8a1.5 1.5 0 0 1-3 0v-7"/></svg> {{ attachedFileName }}
                               <span onClick="{{ clearAttachedFile }}" style="cursor:pointer; color:var(--color-gray-600); font-weight:var(--font-weight-bold);">✕</span>
                             </div>
                           </sc-if>
@@ -980,9 +981,9 @@
                               <button onClick="{{ onVoiceClick }}" class="btn-icon-round" style="background:none; color:var(--color-gray-600);"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3"/></svg></button>
                               <sc-if value="{{ attachMenuOpen }}" hint-placeholder-val="{{ false }}">
                                 <div style="position:absolute; top:38px; left:0; background:#FFFFFF; border:1px solid #E5E5E5; border-radius:10px; box-shadow:0 8px 24px rgba(0,0,0,0.10); width:220px; z-index:10; overflow:hidden;">
-                                  <div onClick="{{ onUploadFile }}" class="flex-row gap-10" style="padding:10px 14px; font-size:var(--font-size-sm); cursor:pointer; border-bottom:1px solid #F0F0F0; color:var(--color-gray-600);"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5"/></svg><span style="color:var(--color-black);">Upload a file</span></div>
-                                  <div onClick="{{ onUploadScreenshot }}" class="flex-row gap-10" style="padding:10px 14px; font-size:var(--font-size-sm); cursor:pointer; border-bottom:1px solid #F0F0F0; color:var(--color-gray-600);"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 16l-5-5-4 4-2-2-5 5"/></svg><span style="color:var(--color-black);">Attach a screenshot</span></div>
-                                  <div onClick="{{ onReferenceCatalogEntry }}" class="flex-row gap-10" style="padding:10px 14px; font-size:var(--font-size-sm); cursor:pointer; color:var(--color-gray-600);"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><rect x="3.5" y="4" width="17" height="16" rx="2.5"/><path d="M3.5 9.5h17M9.5 9.5V20"/></svg><span style="color:var(--color-black);">Reference a catalog entry</span></div>
+                                  <div onClick="{{ onUploadFile }}" class="flex-row gap-10" style="padding:10px 14px; font-size:var(--font-size-sm); cursor:pointer; border-bottom:1px solid #F0F0F0; color:var(--color-gray-600);"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0"><path d="M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5"/></svg><span class="text-default">Upload a file</span></div>
+                                  <div onClick="{{ onUploadScreenshot }}" class="flex-row gap-10" style="padding:10px 14px; font-size:var(--font-size-sm); cursor:pointer; border-bottom:1px solid #F0F0F0; color:var(--color-gray-600);"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 16l-5-5-4 4-2-2-5 5"/></svg><span class="text-default">Attach a screenshot</span></div>
+                                  <div onClick="{{ onReferenceCatalogEntry }}" class="flex-row gap-10" style="padding:10px 14px; font-size:var(--font-size-sm); cursor:pointer; color:var(--color-gray-600);"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0"><rect x="3.5" y="4" width="17" height="16" rx="2.5"/><path d="M3.5 9.5h17M9.5 9.5V20"/></svg><span class="text-default">Reference a catalog entry</span></div>
                                 </div>
                               </sc-if>
                             </div>
@@ -1026,7 +1027,7 @@
                           <div style="font-size:var(--font-size-sm); color:var(--color-gray-600); border:1px dashed #E5E5E5; border-radius:10px; padding:20px; text-align:center; margin-bottom:20px;">Your conversations will show up here.</div>
                         </sc-if>
 
-                        <div style="flex-shrink:0;">
+                        <div class="flex-shrink-0">
                           <div class="pulse-heading-label" style="margin-bottom:10px;">Context</div>
                           <div style="font-size:var(--font-size-xs); color:var(--color-gray-600); margin-bottom:4px;">Custom instructions</div>
                           <textarea value="{{ assistantContext.instructions }}" onChange="{{ onContextInstructionsChange }}" placeholder="e.g. I'm on the Eats Growth team — prioritize Eats context over Rides when relevant." rows="3" style="width:100%; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:8px 10px; font-size:var(--font-size-sm); font-family:inherit; resize:vertical;"></textarea>
@@ -1065,7 +1066,7 @@
                             <div style="margin-top:10px; background:#FBE9E6; border:1px solid #F0C4BC; color:var(--color-status-red-fg); font-size:var(--font-size-sm); border-radius:8px; padding:8px 10px;">⚠ {{ msg.dataWarning }}</div>
                           </sc-if>
                           <sc-if value="{{ msg.catalogRefLabel }}" hint-placeholder-val="{{ false }}">
-                            <div onClick="{{ msg.onViewCatalog }}" style="margin-top:10px; display:inline-flex; align-items:center; gap:6px; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:7px; padding:6px 10px; font-size:var(--font-size-sm); cursor:pointer;"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><rect x="3.5" y="4" width="17" height="16" rx="2.5"/><path d="M3.5 9.5h17M9.5 9.5V20"/></svg><span style="font-family:ui-monospace,monospace;">{{ msg.catalogRefLabel }}</span> → open in catalog</div>
+                            <div onClick="{{ msg.onViewCatalog }}" style="margin-top:10px; display:inline-flex; align-items:center; gap:6px; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:7px; padding:6px 10px; font-size:var(--font-size-sm); cursor:pointer;"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0"><rect x="3.5" y="4" width="17" height="16" rx="2.5"/><path d="M3.5 9.5h17M9.5 9.5V20"/></svg><span style="font-family:ui-monospace,monospace;">{{ msg.catalogRefLabel }}</span> → open in catalog</div>
                           </sc-if>
                           <sc-if value="{{ msg.freshnessLabel }}" hint-placeholder-val="{{ false }}">
                             <div style="margin-top:6px; display:flex; align-items:center; gap:5px; font-size:var(--font-size-xs); color:var(--color-status-green-fg);"><span style="width:6px; height:6px; border-radius:50%; background:#06C167; flex-shrink:0;"></span>{{ msg.freshnessLabel }}</div>
@@ -1110,7 +1111,7 @@
                   <div style="padding:14px 20px; border-top:1px solid #EFEFEF; flex-shrink:0;">
                     <sc-if value="{{ hasAttachedFile }}" hint-placeholder-val="{{ false }}">
                       <div style="display:inline-flex; align-items:center; gap:6px; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:7px; padding:5px 10px; font-size:var(--font-size-sm); margin-bottom:10px;">
-                        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M21 10.5v6a5.5 5.5 0 0 1-11 0v-9a3.5 3.5 0 1 1 7 0v8a1.5 1.5 0 0 1-3 0v-7"/></svg> {{ attachedFileName }}
+                        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0"><path d="M21 10.5v6a5.5 5.5 0 0 1-11 0v-9a3.5 3.5 0 1 1 7 0v8a1.5 1.5 0 0 1-3 0v-7"/></svg> {{ attachedFileName }}
                         <span onClick="{{ clearAttachedFile }}" style="cursor:pointer; color:var(--color-gray-600); font-weight:var(--font-weight-bold);">✕</span>
                       </div>
                     </sc-if>
@@ -1120,9 +1121,9 @@
                         <button onClick="{{ onVoiceClick }}" class="btn-icon-round" style="background:none; color:var(--color-gray-600);"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3"/></svg></button>
                         <sc-if value="{{ attachMenuOpen }}" hint-placeholder-val="{{ false }}">
                           <div style="position:absolute; bottom:38px; left:0; background:#FFFFFF; border:1px solid #E5E5E5; border-radius:10px; box-shadow:0 8px 24px rgba(0,0,0,0.10); width:220px; z-index:10; overflow:hidden;">
-                            <div onClick="{{ onUploadFile }}" class="flex-row gap-10" style="padding:10px 14px; font-size:var(--font-size-sm); cursor:pointer; border-bottom:1px solid #F0F0F0; color:var(--color-gray-600);"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5"/></svg><span style="color:var(--color-black);">Upload a file</span></div>
-                            <div onClick="{{ onUploadScreenshot }}" class="flex-row gap-10" style="padding:10px 14px; font-size:var(--font-size-sm); cursor:pointer; border-bottom:1px solid #F0F0F0; color:var(--color-gray-600);"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 16l-5-5-4 4-2-2-5 5"/></svg><span style="color:var(--color-black);">Attach a screenshot</span></div>
-                            <div onClick="{{ onReferenceCatalogEntry }}" class="flex-row gap-10" style="padding:10px 14px; font-size:var(--font-size-sm); cursor:pointer; color:var(--color-gray-600);"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><rect x="3.5" y="4" width="17" height="16" rx="2.5"/><path d="M3.5 9.5h17M9.5 9.5V20"/></svg><span style="color:var(--color-black);">Reference a catalog entry</span></div>
+                            <div onClick="{{ onUploadFile }}" class="flex-row gap-10" style="padding:10px 14px; font-size:var(--font-size-sm); cursor:pointer; border-bottom:1px solid #F0F0F0; color:var(--color-gray-600);"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0"><path d="M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5"/></svg><span class="text-default">Upload a file</span></div>
+                            <div onClick="{{ onUploadScreenshot }}" class="flex-row gap-10" style="padding:10px 14px; font-size:var(--font-size-sm); cursor:pointer; border-bottom:1px solid #F0F0F0; color:var(--color-gray-600);"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 16l-5-5-4 4-2-2-5 5"/></svg><span class="text-default">Attach a screenshot</span></div>
+                            <div onClick="{{ onReferenceCatalogEntry }}" class="flex-row gap-10" style="padding:10px 14px; font-size:var(--font-size-sm); cursor:pointer; color:var(--color-gray-600);"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0"><rect x="3.5" y="4" width="17" height="16" rx="2.5"/><path d="M3.5 9.5h17M9.5 9.5V20"/></svg><span class="text-default">Reference a catalog entry</span></div>
                           </div>
                         </sc-if>
                       </div>
@@ -1201,25 +1202,25 @@
                   <div class="pulse-wizard-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:24px; align-items:start;">
                     <div class="flex-col gap-12" style="min-width:0;">
                       <div>
-                        <label class="pulse-heading-label" style="display:block; margin-bottom:6px;">Event / schema name</label>
+                        <label class="pulse-heading-label">Event / schema name</label>
                         <input value="{{ contributeForm.name }}" onChange="{{ onContributeNameChange }}" placeholder="e.g. driver_rating_submitted" class="form-input" style="width:100%; box-sizing:border-box; font-family:ui-monospace,monospace;" />
                       </div>
                       <div>
-                        <label class="pulse-heading-label" style="display:block; margin-bottom:6px;">What does this event capture?</label>
+                        <label class="pulse-heading-label">What does this event capture?</label>
                         <textarea value="{{ contributeForm.description }}" onChange="{{ onContributeDescChange }}" placeholder="Describe when this event fires and why it's needed…" rows="3" class="form-input" style="width:100%; box-sizing:border-box; font-family:inherit; resize:vertical;"></textarea>
                       </div>
                       <div>
-                        <label class="pulse-heading-label" style="display:block; margin-bottom:6px;">Source repo (optional)</label>
+                        <label class="pulse-heading-label">Source repo (optional)</label>
                         <input value="{{ contributeForm.repoLink }}" onChange="{{ onContributeRepoLinkChange }}" placeholder="https://github.com/uber/…" class="form-input" style="width:100%; box-sizing:border-box;" />
                       </div>
                       <div>
-                        <label class="pulse-heading-label" style="display:block; margin-bottom:6px;">Related Jira epic (optional)</label>
+                        <label class="pulse-heading-label">Related Jira epic (optional)</label>
                         <input value="{{ contributeForm.jiraLink }}" onChange="{{ onContributeJiraLinkChange }}" placeholder="https://uber.atlassian.net/browse/…" class="form-input" style="width:100%; box-sizing:border-box;" />
                       </div>
                     </div>
                     <div class="flex-col gap-12" style="min-width:0;">
                       <div>
-                        <label class="pulse-heading-label" style="display:block; margin-bottom:6px;">Line of business</label>
+                        <label class="pulse-heading-label">Line of business</label>
                         <select value="{{ contributeForm.lob }}" onChange="{{ onContributeLobChange }}" class="form-input" style="width:100%; box-sizing:border-box;">
                           <option value="Ridesharing">Ridesharing</option>
                           <option value="Eats">Eats</option>
@@ -1228,7 +1229,7 @@
                         </select>
                       </div>
                       <div>
-                        <label class="pulse-heading-label" style="display:block; margin-bottom:6px;">Owning team</label>
+                        <label class="pulse-heading-label">Owning team</label>
                         <select value="{{ contributeForm.owningTeam }}" onChange="{{ onContributeOwningTeamChange }}" class="form-input" style="width:100%; box-sizing:border-box;">
                           <sc-for list="{{ owningTeamOptions }}" as="team" hint-placeholder-count="5">
                             <option value="{{ team }}">{{ team }}</option>
@@ -1236,11 +1237,11 @@
                         </select>
                       </div>
                       <div>
-                        <label class="pulse-heading-label" style="display:block; margin-bottom:6px;">Expected weekly volume (optional)</label>
+                        <label class="pulse-heading-label">Expected weekly volume (optional)</label>
                         <input value="{{ contributeForm.expectedVolume }}" onChange="{{ onContributeVolumeChange }}" placeholder="e.g. 12.5M" class="form-input" style="width:100%; box-sizing:border-box;" />
                       </div>
                       <div>
-                        <label class="pulse-heading-label" style="display:block; margin-bottom:6px;">Sample payload (optional)</label>
+                        <label class="pulse-heading-label">Sample payload (optional)</label>
                         <div class="flex-col gap-8">
                           <sc-for list="{{ payloadRowsView }}" as="row" hint-placeholder-count="1">
                             <div class="flex-row gap-8">
@@ -1320,7 +1321,7 @@
                   <div class="pulse-wizard-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:24px; align-items:start;">
                     <div class="flex-col gap-12" style="min-width:0;">
                       <div>
-                        <label class="pulse-heading-label" style="display:block; margin-bottom:6px;">What is this about?</label>
+                        <label class="pulse-heading-label">What is this about?</label>
 
                         <sc-if value="{{ showReportSelectedChip }}" hint-placeholder-val="{{ false }}">
                           <div class="flex-row-between" style="background:#F6F6F6; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px;">
@@ -1335,7 +1336,7 @@
                             <div class="flex-col" style="gap:4px;">
                               <sc-for list="{{ reportSelectedDataPointHistory }}" as="h" hint-placeholder-count="5">
                                 <div class="flex-row-between" style="font-size:var(--font-size-sm);">
-                                  <span style="color:var(--color-gray-600);">{{ h.date }}</span>
+                                  <span class="text-muted">{{ h.date }}</span>
                                   <span class="flex-row gap-6">Quality {{ h.quality }}<span style="width:7px; height:7px; border-radius:var(--radius-circle); background:{{ h.dotColor }};"></span></span>
                                 </div>
                               </sc-for>
@@ -1369,25 +1370,25 @@
                         </button>
                       </div>
                       <div>
-                        <label class="pulse-heading-label" style="display:block; margin-bottom:6px;">Title</label>
+                        <label class="pulse-heading-label">Title</label>
                         <input value="{{ reportForm.title }}" onChange="{{ onReportTitleChange }}" placeholder="e.g. Quality score looks wrong for eats_order_placed" class="form-input" style="width:100%; box-sizing:border-box;" />
                       </div>
                       <div>
-                        <label class="pulse-heading-label" style="display:block; margin-bottom:6px;">Description</label>
+                        <label class="pulse-heading-label">Description</label>
                         <textarea value="{{ reportForm.description }}" onChange="{{ onReportDescChange }}" rows="3" placeholder="What did you see, and what did you expect?" class="form-input" style="width:100%; box-sizing:border-box; font-family:inherit; resize:vertical;"></textarea>
                       </div>
                       <div>
-                        <label class="pulse-heading-label" style="display:block; margin-bottom:6px;">Related Jira ticket (optional)</label>
+                        <label class="pulse-heading-label">Related Jira ticket (optional)</label>
                         <input value="{{ reportForm.jiraLink }}" onChange="{{ onReportJiraLinkChange }}" placeholder="https://uber.atlassian.net/browse/…" class="form-input" style="width:100%; box-sizing:border-box;" />
                       </div>
                       <div>
-                        <label class="pulse-heading-label" style="display:block; margin-bottom:6px;">Related PR (optional)</label>
+                        <label class="pulse-heading-label">Related PR (optional)</label>
                         <input value="{{ reportForm.prLink }}" onChange="{{ onReportPrLinkChange }}" placeholder="https://github.com/uber/…" class="form-input" style="width:100%; box-sizing:border-box;" />
                       </div>
                     </div>
                     <div class="flex-col gap-12" style="min-width:0;">
                       <div>
-                        <label class="pulse-heading-label" style="display:block; margin-bottom:6px;">Category</label>
+                        <label class="pulse-heading-label">Category</label>
                         <select value="{{ reportForm.category }}" onChange="{{ onReportCategoryChange }}" class="form-input" style="width:100%; box-sizing:border-box;">
                           <option value="Data Quality">Data Quality</option>
                           <option value="Scalability">Scalability</option>
@@ -1396,7 +1397,7 @@
                         </select>
                       </div>
                       <div>
-                        <label class="pulse-heading-label" style="display:block; margin-bottom:6px;">Severity</label>
+                        <label class="pulse-heading-label">Severity</label>
                         <select value="{{ reportForm.severity }}" onChange="{{ onReportSeverityChange }}" class="form-input" style="width:100%; box-sizing:border-box;">
                           <option value="Low">Low</option>
                           <option value="Medium">Medium</option>
@@ -1404,17 +1405,17 @@
                         </select>
                       </div>
                       <div>
-                        <label class="pulse-heading-label" style="display:block; margin-bottom:6px;">Log file or screenshot (optional)</label>
+                        <label class="pulse-heading-label">Log file or screenshot (optional)</label>
                         <sc-if value="{{ hasReportAttachedFile }}" hint-placeholder-val="{{ false }}">
-                          <div style="display:inline-flex; align-items:center; gap:8px; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:8px; padding:8px 12px; font-size:var(--font-size-sm);"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M21 10.5v6a5.5 5.5 0 0 1-11 0v-9a3.5 3.5 0 1 1 7 0v8a1.5 1.5 0 0 1-3 0v-7"/></svg> {{ reportAttachedFileName }}<span onClick="{{ clearReportAttachedFile }}" style="cursor:pointer; color:var(--color-gray-600); font-weight:var(--font-weight-bold);">✕</span></div>
+                          <div style="display:inline-flex; align-items:center; gap:8px; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:8px; padding:8px 12px; font-size:var(--font-size-sm);"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0"><path d="M21 10.5v6a5.5 5.5 0 0 1-11 0v-9a3.5 3.5 0 1 1 7 0v8a1.5 1.5 0 0 1-3 0v-7"/></svg> {{ reportAttachedFileName }}<span onClick="{{ clearReportAttachedFile }}" style="cursor:pointer; color:var(--color-gray-600); font-weight:var(--font-weight-bold);">✕</span></div>
                         </sc-if>
                         <sc-if value="{{ showReportAttachPicker }}" hint-placeholder-val="{{ true }}">
                           <div style="position:relative;">
-                            <button onClick="{{ toggleReportAttachMenu }}" style="background:none; border:1px solid #E5E5E5; border-radius:8px; padding:8px 12px; font-size:var(--font-size-sm); color:var(--color-gray-600); cursor:pointer; display:inline-flex; align-items:center; gap:8px;"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M21 10.5v6a5.5 5.5 0 0 1-11 0v-9a3.5 3.5 0 1 1 7 0v8a1.5 1.5 0 0 1-3 0v-7"/></svg>Attach a file</button>
+                            <button onClick="{{ toggleReportAttachMenu }}" style="background:none; border:1px solid #E5E5E5; border-radius:8px; padding:8px 12px; font-size:var(--font-size-sm); color:var(--color-gray-600); cursor:pointer; display:inline-flex; align-items:center; gap:8px;"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0"><path d="M21 10.5v6a5.5 5.5 0 0 1-11 0v-9a3.5 3.5 0 1 1 7 0v8a1.5 1.5 0 0 1-3 0v-7"/></svg>Attach a file</button>
                             <sc-if value="{{ reportAttachMenuOpen }}" hint-placeholder-val="{{ false }}">
                               <div style="position:absolute; top:calc(100% + 4px); left:0; background:#FFFFFF; border:1px solid #E5E5E5; border-radius:8px; box-shadow:0 8px 24px rgba(0,0,0,0.10); width:200px; z-index:5; overflow:hidden;">
-                                <div onClick="{{ onReportUploadFile }}" class="flex-row gap-10" style="padding:10px 14px; font-size:var(--font-size-sm); cursor:pointer; border-bottom:1px solid #F0F0F0; color:var(--color-gray-600);"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5"/></svg><span style="color:var(--color-black);">Upload a log file</span></div>
-                                <div onClick="{{ onReportUploadScreenshot }}" class="flex-row gap-10" style="padding:10px 14px; font-size:var(--font-size-sm); cursor:pointer; color:var(--color-gray-600);"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 16l-5-5-4 4-2-2-5 5"/></svg><span style="color:var(--color-black);">Attach a screenshot</span></div>
+                                <div onClick="{{ onReportUploadFile }}" class="flex-row gap-10" style="padding:10px 14px; font-size:var(--font-size-sm); cursor:pointer; border-bottom:1px solid #F0F0F0; color:var(--color-gray-600);"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0"><path d="M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5"/></svg><span class="text-default">Upload a log file</span></div>
+                                <div onClick="{{ onReportUploadScreenshot }}" class="flex-row gap-10" style="padding:10px 14px; font-size:var(--font-size-sm); cursor:pointer; color:var(--color-gray-600);"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 16l-5-5-4 4-2-2-5 5"/></svg><span class="text-default">Attach a screenshot</span></div>
                               </div>
                             </sc-if>
                           </div>
@@ -1499,7 +1500,7 @@
             <sc-if value="{{ showCreateKeyForm }}" hint-placeholder-val="{{ false }}">
               <div class="pulse-stack-mobile" style="background:#F6F6F6; border:1px solid #E5E5E5; border-radius:10px; padding:16px; margin-bottom:14px; display:flex; align-items:flex-end; gap:12px;">
                 <div style="flex:1; min-width:0;">
-                  <label class="pulse-heading-label" style="display:block; margin-bottom:6px;">Key name</label>
+                  <label class="pulse-heading-label">Key name</label>
                   <input value="{{ newKeyName }}" onChange="{{ onNewKeyNameChange }}" placeholder="e.g. Staging integration" class="form-input" style="width:100%; box-sizing:border-box; background:#FFFFFF;" />
                 </div>
                 <button onClick="{{ createApiKey }}" style="background:#0A0A0A; color:#FFF; border:none; border-radius:999px; padding:10px 18px; font-size:var(--font-size-sm); font-weight:var(--font-weight-bold); cursor:pointer; flex-shrink:0;">Create key</button>
@@ -1527,8 +1528,8 @@
                   <div class="pulse-pipeline-row pulse-row-desktop" style="display:grid; grid-template-columns:1.5fr 1.5fr 1fr 1fr 120px; gap:10px; padding:14px 18px; font-size:var(--font-size-sm); border-bottom:1px solid #F0F0F0; align-items:center;">
                     <div class="pulse-row-name" style="font-weight:var(--font-weight-semibold); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ k.name }}</div>
                     <div class="pulse-row-field" style="font-family:ui-monospace,monospace; color:var(--color-gray-600); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"><span class="pulse-mobile-label">Key</span>{{ k.maskedKey }}</div>
-                    <div class="pulse-row-field" style="color:var(--color-gray-600);"><span class="pulse-mobile-label">Created</span>{{ k.createdLabel }}</div>
-                    <div class="pulse-row-field" style="color:var(--color-gray-600);"><span class="pulse-mobile-label">Last used</span>{{ k.lastUsedLabel }}</div>
+                    <div class="pulse-row-field text-muted"><span class="pulse-mobile-label">Created</span>{{ k.createdLabel }}</div>
+                    <div class="pulse-row-field text-muted"><span class="pulse-mobile-label">Last used</span>{{ k.lastUsedLabel }}</div>
                     <div>
                       <sc-if value="{{ k.isConfirmingDelete }}" hint-placeholder-val="{{ false }}">
                         <div class="flex-row gap-6" style="justify-content:flex-end;">
@@ -1723,7 +1724,7 @@
           <div class="pulse-heading-label" style="margin-bottom:10px;">Sample payload</div>
           <div style="background:#F6F6F6; border-radius:8px; padding:12px; font-family:ui-monospace,monospace; font-size:var(--font-size-sm); line-height:1.7;">
             <sc-for list="{{ selectedRoadmapItem.payloadRows }}" as="pr" hint-placeholder-count="3">
-              <div><span style="color:var(--color-gray-600);">{{ pr.field }}:</span> {{ pr.value }}</div>
+              <div><span class="text-muted">{{ pr.field }}:</span> {{ pr.value }}</div>
             </sc-for>
           </div>
         </sc-if>
@@ -1735,7 +1736,7 @@
       <div class="pulse-side-sheet" style="position:fixed; top:0; right:0; bottom:0; width:440px; background:#FFFFFF; border-left:1px solid #E5E5E5; z-index:31; display:flex; flex-direction:column;">
         <div class="flex-row-between" style="padding:18px 20px; border-bottom:1px solid #E5E5E5; flex-shrink:0;">
           <div class="flex-row gap-8" style="min-width:0;">
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" style="flex-shrink:0;"><path d="M12 3l1.7 4.9L18.6 9.4l-4.9 1.7L12 16l-1.7-4.9L5.4 9.4l4.9-1.7L12 3z"/><path d="M18.5 14.5l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7.7-2z"/></svg>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" class="flex-shrink-0"><path d="M12 3l1.7 4.9L18.6 9.4l-4.9 1.7L12 16l-1.7-4.9L5.4 9.4l4.9-1.7L12 3z"/><path d="M18.5 14.5l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7.7-2z"/></svg>
             <div class="title-h2" style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ askPulseSheetTitle }}</div>
           </div>
           <div class="flex-row gap-6 flex-shrink-0">
@@ -1759,7 +1760,7 @@
                   <div style="margin-top:10px; background:#FBE9E6; border:1px solid #F0C4BC; color:var(--color-status-red-fg); font-size:var(--font-size-sm); border-radius:8px; padding:8px 10px;">⚠ {{ msg.dataWarning }}</div>
                 </sc-if>
                 <sc-if value="{{ msg.catalogRefLabel }}" hint-placeholder-val="{{ false }}">
-                  <div onClick="{{ msg.onViewCatalog }}" style="margin-top:10px; display:inline-flex; align-items:center; gap:6px; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:7px; padding:6px 10px; font-size:var(--font-size-sm); cursor:pointer;"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><rect x="3.5" y="4" width="17" height="16" rx="2.5"/><path d="M3.5 9.5h17M9.5 9.5V20"/></svg><span style="font-family:ui-monospace,monospace;">{{ msg.catalogRefLabel }}</span> → open in catalog</div>
+                  <div onClick="{{ msg.onViewCatalog }}" style="margin-top:10px; display:inline-flex; align-items:center; gap:6px; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:7px; padding:6px 10px; font-size:var(--font-size-sm); cursor:pointer;"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0"><rect x="3.5" y="4" width="17" height="16" rx="2.5"/><path d="M3.5 9.5h17M9.5 9.5V20"/></svg><span style="font-family:ui-monospace,monospace;">{{ msg.catalogRefLabel }}</span> → open in catalog</div>
                 </sc-if>
                 <sc-if value="{{ msg.freshnessLabel }}" hint-placeholder-val="{{ false }}">
                   <div style="margin-top:6px; display:flex; align-items:center; gap:5px; font-size:var(--font-size-xs); color:var(--color-status-green-fg);"><span style="width:6px; height:6px; border-radius:50%; background:#06C167; flex-shrink:0;"></span>{{ msg.freshnessLabel }}</div>
@@ -1778,7 +1779,7 @@
         <div style="padding:14px 20px; border-top:1px solid #EFEFEF; flex-shrink:0;">
           <sc-if value="{{ hasAttachedFile }}" hint-placeholder-val="{{ false }}">
             <div style="display:inline-flex; align-items:center; gap:6px; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:7px; padding:5px 10px; font-size:var(--font-size-sm); margin-bottom:10px;">
-              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M21 10.5v6a5.5 5.5 0 0 1-11 0v-9a3.5 3.5 0 1 1 7 0v8a1.5 1.5 0 0 1-3 0v-7"/></svg> {{ attachedFileName }}
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0"><path d="M21 10.5v6a5.5 5.5 0 0 1-11 0v-9a3.5 3.5 0 1 1 7 0v8a1.5 1.5 0 0 1-3 0v-7"/></svg> {{ attachedFileName }}
               <span onClick="{{ clearAttachedFile }}" style="cursor:pointer; color:var(--color-gray-600); font-weight:var(--font-weight-bold);">✕</span>
             </div>
           </sc-if>
@@ -1788,9 +1789,9 @@
               <button onClick="{{ onVoiceClick }}" class="btn-icon-round" style="background:none; color:var(--color-gray-600);"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3"/></svg></button>
               <sc-if value="{{ attachMenuOpen }}" hint-placeholder-val="{{ false }}">
                 <div style="position:absolute; bottom:38px; left:0; background:#FFFFFF; border:1px solid #E5E5E5; border-radius:10px; box-shadow:0 8px 24px rgba(0,0,0,0.10); width:220px; z-index:10; overflow:hidden;">
-                  <div onClick="{{ onUploadFile }}" class="flex-row gap-10" style="padding:10px 14px; font-size:var(--font-size-sm); cursor:pointer; border-bottom:1px solid #F0F0F0; color:var(--color-gray-600);"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5"/></svg><span style="color:var(--color-black);">Upload a file</span></div>
-                  <div onClick="{{ onUploadScreenshot }}" class="flex-row gap-10" style="padding:10px 14px; font-size:var(--font-size-sm); cursor:pointer; border-bottom:1px solid #F0F0F0; color:var(--color-gray-600);"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 16l-5-5-4 4-2-2-5 5"/></svg><span style="color:var(--color-black);">Attach a screenshot</span></div>
-                  <div onClick="{{ onReferenceCatalogEntry }}" class="flex-row gap-10" style="padding:10px 14px; font-size:var(--font-size-sm); cursor:pointer; color:var(--color-gray-600);"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><rect x="3.5" y="4" width="17" height="16" rx="2.5"/><path d="M3.5 9.5h17M9.5 9.5V20"/></svg><span style="color:var(--color-black);">Reference a catalog entry</span></div>
+                  <div onClick="{{ onUploadFile }}" class="flex-row gap-10" style="padding:10px 14px; font-size:var(--font-size-sm); cursor:pointer; border-bottom:1px solid #F0F0F0; color:var(--color-gray-600);"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0"><path d="M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5"/></svg><span class="text-default">Upload a file</span></div>
+                  <div onClick="{{ onUploadScreenshot }}" class="flex-row gap-10" style="padding:10px 14px; font-size:var(--font-size-sm); cursor:pointer; border-bottom:1px solid #F0F0F0; color:var(--color-gray-600);"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 16l-5-5-4 4-2-2-5 5"/></svg><span class="text-default">Attach a screenshot</span></div>
+                  <div onClick="{{ onReferenceCatalogEntry }}" class="flex-row gap-10" style="padding:10px 14px; font-size:var(--font-size-sm); cursor:pointer; color:var(--color-gray-600);"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0"><rect x="3.5" y="4" width="17" height="16" rx="2.5"/><path d="M3.5 9.5h17M9.5 9.5V20"/></svg><span class="text-default">Reference a catalog entry</span></div>
                 </div>
               </sc-if>
             </div>
