@@ -1288,11 +1288,17 @@
                     <div class="flex-col gap-12" style="min-width:0;">
                       <div>
                         <label class="pulse-heading-label">Event / schema name</label>
-                        <input value="{{ contributeForm.name }}" onChange="{{ onContributeNameChange }}" placeholder="e.g. driver_rating_submitted" class="form-input" style="width:100%; box-sizing:border-box; font-family:ui-monospace,monospace;" />
+                        <input value="{{ contributeForm.name }}" onChange="{{ onContributeNameChange }}" placeholder="e.g. driver_rating_submitted" class="form-input" style="{{ contributeNameInputStyle }}" />
+                        <sc-if value="{{ hasContributeNameError }}" hint-placeholder-val="{{ false }}">
+                          <div style="font-size:var(--font-size-xs); color:var(--color-status-red-fg); margin-top:4px;">{{ contributeNameError }}</div>
+                        </sc-if>
                       </div>
                       <div>
                         <label class="pulse-heading-label">What does this event capture?</label>
-                        <textarea value="{{ contributeForm.description }}" onChange="{{ onContributeDescChange }}" placeholder="Describe when this event fires and why it's needed…" rows="3" class="form-input" style="width:100%; box-sizing:border-box; font-family:inherit; resize:vertical;"></textarea>
+                        <textarea value="{{ contributeForm.description }}" onChange="{{ onContributeDescChange }}" placeholder="Describe when this event fires and why it's needed…" rows="3" class="form-input" style="{{ contributeDescInputStyle }}"></textarea>
+                        <sc-if value="{{ hasContributeDescError }}" hint-placeholder-val="{{ false }}">
+                          <div style="font-size:var(--font-size-xs); color:var(--color-status-red-fg); margin-top:4px;">{{ contributeDescError }}</div>
+                        </sc-if>
                       </div>
                       <div>
                         <label class="pulse-heading-label">Source repo (optional)</label>
@@ -1453,14 +1459,23 @@
                           <span style="{{ reportGeneralCheckStyle }}"></span>
                           This isn't about a specific data point
                         </button>
+                        <sc-if value="{{ hasReportDataPointError }}" hint-placeholder-val="{{ false }}">
+                          <div style="font-size:var(--font-size-xs); color:var(--color-status-red-fg); margin-top:4px;">{{ reportDataPointError }}</div>
+                        </sc-if>
                       </div>
                       <div>
                         <label class="pulse-heading-label">Title</label>
-                        <input value="{{ reportForm.title }}" onChange="{{ onReportTitleChange }}" placeholder="e.g. Quality score looks wrong for eats_order_placed" class="form-input" style="width:100%; box-sizing:border-box;" />
+                        <input value="{{ reportForm.title }}" onChange="{{ onReportTitleChange }}" placeholder="e.g. Quality score looks wrong for eats_order_placed" class="form-input" style="{{ reportTitleInputStyle }}" />
+                        <sc-if value="{{ hasReportTitleError }}" hint-placeholder-val="{{ false }}">
+                          <div style="font-size:var(--font-size-xs); color:var(--color-status-red-fg); margin-top:4px;">{{ reportTitleError }}</div>
+                        </sc-if>
                       </div>
                       <div>
                         <label class="pulse-heading-label">Description</label>
-                        <textarea value="{{ reportForm.description }}" onChange="{{ onReportDescChange }}" rows="3" placeholder="What did you see, and what did you expect?" class="form-input" style="width:100%; box-sizing:border-box; font-family:inherit; resize:vertical;"></textarea>
+                        <textarea value="{{ reportForm.description }}" onChange="{{ onReportDescChange }}" rows="3" placeholder="What did you see, and what did you expect?" class="form-input" style="{{ reportDescInputStyle }}"></textarea>
+                        <sc-if value="{{ hasReportDescError }}" hint-placeholder-val="{{ false }}">
+                          <div style="font-size:var(--font-size-xs); color:var(--color-status-red-fg); margin-top:4px;">{{ reportDescError }}</div>
+                        </sc-if>
                       </div>
                       <div>
                         <label class="pulse-heading-label">Related Jira ticket (optional)</label>
@@ -2242,9 +2257,9 @@ class Component extends DCLogic {
     mobileMoreOpen: false,
     roadmapActiveCol: 0,
     chatInput:'', attachedFileName:null, attachMenuOpen:false, chatSearchQuery:'',
-    contributeStep:1,
+    contributeStep:1, contributeErrors:{},
     contributeForm:{name:'',lob:'Ridesharing',owningTeam:OWNING_TEAMS[0],description:'',repoLink:'',jiraLink:'',expectedVolume:'',payloadRows:[{field:'',value:''}]},
-    reportStep:1, reportDataPointQuery:'', reportAttachMenuOpen:false,
+    reportStep:1, reportDataPointQuery:'', reportAttachMenuOpen:false, reportErrors:{},
     reportForm:{title:'',description:'',severity:'Medium',category:'Data Quality',generalIssue:false,linkedDataPointId:null,linkedDataPointType:null,jiraLink:'',prLink:'',attachedFileName:null},
     extraSubmissions:[],
     apiKeys: SEED_API_KEYS,
@@ -2285,12 +2300,12 @@ class Component extends DCLogic {
     this.setState({roadmapActiveCol: i});
   };
   goReport = () => this.setState({
-    appScreen:'report', selectedEntryId:null, selectedPipelineId:null, selectedDetailRef:null, detailReturnScreen:null, reportStep:1, reportDataPointQuery:'', reportAttachMenuOpen:false,
+    appScreen:'report', selectedEntryId:null, selectedPipelineId:null, selectedDetailRef:null, detailReturnScreen:null, reportStep:1, reportDataPointQuery:'', reportAttachMenuOpen:false, reportErrors:{},
     reportForm:{title:'',description:'',severity:'Medium',category:'Data Quality',generalIssue:false,linkedDataPointId:null,linkedDataPointType:null,jiraLink:'',prLink:'',attachedFileName:null},
     mobileMoreOpen:false
   });
   goContribute = () => this.setState({
-    appScreen:'contribute', selectedEntryId:null, selectedPipelineId:null, selectedDetailRef:null, detailReturnScreen:null, contributeStep:1,
+    appScreen:'contribute', selectedEntryId:null, selectedPipelineId:null, selectedDetailRef:null, detailReturnScreen:null, contributeStep:1, contributeErrors:{},
     contributeForm:{name:'',lob:'Ridesharing',owningTeam:OWNING_TEAMS[0],description:'',repoLink:'',jiraLink:'',expectedVolume:'',payloadRows:[{field:'',value:''}]},
     mobileMoreOpen:false
   });
@@ -2491,13 +2506,23 @@ class Component extends DCLogic {
     return d.toLocaleDateString('en-US',{weekday:'long', month:'short', day:'numeric'});
   };
 
-  contributeNext = () => this.setState(s => ({contributeStep: Math.min(2, s.contributeStep+1)}));
+  validateContributeStep1 = (f) => {
+    const errors = {};
+    if(!f.name.trim()) errors.name = 'Event / schema name is required.';
+    if(!f.description.trim()) errors.description = 'Describe what this event captures.';
+    return errors;
+  };
+  contributeNext = () => this.setState(s => {
+    const errors = this.validateContributeStep1(s.contributeForm);
+    if(Object.keys(errors).length) return {contributeErrors: errors};
+    return {contributeStep: Math.min(2, s.contributeStep+1), contributeErrors:{}};
+  });
   contributeBack = () => this.setState(s => ({contributeStep: Math.max(1, s.contributeStep-1)}));
   setContributeStep = (step) => this.setState(s => (step <= s.contributeStep ? {contributeStep:step} : null));
-  onContributeNameChange = (e) => this.setState(s=>({contributeForm:{...s.contributeForm, name:e.target.value}}));
+  onContributeNameChange = (e) => this.setState(s=>({contributeForm:{...s.contributeForm, name:e.target.value}, contributeErrors:{...s.contributeErrors, name:null}}));
   onContributeLobChange = (e) => this.setState(s=>({contributeForm:{...s.contributeForm, lob:e.target.value}}));
   onContributeOwningTeamChange = (e) => this.setState(s=>({contributeForm:{...s.contributeForm, owningTeam:e.target.value}}));
-  onContributeDescChange = (e) => this.setState(s=>({contributeForm:{...s.contributeForm, description:e.target.value}}));
+  onContributeDescChange = (e) => this.setState(s=>({contributeForm:{...s.contributeForm, description:e.target.value}, contributeErrors:{...s.contributeErrors, description:null}}));
   onContributeRepoLinkChange = (e) => this.setState(s=>({contributeForm:{...s.contributeForm, repoLink:e.target.value}}));
   onContributeJiraLinkChange = (e) => this.setState(s=>({contributeForm:{...s.contributeForm, jiraLink:e.target.value}}));
   onContributeVolumeChange = (e) => this.setState(s=>({contributeForm:{...s.contributeForm, expectedVolume:e.target.value}}));
@@ -2530,13 +2555,24 @@ class Component extends DCLogic {
     this.showToast('Measurement plan submitted for review.');
   };
 
-  reportNext = () => this.setState(s => ({reportStep: Math.min(2, s.reportStep+1)}));
+  validateReportStep1 = (f) => {
+    const errors = {};
+    if(!f.title.trim()) errors.title = 'Title is required.';
+    if(!f.description.trim()) errors.description = 'Describe what you saw and what you expected.';
+    if(!f.generalIssue && !f.linkedDataPointId) errors.dataPoint = 'Select a data point or mark this as a general issue.';
+    return errors;
+  };
+  reportNext = () => this.setState(s => {
+    const errors = this.validateReportStep1(s.reportForm);
+    if(Object.keys(errors).length) return {reportErrors: errors};
+    return {reportStep: Math.min(2, s.reportStep+1), reportErrors:{}};
+  });
   reportBack = () => this.setState(s => ({reportStep: Math.max(1, s.reportStep-1)}));
   setReportStep = (step) => this.setState(s => (step <= s.reportStep ? {reportStep:step} : null));
-  onReportTitleChange = (e) => this.setState(s=>({reportForm:{...s.reportForm, title:e.target.value}}));
+  onReportTitleChange = (e) => this.setState(s=>({reportForm:{...s.reportForm, title:e.target.value}, reportErrors:{...s.reportErrors, title:null}}));
   onReportSeverityChange = (e) => this.setState(s=>({reportForm:{...s.reportForm, severity:e.target.value}}));
   onReportCategoryChange = (e) => this.setState(s=>({reportForm:{...s.reportForm, category:e.target.value}}));
-  onReportDescChange = (e) => this.setState(s=>({reportForm:{...s.reportForm, description:e.target.value}}));
+  onReportDescChange = (e) => this.setState(s=>({reportForm:{...s.reportForm, description:e.target.value}, reportErrors:{...s.reportErrors, description:null}}));
   onReportJiraLinkChange = (e) => this.setState(s=>({reportForm:{...s.reportForm, jiraLink:e.target.value}}));
   onReportPrLinkChange = (e) => this.setState(s=>({reportForm:{...s.reportForm, prLink:e.target.value}}));
   toggleReportAttachMenu = () => this.setState(s => ({reportAttachMenuOpen: !s.reportAttachMenuOpen}));
@@ -2544,11 +2580,11 @@ class Component extends DCLogic {
   onReportUploadFile = () => { this.setState({reportAttachMenuOpen:false}); pickFile('', (name) => this.setState(s=>({reportForm:{...s.reportForm, attachedFileName:name}}))); };
   onReportUploadScreenshot = () => { this.setState({reportAttachMenuOpen:false}); pickFile('image/*', (name) => this.setState(s=>({reportForm:{...s.reportForm, attachedFileName:name}}))); };
   onReportDataPointQueryChange = (e) => this.setState({reportDataPointQuery:e.target.value});
-  selectReportDataPoint = (type, id) => this.setState(s=>({reportForm:{...s.reportForm, linkedDataPointType:type, linkedDataPointId:id, generalIssue:false}, reportDataPointQuery:''}));
+  selectReportDataPoint = (type, id) => this.setState(s=>({reportForm:{...s.reportForm, linkedDataPointType:type, linkedDataPointId:id, generalIssue:false}, reportDataPointQuery:'', reportErrors:{...s.reportErrors, dataPoint:null}}));
   clearReportDataPoint = () => this.setState(s=>({reportForm:{...s.reportForm, linkedDataPointType:null, linkedDataPointId:null}}));
   toggleReportGeneral = () => this.setState(s=>({
     reportForm:{...s.reportForm, generalIssue:!s.reportForm.generalIssue, linkedDataPointType: !s.reportForm.generalIssue ? null : s.reportForm.linkedDataPointType, linkedDataPointId: !s.reportForm.generalIssue ? null : s.reportForm.linkedDataPointId},
-    reportDataPointQuery:''
+    reportDataPointQuery:'', reportErrors:{...s.reportErrors, dataPoint:null}
   }));
   submitReport = () => {
     this.setState({
@@ -2993,6 +3029,11 @@ class Component extends DCLogic {
     const hasPayloadRows = payloadRowsSummary.length > 0;
     const noPayloadRows = !hasPayloadRows;
 
+    const contributeErrors = s.contributeErrors || {};
+    const errorInputStyle = (base, hasError) => hasError ? base.replace('border:1px solid #E5E5E5;', 'border:1px solid var(--color-status-red-fg);') : base;
+    const contributeNameInputStyle = errorInputStyle('width:100%; box-sizing:border-box; font-family:ui-monospace,monospace; border:1px solid #E5E5E5;', !!contributeErrors.name);
+    const contributeDescInputStyle = errorInputStyle('width:100%; box-sizing:border-box; font-family:inherit; resize:vertical; border:1px solid #E5E5E5;', !!contributeErrors.description);
+
     return {
       isContribute: s.appScreen === 'contribute',
       contributeStep: s.contributeStep, contributeStepChips,
@@ -3003,7 +3044,10 @@ class Component extends DCLogic {
       onContributeDescChange: this.onContributeDescChange, onContributeRepoLinkChange: this.onContributeRepoLinkChange,
       onContributeJiraLinkChange: this.onContributeJiraLinkChange, onContributeVolumeChange: this.onContributeVolumeChange,
       addPayloadRow: this.addPayloadRow,
-      contributeNext: this.contributeNext, contributeBack: this.contributeBack, submitContribute: this.submitContribute
+      contributeNext: this.contributeNext, contributeBack: this.contributeBack, submitContribute: this.submitContribute,
+      contributeNameError: contributeErrors.name || null, hasContributeNameError: !!contributeErrors.name,
+      contributeDescError: contributeErrors.description || null, hasContributeDescError: !!contributeErrors.description,
+      contributeNameInputStyle, contributeDescInputStyle
     };
   }
 
@@ -3048,6 +3092,11 @@ class Component extends DCLogic {
     const reportGeneralToggleStyle = 'display:flex; align-items:center; gap:8px; background:none; border:none; padding:0; margin-top:10px; font-size:var(--font-size-sm); color:var(--color-gray-600); cursor:pointer;';
     const reportGeneralCheckStyle = 'width:16px;height:16px;border-radius:4px;flex-shrink:0;border:1px solid '+(s.reportForm.generalIssue?'var(--color-black)':'var(--color-gray-300)')+';background:'+(s.reportForm.generalIssue?'var(--color-black)':'var(--color-white)')+';';
 
+    const reportErrors = s.reportErrors || {};
+    const errorInputStyle = (base, hasError) => hasError ? base.replace('border:1px solid #E5E5E5;', 'border:1px solid var(--color-status-red-fg);') : base;
+    const reportTitleInputStyle = errorInputStyle('width:100%; box-sizing:border-box; border:1px solid #E5E5E5;', !!reportErrors.title);
+    const reportDescInputStyle = errorInputStyle('width:100%; box-sizing:border-box; font-family:inherit; resize:vertical; border:1px solid #E5E5E5;', !!reportErrors.description);
+
     return {
       isReport: s.appScreen === 'report',
       reportStep: s.reportStep, reportStepChips,
@@ -3064,7 +3113,11 @@ class Component extends DCLogic {
       hasReportAttachedFile: !!s.reportForm.attachedFileName, showReportAttachPicker: !s.reportForm.attachedFileName, reportAttachedFileName: s.reportForm.attachedFileName,
       clearReportAttachedFile: this.clearReportAttachedFile, reportAttachMenuOpen: s.reportAttachMenuOpen, toggleReportAttachMenu: this.toggleReportAttachMenu,
       onReportUploadFile: this.onReportUploadFile, onReportUploadScreenshot: this.onReportUploadScreenshot,
-      reportSelectedDataPointHistory, reportSelectedDataPointHistoryPipelineName
+      reportSelectedDataPointHistory, reportSelectedDataPointHistoryPipelineName,
+      reportTitleError: reportErrors.title || null, hasReportTitleError: !!reportErrors.title,
+      reportDescError: reportErrors.description || null, hasReportDescError: !!reportErrors.description,
+      reportDataPointError: reportErrors.dataPoint || null, hasReportDataPointError: !!reportErrors.dataPoint,
+      reportTitleInputStyle, reportDescInputStyle
     };
   }
 
