@@ -109,4 +109,113 @@
   /* Border radius — 12px page-level, 8px inline (backlog: standardize component radius) */
   --radius-page: 12px;
   --radius-inline: 8px;
+  --radius-pill: 999px;
+  --radius-circle: 50%;
+
+  /* Default hairline border color — previously used raw (#E5E5E5) on ~40+ cards/inputs/buttons */
+  --color-border-default: var(--color-gray-200);
+}
+
+/* ---------------------------------------------------------------------
+ * Layout utilities
+ * ------------------------------------------------------------------- */
+.flex-row { display: flex; align-items: center; }
+.flex-row-between { display: flex; align-items: center; justify-content: space-between; }
+.flex-col { display: flex; flex-direction: column; }
+.flex-shrink-0 { flex-shrink: 0; }
+
+.gap-6 { gap: 6px; }
+.gap-8 { gap: var(--space-2); }
+.gap-10 { gap: 10px; }
+.gap-12 { gap: 12px; }
+
+/* ---------------------------------------------------------------------
+ * Card
+ * ------------------------------------------------------------------- */
+.card {
+  background: var(--color-white);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-page);
+  padding: 18px;
+  margin-bottom: var(--space-4);
+}
+
+/* ---------------------------------------------------------------------
+ * Chip / pill / badge shape — pair with existing status/LOB/roadmap
+ * bg+fg token pairs for color; this class only sets the shape.
+ * ------------------------------------------------------------------- */
+.chip-pill {
+  display: inline-flex;
+  align-items: center;
+  border-radius: var(--radius-pill);
+  padding: 4px 11px;
+  font-size: var(--font-size-sm);
+}
+
+/* ---------------------------------------------------------------------
+ * Eyebrow label (uppercase section/field label)
+ * ------------------------------------------------------------------- */
+.label-eyebrow {
+  display: block;
+  color: var(--color-gray-600);
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 2px;
+}
+.label-eyebrow.text-2xs { font-size: var(--font-size-2xs); }
+.label-eyebrow.text-sm { font-size: var(--font-size-sm); }
+
+/* ---------------------------------------------------------------------
+ * Form input
+ * ------------------------------------------------------------------- */
+.form-input {
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-inline);
+  padding: 10px 12px;
+  font-size: var(--font-size-sm);
+}
+
+/* ---------------------------------------------------------------------
+ * Headings
+ * ------------------------------------------------------------------- */
+.title-h1 {
+  font-size: var(--font-size-h1);
+  font-weight: var(--font-weight-h1);
+  margin: 0 0 4px 0;
+  letter-spacing: -0.5px;
+}
+.title-h2 {
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-h2);
+}
+.title-h3 {
+  font-size: var(--font-size-h3);
+  font-weight: var(--font-weight-h3);
+}
+
+/* ---------------------------------------------------------------------
+ * Round icon button (32x32)
+ * ------------------------------------------------------------------- */
+.btn-icon-round {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+}
+
+/* ---------------------------------------------------------------------
+ * Sidebar nav item
+ * ------------------------------------------------------------------- */
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 8px;
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
 }
