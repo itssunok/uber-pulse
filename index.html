@@ -1179,7 +1179,7 @@
           </sc-if>
 
           <sc-if value="{{ isContribute }}" hint-placeholder-val="{{ false }}">
-            <h1 style="font-size:var(--font-size-h1); font-weight:var(--font-weight-h1); margin:0 0 4px 0; letter-spacing:-0.5px;">Contribute a schema</h1>
+            <h1 class="title-h1">Contribute a schema</h1>
             <p style="font-size:var(--font-size-base); color:var(--color-gray-600); margin:0 0 14px 0;">Propose a new event or metric for review by the data team.</p>
 
             <div style="display:flex; align-items:center; margin-bottom:14px;">
@@ -1197,30 +1197,30 @@
             <div class="pulse-wizard-card" style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; padding:26px 32px; width:100%; box-sizing:border-box; height:calc(100vh - 226px); display:flex; flex-direction:column; overflow:hidden;">
               <sc-if value="{{ isContributeStep1 }}" hint-placeholder-val="{{ true }}">
                 <div style="flex:1; min-height:0; overflow-y:auto; padding-right:4px;">
-                  <div style="font-size:var(--font-size-h3); font-weight:var(--font-weight-h3); margin-bottom:14px;">Details</div>
+                  <div class="title-h3" style="margin-bottom:14px;">Details</div>
                   <div class="pulse-wizard-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:24px; align-items:start;">
-                    <div style="display:flex; flex-direction:column; gap:12px; min-width:0;">
+                    <div class="flex-col gap-12" style="min-width:0;">
                       <div>
                         <label class="pulse-heading-label" style="display:block; margin-bottom:6px;">Event / schema name</label>
-                        <input value="{{ contributeForm.name }}" onChange="{{ onContributeNameChange }}" placeholder="e.g. driver_rating_submitted" style="width:100%; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:var(--font-size-sm); font-family:ui-monospace,monospace;" />
+                        <input value="{{ contributeForm.name }}" onChange="{{ onContributeNameChange }}" placeholder="e.g. driver_rating_submitted" class="form-input" style="width:100%; box-sizing:border-box; font-family:ui-monospace,monospace;" />
                       </div>
                       <div>
                         <label class="pulse-heading-label" style="display:block; margin-bottom:6px;">What does this event capture?</label>
-                        <textarea value="{{ contributeForm.description }}" onChange="{{ onContributeDescChange }}" placeholder="Describe when this event fires and why it's needed…" rows="3" style="width:100%; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:var(--font-size-sm); font-family:inherit; resize:vertical;"></textarea>
+                        <textarea value="{{ contributeForm.description }}" onChange="{{ onContributeDescChange }}" placeholder="Describe when this event fires and why it's needed…" rows="3" class="form-input" style="width:100%; box-sizing:border-box; font-family:inherit; resize:vertical;"></textarea>
                       </div>
                       <div>
                         <label class="pulse-heading-label" style="display:block; margin-bottom:6px;">Source repo (optional)</label>
-                        <input value="{{ contributeForm.repoLink }}" onChange="{{ onContributeRepoLinkChange }}" placeholder="https://github.com/uber/…" style="width:100%; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:var(--font-size-sm);" />
+                        <input value="{{ contributeForm.repoLink }}" onChange="{{ onContributeRepoLinkChange }}" placeholder="https://github.com/uber/…" class="form-input" style="width:100%; box-sizing:border-box;" />
                       </div>
                       <div>
                         <label class="pulse-heading-label" style="display:block; margin-bottom:6px;">Related Jira epic (optional)</label>
-                        <input value="{{ contributeForm.jiraLink }}" onChange="{{ onContributeJiraLinkChange }}" placeholder="https://uber.atlassian.net/browse/…" style="width:100%; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:var(--font-size-sm);" />
+                        <input value="{{ contributeForm.jiraLink }}" onChange="{{ onContributeJiraLinkChange }}" placeholder="https://uber.atlassian.net/browse/…" class="form-input" style="width:100%; box-sizing:border-box;" />
                       </div>
                     </div>
-                    <div style="display:flex; flex-direction:column; gap:12px; min-width:0;">
+                    <div class="flex-col gap-12" style="min-width:0;">
                       <div>
                         <label class="pulse-heading-label" style="display:block; margin-bottom:6px;">Line of business</label>
-                        <select value="{{ contributeForm.lob }}" onChange="{{ onContributeLobChange }}" style="width:100%; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:var(--font-size-sm);">
+                        <select value="{{ contributeForm.lob }}" onChange="{{ onContributeLobChange }}" class="form-input" style="width:100%; box-sizing:border-box;">
                           <option value="Ridesharing">Ridesharing</option>
                           <option value="Eats">Eats</option>
                           <option value="B2B">B2B</option>
@@ -1229,7 +1229,7 @@
                       </div>
                       <div>
                         <label class="pulse-heading-label" style="display:block; margin-bottom:6px;">Owning team</label>
-                        <select value="{{ contributeForm.owningTeam }}" onChange="{{ onContributeOwningTeamChange }}" style="width:100%; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:var(--font-size-sm);">
+                        <select value="{{ contributeForm.owningTeam }}" onChange="{{ onContributeOwningTeamChange }}" class="form-input" style="width:100%; box-sizing:border-box;">
                           <sc-for list="{{ owningTeamOptions }}" as="team" hint-placeholder-count="5">
                             <option value="{{ team }}">{{ team }}</option>
                           </sc-for>
@@ -1237,13 +1237,13 @@
                       </div>
                       <div>
                         <label class="pulse-heading-label" style="display:block; margin-bottom:6px;">Expected weekly volume (optional)</label>
-                        <input value="{{ contributeForm.expectedVolume }}" onChange="{{ onContributeVolumeChange }}" placeholder="e.g. 12.5M" style="width:100%; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:var(--font-size-sm);" />
+                        <input value="{{ contributeForm.expectedVolume }}" onChange="{{ onContributeVolumeChange }}" placeholder="e.g. 12.5M" class="form-input" style="width:100%; box-sizing:border-box;" />
                       </div>
                       <div>
                         <label class="pulse-heading-label" style="display:block; margin-bottom:6px;">Sample payload (optional)</label>
-                        <div style="display:flex; flex-direction:column; gap:8px;">
+                        <div class="flex-col gap-8">
                           <sc-for list="{{ payloadRowsView }}" as="row" hint-placeholder-count="1">
-                            <div style="display:flex; gap:8px; align-items:center;">
+                            <div class="flex-row gap-8">
                               <input value="{{ row.field }}" onChange="{{ row.onFieldChange }}" placeholder="field_name" style="flex:1; min-width:0; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:8px 10px; font-size:var(--font-size-sm); font-family:ui-monospace,monospace;" />
                               <input value="{{ row.value }}" onChange="{{ row.onValueChange }}" placeholder="example value" style="flex:1; min-width:0; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:8px 10px; font-size:var(--font-size-sm);" />
                               <sc-if value="{{ row.canRemove }}" hint-placeholder-val="{{ true }}">
@@ -1257,7 +1257,7 @@
                     </div>
                   </div>
                 </div>
-                <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:22px;">
+                <div class="flex-row gap-10" style="justify-content:flex-end; margin-top:22px;">
                   <button onClick="{{ goHome }}" style="background:none; border:1px solid #E5E5E5; border-radius:999px; padding:10px 18px; font-size:var(--font-size-sm); cursor:pointer;">Cancel</button>
                   <button onClick="{{ contributeNext }}" style="background:#0A0A0A; color:#FFF; border:none; border-radius:999px; padding:10px 20px; font-size:var(--font-size-sm); font-weight:var(--font-weight-bold); cursor:pointer;">Next</button>
                 </div>
@@ -1265,7 +1265,7 @@
 
               <sc-if value="{{ isContributeStep2 }}" hint-placeholder-val="{{ false }}">
                 <div style="flex:1; min-height:0; overflow-y:auto; padding-right:4px;">
-                  <div style="font-size:var(--font-size-h3); font-weight:var(--font-weight-h3); margin-bottom:14px;">Review & submit</div>
+                  <div class="title-h3" style="margin-bottom:14px;">Review & submit</div>
                   <div style="background:#F6F6F6; border-radius:10px; padding:20px; font-size:var(--font-size-body); line-height:2; max-width:720px;">
                     <div><strong>Name:</strong> {{ contributeForm.name }}</div>
                     <div><strong>LOB:</strong> {{ contributeForm.lob }}</div>
@@ -1289,7 +1289,7 @@
                     </div>
                   </div>
                 </div>
-                <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:22px;">
+                <div class="flex-row gap-10" style="justify-content:flex-end; margin-top:22px;">
                   <button onClick="{{ contributeBack }}" style="background:none; border:1px solid #E5E5E5; border-radius:999px; padding:10px 18px; font-size:var(--font-size-sm); cursor:pointer;">Back</button>
                   <button onClick="{{ submitContribute }}" style="background:#06C167; color:#FFF; border:none; border-radius:999px; padding:10px 20px; font-size:var(--font-size-sm); font-weight:var(--font-weight-bold); cursor:pointer;">Submit for review</button>
                 </div>
@@ -1316,9 +1316,9 @@
             <div class="pulse-wizard-card" style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; padding:26px 32px; width:100%; box-sizing:border-box; height:calc(100vh - 226px); display:flex; flex-direction:column; overflow:hidden;">
               <sc-if value="{{ isReportStep1 }}" hint-placeholder-val="{{ true }}">
                 <div style="flex:1; min-height:0; overflow-y:auto; padding-right:4px;">
-                  <div style="font-size:var(--font-size-h3); font-weight:var(--font-weight-h3); margin-bottom:14px;">Details</div>
+                  <div class="title-h3" style="margin-bottom:14px;">Details</div>
                   <div class="pulse-wizard-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:24px; align-items:start;">
-                    <div style="display:flex; flex-direction:column; gap:12px; min-width:0;">
+                    <div class="flex-col gap-12" style="min-width:0;">
                       <div>
                         <label class="pulse-heading-label" style="display:block; margin-bottom:6px;">What is this about?</label>
 
@@ -1385,7 +1385,7 @@
                         <input value="{{ reportForm.prLink }}" onChange="{{ onReportPrLinkChange }}" placeholder="https://github.com/uber/…" style="width:100%; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:var(--font-size-sm);" />
                       </div>
                     </div>
-                    <div style="display:flex; flex-direction:column; gap:12px; min-width:0;">
+                    <div class="flex-col gap-12" style="min-width:0;">
                       <div>
                         <label class="pulse-heading-label" style="display:block; margin-bottom:6px;">Category</label>
                         <select value="{{ reportForm.category }}" onChange="{{ onReportCategoryChange }}" style="width:100%; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:var(--font-size-sm);">
@@ -1423,7 +1423,7 @@
                     </div>
                   </div>
                 </div>
-                <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:22px;">
+                <div class="flex-row gap-10" style="justify-content:flex-end; margin-top:22px;">
                   <button onClick="{{ goHome }}" style="background:none; border:1px solid #E5E5E5; border-radius:999px; padding:10px 18px; font-size:var(--font-size-sm); cursor:pointer;">Cancel</button>
                   <button onClick="{{ reportNext }}" style="background:#0A0A0A; color:#FFF; border:none; border-radius:999px; padding:10px 20px; font-size:var(--font-size-sm); font-weight:var(--font-weight-bold); cursor:pointer;">Next</button>
                 </div>
@@ -1431,7 +1431,7 @@
 
               <sc-if value="{{ isReportStep2 }}" hint-placeholder-val="{{ false }}">
                 <div style="flex:1; min-height:0; overflow-y:auto; padding-right:4px;">
-                  <div style="font-size:var(--font-size-h3); font-weight:var(--font-weight-h3); margin-bottom:14px;">Review & submit</div>
+                  <div class="title-h3" style="margin-bottom:14px;">Review & submit</div>
                   <div style="background:#F6F6F6; border-radius:10px; padding:20px; font-size:var(--font-size-body); line-height:2; max-width:720px;">
                     <div><strong>About:</strong> {{ reportSummaryLabel }}</div>
                     <div><strong>Category:</strong> {{ reportForm.category }}</div>
@@ -1443,7 +1443,7 @@
                     <div><strong>Attachment:</strong> {{ reportForm.attachmentSummary }}</div>
                   </div>
                 </div>
-                <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:22px;">
+                <div class="flex-row gap-10" style="justify-content:flex-end; margin-top:22px;">
                   <button onClick="{{ reportBack }}" style="background:none; border:1px solid #E5E5E5; border-radius:999px; padding:10px 18px; font-size:var(--font-size-sm); cursor:pointer;">Back</button>
                   <button onClick="{{ submitReport }}" style="background:#0A0A0A; color:#FFF; border:none; border-radius:999px; padding:10px 20px; font-size:var(--font-size-sm); font-weight:var(--font-weight-bold); cursor:pointer;">Submit</button>
                 </div>
