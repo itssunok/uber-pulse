@@ -4,7 +4,7 @@
 
 Uber processes hundreds of millions of web events a week across Ridesharing, Eats, and B2B, serving 1,000+ data consumers and 24+ app teams. Despite that scale, there's no single place to answer "what does this metric mean, can I trust it, and who owns it?" Pulse is a frontend prototype of that place — designed the way I'd approach it as a PM: starting from the problem and the people who feel it, not from a feature list.
 
-This is a **vibe-coded, frontend-only prototype** — no real backend, auth, or data pipeline behind it. Every screen is built to feel like a real, deep product, backed by realistic mock data, so the interaction model and the product thinking can be evaluated on their own terms.
+This is a **product vision prototype, frontend-only** — no real backend, auth, or data pipeline behind it. Every screen is built to feel like a real, deep product, backed by realistic mock data, so the interaction model and the product thinking can be evaluated on their own terms.
 
 ---
 
@@ -45,6 +45,16 @@ Four personas, each locked as business-critical against one test: *does this per
 ---
 
 ## Success metrics (from the PRD)
+
+### The 30-second version
+
+| | Current | Goal |
+|---|---|---|
+| Onboarding a new app team | 21–42 days | <7 days |
+| Metrics with a documented, owned definition | ~20% | >80% |
+| Inbound data questions handled via Slack | ~40/week | 60% reduction |
+
+Full metric set, baselines, and measurement windows below.
 
 | Goal | Metric | Baseline | Target |
 |---|---|---|---|

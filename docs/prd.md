@@ -22,6 +22,24 @@ The investment case for v1 is the reactive-support and onboarding-time metrics i
 
 **What this means beyond v1 (not a v1 scope change):** the appendix already notes a data-serving API deferred to v2, pending v1 establishing the trust layer. That deferral is where this vision points — years 1–2 growing Uber Pulse from a portal consumers visit into a platform whose catalog and definitions can be consumed *as products*, by both people and other systems, the same way its concepts are consumed manually today. v1 does not change scope to deliver this; it exists to earn the right to build it.
 
+**Where Pulse sits in the data flow:**
+
+```
+Sources
+  ↓
+Snowplow            (raw event capture, all LOBs)
+  ↓
+Warehouse           (durable storage, joined & modeled)
+  ↓
+Governance Layer     (Pulse: definitions, ownership, quality scoring — the part that doesn't exist today)
+  ↓
+Pulse                (catalog, monitoring, AI assistant — the surface humans and models both query)
+  ↓
+Humans + AI          (analysts, PMs, engineers — and every automated system built on top: pricing, assistants, measurement plans)
+```
+
+Everything below "Governance Layer" exists today. Everything above it doesn't — that's the gap Pulse fills, and every AI system built on top inherits whatever trust (or distrust) lives at that layer.
+
 ---
 
 ## 2. Problem Statement
@@ -217,6 +235,20 @@ The platform is built around four pages, each answering a different question a c
 | GA rollout | Week 14 | All internal consumers, phased 25% → 100% over 2 weeks | Inbound Slack data questions drop measurably, monitoring table SLA compliance visible for all core pipelines |
 
 **Rollback Criteria:** If error rate exceeds 5% or the AI assistant produces more than 3 confirmed incorrect responses in the first week, freeze the assistant feature and revert to catalog-only mode. Page on-call via Slack.
+
+### Rollout Strategy
+
+The table above governs whether each phase is *safe* to expose further. It doesn't say how Pulse actually displaces 24+ teams' existing habits — that's a separate, slower-moving org sequence layered on top of it:
+
+| Month | Milestone | What actually happens |
+|---|---|---|
+| Month 1 | Pilot — Eats | Eats onboarded as the first live LOB. Catalog seeded with Eats pipelines/metrics, monitoring live, AI assistant answering Eats questions. Eats is the existing design-partner LOB from closed beta — smallest blast radius, most bought-in stakeholders. |
+| Month 2 | Expand — Rides | Ridesharing onboarded using the playbook proven on Eats. Cross-LOB catalog search becomes meaningfully cross-LOB. First real test of whether "conversion" and similar terms can be reconciled across two LOBs, not just defined within one. |
+| Month 3 | Migration | Existing tribal-knowledge channels (Confluence pages, pinned Slack threads, ad hoc spreadsheets) are marked deprecated in place and redirected to their Pulse catalog entry. The data support Slack channel gets an auto-response routing common questions to Pulse before a human answers. |
+| Month 4 | Deprecation | Old channels are closed, not just redirected. Confluence pages archived read-only. The manual onboarding back-and-forth process is retired — new app teams are required to go through the Pulse contribution flow, no side door. |
+| Month 6 | Mandatory onboarding | A Pulse catalog entry becomes a required field in an app team's pipeline launch checklist, enforced by Web Data Engineering review, not just encouraged. B2B/Freight — the remaining LOB — onboarded on the same playbook. Platform is now the default, not an alternative. |
+
+This is sequenced by adoption risk, not technical difficulty: Eats first because it's the existing design-partner relationship from closed beta, Rides second because it's the highest-volume LOB and the real stress test for cross-LOB definition conflicts, B2B last because it's the smallest and most tolerant of a later cutover.
 
 ---
 
