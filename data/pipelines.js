@@ -28,6 +28,8 @@
  * @property {string} definitionOwner   Person/team who owns the pipeline's SLA/quality definition accuracy.
  * @property {string[]} downstreamConsumers  Teams or dashboards that depend on this pipeline's output.
  * @property {string} description   One-sentence description of what the pipeline ingests.
+ * @property {string} [warningText]  Present only for amber/red pipelines — explains the root cause behind
+ *                                   the current SLA/quality miss, shown as a red banner on the detail page.
  * @property {PipelineChangelogEntry[]} changelog  Version history, oldest listed first as authored.
  * @property {QualitySnapshot[]} history  Past timestamped quality/health checks, oldest first,
  *                                        ending at a snapshot matching the current quality/health.
@@ -44,6 +46,7 @@ const PIPELINES = [
     owningTeam:'Eats Growth Engineering', implementingTeam:'Eats Growth Engineering', definitionOwner:'Marketing Analytics', downstreamConsumers:['Marketing Analytics', 'Executive Dashboards'],
     description:'Processes ad touches and campaign conversions for marketing measurement.',
     changelog:[{version:'v1.0',date:'2026-02-10',change:'Initial release covering ad impression and click ingestion.'}, {version:'v1.1',date:'2026-07-22',change:'Migrated to campaign_started, replacing the deprecated attribution_touch definition.'}],
+    warningText:'SLA is still recovering post-migration to campaign_started — residual legacy attribution_touch traffic is being backfilled through August.',
     history:[{date:'2026-06-27', quality:98, health:'green'}, {date:'2026-07-04', quality:95, health:'green'}, {date:'2026-07-11', quality:91, health:'green'}, {date:'2026-07-18', quality:88, health:'amber'}, {date:'2026-07-25', quality:84, health:'amber'}] },
   { id:'p3', name:'Surge Pricing Events', lob:'Ridesharing', health:'green', slaTarget:'99.9%', slaActual:'99.97%', freshness:'2 min ago', quality:99,
     owningTeam:'Pricing Engineering', implementingTeam:'Pricing Engineering', definitionOwner:'Pricing Data Science', downstreamConsumers:['Rides Growth Engineering', 'Executive Dashboards'],
@@ -64,6 +67,7 @@ const PIPELINES = [
     owningTeam:'Rides Platform Engineering', implementingTeam:'Rides Platform Engineering', definitionOwner:'Rides Analytics', downstreamConsumers:['Pricing Engineering', 'Rides Growth Engineering'],
     description:'Streams real-time driver availability signals used for supply/demand balancing. Currently degraded.',
     changelog:[{version:'v1.0',date:'2025-09-20',change:'Initial release on driver_supply_available.'}, {version:'v1.1',date:'2026-07-26',change:'Began limited rollout of driver_supply_v2 to resolve the EU duplicate-event issue; full migration in progress (DATA-397).'}],
+    warningText:'Legacy driver_supply_available is still the primary source pending the driver_supply_v2 migration (DATA-397) — duplicate availability pings from a known race condition are the root cause of this SLA miss.',
     history:[{date:'2026-06-27', quality:91, health:'green'}, {date:'2026-07-04', quality:84, health:'green'}, {date:'2026-07-11', quality:76, health:'amber'}, {date:'2026-07-18', quality:69, health:'amber'}, {date:'2026-07-25', quality:61, health:'red'}] },
   { id:'p7', name:'Session & Auth Events', lob:'Platform', health:'green', slaTarget:'99.9%', slaActual:'99.95%', freshness:'1 min ago', quality:97,
     owningTeam:'Web Infrastructure', implementingTeam:'Web Infrastructure', definitionOwner:'Web Data Engineering', downstreamConsumers:['Reliability Engineering', 'Growth Engineering'],
@@ -74,6 +78,7 @@ const PIPELINES = [
     owningTeam:'Payments Engineering', implementingTeam:'Payments Engineering', definitionOwner:'Payments Analytics', downstreamConsumers:['Finance Reconciliation', 'Executive Dashboards'],
     description:'Processes payment captures, failures, refunds, and discounts across Mobility, Eats, and B2B.',
     changelog:[{version:'v1.0',date:'2025-09-01',change:'Initial release.'}, {version:'v2.0',date:'2026-07-14',change:'Root-causing SLA slip — refund events batching under load during peak Eats hours (DATA-455).'}],
+    warningText:'Refund events batch under load during peak Eats hours, delaying processing past SLA — fix tracked under DATA-455.',
     history:[{date:'2026-06-27', quality:99, health:'green'}, {date:'2026-07-04', quality:96, health:'green'}, {date:'2026-07-11', quality:94, health:'green'}, {date:'2026-07-18', quality:91, health:'amber'}, {date:'2026-07-25', quality:88, health:'amber'}] },
   { id:'p9', name:'Eats Delivery Tracking', lob:'Eats', health:'green', slaTarget:'99.0%', slaActual:'99.3%', freshness:'5 min ago', quality:93,
     owningTeam:'Eats Logistics Engineering', implementingTeam:'Eats Logistics Engineering', definitionOwner:'Eats Analytics', downstreamConsumers:['Eats Growth Engineering', 'Executive Dashboards'],
@@ -89,6 +94,7 @@ const PIPELINES = [
     owningTeam:'Rides Platform Engineering', implementingTeam:'Rides Platform Engineering', definitionOwner:'Rides Analytics', downstreamConsumers:['Rides Growth Engineering', 'Reliability Engineering'],
     description:'Processes live ETA calculation and route recalculation events used for dispatch and rider display.',
     changelog:[{version:'v1.0',date:'2025-12-15',change:'Initial release.'}, {version:'v1.1',date:'2026-06-30',change:'Flagged rising ETA-miss volume correlating with this pipeline\'s SLA degradation; under investigation.'}],
+    warningText:'Elevated ETA-miss events this week are inflating processing load; root cause under active investigation.',
     history:[{date:'2026-06-27', quality:99, health:'green'}, {date:'2026-07-04', quality:96, health:'green'}, {date:'2026-07-11', quality:92, health:'green'}, {date:'2026-07-18', quality:89, health:'amber'}, {date:'2026-07-25', quality:85, health:'amber'}] },
   { id:'p12', name:'Rider Ratings & Feedback', lob:'Ridesharing', health:'green', slaTarget:'99.0%', slaActual:'99.3%', freshness:'8 min ago', quality:92,
     owningTeam:'Rides Growth Engineering', implementingTeam:'Rides Growth Engineering', definitionOwner:'Rides Analytics', downstreamConsumers:['Trust & Safety', 'Executive Dashboards'],
@@ -114,6 +120,7 @@ const PIPELINES = [
     owningTeam:'Eats Checkout Engineering', implementingTeam:'Eats Checkout Engineering', definitionOwner:'Eats Analytics', downstreamConsumers:['Marketing Analytics', 'Eats Growth Engineering'],
     description:'Streams cart abandonment, recovery-email, and cart-recovery events.',
     changelog:[{version:'v1.0',date:'2026-02-01',change:'Initial release.'}, {version:'v1.1',date:'2026-06-20',change:'Added cart-recovery email and recovery-conversion tracking.'}],
+    warningText:'Cart-recovery email volume has grown faster than processing capacity, pushing some abandonment events past the freshness SLA.',
     history:[{date:'2026-06-27', quality:93, health:'green'}, {date:'2026-07-04', quality:90, health:'green'}, {date:'2026-07-11', quality:86, health:'green'}, {date:'2026-07-18', quality:83, health:'amber'}, {date:'2026-07-25', quality:79, health:'amber'}] },
   { id:'p17', name:'Eats Refund Events', lob:'Eats', health:'green', slaTarget:'99.5%', slaActual:'99.6%', freshness:'9 min ago', quality:94,
     owningTeam:'Payments Engineering', implementingTeam:'Payments Engineering', definitionOwner:'Payments Analytics', downstreamConsumers:['Finance Reconciliation', 'Eats Growth Engineering'],
@@ -134,6 +141,7 @@ const PIPELINES = [
     owningTeam:'B2B Finance Engineering', implementingTeam:'B2B Finance Engineering', definitionOwner:'B2B Analytics', downstreamConsumers:['Uber for Business Engineering'],
     description:'Ingests expense report submission, approval, and rejection events from the newly launched workflow.',
     changelog:[{version:'v0.1',date:'2026-06-01',change:'Initial pilot release.'}, {version:'v0.4',date:'2026-07-21',change:'Expanded to approval/rejection events; approval routing logic still being finalized, driving the current SLA miss.'}],
+    warningText:'Approval routing logic for the new expense workflow is still being finalized — this is the primary driver of the current SLA miss.',
     history:[{date:'2026-06-27', quality:94, health:'green'}, {date:'2026-07-04', quality:91, health:'green'}, {date:'2026-07-11', quality:87, health:'green'}, {date:'2026-07-18', quality:84, health:'amber'}, {date:'2026-07-25', quality:80, health:'amber'}] },
   { id:'p21', name:'Freight Carrier Bidding Events', lob:'B2B', health:'green', slaTarget:'98.5%', slaActual:'98.7%', freshness:'19 min ago', quality:88,
     owningTeam:'Freight Engineering', implementingTeam:'Freight Engineering', definitionOwner:'B2B Analytics', downstreamConsumers:['B2B Finance Engineering'],
@@ -144,6 +152,7 @@ const PIPELINES = [
     owningTeam:'Growth Engineering', implementingTeam:'Growth Engineering', definitionOwner:'Marketing Analytics', downstreamConsumers:['Marketing Analytics', 'Executive Dashboards'],
     description:'Processes notification delivery, failure, and open events for engagement measurement.',
     changelog:[{version:'v1.0',date:'2025-11-05',change:'Initial release.'}, {version:'v1.1',date:'2026-06-16',change:'Added open-tracking to measure post-delivery engagement.'}],
+    warningText:'Elevated notification failure rates from stale device tokens are delaying delivery confirmation past SLA.',
     history:[{date:'2026-06-27', quality:99, health:'green'}, {date:'2026-07-04', quality:96, health:'green'}, {date:'2026-07-11', quality:93, health:'green'}, {date:'2026-07-18', quality:89, health:'amber'}, {date:'2026-07-25', quality:86, health:'amber'}] },
   { id:'p24', name:'Search & Autocomplete Events', lob:'Platform', health:'green', slaTarget:'99.5%', slaActual:'99.6%', freshness:'3 min ago', quality:94,
     owningTeam:'Web Infrastructure', implementingTeam:'Web Infrastructure', definitionOwner:'Web Data Engineering', downstreamConsumers:['Eats Discovery Engineering', 'Rides Platform Engineering'],
@@ -154,6 +163,7 @@ const PIPELINES = [
     owningTeam:'Reliability Engineering', implementingTeam:'Reliability Engineering', definitionOwner:'Web Data Engineering', downstreamConsumers:['Web Infrastructure', 'Executive Dashboards'],
     description:'Ingests client error, crash, and recovery events. Currently degraded.',
     changelog:[{version:'v1.0',date:'2025-10-15',change:'Initial release.'}, {version:'v1.1',date:'2026-06-22',change:'Added auto-recovery tracking distinct from full crashes; elevated crash volume under active investigation.'}],
+    warningText:'Client error volume has spiked, correlating with the Driver Supply Events degradation — clients are retrying failed availability calls, amplifying crash/error volume (DATA-397).',
     history:[{date:'2026-06-27', quality:88, health:'green'}, {date:'2026-07-04', quality:81, health:'green'}, {date:'2026-07-11', quality:73, health:'amber'}, {date:'2026-07-18', quality:66, health:'amber'}, {date:'2026-07-25', quality:58, health:'red'}] }
 ];
 
