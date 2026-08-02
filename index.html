@@ -1452,12 +1452,12 @@
           </sc-if>
 
           <sc-if value="{{ isDeveloper }}" hint-placeholder-val="{{ false }}">
-            <h1 style="font-size:var(--font-size-h1); font-weight:var(--font-weight-h1); margin:0 0 4px 0; letter-spacing:-0.5px;">Developer Tools</h1>
+            <h1 class="title-h1">Developer Tools</h1>
             <p style="font-size:var(--font-size-base); color:var(--color-gray-600); margin:0 0 20px 0;">Get programmatic access via the Pulse API — API keys, docs, and endpoints.</p>
 
             <div class="pulse-grid-1col" style="display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:28px;">
               <div style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; padding:20px; min-width:0;">
-                <div style="width:34px; height:34px; border-radius:10px; background:#DFF3E6; display:flex; align-items:center; justify-content:center; margin-bottom:12px;">
+                <div class="flex-row" style="width:34px; height:34px; border-radius:10px; background:#DFF3E6; justify-content:center; margin-bottom:12px;">
                   <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="#067A3E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
                 </div>
                 <div class="pulse-heading-label" style="margin-bottom:8px;">Getting started</div>
@@ -1469,7 +1469,7 @@
                 <a onClick="{{ openApiReferenceDoc }}" href="#" style="font-size:var(--font-size-sm); font-weight:var(--font-weight-semibold); color:var(--color-black);">View full docs ↗</a>
               </div>
               <div style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; padding:20px; min-width:0;">
-                <div style="width:34px; height:34px; border-radius:10px; background:#DCEBF7; display:flex; align-items:center; justify-content:center; margin-bottom:12px;">
+                <div class="flex-row" style="width:34px; height:34px; border-radius:10px; background:#DCEBF7; justify-content:center; margin-bottom:12px;">
                   <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="#1D6FA5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 9l-4 3 4 3M16 9l4 3-4 3M13 5l-2 14"/></svg>
                 </div>
                 <div class="pulse-heading-label" style="margin-bottom:8px;">Code examples</div>
@@ -1478,7 +1478,7 @@
                 <a onClick="{{ openApiReferenceDoc }}" href="#" style="font-size:var(--font-size-sm); font-weight:var(--font-weight-semibold); color:var(--color-black);">Browse examples ↗</a>
               </div>
               <div style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; padding:20px; min-width:0;">
-                <div style="width:34px; height:34px; border-radius:10px; background:#EDE3F7; display:flex; align-items:center; justify-content:center; margin-bottom:12px;">
+                <div class="flex-row" style="width:34px; height:34px; border-radius:10px; background:#EDE3F7; justify-content:center; margin-bottom:12px;">
                   <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="#6B3FA0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4" width="17" height="16" rx="2.5"/><path d="M3.5 9.5h17M9.5 9.5V20"/></svg>
                 </div>
                 <div class="pulse-heading-label" style="margin-bottom:8px;">Endpoints</div>
@@ -1491,8 +1491,8 @@
               </div>
             </div>
 
-            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;">
-              <div style="font-size:var(--font-size-h2); font-weight:var(--font-weight-h2);">API Keys</div>
+            <div class="flex-row-between" style="margin-bottom:14px;">
+              <div class="title-h2">API Keys</div>
               <button onClick="{{ openCreateKeyForm }}" style="background:#0A0A0A; color:#FFF; border:none; border-radius:999px; padding:9px 18px; font-size:var(--font-size-sm); font-weight:var(--font-weight-bold); cursor:pointer;">+ Create API key</button>
             </div>
 
@@ -1500,7 +1500,7 @@
               <div class="pulse-stack-mobile" style="background:#F6F6F6; border:1px solid #E5E5E5; border-radius:10px; padding:16px; margin-bottom:14px; display:flex; align-items:flex-end; gap:12px;">
                 <div style="flex:1; min-width:0;">
                   <label class="pulse-heading-label" style="display:block; margin-bottom:6px;">Key name</label>
-                  <input value="{{ newKeyName }}" onChange="{{ onNewKeyNameChange }}" placeholder="e.g. Staging integration" style="width:100%; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:var(--font-size-sm); background:#FFFFFF;" />
+                  <input value="{{ newKeyName }}" onChange="{{ onNewKeyNameChange }}" placeholder="e.g. Staging integration" class="form-input" style="width:100%; box-sizing:border-box; background:#FFFFFF;" />
                 </div>
                 <button onClick="{{ createApiKey }}" style="background:#0A0A0A; color:#FFF; border:none; border-radius:999px; padding:10px 18px; font-size:var(--font-size-sm); font-weight:var(--font-weight-bold); cursor:pointer; flex-shrink:0;">Create key</button>
                 <button onClick="{{ closeCreateKeyForm }}" style="background:none; border:1px solid #E5E5E5; border-radius:999px; padding:10px 18px; font-size:var(--font-size-sm); cursor:pointer; flex-shrink:0;">Cancel</button>
@@ -1510,7 +1510,7 @@
             <sc-if value="{{ justCreatedKeyView }}" hint-placeholder-val="{{ false }}">
               <div style="background:#DFF3E6; border:1px solid #B4E3C6; border-radius:10px; padding:16px; margin-bottom:14px;">
                 <div style="font-size:var(--font-size-sm); font-weight:var(--font-weight-bold); color:var(--color-status-green-fg); margin-bottom:6px;">"{{ justCreatedKeyView.name }}" created — copy this key now, you won't be able to see it again.</div>
-                <div class="pulse-stack-mobile" style="display:flex; align-items:center; gap:10px;">
+                <div class="pulse-stack-mobile flex-row gap-10">
                   <div style="flex:1; min-width:0; background:#FFFFFF; border:1px solid #B4E3C6; border-radius:8px; padding:9px 12px; font-family:ui-monospace,monospace; font-size:var(--font-size-sm); overflow-x:auto; white-space:nowrap;">{{ justCreatedKeyView.key }}</div>
                   <button onClick="{{ justCreatedKeyView.onCopy }}" style="background:#067A3E; color:#FFF; border:none; border-radius:999px; padding:9px 16px; font-size:var(--font-size-sm); font-weight:var(--font-weight-bold); cursor:pointer; flex-shrink:0;">Copy</button>
                   <button onClick="{{ justCreatedKeyView.onDismiss }}" style="background:none; border:1px solid #B4E3C6; border-radius:999px; padding:9px 16px; font-size:var(--font-size-sm); cursor:pointer; flex-shrink:0; color:var(--color-status-green-fg);">Done</button>
@@ -1531,14 +1531,14 @@
                     <div class="pulse-row-field" style="color:var(--color-gray-600);"><span class="pulse-mobile-label">Last used</span>{{ k.lastUsedLabel }}</div>
                     <div>
                       <sc-if value="{{ k.isConfirmingDelete }}" hint-placeholder-val="{{ false }}">
-                        <div style="display:flex; align-items:center; gap:6px; justify-content:flex-end;">
+                        <div class="flex-row gap-6" style="justify-content:flex-end;">
                           <span style="font-size:var(--font-size-xs); color:var(--color-status-red-fg); white-space:nowrap;">Delete?</span>
                           <button onClick="{{ k.onConfirmDelete }}" style="background:#A93327; color:#FFF; border:none; border-radius:999px; padding:5px 10px; font-size:var(--font-size-xs); font-weight:var(--font-weight-bold); cursor:pointer; flex-shrink:0;">Yes</button>
                           <button onClick="{{ k.onCancelDelete }}" style="background:none; border:1px solid #E5E5E5; border-radius:999px; padding:5px 10px; font-size:var(--font-size-xs); cursor:pointer; flex-shrink:0;">No</button>
                         </div>
                       </sc-if>
                       <sc-if value="{{ k.isNotConfirmingDelete }}" hint-placeholder-val="{{ true }}">
-                        <div style="display:flex; align-items:center; gap:6px; justify-content:flex-end;">
+                        <div class="flex-row gap-6" style="justify-content:flex-end;">
                           <button onClick="{{ k.onTest }}" title="Trigger test request" style="background:none; border:1px solid #E5E5E5; border-radius:999px; width:30px; height:30px; display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--color-gray-600); flex-shrink:0;"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4l14 8-14 8V4z"/></svg></button>
                           <button onClick="{{ k.onDelete }}" title="Delete key" style="background:none; border:1px solid #E5E5E5; border-radius:999px; width:30px; height:30px; display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--color-status-red-fg); flex-shrink:0;"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3m-8 0v13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V7"/></svg></button>
                         </div>
@@ -1549,14 +1549,14 @@
                     <div class="pulse-row-mobile-header">
                       <div class="pulse-row-mobile-title">{{ k.name }}</div>
                       <sc-if value="{{ k.isConfirmingDelete }}" hint-placeholder-val="{{ false }}">
-                        <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
+                        <div class="flex-row gap-6 flex-shrink-0">
                           <span style="font-size:var(--font-size-xs); color:var(--color-status-red-fg); white-space:nowrap;">Delete?</span>
                           <button onClick="{{ k.onConfirmDelete }}" style="background:#A93327; color:#FFF; border:none; border-radius:999px; padding:5px 10px; font-size:var(--font-size-xs); font-weight:var(--font-weight-bold); cursor:pointer; flex-shrink:0;">Yes</button>
                           <button onClick="{{ k.onCancelDelete }}" style="background:none; border:1px solid #E5E5E5; border-radius:999px; padding:5px 10px; font-size:var(--font-size-xs); cursor:pointer; flex-shrink:0;">No</button>
                         </div>
                       </sc-if>
                       <sc-if value="{{ k.isNotConfirmingDelete }}" hint-placeholder-val="{{ true }}">
-                        <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
+                        <div class="flex-row gap-6 flex-shrink-0">
                           <button onClick="{{ k.onTest }}" title="Trigger test request" style="background:none; border:1px solid #E5E5E5; border-radius:999px; width:30px; height:30px; display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--color-gray-600); flex-shrink:0;"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4l14 8-14 8V4z"/></svg></button>
                           <button onClick="{{ k.onDelete }}" title="Delete key" style="background:none; border:1px solid #E5E5E5; border-radius:999px; width:30px; height:30px; display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--color-status-red-fg); flex-shrink:0;"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3m-8 0v13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V7"/></svg></button>
                         </div>
