@@ -292,6 +292,9 @@
                 <span style="{{ selectedEntry.statusChipStyle }}">{{ selectedEntry.statusLabel }}</span>
                 <span style="{{ selectedEntry.lobChipStyle }}">{{ selectedEntry.lob }}</span>
                 <span style="font-size:var(--font-size-sm); color:var(--color-gray-600); background:#F6F6F6; border-radius:6px; padding:3px 8px;">{{ selectedEntry.version }}</span>
+                <sc-if value="{{ selectedEntry.canonical }}" hint-placeholder-val="{{ false }}">
+                  <span title="The agreed, official definition for this concept" style="display:inline-flex; align-items:center; gap:3px; font-size:var(--font-size-sm); font-weight:var(--font-weight-bold); color:var(--color-status-green-fg); background:var(--color-status-green-bg); border-radius:6px; padding:3px 8px;">✓ Canonical</span>
+                </sc-if>
               </sc-if>
               <sc-if value="{{ isDetailPipeline }}" hint-placeholder-val="{{ false }}">
                 <span style="font-size:var(--font-size-xs); color:var(--color-gray-600); background:#F6F6F6; border-radius:6px; padding:3px 8px; font-weight:var(--font-weight-semibold); text-transform:uppercase; letter-spacing:0.04em;">Pipeline</span>
@@ -807,6 +810,9 @@
                     <div class="pulse-row-num" style="color:var(--color-gray-600);">{{ e.rowNumber }}</div>
                     <div class="pulse-row-name" style="display:flex; align-items:center; gap:8px;">
                       <span style="font-weight:var(--font-weight-semibold); font-family:ui-monospace,monospace;">{{ e.name }}</span>
+                      <sc-if value="{{ e.canonical }}" hint-placeholder-val="{{ false }}">
+                        <span title="The agreed, official definition for this concept" style="display:inline-flex; align-items:center; gap:3px; font-size:var(--font-size-xs); font-weight:var(--font-weight-bold); color:var(--color-status-green-fg); background:var(--color-status-green-bg); border-radius:999px; padding:2px 8px; flex-shrink:0;">✓ Canonical</span>
+                      </sc-if>
                     </div>
                     <div class="pulse-row-field" style="color:var(--color-gray-600);"><span class="pulse-mobile-label">Weekly Volume</span>{{ e.weeklyVolumeLabel }}</div>
                     <div class="pulse-row-field"><span class="pulse-mobile-label">LOB</span><span style="{{ e.lobChipStyle }}">{{ e.lob }}</span></div>

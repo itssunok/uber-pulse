@@ -33,6 +33,10 @@
  * @property {string} lastUpdated       ISO date string (YYYY-MM-DD) of the last definition update.
  * @property {boolean} warning          Whether a data-quality warning banner should show for this entry.
  * @property {string} [warningText]     Present only when warning === true; the warning banner copy.
+ * @property {boolean} [canonical]      True when this is the one officially agreed-upon definition for a
+ *                                      concept that otherwise has competing/ambiguous numbers elsewhere
+ *                                      (e.g. "conversion" for Eats campaigns). Renders a "Canonical" badge.
+ *                                      Omitted (not false) on every entry where the question doesn't apply.
  * @property {ChangelogEntry[]} changelog  Version history, oldest listed first as authored.
  * @property {PayloadField[]} payload   Sample payload fields/values shown in the entry's payload preview.
  *
@@ -86,7 +90,7 @@ const CATALOG = [
     implementingTeam:'Eats Growth Engineering', definitionOwner:'Marketing Analytics', downstreamConsumers:['Marketing Analytics', 'Executive Dashboards'], version:'v1.0', lastUpdated:'2026-06-30', warning:false,
     changelog:[{version:'v1.0',date:'2026-06-30',change:'Initial release'}],
     payload:[{field:'campaign_id',value:'c_eats_summer'},{field:'offer_code',value:'EATS15'}] },
-  { id:'eats_campaign_conversion', name:'eats_campaign_conversion', lob:'Eats', status:'active', weeklyVolume:5.8, pipelineId:'p2', weeklyTrend:[5.9, 5.8, 5.8, 5.8],
+  { id:'eats_campaign_conversion', name:'eats_campaign_conversion', lob:'Eats', status:'active', weeklyVolume:5.8, pipelineId:'p2', weeklyTrend:[5.9, 5.8, 5.8, 5.8], canonical:true,
     definition:'The official definition of "conversion" for Eats campaigns: an order placed within 7 days of an attributed ad click or impression.',
     implementingTeam:'Eats Growth Engineering', definitionOwner:'Marketing Analytics', downstreamConsumers:['Marketing Analytics', 'Executive Dashboards'], version:'v4.0', lastUpdated:'2026-07-05', warning:false,
     changelog:[{version:'v4.0',date:'2026-07-05',change:'Initial release'}],
