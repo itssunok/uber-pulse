@@ -443,36 +443,55 @@
               </div>
 
               <div style="min-width:0;">
-                <div style="margin-bottom:32px;">
-                  <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#6B6B6B; margin-bottom:10px;">Details</div>
+                <div style="margin-bottom:24px;">
+                  <div style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#9B9B9B; margin-bottom:8px;">Ownership</div>
                   <div style="display:flex; gap:8px; flex-wrap:wrap;">
                     <sc-if value="{{ isDetailEvent }}" hint-placeholder-val="{{ false }}">
                       <span style="font-size:12px; color:#0A0A0A; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:999px; padding:4px 11px;">Implementing team: {{ selectedEntry.implementingTeam }}</span>
                       <span style="font-size:12px; color:#0A0A0A; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:999px; padding:4px 11px;">Definition owner: {{ selectedEntry.definitionOwner }}</span>
-                      <span style="font-size:12px; color:#0A0A0A; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:999px; padding:4px 11px;">Last updated: {{ selectedEntry.lastUpdated }}</span>
+                    </sc-if>
+                    <sc-if value="{{ isDetailPipeline }}" hint-placeholder-val="{{ false }}">
+                      <span style="font-size:12px; color:#0A0A0A; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:999px; padding:4px 11px;">Owning team: {{ selectedPipeline.owningTeam }}</span>
+                      <span style="font-size:12px; color:#0A0A0A; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:999px; padding:4px 11px;">Definition owner: {{ selectedPipeline.definitionOwner }}</span>
+                    </sc-if>
+                    <sc-if value="{{ isDetailMetric }}" hint-placeholder-val="{{ false }}">
+                      <span style="font-size:12px; color:#0A0A0A; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:999px; padding:4px 11px;">Implementing team: {{ selectedMetric.implementingTeam }}</span>
+                      <span style="font-size:12px; color:#0A0A0A; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:999px; padding:4px 11px;">Definition owner: {{ selectedMetric.definitionOwner }}</span>
+                    </sc-if>
+                  </div>
+                </div>
+
+                <div style="margin-bottom:24px;">
+                  <div style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#9B9B9B; margin-bottom:8px;">Consumed by</div>
+                  <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                    <sc-if value="{{ isDetailEvent }}" hint-placeholder-val="{{ false }}">
                       <sc-for list="{{ selectedEntry.downstreamConsumers }}" as="dc" hint-placeholder-count="2">
                         <span style="font-size:12px; color:#0A0A0A; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:999px; padding:4px 11px;">{{ dc }}</span>
                       </sc-for>
                     </sc-if>
                     <sc-if value="{{ isDetailPipeline }}" hint-placeholder-val="{{ false }}">
-                      <span style="font-size:12px; color:#0A0A0A; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:999px; padding:4px 11px;">Owning team: {{ selectedPipeline.owningTeam }}</span>
-                      <span style="font-size:12px; color:#0A0A0A; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:999px; padding:4px 11px;">Definition owner: {{ selectedPipeline.definitionOwner }}</span>
-                      <span style="font-size:12px; color:#0A0A0A; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:999px; padding:4px 11px;">Freshness: {{ selectedPipeline.freshness }}</span>
-                      <span style="font-size:12px; color:#0A0A0A; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:999px; padding:4px 11px;">SLA: {{ selectedPipeline.slaTarget }} / <span style="{{ selectedPipeline.slaActualStyle }}">{{ selectedPipeline.slaActual }}</span></span>
-                      <span style="font-size:12px; color:#0A0A0A; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:999px; padding:4px 11px;">Quality: {{ selectedPipeline.quality }} / 100</span>
                       <sc-for list="{{ selectedPipeline.downstreamConsumers }}" as="dc" hint-placeholder-count="2">
                         <span style="font-size:12px; color:#0A0A0A; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:999px; padding:4px 11px;">{{ dc }}</span>
                       </sc-for>
                     </sc-if>
                     <sc-if value="{{ isDetailMetric }}" hint-placeholder-val="{{ false }}">
-                      <span style="font-size:12px; color:#0A0A0A; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:999px; padding:4px 11px;">Implementing team: {{ selectedMetric.implementingTeam }}</span>
-                      <span style="font-size:12px; color:#0A0A0A; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:999px; padding:4px 11px;">Definition owner: {{ selectedMetric.definitionOwner }}</span>
                       <sc-for list="{{ selectedMetric.downstreamConsumers }}" as="dc" hint-placeholder-count="2">
                         <span style="font-size:12px; color:#0A0A0A; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:999px; padding:4px 11px;">{{ dc }}</span>
                       </sc-for>
                     </sc-if>
                   </div>
                 </div>
+
+                <sc-if value="{{ isDetailPipeline }}" hint-placeholder-val="{{ false }}">
+                  <div style="margin-bottom:32px;">
+                    <div style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#9B9B9B; margin-bottom:8px;">Operational</div>
+                    <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                      <span style="font-size:12px; color:#0A0A0A; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:999px; padding:4px 11px;">Freshness: {{ selectedPipeline.freshness }}</span>
+                      <span style="font-size:12px; color:#0A0A0A; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:999px; padding:4px 11px;">SLA: {{ selectedPipeline.slaTarget }} / <span style="{{ selectedPipeline.slaActualStyle }}">{{ selectedPipeline.slaActual }}</span></span>
+                      <span style="font-size:12px; color:#0A0A0A; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:999px; padding:4px 11px;">Quality: {{ selectedPipeline.quality }} / 100</span>
+                    </div>
+                  </div>
+                </sc-if>
 
                 <sc-if value="{{ isDetailPipeline }}" hint-placeholder-val="{{ false }}">
                   <div style="margin-bottom:32px;">
