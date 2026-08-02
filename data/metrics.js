@@ -11,6 +11,11 @@
  * @property {number[]} values  4 trailing weekly values, oldest to newest, ending at the value
  *                              implied by the tile's current verticalBreakdown entry for this label.
  *
+ * @typedef {Object} MetricChangelogEntry
+ * @property {string} version  Version label (e.g. 'v2.0').
+ * @property {string} date     ISO date string (YYYY-MM-DD).
+ * @property {string} change   Short description of what changed in this version.
+ *
  * @typedef {Object} MetricTile
  * @property {string} id           Stable id, e.g. 'gtv'.
  * @property {string} label        KPI display name.
@@ -30,6 +35,9 @@
  * @property {WeeklyCategorySeries[]} weeklyByCategory  4-week trailing series per category in verticalBreakdown,
  *                                     derived from this tile's own `points` sparkline distributed by category
  *                                     share, not independently fabricated.
+ * @property {MetricChangelogEntry[]} changelog  Version history of the metric's own definition/scope, oldest
+ *                                     listed first — distinct from sourceEventId's own changelog, since a
+ *                                     metric's calculation can change independent of the raw event.
  *
  * @type {MetricTile[]}
  */
@@ -41,7 +49,10 @@ const METRICS_BASE = [
     weeklyByCategory:[
       {label:'Ridesharing', values:[1903, 1980, 2046, 2118]},
       {label:'Eats', values:[1211, 1260, 1302, 1348]},
-      {label:'B2B/Freight', values:[346, 360, 372, 385]}] },
+      {label:'B2B/Freight', values:[346, 360, 372, 385]}],
+    changelog:[
+      {version:'v1.0', date:'2025-09-01', change:'Initial release, aggregating Ridesharing and Eats gross trip/order value.'},
+      {version:'v2.0', date:'2026-03-15', change:'Added B2B/Freight transactions into the GTV calculation to reflect full platform value.'}] },
   { id:'trips', label:'Weekly Trips', value:'196.0M', delta:'+2.8% WoW', positive:true, points:[177.0,180.2,183.2,186.2,189.2,191.6,193.8,196.0], iconBg:'#DCEBF7', iconColor:'#1D6FA5',
     tooltip:'A trip counts as completed when the rider is dropped off at the confirmed destination and payment is captured successfully, sourced from the completed_trip event.', sourceEventId:'completed_trip',
     implementingTeam:'Rides Platform Engineering', definitionOwner:'Maya Chen (Data Science)', downstreamConsumers:['Finance Reconciliation', 'Rides Growth Engineering', 'Executive Dashboards'],
@@ -50,7 +61,10 @@ const METRICS_BASE = [
       {label:'UberX', values:[128.7, 130.3, 131.8, 133.3]},
       {label:'Comfort', values:[32.2, 32.6, 32.9, 33.3]},
       {label:'Black', values:[17.0, 17.2, 17.4, 17.6]},
-      {label:'Pool/Share', values:[11.4, 11.5, 11.6, 11.8]}] },
+      {label:'Pool/Share', values:[11.4, 11.5, 11.6, 11.8]}],
+    changelog:[
+      {version:'v1.0', date:'2025-09-01', change:'Initial release, counting all completed_trip events.'},
+      {version:'v1.1', date:'2026-05-20', change:'Aligned trip completion with payment-capture confirmation, matching the completed_trip pipeline update.'}] },
   { id:'eats', label:'Eats Deliveries', value:'35.0M', delta:'+6.1% WoW', positive:true, points:[30.2,31.2,32.1,32.8,33.5,34.0,34.5,35.0], iconBg:'#FBE8D8', iconColor:'#B45F06',
     tooltip:'An Eats delivery counts as completed when the order — restaurant food, grocery, or another Eats vertical — is successfully submitted and confirmed by the fulfilling merchant or store, sourced from the eats_order_placed event.', sourceEventId:'eats_order_placed',
     implementingTeam:'Eats Checkout Engineering', definitionOwner:'Eats Analytics', downstreamConsumers:['Finance Reconciliation', 'Eats Growth Engineering', 'Executive Dashboards'],
@@ -58,7 +72,10 @@ const METRICS_BASE = [
     weeklyByCategory:[
       {label:'Food delivery', values:[24.0, 24.4, 24.7, 25.1]},
       {label:'Grocery', values:[6.4, 6.5, 6.6, 6.7]},
-      {label:'Other Eats verticals', values:[3.0, 3.1, 3.1, 3.2]}] },
+      {label:'Other Eats verticals', values:[3.0, 3.1, 3.1, 3.2]}],
+    changelog:[
+      {version:'v1.0', date:'2025-09-01', change:'Initial release, counting restaurant food orders only.'},
+      {version:'v1.1', date:'2026-07-30', change:'Corrected scope to include grocery and other Eats verticals, matching the eats_order_placed v1.7 definition update.'}] },
   { id:'b2b', label:'B2B Transactions', value:'3.42M', delta:'-1.3% WoW', positive:false, points:[3.6,3.58,3.55,3.5,3.48,3.45,3.43,3.42], iconBg:'#EDE3F7', iconColor:'#6B3FA0',
     tooltip:'Confirmed B2B/Freight shipment transactions in the trailing 7 days, sourced from the b2b_shipment_confirmed event.', sourceEventId:'b2b_shipment_confirmed',
     implementingTeam:'Freight Engineering', definitionOwner:'B2B Analytics', downstreamConsumers:['B2B Finance Engineering', 'Executive Dashboards'],
@@ -66,6 +83,9 @@ const METRICS_BASE = [
     weeklyByCategory:[
       {label:'Business Travel', values:[1.914, 1.898, 1.887, 1.881]},
       {label:'Uber Central', values:[1.044, 1.035, 1.029, 1.026]},
-      {label:'Freight', values:[0.522, 0.518, 0.515, 0.513]}] }
+      {label:'Freight', values:[0.522, 0.518, 0.515, 0.513]}],
+    changelog:[
+      {version:'v1.0', date:'2025-09-01', change:'Initial release, counting confirmed freight shipments only.'},
+      {version:'v1.2', date:'2026-05-22', change:'Aligned counting logic with the b2b_shipment_confirmed v1.2 definition update.'}] }
 ];
 
