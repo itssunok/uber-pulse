@@ -31,6 +31,7 @@
 
     .pulse-bottom-nav, .pulse-mobile-sheet-overlay { display:none; }
     .pulse-mobile-label { display:none; }
+    .pulse-row-mobile { display:none; }
     .pulse-roadmap-dots { display:none; }
     .pulse-side-sheet { box-sizing:border-box; }
 
@@ -77,13 +78,21 @@
       .pulse-kpi-grid, .pulse-grid-1col { grid-template-columns:1fr !important; }
       .pulse-stack-mobile { flex-direction:column !important; align-items:stretch !important; }
       .pulse-pipeline-header { display:none !important; }
-      .pulse-pipeline-row {
-        display:flex !important; flex-direction:column; gap:6px; padding:14px 16px !important;
+
+      /* Card-style mobile row, replacing the grid table entirely below 900px —
+         desktop grid rows hide, these dedicated card rows show instead. */
+      .pulse-table-wrap { background:none !important; border:none !important; border-radius:0 !important; overflow:visible !important; }
+      .pulse-row-desktop { display:none !important; }
+      .pulse-row-mobile {
+        display:block !important; background:var(--color-white); border:1px solid var(--color-gray-200);
+        border-radius:var(--radius-inline); margin-bottom:10px; padding:14px 16px; box-sizing:border-box;
       }
-      .pulse-row-num { display:none !important; }
-      .pulse-row-name { font-size:var(--font-size-base); }
-      .pulse-row-field { display:flex !important; justify-content:space-between; align-items:center; }
-      .pulse-mobile-label { display:inline !important; color:var(--color-gray-600); font-size:var(--font-size-sm); }
+      .pulse-row-mobile-header { display:flex; align-items:center; justify-content:space-between; gap:10px; }
+      .pulse-row-mobile-title { display:flex; align-items:center; gap:8px; min-width:0; font-weight:var(--font-weight-semibold); font-size:var(--font-size-base); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+      .pulse-row-mobile-field { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 0; border-top:1px solid var(--color-gray-100); font-size:var(--font-size-sm); }
+      .pulse-row-mobile-field:first-of-type { margin-top:10px; }
+      .pulse-row-mobile-field-label { color:var(--color-gray-600); flex-shrink:0; }
+      .pulse-row-mobile-field-value { font-weight:var(--font-weight-medium); text-align:right; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 
       .pulse-login-topbar { padding:0 20px !important; }
       .pulse-login-formwrap { padding:48px 20px 40px 20px !important; }
@@ -206,13 +215,13 @@
 
           <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
             <sc-if value="{{ criticalPipeline }}" hint-placeholder-val="{{ false }}">
-              <div style="display:flex; align-items:center; gap:12px; background:#FBE9E6; border:1px solid #F0C4BC; border-radius:10px; padding:13px 16px; margin-bottom:24px;">
-                <div style="width:8px; height:8px; border-radius:50%; background:#A93327; flex-shrink:0;"></div>
+              <div class="flex-row gap-12" style="background:#FBE9E6; border:1px solid #F0C4BC; border-radius:10px; padding:13px 16px; margin-bottom:24px;">
+                <div class="flex-shrink-0" style="width:8px; height:8px; border-radius:var(--radius-circle); background:#A93327;"></div>
                 <div style="font-size:var(--font-size-sm); color:var(--color-status-red-fg); flex:1;"><strong>{{ criticalPipeline.name }}</strong> is degraded — estimated resolution in 45 min. Trip and demand metrics for {{ criticalPipeline.lob }} may be affected.</div>
               </div>
             </sc-if>
 
-            <h1 style="font-size:var(--font-size-h1); font-weight:var(--font-weight-h1); margin:0 0 4px 0; letter-spacing:-0.5px;">Home</h1>
+            <h1 class="title-h1">Home</h1>
             <p style="font-size:var(--font-size-base); color:var(--color-gray-600); margin:0 0 24px 0;">Is the platform healthy, and how is the business doing today?</p>
 
             <div class="pulse-kpi-grid" style="display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:36px;">
@@ -220,12 +229,12 @@
                 <div role="button" tabindex="0" onClick="{{ m.onSelect }}" onKeyDown="{{ m.onKeyDown }}" style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; padding:18px; cursor:pointer;">
                   <div style="display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:12px;">
                     <div class="pulse-tt" style="font-size:var(--font-size-sm); color:var(--color-gray-600); font-weight:var(--font-weight-medium);">{{ m.label }}<span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble">{{ m.tooltip }}</span></div>
-                    <div style="width:34px; height:34px; border-radius:50%; background:{{ m.iconBg }}; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                    <div class="flex-row flex-shrink-0" style="width:34px; height:34px; border-radius:var(--radius-circle); background:{{ m.iconBg }}; justify-content:center;">
                       <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="{{ m.iconColor }}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16l6-6 4 4 6-9"/><path d="M14 5h6v6"/></svg>
                     </div>
                   </div>
                   <div style="font-size:var(--font-size-h1); font-weight:var(--font-weight-h1); letter-spacing:-0.4px; margin-bottom:8px;">{{ m.value }}</div>
-                  <div style="display:flex; align-items:center; justify-content:space-between;">
+                  <div class="flex-row-between">
                     <span style="{{ m.deltaStyle }}">{{ m.deltaLabel }}</span>
                   </div>
                   <svg viewBox="0 0 100 30" style="width:100%; height:30px; margin-top:10px; display:block;">
@@ -235,10 +244,10 @@
               </sc-for>
             </div>
 
-            <h2 style="font-size:var(--font-size-h2); font-weight:var(--font-weight-h2); margin:0 0 2px 0;">Top 10 Event Pipelines</h2>
+            <h2 class="title-h2" style="margin:0 0 2px 0;">Top 10 Event Pipelines</h2>
             <p style="font-size:var(--font-size-sm); color:var(--color-gray-600); margin:0 0 14px 0;">Ranked by weekly volume. See the full list in Data & Pipeline Catalog → Pipeline Log.</p>
 
-            <div style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; overflow:hidden;">
+            <div class="pulse-table-wrap" style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; overflow:hidden;">
               <div class="pulse-pipeline-header" style="display:grid; grid-template-columns:0.3fr 2fr 0.9fr 1fr 1fr 1.4fr 1.1fr 1fr; gap:8px; padding:10px 18px; border-bottom:1px solid #EFEFEF;">
                 <div>#</div>
                 <div>Pipeline<span class="pulse-tt" style="display:inline-flex;"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; left:0; text-transform:none; letter-spacing:normal; font-weight:var(--font-weight-medium);">The name of the data pipeline processing this event stream.</span></span></div>
@@ -250,7 +259,7 @@
                 <div>Quality<span class="pulse-tt" style="display:inline-flex;"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; right:0; left:auto; text-transform:none; letter-spacing:normal; font-weight:var(--font-weight-medium);">Composite score (0-100) from schema, completeness, and duplication checks.</span></span></div>
               </div>
               <sc-for list="{{ homePipelines }}" as="p" hint-placeholder-count="10">
-                <div class="pulse-pipeline-row" role="button" tabindex="0" style="display:grid; grid-template-columns:0.3fr 2fr 0.9fr 1fr 1fr 1.4fr 1.1fr 1fr; gap:8px; padding:13px 18px; font-size:var(--font-size-sm); border-bottom:1px solid #F0F0F0; align-items:center; cursor:pointer;" onClick="{{ p.onSelect }}" onKeyDown="{{ p.onKeyDown }}">
+                <div class="pulse-pipeline-row pulse-row-desktop" role="button" tabindex="0" style="display:grid; grid-template-columns:0.3fr 2fr 0.9fr 1fr 1fr 1.4fr 1.1fr 1fr; gap:8px; padding:13px 18px; font-size:var(--font-size-sm); border-bottom:1px solid #F0F0F0; align-items:center; cursor:pointer;" onClick="{{ p.onSelect }}" onKeyDown="{{ p.onKeyDown }}">
                   <div class="pulse-row-num" style="color:var(--color-gray-600);">{{ p.rowNumber }}</div>
                   <div class="pulse-row-name" style="font-weight:var(--font-weight-semibold);">{{ p.name }}</div>
                   <div class="pulse-row-field" style="color:var(--color-gray-600);"><span class="pulse-mobile-label">Weekly Volume</span>{{ p.weeklyVolumeLabel }}</div>
@@ -260,12 +269,29 @@
                   <div class="pulse-row-field" style="color:var(--color-gray-600);"><span class="pulse-mobile-label">Freshness</span>{{ p.freshness }}</div>
                   <div class="pulse-row-field">
                     <span class="pulse-mobile-label">Quality</span>
-                    <div style="display:flex; align-items:center; gap:8px;">
+                    <div class="flex-row gap-8">
                       <span style="font-weight:var(--font-weight-semibold);">{{ p.quality }}</span>
                       <div style="width:44px; height:5px; background:#EFEFEF; border-radius:3px; overflow:hidden;">
                         <div style="{{ p.qualityBarStyle }}"></div>
                       </div>
                     </div>
+                  </div>
+                </div>
+                <div class="pulse-row-mobile" role="button" tabindex="0" onClick="{{ p.onSelect }}" onKeyDown="{{ p.onKeyDown }}">
+                  <div class="pulse-row-mobile-header">
+                    <div class="pulse-row-mobile-title">{{ p.name }}</div>
+                    <span style="{{ p.statusChipStyle }}">{{ p.statusLabel }}</span>
+                  </div>
+                  <div class="pulse-row-mobile-field"><span class="pulse-row-mobile-field-label">Weekly Volume</span><span class="pulse-row-mobile-field-value">{{ p.weeklyVolumeLabel }}</span></div>
+                  <div class="pulse-row-mobile-field"><span class="pulse-row-mobile-field-label">LOB</span><span style="{{ p.lobChipStyle }}">{{ p.lob }}</span></div>
+                  <div class="pulse-row-mobile-field"><span class="pulse-row-mobile-field-label">SLA (target / actual)</span><span class="pulse-row-mobile-field-value">{{ p.slaTarget }} / <span style="{{ p.slaActualStyle }}">{{ p.slaActual }}</span></span></div>
+                  <div class="pulse-row-mobile-field"><span class="pulse-row-mobile-field-label">Freshness</span><span class="pulse-row-mobile-field-value">{{ p.freshness }}</span></div>
+                  <div class="pulse-row-mobile-field">
+                    <span class="pulse-row-mobile-field-label">Quality</span>
+                    <span class="pulse-row-mobile-field-value flex-row gap-8">
+                      {{ p.quality }}
+                      <span style="width:44px; height:5px; background:#EFEFEF; border-radius:3px; overflow:hidden; display:inline-block;"><span style="{{ p.qualityBarStyle }}display:block;"></span></span>
+                    </span>
                   </div>
                 </div>
               </sc-for>
@@ -795,7 +821,7 @@
               </div>
               <div style="font-size:var(--font-size-sm); color:var(--color-gray-600); margin-bottom:10px;">{{ catalogCountLabel }}</div>
 
-              <div style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; overflow:hidden;">
+              <div class="pulse-table-wrap" style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; overflow:hidden;">
                 <div class="pulse-pipeline-header" style="display:grid; grid-template-columns:0.3fr 2fr 0.9fr 1fr 1fr 1.6fr 1fr; gap:10px; padding:10px 18px; border-bottom:1px solid #EFEFEF;">
                   <div>#</div>
                   <div>Event Name<span class="pulse-tt" style="display:inline-flex;"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; left:0; text-transform:none; letter-spacing:normal; font-weight:var(--font-weight-medium);">The unique event or metric name, as it appears in the data warehouse. A dot indicates an active data quality warning.</span></span></div>
@@ -806,7 +832,7 @@
                   <div>Last Updated<span class="pulse-tt" style="display:inline-flex;"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; right:0; left:auto; text-transform:none; letter-spacing:normal; font-weight:var(--font-weight-medium);">Date this definition's payload or logic was last changed.</span></span></div>
                 </div>
                 <sc-for list="{{ pagedCatalog }}" as="e" hint-placeholder-count="30">
-                  <div class="pulse-pipeline-row" role="button" tabindex="0" onClick="{{ e.onSelect }}" onKeyDown="{{ e.onKeyDown }}" style="display:grid; grid-template-columns:0.3fr 2fr 0.9fr 1fr 1fr 1.6fr 1fr; gap:10px; padding:14px 18px; font-size:var(--font-size-sm); border-bottom:1px solid #F0F0F0; align-items:center; cursor:pointer;">
+                  <div class="pulse-pipeline-row pulse-row-desktop" role="button" tabindex="0" onClick="{{ e.onSelect }}" onKeyDown="{{ e.onKeyDown }}" style="display:grid; grid-template-columns:0.3fr 2fr 0.9fr 1fr 1fr 1.6fr 1fr; gap:10px; padding:14px 18px; font-size:var(--font-size-sm); border-bottom:1px solid #F0F0F0; align-items:center; cursor:pointer;">
                     <div class="pulse-row-num" style="color:var(--color-gray-600);">{{ e.rowNumber }}</div>
                     <div class="pulse-row-name" style="display:flex; align-items:center; gap:8px;">
                       <span style="font-weight:var(--font-weight-semibold); font-family:ui-monospace,monospace;">{{ e.name }}</span>
@@ -819,6 +845,19 @@
                     <div class="pulse-row-field"><span class="pulse-mobile-label">Status</span><span style="{{ e.statusChipStyle }}">{{ e.statusLabel }}</span></div>
                     <div class="pulse-row-field" style="color:var(--color-gray-600);"><span class="pulse-mobile-label">Definition Owner</span>{{ e.definitionOwner }}</div>
                     <div class="pulse-row-field" style="color:var(--color-gray-600);"><span class="pulse-mobile-label">Last Updated</span>{{ e.lastUpdated }}</div>
+                  </div>
+                  <div class="pulse-row-mobile" role="button" tabindex="0" onClick="{{ e.onSelect }}" onKeyDown="{{ e.onKeyDown }}">
+                    <div class="pulse-row-mobile-header">
+                      <div class="pulse-row-mobile-title" style="font-family:ui-monospace,monospace;">{{ e.name }}</div>
+                      <span style="{{ e.statusChipStyle }}">{{ e.statusLabel }}</span>
+                    </div>
+                    <sc-if value="{{ e.canonical }}" hint-placeholder-val="{{ false }}">
+                      <span title="The agreed, official definition for this concept" style="display:inline-flex; align-items:center; gap:3px; font-size:var(--font-size-xs); font-weight:var(--font-weight-bold); color:var(--color-status-green-fg); background:var(--color-status-green-bg); border-radius:999px; padding:2px 8px; margin-top:6px;">✓ Canonical</span>
+                    </sc-if>
+                    <div class="pulse-row-mobile-field"><span class="pulse-row-mobile-field-label">Weekly Volume</span><span class="pulse-row-mobile-field-value">{{ e.weeklyVolumeLabel }}</span></div>
+                    <div class="pulse-row-mobile-field"><span class="pulse-row-mobile-field-label">LOB</span><span style="{{ e.lobChipStyle }}">{{ e.lob }}</span></div>
+                    <div class="pulse-row-mobile-field"><span class="pulse-row-mobile-field-label">Definition Owner</span><span class="pulse-row-mobile-field-value">{{ e.definitionOwner }}</span></div>
+                    <div class="pulse-row-mobile-field"><span class="pulse-row-mobile-field-label">Last Updated</span><span class="pulse-row-mobile-field-value">{{ e.lastUpdated }}</span></div>
                   </div>
                 </sc-for>
                 <sc-if value="{{ noCatalogResults }}" hint-placeholder-val="{{ false }}">
@@ -855,7 +894,7 @@
               </div>
               <div style="font-size:var(--font-size-sm); color:var(--color-gray-600); margin-bottom:10px;">{{ pipelineCountLabel }}</div>
 
-              <div style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; overflow:hidden;">
+              <div class="pulse-table-wrap" style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; overflow:hidden;">
                 <div class="pulse-pipeline-header" style="display:grid; grid-template-columns:0.3fr 2fr 0.9fr 1fr 1fr 1.4fr 1.1fr 1fr; gap:8px; padding:10px 18px; border-bottom:1px solid #EFEFEF;">
                   <div>#</div>
                 <div>Pipeline<span class="pulse-tt" style="display:inline-flex;"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; left:0; text-transform:none; letter-spacing:normal; font-weight:var(--font-weight-medium);">The name of the data pipeline processing this event stream.</span></span></div>
@@ -867,7 +906,7 @@
                   <div>Quality<span class="pulse-tt" style="display:inline-flex;"><span class="pulse-tt-icon">i</span><span class="pulse-tt-bubble" style="top:calc(100% + 8px); bottom:auto; right:0; left:auto; text-transform:none; letter-spacing:normal; font-weight:var(--font-weight-medium);">Composite score (0-100) from schema, completeness, and duplication checks.</span></span></div>
                 </div>
                 <sc-for list="{{ pagedPipelines }}" as="p" hint-placeholder-count="30">
-                  <div class="pulse-pipeline-row" role="button" tabindex="0" style="display:grid; grid-template-columns:0.3fr 2fr 0.9fr 1fr 1fr 1.4fr 1.1fr 1fr; gap:8px; padding:13px 18px; font-size:var(--font-size-sm); border-bottom:1px solid #F0F0F0; align-items:center; cursor:pointer;" onClick="{{ p.onSelect }}" onKeyDown="{{ p.onKeyDown }}">
+                  <div class="pulse-pipeline-row pulse-row-desktop" role="button" tabindex="0" style="display:grid; grid-template-columns:0.3fr 2fr 0.9fr 1fr 1fr 1.4fr 1.1fr 1fr; gap:8px; padding:13px 18px; font-size:var(--font-size-sm); border-bottom:1px solid #F0F0F0; align-items:center; cursor:pointer;" onClick="{{ p.onSelect }}" onKeyDown="{{ p.onKeyDown }}">
                     <div class="pulse-row-num" style="color:var(--color-gray-600);">{{ p.rowNumber }}</div>
                     <div class="pulse-row-name" style="font-weight:var(--font-weight-semibold);">{{ p.name }}</div>
                     <div class="pulse-row-field" style="color:var(--color-gray-600);"><span class="pulse-mobile-label">Weekly Volume</span>{{ p.weeklyVolumeLabel }}</div>
@@ -883,6 +922,23 @@
                           <div style="{{ p.qualityBarStyle }}"></div>
                         </div>
                       </div>
+                    </div>
+                  </div>
+                  <div class="pulse-row-mobile" role="button" tabindex="0" onClick="{{ p.onSelect }}" onKeyDown="{{ p.onKeyDown }}">
+                    <div class="pulse-row-mobile-header">
+                      <div class="pulse-row-mobile-title">{{ p.name }}</div>
+                      <span style="{{ p.statusChipStyle }}">{{ p.statusLabel }}</span>
+                    </div>
+                    <div class="pulse-row-mobile-field"><span class="pulse-row-mobile-field-label">Weekly Volume</span><span class="pulse-row-mobile-field-value">{{ p.weeklyVolumeLabel }}</span></div>
+                    <div class="pulse-row-mobile-field"><span class="pulse-row-mobile-field-label">LOB</span><span style="{{ p.lobChipStyle }}">{{ p.lob }}</span></div>
+                    <div class="pulse-row-mobile-field"><span class="pulse-row-mobile-field-label">SLA (target / actual)</span><span class="pulse-row-mobile-field-value">{{ p.slaTarget }} / <span style="{{ p.slaActualStyle }}">{{ p.slaActual }}</span></span></div>
+                    <div class="pulse-row-mobile-field"><span class="pulse-row-mobile-field-label">Freshness</span><span class="pulse-row-mobile-field-value">{{ p.freshness }}</span></div>
+                    <div class="pulse-row-mobile-field">
+                      <span class="pulse-row-mobile-field-label">Quality</span>
+                      <span class="pulse-row-mobile-field-value" style="display:flex; align-items:center; gap:8px;">
+                        {{ p.quality }}
+                        <span style="width:44px; height:5px; background:#EFEFEF; border-radius:3px; overflow:hidden; display:inline-block;"><span style="{{ p.qualityBarStyle }}display:block;"></span></span>
+                      </span>
                     </div>
                   </div>
                 </sc-for>
@@ -1463,12 +1519,12 @@
             </sc-if>
 
             <sc-if value="{{ hasApiKeys }}" hint-placeholder-val="{{ true }}">
-              <div style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; overflow:hidden;">
+              <div class="pulse-table-wrap" style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; overflow:hidden;">
                 <div class="pulse-pipeline-header" style="display:grid; grid-template-columns:1.5fr 1.5fr 1fr 1fr 120px; gap:10px; padding:12px 18px; border-bottom:1px solid #F0F0F0;">
                   <div>Name</div><div>Key</div><div>Created</div><div>Last used</div><div style="text-align:right;">Actions</div>
                 </div>
                 <sc-for list="{{ apiKeysView }}" as="k" hint-placeholder-count="2">
-                  <div class="pulse-pipeline-row" style="display:grid; grid-template-columns:1.5fr 1.5fr 1fr 1fr 120px; gap:10px; padding:14px 18px; font-size:var(--font-size-sm); border-bottom:1px solid #F0F0F0; align-items:center;">
+                  <div class="pulse-pipeline-row pulse-row-desktop" style="display:grid; grid-template-columns:1.5fr 1.5fr 1fr 1fr 120px; gap:10px; padding:14px 18px; font-size:var(--font-size-sm); border-bottom:1px solid #F0F0F0; align-items:center;">
                     <div class="pulse-row-name" style="font-weight:var(--font-weight-semibold); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ k.name }}</div>
                     <div class="pulse-row-field" style="font-family:ui-monospace,monospace; color:var(--color-gray-600); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"><span class="pulse-mobile-label">Key</span>{{ k.maskedKey }}</div>
                     <div class="pulse-row-field" style="color:var(--color-gray-600);"><span class="pulse-mobile-label">Created</span>{{ k.createdLabel }}</div>
@@ -1488,6 +1544,27 @@
                         </div>
                       </sc-if>
                     </div>
+                  </div>
+                  <div class="pulse-row-mobile">
+                    <div class="pulse-row-mobile-header">
+                      <div class="pulse-row-mobile-title">{{ k.name }}</div>
+                      <sc-if value="{{ k.isConfirmingDelete }}" hint-placeholder-val="{{ false }}">
+                        <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
+                          <span style="font-size:var(--font-size-xs); color:var(--color-status-red-fg); white-space:nowrap;">Delete?</span>
+                          <button onClick="{{ k.onConfirmDelete }}" style="background:#A93327; color:#FFF; border:none; border-radius:999px; padding:5px 10px; font-size:var(--font-size-xs); font-weight:var(--font-weight-bold); cursor:pointer; flex-shrink:0;">Yes</button>
+                          <button onClick="{{ k.onCancelDelete }}" style="background:none; border:1px solid #E5E5E5; border-radius:999px; padding:5px 10px; font-size:var(--font-size-xs); cursor:pointer; flex-shrink:0;">No</button>
+                        </div>
+                      </sc-if>
+                      <sc-if value="{{ k.isNotConfirmingDelete }}" hint-placeholder-val="{{ true }}">
+                        <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
+                          <button onClick="{{ k.onTest }}" title="Trigger test request" style="background:none; border:1px solid #E5E5E5; border-radius:999px; width:30px; height:30px; display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--color-gray-600); flex-shrink:0;"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4l14 8-14 8V4z"/></svg></button>
+                          <button onClick="{{ k.onDelete }}" title="Delete key" style="background:none; border:1px solid #E5E5E5; border-radius:999px; width:30px; height:30px; display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--color-status-red-fg); flex-shrink:0;"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3m-8 0v13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V7"/></svg></button>
+                        </div>
+                      </sc-if>
+                    </div>
+                    <div class="pulse-row-mobile-field"><span class="pulse-row-mobile-field-label">Key</span><span class="pulse-row-mobile-field-value" style="font-family:ui-monospace,monospace;">{{ k.maskedKey }}</span></div>
+                    <div class="pulse-row-mobile-field"><span class="pulse-row-mobile-field-label">Created</span><span class="pulse-row-mobile-field-value">{{ k.createdLabel }}</span></div>
+                    <div class="pulse-row-mobile-field"><span class="pulse-row-mobile-field-label">Last used</span><span class="pulse-row-mobile-field-value">{{ k.lastUsedLabel }}</span></div>
                   </div>
                 </sc-for>
               </div>
