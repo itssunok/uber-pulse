@@ -365,20 +365,6 @@
 
                 <sc-if value="{{ isDetailPipeline }}" hint-placeholder-val="{{ false }}">
                   <div style="margin-bottom:32px;">
-                    <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#6B6B6B; margin-bottom:10px;">Quality checks</div>
-                    <div style="display:flex; flex-direction:column; gap:8px;">
-                      <sc-for list="{{ selectedPipeline.checks }}" as="c" hint-placeholder-count="3">
-                        <div style="display:flex; align-items:center; justify-content:space-between; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px;">
-                          <div style="font-size:13px;">{{ c.name }}</div>
-                          <span style="{{ c.chipStyle }}">{{ c.status }}</span>
-                        </div>
-                      </sc-for>
-                    </div>
-                  </div>
-                </sc-if>
-
-                <sc-if value="{{ isDetailPipeline }}" hint-placeholder-val="{{ false }}">
-                  <div style="margin-bottom:32px;">
                     <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#6B6B6B; margin-bottom:10px;">Health history</div>
                     <div style="display:flex; flex-direction:column; gap:8px;">
                       <sc-for list="{{ selectedPipeline.history }}" as="h" hint-placeholder-count="5">
@@ -392,6 +378,14 @@
                           </div>
                           <sc-if value="{{ h.expanded }}" hint-placeholder-val="{{ false }}">
                             <div style="margin-top:6px; font-size:12px; color:#6B6B6B; line-height:1.5;">{{ h.note }}</div>
+                            <div style="margin-top:8px; display:flex; flex-direction:column; gap:6px;">
+                              <sc-for list="{{ h.checks }}" as="c" hint-placeholder-count="3">
+                                <div style="display:flex; align-items:center; justify-content:space-between;">
+                                  <span style="font-size:11.5px; color:#6B6B6B;">{{ c.name }}</span>
+                                  <span style="{{ c.chipStyle }}">{{ c.status }}</span>
+                                </div>
+                              </sc-for>
+                            </div>
                           </sc-if>
                         </div>
                       </sc-for>
@@ -416,7 +410,8 @@
                 <sc-if value="{{ isDetailEvent }}" hint-placeholder-val="{{ false }}">
                   <sc-if value="{{ selectedEntry.pipelineHistory }}" hint-placeholder-val="{{ false }}">
                     <div style="margin-bottom:32px;">
-                      <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#6B6B6B; margin-bottom:10px;">Pipeline health history</div>
+                      <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#6B6B6B; margin-bottom:4px;">Health history</div>
+                      <div style="font-size:11.5px; color:#9B9B9B; margin-bottom:10px;">Inherited from the {{ selectedEntry.pipelineName }} pipeline</div>
                       <div style="display:flex; flex-direction:column; gap:8px;">
                         <sc-for list="{{ selectedEntry.pipelineHistory }}" as="h" hint-placeholder-count="5">
                           <div role="button" tabindex="0" onClick="{{ h.onToggle }}" onKeyDown="{{ h.onToggleKeyDown }}" style="border:1px solid #E5E5E5; border-radius:8px; padding:9px 12px; cursor:pointer;">
@@ -429,6 +424,14 @@
                             </div>
                             <sc-if value="{{ h.expanded }}" hint-placeholder-val="{{ false }}">
                               <div style="margin-top:6px; font-size:12px; color:#6B6B6B; line-height:1.5;">{{ h.note }}</div>
+                              <div style="margin-top:8px; display:flex; flex-direction:column; gap:6px;">
+                                <sc-for list="{{ h.checks }}" as="c" hint-placeholder-count="3">
+                                  <div style="display:flex; align-items:center; justify-content:space-between;">
+                                    <span style="font-size:11.5px; color:#6B6B6B;">{{ c.name }}</span>
+                                    <span style="{{ c.chipStyle }}">{{ c.status }}</span>
+                                  </div>
+                                </sc-for>
+                              </div>
                             </sc-if>
                           </div>
                         </sc-for>
@@ -440,7 +443,8 @@
                 <sc-if value="{{ isDetailMetric }}" hint-placeholder-val="{{ false }}">
                   <sc-if value="{{ selectedMetric.pipelineHistory }}" hint-placeholder-val="{{ false }}">
                     <div style="margin-bottom:32px;">
-                      <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#6B6B6B; margin-bottom:10px;">Source pipeline health history</div>
+                      <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#6B6B6B; margin-bottom:4px;">Health history</div>
+                      <div style="font-size:11.5px; color:#9B9B9B; margin-bottom:10px;">{{ selectedMetric.pipelineHistoryCaption }}</div>
                       <div style="display:flex; flex-direction:column; gap:8px;">
                         <sc-for list="{{ selectedMetric.pipelineHistory }}" as="h" hint-placeholder-count="5">
                           <div role="button" tabindex="0" onClick="{{ h.onToggle }}" onKeyDown="{{ h.onToggleKeyDown }}" style="border:1px solid #E5E5E5; border-radius:8px; padding:9px 12px; cursor:pointer;">
@@ -453,6 +457,14 @@
                             </div>
                             <sc-if value="{{ h.expanded }}" hint-placeholder-val="{{ false }}">
                               <div style="margin-top:6px; font-size:12px; color:#6B6B6B; line-height:1.5;">{{ h.note }}</div>
+                              <div style="margin-top:8px; display:flex; flex-direction:column; gap:6px;">
+                                <sc-for list="{{ h.checks }}" as="c" hint-placeholder-count="3">
+                                  <div style="display:flex; align-items:center; justify-content:space-between;">
+                                    <span style="font-size:11.5px; color:#6B6B6B;">{{ c.name }}</span>
+                                    <span style="{{ c.chipStyle }}">{{ c.status }}</span>
+                                  </div>
+                                </sc-for>
+                              </div>
                             </sc-if>
                           </div>
                         </sc-for>
@@ -499,6 +511,9 @@
                         <sc-if value="{{ selectedMetric.sourcePipelineName }}" hint-placeholder-val="{{ false }}">
                           <div role="button" tabindex="0" onClick="{{ selectedMetric.onViewSourcePipeline }}" onKeyDown="{{ selectedMetric.onViewSourcePipelineKeyDown }}" style="display:inline-flex; align-items:center; gap:6px; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:7px; padding:6px 10px; font-size:12.5px; cursor:pointer;">Pipeline: {{ selectedMetric.sourcePipelineName }} →</div>
                         </sc-if>
+                        <sc-for list="{{ selectedMetric.compositePipelineChips }}" as="cp" hint-placeholder-count="0">
+                          <div role="button" tabindex="0" onClick="{{ cp.onSelect }}" onKeyDown="{{ cp.onKeyDown }}" style="display:inline-flex; align-items:center; gap:6px; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:7px; padding:6px 10px; font-size:12.5px; cursor:pointer;">Pipeline: {{ cp.name }} →</div>
+                        </sc-for>
                       </div>
                     </div>
                   </sc-if>
@@ -1728,6 +1743,17 @@ function sparkPoints(nums){
 function healthDotColor(health){
   return health==='green' ? '#06C167' : health==='amber' ? '#C98A1E' : '#A93327';
 }
+function pipelineChecks(health){
+  return [
+    { name:'Schema validation', status: health==='red' ? 'fail' : 'pass' },
+    { name:'Duplicate detection', status: health==='red' ? 'warn' : (health==='amber' ? 'warn' : 'pass') },
+    { name:'Completeness', status: health==='red' ? 'warn' : 'pass' }
+  ];
+}
+function checkStyle(status){
+  return 'font-size:11px;font-weight:700;text-transform:capitalize;padding:2px 8px;border-radius:6px;display:inline-block;' +
+    (status==='pass' ? 'background:var(--color-status-green-bg);color:var(--color-status-green-fg);' : status==='warn' ? 'background:var(--color-status-amber-bg);color:var(--color-status-amber-fg);' : 'background:var(--color-status-red-bg);color:var(--color-status-red-fg);');
+}
 function historyNote(history, i){
   const h = history[i];
   if(i === 0){
@@ -1976,6 +2002,19 @@ class Component extends DCLogic {
     selectedEntryId:null, selectedPipelineId:null, selectedMetricId:null
   }));
   toggleHistoryRow = (key) => this.setState(s => ({expandedHistoryKey: s.expandedHistoryKey === key ? null : key}));
+  healthHistoryRows = (pipeline, s) => pipeline.history.map((h,i,arr) => {
+    const key = pipeline.id+'|'+h.date;
+    const toggle = () => this.toggleHistoryRow(key);
+    return {
+      ...h,
+      dotColor: healthDotColor(h.health),
+      note: historyNote(arr,i),
+      checks: pipelineChecks(h.health).map(c => ({ ...c, chipStyle: checkStyle(c.status) })),
+      expanded: s.expandedHistoryKey===key,
+      onToggle: toggle,
+      onToggleKeyDown: this.onRowKeyDown(toggle)
+    };
+  });
 
   onContextInstructionsChange = (e) => this.setState(s => {
     const assistantContext = {...s.assistantContext, instructions:e.target.value};
@@ -2223,6 +2262,28 @@ class Component extends DCLogic {
     const rawSelectedMetric = METRICS_BASE.find(m => m.id === s.selectedMetricId) || null;
     const metricSourceEvent = rawSelectedMetric && rawSelectedMetric.sourceEventId ? CATALOG.find(e => e.id === rawSelectedMetric.sourceEventId) || null : null;
     const metricSourcePipeline = metricSourceEvent ? PIPELINES.find(p => p.id === metricSourceEvent.pipelineId) || null : null;
+
+    // Composite metrics (currently just GTV) have no single sourceEventId — they sum the other
+    // metrics' verticals, so their health is derived from those metrics' own real source pipelines.
+    const compositeConstituentPipelines = (rawSelectedMetric && !rawSelectedMetric.sourceEventId)
+      ? METRICS_BASE.filter(m => m.sourceEventId).map(m => {
+          const ev = CATALOG.find(e => e.id === m.sourceEventId);
+          return ev ? PIPELINES.find(p => p.id === ev.pipelineId) : null;
+        }).filter(Boolean)
+      : [];
+    const healthRank = { green:0, amber:1, red:2 };
+    const compositeHistory = compositeConstituentPipelines.length ? compositeConstituentPipelines[0].history.map((_, i) => {
+      const dayEntries = compositeConstituentPipelines.map(p => p.history[i]);
+      const worst = dayEntries.reduce((a,b) => healthRank[b.health] > healthRank[a.health] ? b : a);
+      return { date: dayEntries[0].date, quality: Math.min(...dayEntries.map(e => e.quality)), health: worst.health };
+    }) : null;
+    const compositePipelineNames = compositeConstituentPipelines.map(p => p.name);
+    const compositeCaption = compositePipelineNames.length
+      ? 'Composite of ' + (compositePipelineNames.length > 1
+          ? compositePipelineNames.slice(0,-1).join(', ') + ', and ' + compositePipelineNames[compositePipelineNames.length-1]
+          : compositePipelineNames[0]) + ' pipelines'
+      : null;
+
     const selectedMetric = rawSelectedMetric ? {
       ...rawSelectedMetric,
       deltaStyle: 'font-size:13px;font-weight:600;color:'+(rawSelectedMetric.positive?'#067A3E':'#A93327')+';',
@@ -2234,7 +2295,7 @@ class Component extends DCLogic {
       sourcePipelineName: metricSourcePipeline ? metricSourcePipeline.name : null,
       onViewSourcePipeline: metricSourcePipeline ? (() => this.openDetail('pipeline', metricSourcePipeline.id)) : null,
       onViewSourcePipelineKeyDown: metricSourcePipeline ? this.onRowKeyDown(() => this.openDetail('pipeline', metricSourcePipeline.id)) : null,
-      hasRelationships: !!(metricSourceEvent || metricSourcePipeline),
+      hasRelationships: !!(metricSourceEvent || metricSourcePipeline || compositeConstituentPipelines.length),
       freshnessLabel: metricSourcePipeline ? metricSourcePipeline.freshness : null,
       hasWarning: !!(metricSourceEvent && metricSourceEvent.warning),
       warningText: metricSourceEvent ? metricSourceEvent.warningText : null,
@@ -2245,11 +2306,14 @@ class Component extends DCLogic {
         ['category', ...TREND_WEEK_LABELS],
         rawSelectedMetric.weeklyByCategory.map(cat => [cat.label, ...cat.values])
       ),
-      pipelineHistory: metricSourcePipeline ? metricSourcePipeline.history.map((h,i,arr) => {
-        const key = metricSourcePipeline.id+'|'+h.date;
-        const toggle = () => this.toggleHistoryRow(key);
-        return { ...h, dotColor: healthDotColor(h.health), note: historyNote(arr,i), expanded: s.expandedHistoryKey===key, onToggle: toggle, onToggleKeyDown: this.onRowKeyDown(toggle) };
-      }) : null
+      pipelineHistory: metricSourcePipeline ? this.healthHistoryRows(metricSourcePipeline, s)
+        : (compositeHistory ? this.healthHistoryRows({ id: rawSelectedMetric.id+'-composite', history: compositeHistory }, s) : null),
+      pipelineHistoryCaption: metricSourcePipeline ? ('Inherited from the '+metricSourcePipeline.name+' pipeline') : compositeCaption,
+      compositePipelineChips: compositeConstituentPipelines.map(p => ({
+        name: p.name,
+        onSelect: () => this.openDetail('pipeline', p.id),
+        onKeyDown: this.onRowKeyDown(() => this.openDetail('pipeline', p.id))
+      }))
     } : null;
 
     return {
@@ -2322,11 +2386,7 @@ class Component extends DCLogic {
       pipelineName: entryPipeline ? entryPipeline.name : null,
       onViewPipeline: entryPipeline ? (() => this.openDetail('pipeline', entryPipeline.id)) : null,
       onViewPipelineKeyDown: entryPipeline ? this.onRowKeyDown(() => this.openDetail('pipeline', entryPipeline.id)) : null,
-      pipelineHistory: entryPipeline ? entryPipeline.history.map((h,i,arr) => {
-        const key = entryPipeline.id+'|'+h.date;
-        const toggle = () => this.toggleHistoryRow(key);
-        return { ...h, dotColor: healthDotColor(h.health), note: historyNote(arr,i), expanded: s.expandedHistoryKey===key, onToggle: toggle, onToggleKeyDown: this.onRowKeyDown(toggle) };
-      }) : null,
+      pipelineHistory: entryPipeline ? this.healthHistoryRows(entryPipeline, s) : null,
       relatedMetrics: METRICS_BASE.filter(m => m.sourceEventId === rawSelected.id).map(m => ({
         label: m.label,
         onSelect: () => this.openDetail('metric', m.id),
@@ -2649,14 +2709,6 @@ class Component extends DCLogic {
       };
     }).sort((a,b) => b.weeklyVolume - a.weeklyVolume);
 
-    const pipelineChecks = (health) => ([
-      { name:'Schema validation', status: health==='red' ? 'fail' : 'pass' },
-      { name:'Duplicate detection', status: health==='red' ? 'warn' : (health==='amber' ? 'warn' : 'pass') },
-      { name:'Completeness', status: health==='red' ? 'warn' : 'pass' }
-    ]);
-    const checkStyle = (status) => 'font-size:var(--font-size-xs);font-weight:700;text-transform:capitalize;padding:3px 9px;border-radius:6px;display:inline-block;' +
-      (status==='pass' ? 'background:var(--color-status-green-bg);color:var(--color-status-green-fg);' : status==='warn' ? 'background:var(--color-status-amber-bg);color:var(--color-status-amber-fg);' : 'background:var(--color-status-red-bg);color:var(--color-status-red-fg);');
-
     const rawSelectedPipeline = PIPELINES.find(p => p.id === s.selectedPipelineId) || null;
     const selectedPipeline = rawSelectedPipeline ? {
       ...rawSelectedPipeline,
@@ -2665,11 +2717,7 @@ class Component extends DCLogic {
       lobChipStyle: lobChipStyle(rawSelectedPipeline.lob),
       slaActualStyle: 'font-weight:600;color:'+(rawSelectedPipeline.health==='green' ? '#067A3E' : rawSelectedPipeline.health==='amber' ? '#96530A' : '#A93327')+';',
       weeklyVolumeLabel: pipelineVolume(rawSelectedPipeline.id).toFixed(1)+'M',
-      history: rawSelectedPipeline.history.map((h,i,arr) => {
-        const key = rawSelectedPipeline.id+'|'+h.date;
-        const toggle = () => this.toggleHistoryRow(key);
-        return { ...h, dotColor: healthDotColor(h.health), note: historyNote(arr,i), expanded: s.expandedHistoryKey===key, onToggle: toggle, onToggleKeyDown: this.onRowKeyDown(toggle) };
-      }),
+      history: this.healthHistoryRows(rawSelectedPipeline, s),
       events: pipelineEvents(rawSelectedPipeline.id).map(e => ({
         ...e,
         weeklyVolumeLabel: e.weeklyVolume.toFixed(1)+'M',
@@ -2678,7 +2726,6 @@ class Component extends DCLogic {
         onSelect: () => this.openDetail('event', e.id),
         onKeyDown: this.onRowKeyDown(() => this.openDetail('event', e.id))
       })),
-      checks: pipelineChecks(rawSelectedPipeline.health).map(c => ({ ...c, chipStyle: checkStyle(c.status) })),
       composition: (() => {
         const events = pipelineEvents(rawSelectedPipeline.id);
         const total = pipelineVolume(rawSelectedPipeline.id);
