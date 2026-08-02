@@ -20,8 +20,13 @@
  * @typedef {Object} RoadmapItem
  * @property {string} id                     Stable id, e.g. 'r1'.
  * @property {string} name                   Item title.
- * @property {'data'|'pipeline'} type         Whether this is a new/changed data point or a pipeline change.
+ * @property {'data'|'pipeline'|'metric'} type  Whether this is a new/changed catalog event, a pipeline
+ *                                     change, or a change to a top-level KPI metric's own definition.
  * @property {string} [pipelineId]            Present when type === 'pipeline' — FK into PIPELINES[].id.
+ * @property {string} [catalogRefId]          Present when type === 'data' and the item corresponds to an
+ *                                     event that already exists in CATALOG[].id (omitted for items proposing
+ *                                     a not-yet-built event).
+ * @property {string} [metricId]              Present when type === 'metric' — FK into METRICS_BASE[].id.
  * @property {'Ridesharing'|'Eats'|'B2B'|'Platform'} lob  Line of business, keys into LOB_COLORS.
  * @property {string} team                   Owning engineering team.
  * @property {string} owner                  Individual owner's name.
@@ -50,6 +55,11 @@ const ROADMAP_BASE = {
         {author:'Alex (Web Data PM)',date:'Jul 29',text:'Aligned with Finance on billing implications; moving to definition this week.'}
       ],
       docs:[{label:'PRD — Bulk Freight Booking',type:'PRD'},{label:'Data model brainstorm doc',type:'Doc'},{label:'Freight billing sync notes',type:'Notes'}] },
+    { id:'r8', name:'Weekly Trips: exclude post-pickup cancellations', type:'metric', metricId:'trips', lob:'Ridesharing', team:'Rides Platform Engineering', owner:'Maya Chen (Data Science)', dateLabel:'Est. Sep 1', priority:'P2', ticketId:'DATA-528',
+      description:'Trips cancelled by the rider immediately after driver pickup can still fire a completed_trip event before the cancellation is processed, inflating Weekly Trips by a small but growing margin. Redefines trip completion to exclude these edge cases.',
+      statusHistory:[{stage:'Proposed',date:'Jul 20'},{stage:'Under review',date:'Aug 1'}],
+      comments:[{author:'Maya Chen (Data Science)',date:'Jul 28',text:'Flagged during the GTV/B2B expansion review — edge case is under 0.5% of trips today but will grow as scheduled rides scale.'}],
+      docs:[{label:'Trips metric definition review',type:'Notes'}] },
     { id:'r6', name:'Payments & Refunds pipeline SLA fix', type:'pipeline', pipelineId:'p8', lob:'Platform', team:'Payments Engineering', owner:'Diego Alvarez', dateLabel:'Est. Aug 18', priority:'P1', ticketId:'DATA-455',
       description:'Root-causing the SLA slip on the Payments & Refunds pipeline (98.0% actual vs. 99.5% target) — refund events are batching under load during peak Eats hours.',
       statusHistory:[{stage:'Proposed',date:'Jul 10'},{stage:'Root cause identified',date:'Jul 26'},{stage:'Fix in progress',date:'Aug 2'}],
@@ -72,12 +82,12 @@ const ROADMAP_BASE = {
       docs:[{label:'driver_supply_v2 design doc',type:'Doc'},{label:'Migration runbook',type:'Notes'}] }
   ],
   shipped:[
-    { id:'r4', name:'campaign_started_v1', type:'data', lob:'Eats', team:'Marketing Analytics', owner:'Dana Cole', dateLabel:'Shipped Jul 20', priority:null, ticketId:'DATA-402',
+    { id:'r4', name:'campaign_started_v1', type:'data', catalogRefId:'campaign_started', lob:'Eats', team:'Marketing Analytics', owner:'Dana Cole', dateLabel:'Shipped Jul 20', priority:null, ticketId:'DATA-402',
       description:'Replaced the deprecated attribution_touch definition with a single, consistent campaign_started event across paid social, display, and in-app placements.',
       statusHistory:[{stage:'Proposed',date:'Jun 1'},{stage:'In definition',date:'Jun 20'},{stage:'Shipped',date:'Jul 20'}],
       comments:[{author:'Dana Cole (Marketing Analytics)',date:'Jul 20',text:'Live in production — campaign_started is now the source of truth, attribution_touch is deprecated.'}],
       docs:[{label:'campaign_started_v1 PRD',type:'PRD'},{label:'Attribution deprecation notes',type:'Notes'}] },
-    { id:'r5', name:'session_started_v4', type:'data', lob:'Platform', team:'Web Infrastructure', owner:'Leo Martins', dateLabel:'Shipped Jul 10', priority:null, ticketId:'DATA-388',
+    { id:'r5', name:'session_started_v4', type:'data', catalogRefId:'session_started', lob:'Platform', team:'Web Infrastructure', owner:'Leo Martins', dateLabel:'Shipped Jul 10', priority:null, ticketId:'DATA-388',
       description:'Consolidated session start tracking across all web surfaces into one v4 event, replacing three legacy per-surface session events.',
       statusHistory:[{stage:'Proposed',date:'May 20'},{stage:'In definition',date:'Jun 12'},{stage:'Shipped',date:'Jul 10'}],
       comments:[{author:'Leo Martins (Web Infrastructure)',date:'Jul 10',text:'session_started v4 is live across web; legacy per-surface events are now deprecated.'}],

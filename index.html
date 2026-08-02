@@ -1772,7 +1772,9 @@ function roadmapStageChipStyle(stage){
   return 'font-size:var(--font-size-xs);font-weight:700;padding:3px 9px;border-radius:6px;display:inline-block;' + (map[stage] || map['Coming Next']);
 }
 function roadmapTypeLabel(type){
-  return type === 'pipeline' ? 'Pipeline' : 'Data';
+  if (type === 'pipeline') return 'Pipeline';
+  if (type === 'metric') return 'Metric';
+  return 'Data';
 }
 function roadmapTypeChipStyle(type){
   return 'font-size:var(--font-size-2xs);font-weight:700;text-transform:uppercase;letter-spacing:0.03em;padding:2px 7px;border-radius:5px;display:inline-block;border:1px solid var(--color-gray-200);background:var(--color-white);color:var(--color-gray-600);';
