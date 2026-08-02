@@ -614,6 +614,9 @@
                         <sc-for list="{{ selectedEntry.relatedMetrics }}" as="rm" hint-placeholder-count="2">
                           <div role="button" tabindex="0" onClick="{{ rm.onSelect }}" onKeyDown="{{ rm.onKeyDown }}" style="display:inline-flex; align-items:center; gap:6px; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:7px; padding:6px 10px; font-size:12.5px; cursor:pointer;">Metric: {{ rm.label }} →</div>
                         </sc-for>
+                        <sc-if value="{{ selectedEntry.roadmapLink }}" hint-placeholder-val="{{ false }}">
+                          <div role="button" tabindex="0" onClick="{{ selectedEntry.roadmapLink.onSelect }}" onKeyDown="{{ selectedEntry.roadmapLink.onKeyDown }}" style="display:inline-flex; align-items:center; gap:6px; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:7px; padding:6px 10px; font-size:12.5px; cursor:pointer;">Roadmap: {{ selectedEntry.roadmapLink.name }} ({{ selectedEntry.roadmapLink.stage }}) →</div>
+                        </sc-if>
                       </div>
                     </div>
                   </sc-if>
@@ -626,6 +629,9 @@
                       <sc-for list="{{ selectedPipeline.events }}" as="re" hint-placeholder-count="4">
                         <div role="button" tabindex="0" onClick="{{ re.onSelect }}" onKeyDown="{{ re.onKeyDown }}" style="display:inline-flex; align-items:center; gap:6px; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:7px; padding:6px 10px; font-size:12.5px; font-family:ui-monospace,monospace; cursor:pointer;">{{ re.name }} →</div>
                       </sc-for>
+                      <sc-if value="{{ selectedPipeline.roadmapLink }}" hint-placeholder-val="{{ false }}">
+                        <div role="button" tabindex="0" onClick="{{ selectedPipeline.roadmapLink.onSelect }}" onKeyDown="{{ selectedPipeline.roadmapLink.onKeyDown }}" style="display:inline-flex; align-items:center; gap:6px; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:7px; padding:6px 10px; font-size:12.5px; cursor:pointer;">Roadmap: {{ selectedPipeline.roadmapLink.name }} ({{ selectedPipeline.roadmapLink.stage }}) →</div>
+                      </sc-if>
                     </div>
                   </div>
                 </sc-if>
@@ -644,6 +650,9 @@
                         <sc-for list="{{ selectedMetric.compositePipelineChips }}" as="cp" hint-placeholder-count="0">
                           <div role="button" tabindex="0" onClick="{{ cp.onSelect }}" onKeyDown="{{ cp.onKeyDown }}" style="display:inline-flex; align-items:center; gap:6px; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:7px; padding:6px 10px; font-size:12.5px; cursor:pointer;">Pipeline: {{ cp.name }} →</div>
                         </sc-for>
+                        <sc-if value="{{ selectedMetric.roadmapLink }}" hint-placeholder-val="{{ false }}">
+                          <div role="button" tabindex="0" onClick="{{ selectedMetric.roadmapLink.onSelect }}" onKeyDown="{{ selectedMetric.roadmapLink.onKeyDown }}" style="display:inline-flex; align-items:center; gap:6px; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:7px; padding:6px 10px; font-size:12.5px; cursor:pointer;">Roadmap: {{ selectedMetric.roadmapLink.name }} ({{ selectedMetric.roadmapLink.stage }}) →</div>
+                        </sc-if>
                       </div>
                     </div>
                   </sc-if>
@@ -1804,6 +1813,12 @@ function sparkPoints(nums){
   }).join(' ');
 }
 
+function findRoadmapItem(fk, value){
+  const allItems = [...ROADMAP_BASE.defining, ...ROADMAP_BASE.next, ...ROADMAP_BASE.shipped].map(it => ({
+    ...it, stage: ROADMAP_BASE.defining.includes(it) ? 'Currently Being Defined' : ROADMAP_BASE.next.includes(it) ? 'Coming Next' : 'Recently Shipped'
+  }));
+  return allItems.find(it => it[fk] === value) || null;
+}
 function healthDotColor(health){
   return health==='green' ? '#06C167' : health==='amber' ? '#C98A1E' : '#A93327';
 }
@@ -2051,6 +2066,7 @@ class Component extends DCLogic {
   setCatalogPage = (page) => this.setState({catalogPage:page});
   setPipelineLogPage = (page) => this.setState({pipelineLogPage:page});
   selectRoadmapItem = (id) => this.setState({selectedRoadmapItemId:id});
+  openRoadmapItem = (id) => this.setState({appScreen:'roadmap', selectedRoadmapItemId:id, selectedEntryId:null, selectedPipelineId:null, selectedMetricId:null, selectedDetailRef:null, detailReturnScreen:null, mobileMoreOpen:false, roadmapActiveCol:0});
   closeRoadmapItem = () => this.setState({selectedRoadmapItemId:null});
   openDetail = (type, id) => this.setState(s => ({
     appScreen:'detail',
@@ -2359,7 +2375,11 @@ class Component extends DCLogic {
       sourcePipelineName: metricSourcePipeline ? metricSourcePipeline.name : null,
       onViewSourcePipeline: metricSourcePipeline ? (() => this.openDetail('pipeline', metricSourcePipeline.id)) : null,
       onViewSourcePipelineKeyDown: metricSourcePipeline ? this.onRowKeyDown(() => this.openDetail('pipeline', metricSourcePipeline.id)) : null,
-      hasRelationships: !!(metricSourceEvent || metricSourcePipeline || compositeConstituentPipelines.length),
+      roadmapLink: (() => {
+        const rm = findRoadmapItem('metricId', rawSelectedMetric.id);
+        return rm ? { name: rm.name, stage: rm.stage, onSelect: () => this.openRoadmapItem(rm.id), onKeyDown: this.onRowKeyDown(() => this.openRoadmapItem(rm.id)) } : null;
+      })(),
+      hasRelationships: !!(metricSourceEvent || metricSourcePipeline || compositeConstituentPipelines.length || findRoadmapItem('metricId', rawSelectedMetric.id)),
       freshnessLabel: metricSourcePipeline ? metricSourcePipeline.freshness : null,
       hasWarning: !!(metricSourceEvent && metricSourceEvent.warning),
       warningText: metricSourceEvent ? metricSourceEvent.warningText : null,
@@ -2462,7 +2482,11 @@ class Component extends DCLogic {
         onSelect: () => this.openDetail('metric', m.id),
         onKeyDown: this.onRowKeyDown(() => this.openDetail('metric', m.id))
       })),
-      hasRelationships: !!entryPipeline || METRICS_BASE.some(m => m.sourceEventId === rawSelected.id)
+      roadmapLink: (() => {
+        const rm = findRoadmapItem('catalogRefId', rawSelected.id);
+        return rm ? { name: rm.name, stage: rm.stage, onSelect: () => this.openRoadmapItem(rm.id), onKeyDown: this.onRowKeyDown(() => this.openRoadmapItem(rm.id)) } : null;
+      })(),
+      hasRelationships: !!entryPipeline || METRICS_BASE.some(m => m.sourceEventId === rawSelected.id) || !!findRoadmapItem('catalogRefId', rawSelected.id)
     } : null;
 
     return {
@@ -2797,6 +2821,10 @@ class Component extends DCLogic {
         onSelect: () => this.openDetail('event', e.id),
         onKeyDown: this.onRowKeyDown(() => this.openDetail('event', e.id))
       })),
+      roadmapLink: (() => {
+        const rm = findRoadmapItem('pipelineId', rawSelectedPipeline.id);
+        return rm ? { name: rm.name, stage: rm.stage, onSelect: () => this.openRoadmapItem(rm.id), onKeyDown: this.onRowKeyDown(() => this.openRoadmapItem(rm.id)) } : null;
+      })(),
       trendChart: (() => {
         const events = pipelineEvents(rawSelectedPipeline.id);
         if (!events.length) return null;
