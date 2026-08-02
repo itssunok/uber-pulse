@@ -677,26 +677,35 @@
 
                 <sc-if value="{{ isDetailEvent }}" hint-placeholder-val="{{ false }}">
                   <sc-if value="{{ selectedEntry.hasRelationships }}" hint-placeholder-val="{{ false }}">
-                    <div style="margin-bottom:32px;">
-                      <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#6B6B6B; margin-bottom:10px;">Relationships</div>
-                      <div style="display:flex; gap:8px; flex-wrap:wrap;">
-                        <sc-if value="{{ selectedEntry.pipelineName }}" hint-placeholder-val="{{ false }}">
-                          <div role="button" tabindex="0" onClick="{{ selectedEntry.onViewPipeline }}" onKeyDown="{{ selectedEntry.onViewPipelineKeyDown }}" style="display:inline-flex; align-items:center; gap:6px; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:7px; padding:6px 10px; font-size:12.5px; cursor:pointer;">Pipeline: {{ selectedEntry.pipelineName }} →</div>
-                        </sc-if>
-                        <sc-for list="{{ selectedEntry.relatedMetrics }}" as="rm" hint-placeholder-count="2">
-                          <div role="button" tabindex="0" onClick="{{ rm.onSelect }}" onKeyDown="{{ rm.onKeyDown }}" style="display:inline-flex; align-items:center; gap:6px; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:7px; padding:6px 10px; font-size:12.5px; cursor:pointer;">Metric: {{ rm.label }} →</div>
-                        </sc-for>
-                      </div>
+                    <div style="margin-bottom:32px; display:flex; flex-direction:column; gap:16px;">
+                      <sc-if value="{{ selectedEntry.pipelineName }}" hint-placeholder-val="{{ false }}">
+                        <div>
+                          <div style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#9B9B9B; margin-bottom:8px;">Linked pipeline</div>
+                          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                            <div role="button" tabindex="0" onClick="{{ selectedEntry.onViewPipeline }}" onKeyDown="{{ selectedEntry.onViewPipelineKeyDown }}" style="display:inline-flex; align-items:center; gap:6px; background:#F6F6F6; border:1px solid #E5E5E5; border-left:3px solid #1D6FA5; border-radius:7px; padding:6px 10px; font-size:12.5px; cursor:pointer;"><span style="color:#1D6FA5;">⇄</span> {{ selectedEntry.pipelineName }} →</div>
+                          </div>
+                        </div>
+                      </sc-if>
+                      <sc-if value="{{ selectedEntry.hasRelatedMetrics }}" hint-placeholder-val="{{ false }}">
+                        <div>
+                          <div style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#9B9B9B; margin-bottom:8px;">Linked metrics</div>
+                          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                            <sc-for list="{{ selectedEntry.relatedMetrics }}" as="rm" hint-placeholder-count="2">
+                              <div role="button" tabindex="0" onClick="{{ rm.onSelect }}" onKeyDown="{{ rm.onKeyDown }}" style="display:inline-flex; align-items:center; gap:6px; background:#F6F6F6; border:1px solid #E5E5E5; border-left:3px solid #6B3FA0; border-radius:7px; padding:6px 10px; font-size:12.5px; cursor:pointer;"><span style="color:#6B3FA0;">▲</span> {{ rm.label }} →</div>
+                            </sc-for>
+                          </div>
+                        </div>
+                      </sc-if>
                     </div>
                   </sc-if>
                 </sc-if>
 
                 <sc-if value="{{ isDetailPipeline }}" hint-placeholder-val="{{ false }}">
                   <div style="margin-bottom:32px;">
-                    <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#6B6B6B; margin-bottom:10px;">Relationships</div>
+                    <div style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#9B9B9B; margin-bottom:8px;">Linked events</div>
                     <div style="display:flex; gap:8px; flex-wrap:wrap;">
                       <sc-for list="{{ selectedPipeline.events }}" as="re" hint-placeholder-count="4">
-                        <div role="button" tabindex="0" onClick="{{ re.onSelect }}" onKeyDown="{{ re.onKeyDown }}" style="display:inline-flex; align-items:center; gap:6px; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:7px; padding:6px 10px; font-size:12.5px; font-family:ui-monospace,monospace; cursor:pointer;">{{ re.name }} →</div>
+                        <div role="button" tabindex="0" onClick="{{ re.onSelect }}" onKeyDown="{{ re.onKeyDown }}" style="display:inline-flex; align-items:center; gap:6px; background:#F6F6F6; border:1px solid #E5E5E5; border-left:3px solid #6B6B6B; border-radius:7px; padding:6px 10px; font-size:12.5px; font-family:ui-monospace,monospace; cursor:pointer;"><span style="color:#6B6B6B; font-family:-apple-system,sans-serif;">●</span> {{ re.name }} →</div>
                       </sc-for>
                     </div>
                   </div>
@@ -704,19 +713,28 @@
 
                 <sc-if value="{{ isDetailMetric }}" hint-placeholder-val="{{ false }}">
                   <sc-if value="{{ selectedMetric.hasRelationships }}" hint-placeholder-val="{{ false }}">
-                    <div style="margin-bottom:32px;">
-                      <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#6B6B6B; margin-bottom:10px;">Relationships</div>
-                      <div style="display:flex; gap:8px; flex-wrap:wrap;">
-                        <sc-if value="{{ selectedMetric.sourceEventName }}" hint-placeholder-val="{{ false }}">
-                          <div role="button" tabindex="0" onClick="{{ selectedMetric.onViewSourceEvent }}" onKeyDown="{{ selectedMetric.onViewSourceEventKeyDown }}" style="display:inline-flex; align-items:center; gap:6px; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:7px; padding:6px 10px; font-size:12.5px; cursor:pointer;">Event: {{ selectedMetric.sourceEventName }} →</div>
-                        </sc-if>
-                        <sc-if value="{{ selectedMetric.sourcePipelineName }}" hint-placeholder-val="{{ false }}">
-                          <div role="button" tabindex="0" onClick="{{ selectedMetric.onViewSourcePipeline }}" onKeyDown="{{ selectedMetric.onViewSourcePipelineKeyDown }}" style="display:inline-flex; align-items:center; gap:6px; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:7px; padding:6px 10px; font-size:12.5px; cursor:pointer;">Pipeline: {{ selectedMetric.sourcePipelineName }} →</div>
-                        </sc-if>
-                        <sc-for list="{{ selectedMetric.compositePipelineChips }}" as="cp" hint-placeholder-count="0">
-                          <div role="button" tabindex="0" onClick="{{ cp.onSelect }}" onKeyDown="{{ cp.onKeyDown }}" style="display:inline-flex; align-items:center; gap:6px; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:7px; padding:6px 10px; font-size:12.5px; cursor:pointer;">Pipeline: {{ cp.name }} →</div>
-                        </sc-for>
-                      </div>
+                    <div style="margin-bottom:32px; display:flex; flex-direction:column; gap:16px;">
+                      <sc-if value="{{ selectedMetric.sourceEventName }}" hint-placeholder-val="{{ false }}">
+                        <div>
+                          <div style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#9B9B9B; margin-bottom:8px;">Linked event</div>
+                          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                            <div role="button" tabindex="0" onClick="{{ selectedMetric.onViewSourceEvent }}" onKeyDown="{{ selectedMetric.onViewSourceEventKeyDown }}" style="display:inline-flex; align-items:center; gap:6px; background:#F6F6F6; border:1px solid #E5E5E5; border-left:3px solid #6B6B6B; border-radius:7px; padding:6px 10px; font-size:12.5px; cursor:pointer;"><span style="color:#6B6B6B;">●</span> {{ selectedMetric.sourceEventName }} →</div>
+                          </div>
+                        </div>
+                      </sc-if>
+                      <sc-if value="{{ selectedMetric.hasLinkedPipelines }}" hint-placeholder-val="{{ false }}">
+                        <div>
+                          <div style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#9B9B9B; margin-bottom:8px;">Linked pipelines</div>
+                          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                            <sc-if value="{{ selectedMetric.sourcePipelineName }}" hint-placeholder-val="{{ false }}">
+                              <div role="button" tabindex="0" onClick="{{ selectedMetric.onViewSourcePipeline }}" onKeyDown="{{ selectedMetric.onViewSourcePipelineKeyDown }}" style="display:inline-flex; align-items:center; gap:6px; background:#F6F6F6; border:1px solid #E5E5E5; border-left:3px solid #1D6FA5; border-radius:7px; padding:6px 10px; font-size:12.5px; cursor:pointer;"><span style="color:#1D6FA5;">⇄</span> {{ selectedMetric.sourcePipelineName }} →</div>
+                            </sc-if>
+                            <sc-for list="{{ selectedMetric.compositePipelineChips }}" as="cp" hint-placeholder-count="0">
+                              <div role="button" tabindex="0" onClick="{{ cp.onSelect }}" onKeyDown="{{ cp.onKeyDown }}" style="display:inline-flex; align-items:center; gap:6px; background:#F6F6F6; border:1px solid #E5E5E5; border-left:3px solid #1D6FA5; border-radius:7px; padding:6px 10px; font-size:12.5px; cursor:pointer;"><span style="color:#1D6FA5;">⇄</span> {{ cp.name }} →</div>
+                            </sc-for>
+                          </div>
+                        </div>
+                      </sc-if>
                     </div>
                   </sc-if>
                 </sc-if>
@@ -2443,6 +2461,7 @@ class Component extends DCLogic {
         return rm ? { name: rm.name, stage: rm.stage, onSelect: () => this.openRoadmapItem(rm.id), onKeyDown: this.onRowKeyDown(() => this.openRoadmapItem(rm.id)) } : null;
       })(),
       hasRelationships: !!(metricSourceEvent || metricSourcePipeline || compositeConstituentPipelines.length || findRoadmapItem('metricId', rawSelectedMetric.id)),
+      hasLinkedPipelines: !!(metricSourcePipeline || compositeConstituentPipelines.length),
       freshnessLabel: metricSourcePipeline ? metricSourcePipeline.freshness : null,
       compositeFreshnessNote: (!metricSourcePipeline && compositeCaption) ? (compositeCaption+' — freshness varies by source pipeline') : null,
       slaTarget: metricSourcePipeline ? metricSourcePipeline.slaTarget : null,
@@ -2554,6 +2573,7 @@ class Component extends DCLogic {
         onSelect: () => this.openDetail('metric', m.id),
         onKeyDown: this.onRowKeyDown(() => this.openDetail('metric', m.id))
       })),
+      hasRelatedMetrics: METRICS_BASE.some(m => m.sourceEventId === rawSelected.id),
       roadmapLink: (() => {
         const rm = findRoadmapItem('catalogRefId', rawSelected.id);
         return rm ? { name: rm.name, stage: rm.stage, onSelect: () => this.openRoadmapItem(rm.id), onKeyDown: this.onRowKeyDown(() => this.openRoadmapItem(rm.id)) } : null;
