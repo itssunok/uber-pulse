@@ -10,14 +10,12 @@ Prioritized MoSCoW-style following the full UX/UI/Brand design audit (Aug 2026),
 ## High Priority (Must)
 
 - `[open]` Move AI Assistant to its own icon in the mobile bottom nav — currently buried inside a generic "More" menu despite being the PRD's named highest-value onboarding feature. Small effort.
-- `[open]` Add a "Canonical" badge to the one true definition per LOB in the Data Catalog — directly addresses James's #1 documented pain point (three different attribution numbers with no arbiter). Small effort.
 
 ---
 
 ## Medium Priority (Should)
 
 - `[open]` Add Today/Yesterday/Last 7/30/90 day filters to Home and other relevant pages — split out from the Must-tier "real-time" copy fix above, since the false claim doesn't require this to be resolved. A genuinely separate, larger feature. Medium effort.
-- `[open]` Fix green misuse across ~7 components (Contribute/AI Assistant/Dev Tools submit buttons, Roadmap "NEW" badge, Documentation topic badges) — green is reserved for status-positive/logo/Contribute per CLAUDE.md, currently used as a generic accent. Small effort. Tokens now exist (`--color-green` in `styles/tokens.css`) — this is now a value swap on the specific inline-styled buttons, not a hex hunt.
 - `[open]` Add empty-state messaging to Data Catalog and Pipeline Log tables — filtering to zero matches currently shows a floating header over blank space; Documentation and Chat search already handle this correctly elsewhere in the same file. Small effort.
 - `[open]` Apply typography (font-size/weight)/spacing/radius tokens (all now defined in `styles/tokens.css`, including the font-weight scale added Aug 2026) to the remaining ~800 inline `style=""` attributes opportunistically, whenever a screen is touched for another reason — not a dedicated sweep. Finishing all of them in one pass isn't cheap (17 distinct font-size values and 5 font-weight values currently coexist inline) and most are one-off values a reviewer won't scrutinize individually; this rescopes from a Medium-effort dedicated pass down to ongoing incidental cleanup.
 - `[open]` Add loading states ("Submitting…") to the 4 actual async actions: CSV download, API key creation, chat send, schema submission. Cheap and high-signal — a submit button with zero feedback reads unfinished. Small effort.
