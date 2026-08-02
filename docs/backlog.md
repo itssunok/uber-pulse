@@ -7,12 +7,6 @@ Prioritized MoSCoW-style following the full UX/UI/Brand design audit (Aug 2026),
 
 ---
 
-## Recently Shipped — Data Detail Page
-
-- `[done]` Full-page data detail screen (event/pipeline/metric), reached from catalog rows, Home KPI tiles, and pipeline rows: header/summary, owned-by facts, downstream consumers, health/version history, 4-week trend chart or event-composition breakdown with CSV export, and event ↔ pipeline ↔ metric relationship cross-links. All cross-link entry points (Assistant chat catalog references, Dev Tools sample endpoints) now route through the same page. The old catalog/pipeline/metric sidesheets and their dead navigation state (`sheetOrigin`, `viewCatalogRef`, etc.) have been removed.
-
----
-
 ## High Priority (Must)
 
 - `[open]` Fix elevation inconsistency — side-sheets, dropdowns, toast, and the AI Assistant composer mix box-shadow with no border, violating "hairline borders over drop shadows." Replace side-sheet shadows with borders; standardize dropdowns/toast to one lighter "floating" shadow level. Small effort.
