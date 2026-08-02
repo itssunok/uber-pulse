@@ -12,7 +12,6 @@ Prioritized MoSCoW-style following the full UX/UI/Brand design audit (Aug 2026),
 ---
 
 ## Medium Priority (Should)
-- `[open]` Naming & voice pass — restore or confirm dropping the PRD's login tagline ("Pulse. Know your data."), rewrite the login heading ("What's your work email?" reads as generic consumer SaaS onboarding). Small effort.
 
 ---
 
