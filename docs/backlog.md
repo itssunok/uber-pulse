@@ -7,6 +7,13 @@ Prioritized MoSCoW-style following the full UX/UI/Brand design audit (Aug 2026),
 
 ---
 
+## In Progress — Data Detail Page
+
+- `[done]` Detail page — Health/History, Owned by, and Downstream consumers sections — ported the pipeline/catalog quality-history block onto the new detail page (event/pipeline/metric, with metrics resolving through their source pipeline where one exists), and rendered `implementingTeam`, `definitionOwner`, and `downstreamConsumers` as dedicated sections.
+- `[open]` Detail page — Relationships section, then cleanup — add event ↔ pipeline ↔ metric cross-links on the detail page using the existing chip pattern, navigating to the new page instead of the old sidesheets; once those cross-links are migrated, remove the now-unused sidesheet markup/state for catalog entries, metrics, and pipelines (currently gated off but still present), and retune any layout offsets affected by the removal. Medium effort.
+
+---
+
 ## High Priority (Must)
 
 - `[open]` Fix elevation inconsistency — side-sheets, dropdowns, toast, and the AI Assistant composer mix box-shadow with no border, violating "hairline borders over drop shadows." Replace side-sheet shadows with borders; standardize dropdowns/toast to one lighter "floating" shadow level. Small effort.
