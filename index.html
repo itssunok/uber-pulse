@@ -1298,7 +1298,7 @@
           </sc-if>
 
           <sc-if value="{{ isReport }}" hint-placeholder-val="{{ false }}">
-            <h1 style="font-size:var(--font-size-h1); font-weight:var(--font-weight-h1); margin:0 0 4px 0; letter-spacing:-0.5px;">Report an issue</h1>
+            <h1 class="title-h1">Report an issue</h1>
             <p style="font-size:var(--font-size-base); color:var(--color-gray-600); margin:0 0 14px 0;">Flag a data quality, freshness, or platform issue to the data team.</p>
 
             <div style="display:flex; align-items:center; margin-bottom:14px;">
@@ -1323,7 +1323,7 @@
                         <label class="pulse-heading-label" style="display:block; margin-bottom:6px;">What is this about?</label>
 
                         <sc-if value="{{ showReportSelectedChip }}" hint-placeholder-val="{{ false }}">
-                          <div style="display:flex; align-items:center; justify-content:space-between; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px;">
+                          <div class="flex-row-between" style="background:#F6F6F6; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px;">
                             <div style="font-size:var(--font-size-sm);"><span style="font-size:var(--font-size-2xs); font-weight:var(--font-weight-bold); text-transform:uppercase; color:var(--color-gray-600); margin-right:8px;">{{ reportSelectedDataPointTypeLabel }}</span><span style="font-family:ui-monospace,monospace; font-weight:var(--font-weight-semibold);">{{ reportSelectedDataPointName }}</span></div>
                             <button onClick="{{ clearReportDataPoint }}" style="background:none; border:none; color:var(--color-gray-600); cursor:pointer; font-size:var(--font-size-sm);">Change</button>
                           </div>
@@ -1332,11 +1332,11 @@
                         <sc-if value="{{ reportSelectedDataPointHistory }}" hint-placeholder-val="{{ false }}">
                           <div style="margin-top:8px; background:#FAFAFA; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px;">
                             <div style="font-size:var(--font-size-xs); color:var(--color-gray-600); font-weight:var(--font-weight-semibold); text-transform:uppercase; margin-bottom:6px;">Recent quality history — {{ reportSelectedDataPointHistoryPipelineName }}</div>
-                            <div style="display:flex; flex-direction:column; gap:4px;">
+                            <div class="flex-col" style="gap:4px;">
                               <sc-for list="{{ reportSelectedDataPointHistory }}" as="h" hint-placeholder-count="5">
-                                <div style="display:flex; align-items:center; justify-content:space-between; font-size:var(--font-size-sm);">
+                                <div class="flex-row-between" style="font-size:var(--font-size-sm);">
                                   <span style="color:var(--color-gray-600);">{{ h.date }}</span>
-                                  <span style="display:flex; align-items:center; gap:6px;">Quality {{ h.quality }}<span style="width:7px; height:7px; border-radius:50%; background:{{ h.dotColor }};"></span></span>
+                                  <span class="flex-row gap-6">Quality {{ h.quality }}<span style="width:7px; height:7px; border-radius:var(--radius-circle); background:{{ h.dotColor }};"></span></span>
                                 </div>
                               </sc-for>
                             </div>
@@ -1350,11 +1350,11 @@
                         </sc-if>
 
                         <sc-if value="{{ showReportPicker }}" hint-placeholder-val="{{ true }}">
-                          <input value="{{ reportDataPointQuery }}" onChange="{{ onReportDataPointQueryChange }}" placeholder="Search events, metrics, or pipelines…" style="width:100%; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:var(--font-size-sm);" />
+                          <input value="{{ reportDataPointQuery }}" onChange="{{ onReportDataPointQueryChange }}" placeholder="Search events, metrics, or pipelines…" class="form-input" style="width:100%; box-sizing:border-box;" />
                           <sc-if value="{{ reportHasResults }}" hint-placeholder-val="{{ false }}">
                             <div style="border:1px solid #E5E5E5; border-radius:8px; margin-top:6px; overflow:hidden;">
                               <sc-for list="{{ reportDataPointResults }}" as="dp" hint-placeholder-count="3">
-                                <div onClick="{{ dp.onSelect }}" style="display:flex; align-items:center; gap:8px; padding:9px 12px; font-size:var(--font-size-sm); cursor:pointer; border-bottom:1px solid #F0F0F0;">
+                                <div onClick="{{ dp.onSelect }}" class="flex-row gap-8" style="padding:9px 12px; font-size:var(--font-size-sm); cursor:pointer; border-bottom:1px solid #F0F0F0;">
                                   <span style="font-size:var(--font-size-2xs); font-weight:var(--font-weight-bold); text-transform:uppercase; color:var(--color-gray-600);">{{ dp.typeLabel }}</span>
                                   <span style="font-family:ui-monospace,monospace; font-weight:var(--font-weight-semibold);">{{ dp.name }}</span>
                                 </div>
@@ -1370,25 +1370,25 @@
                       </div>
                       <div>
                         <label class="pulse-heading-label" style="display:block; margin-bottom:6px;">Title</label>
-                        <input value="{{ reportForm.title }}" onChange="{{ onReportTitleChange }}" placeholder="e.g. Quality score looks wrong for eats_order_placed" style="width:100%; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:var(--font-size-sm);" />
+                        <input value="{{ reportForm.title }}" onChange="{{ onReportTitleChange }}" placeholder="e.g. Quality score looks wrong for eats_order_placed" class="form-input" style="width:100%; box-sizing:border-box;" />
                       </div>
                       <div>
                         <label class="pulse-heading-label" style="display:block; margin-bottom:6px;">Description</label>
-                        <textarea value="{{ reportForm.description }}" onChange="{{ onReportDescChange }}" rows="3" placeholder="What did you see, and what did you expect?" style="width:100%; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:var(--font-size-sm); font-family:inherit; resize:vertical;"></textarea>
+                        <textarea value="{{ reportForm.description }}" onChange="{{ onReportDescChange }}" rows="3" placeholder="What did you see, and what did you expect?" class="form-input" style="width:100%; box-sizing:border-box; font-family:inherit; resize:vertical;"></textarea>
                       </div>
                       <div>
                         <label class="pulse-heading-label" style="display:block; margin-bottom:6px;">Related Jira ticket (optional)</label>
-                        <input value="{{ reportForm.jiraLink }}" onChange="{{ onReportJiraLinkChange }}" placeholder="https://uber.atlassian.net/browse/…" style="width:100%; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:var(--font-size-sm);" />
+                        <input value="{{ reportForm.jiraLink }}" onChange="{{ onReportJiraLinkChange }}" placeholder="https://uber.atlassian.net/browse/…" class="form-input" style="width:100%; box-sizing:border-box;" />
                       </div>
                       <div>
                         <label class="pulse-heading-label" style="display:block; margin-bottom:6px;">Related PR (optional)</label>
-                        <input value="{{ reportForm.prLink }}" onChange="{{ onReportPrLinkChange }}" placeholder="https://github.com/uber/…" style="width:100%; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:var(--font-size-sm);" />
+                        <input value="{{ reportForm.prLink }}" onChange="{{ onReportPrLinkChange }}" placeholder="https://github.com/uber/…" class="form-input" style="width:100%; box-sizing:border-box;" />
                       </div>
                     </div>
                     <div class="flex-col gap-12" style="min-width:0;">
                       <div>
                         <label class="pulse-heading-label" style="display:block; margin-bottom:6px;">Category</label>
-                        <select value="{{ reportForm.category }}" onChange="{{ onReportCategoryChange }}" style="width:100%; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:var(--font-size-sm);">
+                        <select value="{{ reportForm.category }}" onChange="{{ onReportCategoryChange }}" class="form-input" style="width:100%; box-sizing:border-box;">
                           <option value="Data Quality">Data Quality</option>
                           <option value="Scalability">Scalability</option>
                           <option value="Definition / Documentation">Definition / Documentation</option>
@@ -1397,7 +1397,7 @@
                       </div>
                       <div>
                         <label class="pulse-heading-label" style="display:block; margin-bottom:6px;">Severity</label>
-                        <select value="{{ reportForm.severity }}" onChange="{{ onReportSeverityChange }}" style="width:100%; box-sizing:border-box; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; font-size:var(--font-size-sm);">
+                        <select value="{{ reportForm.severity }}" onChange="{{ onReportSeverityChange }}" class="form-input" style="width:100%; box-sizing:border-box;">
                           <option value="Low">Low</option>
                           <option value="Medium">Medium</option>
                           <option value="High">High</option>
@@ -1413,8 +1413,8 @@
                             <button onClick="{{ toggleReportAttachMenu }}" style="background:none; border:1px solid #E5E5E5; border-radius:8px; padding:8px 12px; font-size:var(--font-size-sm); color:var(--color-gray-600); cursor:pointer; display:inline-flex; align-items:center; gap:8px;"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M21 10.5v6a5.5 5.5 0 0 1-11 0v-9a3.5 3.5 0 1 1 7 0v8a1.5 1.5 0 0 1-3 0v-7"/></svg>Attach a file</button>
                             <sc-if value="{{ reportAttachMenuOpen }}" hint-placeholder-val="{{ false }}">
                               <div style="position:absolute; top:calc(100% + 4px); left:0; background:#FFFFFF; border:1px solid #E5E5E5; border-radius:8px; box-shadow:0 8px 24px rgba(0,0,0,0.10); width:200px; z-index:5; overflow:hidden;">
-                                <div onClick="{{ onReportUploadFile }}" style="display:flex; align-items:center; gap:10px; padding:10px 14px; font-size:var(--font-size-sm); cursor:pointer; border-bottom:1px solid #F0F0F0; color:var(--color-gray-600);"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5"/></svg><span style="color:var(--color-black);">Upload a log file</span></div>
-                                <div onClick="{{ onReportUploadScreenshot }}" style="display:flex; align-items:center; gap:10px; padding:10px 14px; font-size:var(--font-size-sm); cursor:pointer; color:var(--color-gray-600);"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 16l-5-5-4 4-2-2-5 5"/></svg><span style="color:var(--color-black);">Attach a screenshot</span></div>
+                                <div onClick="{{ onReportUploadFile }}" class="flex-row gap-10" style="padding:10px 14px; font-size:var(--font-size-sm); cursor:pointer; border-bottom:1px solid #F0F0F0; color:var(--color-gray-600);"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M7 3h7l5 5v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5"/></svg><span style="color:var(--color-black);">Upload a log file</span></div>
+                                <div onClick="{{ onReportUploadScreenshot }}" class="flex-row gap-10" style="padding:10px 14px; font-size:var(--font-size-sm); cursor:pointer; color:var(--color-gray-600);"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 16l-5-5-4 4-2-2-5 5"/></svg><span style="color:var(--color-black);">Attach a screenshot</span></div>
                               </div>
                             </sc-if>
                           </div>
