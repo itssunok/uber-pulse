@@ -105,7 +105,7 @@ const METRICS_BASE = [
     changelog:[
       {version:'v1.0', date:'2025-09-01', change:'Initial release, counting restaurant food orders only.'},
       {version:'v1.1', date:'2026-07-30', change:'Corrected scope to include grocery and other Eats verticals, matching the eats_order_placed v1.7 definition update.'}] },
-  { id:'b2b', label:'B2B Transactions', value:'3.42M', delta:'-1.3% WoW', positive:false, points:[3.6,3.58,3.55,3.5,3.48,3.45,3.43,3.42], iconBg:'#EDE3F7', iconColor:'#6B3FA0', featuredOnHome:true,
+  { id:'b2b', label:'B2B Transactions', value:'3.42M', delta:'-1.3% WoW', positive:false, points:[3.6,3.58,3.55,3.5,3.48,3.45,3.43,3.42], iconBg:'#EDE3F7', iconColor:'#6B3FA0', featuredOnHome:false,
     tooltip:'Confirmed B2B/Freight shipment transactions in the trailing 7 days, sourced from the b2b_shipment_confirmed event.', sourceEventId:'b2b_shipment_confirmed',
     implementingTeam:'Freight Engineering', definitionOwner:'B2B Analytics', downstreamConsumers:['B2B Finance Engineering', 'Executive Dashboards'],
     verticalBreakdown:[{label:'Business Travel', value:1.881, pct:55.0}, {label:'Uber Central', value:1.026, pct:30.0}, {label:'Freight', value:0.513, pct:15.0}],
