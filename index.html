@@ -1748,6 +1748,10 @@
         </div>
         <div style="font-size:var(--font-size-body); line-height:1.6; color:var(--color-black); margin-bottom:18px;">{{ selectedRoadmapItem.description }}</div>
 
+        <sc-if value="{{ selectedRoadmapItem.hasLinkedDetail }}" hint-placeholder-val="{{ false }}">
+          <div role="button" tabindex="0" onClick="{{ selectedRoadmapItem.onOpenLinkedDetail }}" class="flex-row gap-12" style="background:#DCEBF7; border:1px solid #C3DFF0; color:#1D6FA5; font-size:var(--font-size-sm); font-weight:var(--font-weight-semibold); border-radius:10px; padding:10px 12px; margin-bottom:18px; cursor:pointer;">{{ selectedRoadmapItem.linkedDetailLabel }}</div>
+        </sc-if>
+
         <div class="pulse-wizard-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:20px;">
           <sc-if value="{{ selectedRoadmapItem.hasOwner }}" hint-placeholder-val="{{ false }}">
             <div><div style="font-size:var(--font-size-xs); color:var(--color-gray-600); font-weight:var(--font-weight-semibold); text-transform:uppercase; margin-bottom:3px;">Owner</div><div style="font-size:var(--font-size-sm);">{{ selectedRoadmapItem.owner }}</div></div>
@@ -2370,6 +2374,7 @@ class Component extends DCLogic {
   selectRoadmapItem = (id) => this.setState({selectedRoadmapItemId:id});
   openRoadmapItem = (id) => this.setState({appScreen:'roadmap', selectedRoadmapItemId:id, selectedEntryId:null, selectedPipelineId:null, selectedMetricId:null, selectedDetailRef:null, detailReturnScreen:null, mobileMoreOpen:false, roadmapActiveCol:0});
   closeRoadmapItem = () => this.setState({selectedRoadmapItemId:null});
+  openRoadmapLinkedDetail = (type, id) => { this.setState({selectedRoadmapItemId:null}); this.openDetail(type, id); };
   openDetail = (type, id) => this.setState(s => ({
     appScreen:'detail',
     selectedDetailRef:{type, id},
@@ -2981,6 +2986,11 @@ class Component extends DCLogic {
 
     const allRoadmapItems = roadmapColumnDefs.flatMap(col => col.items.map(it => ({ ...it, stage: col.title })));
     const rawSelectedRoadmapItem = allRoadmapItems.find(it => it.id === s.selectedRoadmapItemId) || null;
+    const linkedDetailByType = rawSelectedRoadmapItem ? {
+      pipeline: rawSelectedRoadmapItem.pipelineId ? { detailType:'pipeline', id:rawSelectedRoadmapItem.pipelineId, label:'View pipeline detail →' } : null,
+      data: rawSelectedRoadmapItem.catalogRefId ? { detailType:'event', id:rawSelectedRoadmapItem.catalogRefId, label:'View event detail →' } : null,
+      metric: rawSelectedRoadmapItem.metricId ? { detailType:'metric', id:rawSelectedRoadmapItem.metricId, label:'View metric detail →' } : null
+    }[rawSelectedRoadmapItem.type] : null;
     const selectedRoadmapItem = rawSelectedRoadmapItem ? {
       ...rawSelectedRoadmapItem,
       lobChipStyle: lobChipStyle(rawSelectedRoadmapItem.lob),
@@ -2997,7 +3007,10 @@ class Component extends DCLogic {
       hasRepoLink: !!rawSelectedRoadmapItem.repoLink,
       hasJiraLink: !!rawSelectedRoadmapItem.jiraLink,
       hasTicket: !!rawSelectedRoadmapItem.ticketId,
-      hasPriority: !!rawSelectedRoadmapItem.priority
+      hasPriority: !!rawSelectedRoadmapItem.priority,
+      hasLinkedDetail: !!linkedDetailByType,
+      linkedDetailLabel: linkedDetailByType ? linkedDetailByType.label : null,
+      onOpenLinkedDetail: linkedDetailByType ? () => this.openRoadmapLinkedDetail(linkedDetailByType.detailType, linkedDetailByType.id) : null
     } : null;
 
     return {
