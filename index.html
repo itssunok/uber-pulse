@@ -507,6 +507,54 @@
 
               <div style="min-width:0;">
                 <div style="margin-bottom:24px;">
+                  <div class="pulse-heading-label" style="margin-bottom:8px;">Alerts</div>
+                  <div style="border:1px solid #E5E5E5; border-radius:10px; padding:14px 16px;">
+                    <sc-if value="{{ isDetailEvent }}" hint-placeholder-val="{{ false }}">
+                      <div class="flex-row-between" style="gap:12px;">
+                        <div style="font-size:var(--font-size-sm); line-height:1.4;">Notify me if quality drops below threshold</div>
+                        <button onClick="{{ selectedEntry.onToggleAlert }}" style="{{ selectedEntry.alertToggleStyle }}">
+                          <span style="{{ selectedEntry.alertThumbStyle }}"></span>
+                        </button>
+                      </div>
+                      <sc-if value="{{ selectedEntry.alertEnabled }}" hint-placeholder-val="{{ false }}">
+                        <div class="flex-row gap-8" style="margin-top:12px;">
+                          <button onClick="{{ selectedEntry.onSetAlertChannelSlack }}" style="{{ selectedEntry.alertSlackBtnStyle }}">Slack</button>
+                          <button onClick="{{ selectedEntry.onSetAlertChannelEmail }}" style="{{ selectedEntry.alertEmailBtnStyle }}">Email</button>
+                        </div>
+                      </sc-if>
+                    </sc-if>
+                    <sc-if value="{{ isDetailPipeline }}" hint-placeholder-val="{{ false }}">
+                      <div class="flex-row-between" style="gap:12px;">
+                        <div style="font-size:var(--font-size-sm); line-height:1.4;">Notify me if quality drops below threshold</div>
+                        <button onClick="{{ selectedPipeline.onToggleAlert }}" style="{{ selectedPipeline.alertToggleStyle }}">
+                          <span style="{{ selectedPipeline.alertThumbStyle }}"></span>
+                        </button>
+                      </div>
+                      <sc-if value="{{ selectedPipeline.alertEnabled }}" hint-placeholder-val="{{ false }}">
+                        <div class="flex-row gap-8" style="margin-top:12px;">
+                          <button onClick="{{ selectedPipeline.onSetAlertChannelSlack }}" style="{{ selectedPipeline.alertSlackBtnStyle }}">Slack</button>
+                          <button onClick="{{ selectedPipeline.onSetAlertChannelEmail }}" style="{{ selectedPipeline.alertEmailBtnStyle }}">Email</button>
+                        </div>
+                      </sc-if>
+                    </sc-if>
+                    <sc-if value="{{ isDetailMetric }}" hint-placeholder-val="{{ false }}">
+                      <div class="flex-row-between" style="gap:12px;">
+                        <div style="font-size:var(--font-size-sm); line-height:1.4;">Notify me if quality drops below threshold</div>
+                        <button onClick="{{ selectedMetric.onToggleAlert }}" style="{{ selectedMetric.alertToggleStyle }}">
+                          <span style="{{ selectedMetric.alertThumbStyle }}"></span>
+                        </button>
+                      </div>
+                      <sc-if value="{{ selectedMetric.alertEnabled }}" hint-placeholder-val="{{ false }}">
+                        <div class="flex-row gap-8" style="margin-top:12px;">
+                          <button onClick="{{ selectedMetric.onSetAlertChannelSlack }}" style="{{ selectedMetric.alertSlackBtnStyle }}">Slack</button>
+                          <button onClick="{{ selectedMetric.onSetAlertChannelEmail }}" style="{{ selectedMetric.alertEmailBtnStyle }}">Email</button>
+                        </div>
+                      </sc-if>
+                    </sc-if>
+                  </div>
+                </div>
+
+                <div style="margin-bottom:24px;">
                   <div class="pulse-heading-label" style="margin-bottom:8px;">Ownership</div>
                   <div style="display:flex; gap:8px; flex-wrap:wrap;">
                     <sc-if value="{{ isDetailEvent }}" hint-placeholder-val="{{ false }}">
@@ -2314,7 +2362,8 @@ class Component extends DCLogic {
     apiKeys: SEED_API_KEYS,
     showCreateKeyForm:false, newKeyName:'', justCreatedKey:null, confirmDeleteKeyId:null,
     toast:null,
-    showWelcome:false
+    showWelcome:false,
+    alertPrefs:{}
   };
 
   onLoginEmailChange = (e) => this.setState({loginEmail:e.target.value});
@@ -2475,6 +2524,32 @@ class Component extends DCLogic {
     this.setState({toast:msg});
     clearTimeout(this._toastTimer);
     this._toastTimer = setTimeout(()=>this.setState({toast:null}), 3500);
+  };
+
+  toggleQualityAlert = (id) => {
+    const prev = this.state.alertPrefs[id] || { enabled:false, channel:'slack' };
+    const enabled = !prev.enabled;
+    this.setState({ alertPrefs: { ...this.state.alertPrefs, [id]: { ...prev, enabled } } });
+    this.showToast(enabled ? 'Alerts on — you\'ll be notified via '+(prev.channel==='email'?'email':'Slack')+' if quality drops below threshold.' : 'Alerts turned off.');
+  };
+  setQualityAlertChannel = (id, channel) => {
+    const prev = this.state.alertPrefs[id] || { enabled:true, channel:'slack' };
+    this.setState({ alertPrefs: { ...this.state.alertPrefs, [id]: { ...prev, channel } } });
+    this.showToast('Alerts will be sent via '+(channel==='email'?'email':'Slack')+'.');
+  };
+  buildAlertVM = (id) => {
+    const pref = this.state.alertPrefs[id] || { enabled:false, channel:'slack' };
+    return {
+      alertEnabled: !!pref.enabled,
+      alertChannel: pref.channel || 'slack',
+      alertToggleStyle: 'border:none; border-radius:999px; width:40px; height:22px; position:relative; cursor:pointer; flex-shrink:0; padding:2px; '+(pref.enabled ? 'background:#06C167;' : 'background:#E5E5E5;'),
+      alertThumbStyle: 'position:absolute; top:2px; width:18px; height:18px; border-radius:50%; background:#FFFFFF; transition:left .15s; '+(pref.enabled ? 'left:20px;' : 'left:2px;'),
+      alertSlackBtnStyle: 'border:1px solid; border-radius:999px; padding:5px 12px; font-size:var(--font-size-xs); font-weight:var(--font-weight-semibold); cursor:pointer; '+((pref.channel||'slack')==='slack' ? 'background:#0A0A0A;color:#FFF;border-color:#0A0A0A;' : 'background:none;color:var(--color-gray-600);border-color:#E5E5E5;'),
+      alertEmailBtnStyle: 'border:1px solid; border-radius:999px; padding:5px 12px; font-size:var(--font-size-xs); font-weight:var(--font-weight-semibold); cursor:pointer; '+(pref.channel==='email' ? 'background:#0A0A0A;color:#FFF;border-color:#0A0A0A;' : 'background:none;color:var(--color-gray-600);border-color:#E5E5E5;'),
+      onToggleAlert: () => this.toggleQualityAlert(id),
+      onSetAlertChannelSlack: () => this.setQualityAlertChannel(id, 'slack'),
+      onSetAlertChannelEmail: () => this.setQualityAlertChannel(id, 'email')
+    };
   };
 
   onChatInputChange = (e) => this.setState({chatInput:e.target.value});
@@ -2746,6 +2821,7 @@ class Component extends DCLogic {
 
     const selectedMetric = rawSelectedMetric ? {
       ...rawSelectedMetric,
+      ...this.buildAlertVM(rawSelectedMetric.id),
       deltaStyle: 'font-size:var(--font-size-sm);font-weight:var(--font-weight-semibold);color:'+(rawSelectedMetric.positive?'#067A3E':'#A93327')+';',
       sparkPoints: sparkPoints(rawSelectedMetric.points),
       sparkColor: rawSelectedMetric.positive ? '#06C167' : '#A93327',
@@ -2860,6 +2936,7 @@ class Component extends DCLogic {
     const entryPipeline = rawSelected ? PIPELINES.find(p => p.id === rawSelected.pipelineId) || null : null;
     const selectedEntry = rawSelected ? {
       ...rawSelected,
+      ...this.buildAlertVM(rawSelected.id),
       statusLabel: rawSelected.status.charAt(0).toUpperCase()+rawSelected.status.slice(1),
       statusChipStyle: statusChipStyle(rawSelected.status),
       lobChipStyle: lobChipStyle(rawSelected.lob),
@@ -3236,6 +3313,8 @@ class Component extends DCLogic {
     const mobileMoreActive = ['assistant','developer','report','contribute','docs'].includes(s.appScreen);
     const mobileNavStyle = (active) => 'display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;flex:1;min-height:48px;background:none;border:none;color:'+(active?'var(--color-black)':'var(--color-gray-600)')+';font-weight:'+(active?'700':'500')+';font-size:var(--font-size-2xs);cursor:pointer;padding:6px 4px;';
 
+    const buildAlertVM = (id) => this.buildAlertVM(id);
+
     const pipelineVolume = (pid) => CATALOG.filter(e => e.pipelineId === pid).reduce((sum,e) => sum + e.weeklyVolume, 0);
     const pipelineEvents = (pid) => CATALOG.filter(e => e.pipelineId === pid).sort((a,b) => b.weeklyVolume - a.weeklyVolume);
 
@@ -3264,6 +3343,7 @@ class Component extends DCLogic {
       lobChipStyle: lobChipStyle(rawSelectedPipeline.lob),
       slaActualStyle: 'font-weight:var(--font-weight-semibold);color:'+(rawSelectedPipeline.health==='green' ? '#067A3E' : rawSelectedPipeline.health==='amber' ? '#96530A' : '#A93327')+';',
       weeklyVolumeLabel: pipelineVolume(rawSelectedPipeline.id).toFixed(1)+'M',
+      ...buildAlertVM(rawSelectedPipeline.id),
       history: this.healthHistoryRows(rawSelectedPipeline, s),
       events: pipelineEvents(rawSelectedPipeline.id).map(e => ({
         ...e,
