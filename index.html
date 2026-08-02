@@ -369,9 +369,16 @@
                   <sc-if value="{{ selectedMetric.compositeFreshnessNote }}" hint-placeholder-val="{{ false }}">
                     <div class="flex-row" style="gap:5px; font-size:var(--font-size-xs); color:var(--color-gray-600); margin-bottom:20px;"><span style="width:6px; height:6px; border-radius:50%; background:#6B6B6B; flex-shrink:0;"></span>{{ selectedMetric.compositeFreshnessNote }}</div>
                   </sc-if>
+                  <sc-if value="{{ selectedMetric.hasSegmentStats }}" hint-placeholder-val="{{ false }}">
+                    <div class="flex-row gap-8" style="flex-wrap:wrap; margin-bottom:20px;">
+                      <sc-for list="{{ selectedMetric.segmentStats }}" as="seg" hint-placeholder-count="3">
+                        <span class="chip-pill" style="color:var(--color-black); background:#F6F6F6; border:1px solid #E5E5E5;">{{ seg.label }}: {{ seg.value }}</span>
+                      </sc-for>
+                    </div>
+                  </sc-if>
                 </sc-if>
 
-                <sc-if value="{{ isDetailMetric }}" hint-placeholder-val="{{ false }}">
+                <sc-if value="{{ selectedMetric.trendChart }}" hint-placeholder-val="{{ false }}">
                   <div class="card">
                     <div class="pulse-heading-label" style="margin-bottom:22px;">4-week trend by category</div>
                     <div style="display:flex; align-items:flex-end; gap:22px; height:130px; border-bottom:1px solid #E5E5E5;">
@@ -2608,7 +2615,7 @@ class Component extends DCLogic {
 
   renderHomeVals(s, pipelines) {
     const criticalPipeline = PIPELINES.find(p => p.health === 'red') || null;
-    const metrics = METRICS_BASE.map(m => ({
+    const metrics = METRICS_BASE.filter(m => m.featuredOnHome).map(m => ({
       ...m,
       deltaLabel: m.delta,
       deltaStyle: 'font-size:var(--font-size-sm);font-weight:var(--font-weight-semibold);color:'+(m.positive?'#067A3E':'#A93327')+';',
@@ -2623,13 +2630,18 @@ class Component extends DCLogic {
     const metricSourceEvent = rawSelectedMetric && rawSelectedMetric.sourceEventId ? CATALOG.find(e => e.id === rawSelectedMetric.sourceEventId) || null : null;
     const metricSourcePipeline = metricSourceEvent ? PIPELINES.find(p => p.id === metricSourceEvent.pipelineId) || null : null;
 
-    // Composite metrics (currently just GTV) have no single sourceEventId — they sum the other
-    // metrics' verticals, so their health is derived from those metrics' own real source pipelines.
-    const compositeConstituentPipelines = (rawSelectedMetric && !rawSelectedMetric.sourceEventId)
-      ? METRICS_BASE.filter(m => m.sourceEventId).map(m => {
-          const ev = CATALOG.find(e => e.id === m.sourceEventId);
-          return ev ? PIPELINES.find(p => p.id === ev.pipelineId) : null;
-        }).filter(Boolean)
+    // Composite metrics (GTV, Take Rate, MAPCs, Frequency) have no single sourceEventId — their
+    // health is inherited from the specific metrics named in compositeSourceMetricIds, not just
+    // "every metric that happens to have a sourceEventId" (that only worked back when GTV was
+    // the only composite metric in the dataset).
+    const compositeConstituentPipelines = (rawSelectedMetric && !rawSelectedMetric.sourceEventId && rawSelectedMetric.compositeSourceMetricIds)
+      ? rawSelectedMetric.compositeSourceMetricIds
+          .map(id => METRICS_BASE.find(m => m.id === id))
+          .filter(m => m && m.sourceEventId)
+          .map(m => {
+            const ev = CATALOG.find(e => e.id === m.sourceEventId);
+            return ev ? PIPELINES.find(p => p.id === ev.pipelineId) : null;
+          }).filter(Boolean)
       : [];
     const healthRank = { green:0, amber:1, red:2 };
     const compositeHistory = compositeConstituentPipelines.length ? compositeConstituentPipelines[0].history.map((_, i) => {
@@ -2669,12 +2681,14 @@ class Component extends DCLogic {
       hasWarning: !!(metricSourceEvent && metricSourceEvent.warning),
       warningText: metricSourceEvent ? metricSourceEvent.warningText : null,
       verticalBreakdown: rawSelectedMetric.verticalBreakdown ? rawSelectedMetric.verticalBreakdown.map(vb => ({ ...vb, barStyle:'height:100%;border-radius:4px;width:'+vb.pct+'%;background:'+rawSelectedMetric.iconColor+';' })) : null,
+      segmentStats: rawSelectedMetric.segmentStats || null,
+      hasSegmentStats: !!(rawSelectedMetric.segmentStats && rawSelectedMetric.segmentStats.length),
       trendChart: buildWeeklyStackedChart(rawSelectedMetric.weeklyByCategory),
-      onDownloadTrend: () => downloadCSV(
+      onDownloadTrend: rawSelectedMetric.weeklyByCategory ? (() => downloadCSV(
         rawSelectedMetric.id+'_weekly_by_category.csv',
         ['category', ...TREND_WEEK_LABELS],
         rawSelectedMetric.weeklyByCategory.map(cat => [cat.label, ...cat.values])
-      ),
+      )) : null,
       pipelineHistory: metricSourcePipeline ? this.healthHistoryRows(metricSourcePipeline, s)
         : (compositeHistory ? this.healthHistoryRows({ id: rawSelectedMetric.id+'-composite', history: compositeHistory }, s) : null),
       pipelineHistoryCaption: metricSourcePipeline ? ('Inherited from the '+metricSourcePipeline.name+' pipeline') : compositeCaption,
