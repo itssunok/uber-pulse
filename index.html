@@ -551,17 +551,21 @@
               <div style="min-width:0;">
                 <sc-if value="{{ isDetailMetric }}" hint-placeholder-val="{{ false }}">
                   <div style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; padding:18px;">
-                    <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#6B6B6B; margin-bottom:14px;">4-week trend by category</div>
-                    <div style="display:flex; align-items:flex-end; gap:14px; height:150px; border-bottom:1px solid #E5E5E5;">
+                    <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#6B6B6B; margin-bottom:22px;">4-week trend by category</div>
+                    <div style="display:flex; align-items:flex-end; gap:22px; height:130px; border-bottom:1px solid #E5E5E5;">
                       <sc-for list="{{ selectedMetric.trendChart.weeks }}" as="wk" hint-placeholder-count="4">
-                        <div style="display:flex; flex-direction:column; align-items:center; gap:8px; flex:1; min-width:0;">
-                          <div style="width:100%; height:130px; display:flex; align-items:flex-end;">
-                            <div style="width:100%; display:flex; flex-direction:column-reverse; {{ wk.barWrapStyle }} border-radius:4px 4px 0 0; overflow:hidden;">
-                              <sc-for list="{{ wk.segments }}" as="seg" hint-placeholder-count="3">
-                                <div style="{{ seg.barStyle }}"></div>
-                              </sc-for>
-                            </div>
+                        <div style="display:flex; align-items:flex-end; justify-content:center; flex:1; min-width:0; height:100%;">
+                          <div style="width:100%; max-width:70px; display:flex; flex-direction:column-reverse; {{ wk.barWrapStyle }} border-radius:4px 4px 0 0; overflow:hidden;">
+                            <sc-for list="{{ wk.segments }}" as="seg" hint-placeholder-count="3">
+                              <div style="{{ seg.barStyle }}"></div>
+                            </sc-for>
                           </div>
+                        </div>
+                      </sc-for>
+                    </div>
+                    <div style="display:flex; gap:22px; margin-top:8px;">
+                      <sc-for list="{{ selectedMetric.trendChart.weeks }}" as="wk" hint-placeholder-count="4">
+                        <div style="display:flex; flex-direction:column; align-items:center; gap:4px; flex:1; min-width:0;">
                           <div style="font-size:10.5px; color:#6B6B6B; text-align:center;">{{ wk.dateLabel }}</div>
                           <div style="font-size:11px; font-weight:600; text-align:center;">{{ wk.totalLabel }}</div>
                         </div>
@@ -580,25 +584,63 @@
 
                 <sc-if value="{{ isDetailPipeline }}" hint-placeholder-val="{{ false }}">
                   <div style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; padding:18px;">
-                    <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#6B6B6B; margin-bottom:14px;">Composition by event, this week</div>
-                    <div style="display:flex; flex-direction:column; gap:10px;">
-                      <sc-for list="{{ selectedPipeline.composition.top }}" as="ce" hint-placeholder-count="6">
-                        <div>
-                          <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:4px;">
-                            <span style="font-size:12px; font-family:ui-monospace,monospace; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0;">{{ ce.name }}</span>
-                            <span style="font-size:11px; color:#6B6B6B; flex-shrink:0;">{{ ce.weeklyVolumeLabel }}</span>
-                          </div>
-                          <div style="width:100%; height:8px; background:#F0F0F0; border-radius:4px; overflow:hidden;">
-                            <div style="{{ ce.barStyle }}"></div>
+                    <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#6B6B6B; margin-bottom:22px;">4-week trend by event</div>
+                    <div style="display:flex; align-items:flex-end; gap:22px; height:130px; border-bottom:1px solid #E5E5E5;">
+                      <sc-for list="{{ selectedPipeline.trendChart.weeks }}" as="wk" hint-placeholder-count="4">
+                        <div style="display:flex; align-items:flex-end; justify-content:center; flex:1; min-width:0; height:100%;">
+                          <div style="width:100%; max-width:70px; display:flex; flex-direction:column-reverse; {{ wk.barWrapStyle }} border-radius:4px 4px 0 0; overflow:hidden;">
+                            <sc-for list="{{ wk.segments }}" as="seg" hint-placeholder-count="3">
+                              <div style="{{ seg.barStyle }}"></div>
+                            </sc-for>
                           </div>
                         </div>
                       </sc-for>
                     </div>
-                    <sc-if value="{{ selectedPipeline.composition.hasRemainder }}" hint-placeholder-val="{{ false }}">
-                      <div style="font-size:11.5px; color:#9B9B9B; margin-top:10px;">+{{ selectedPipeline.composition.remainderCount }} more events in the CSV export.</div>
-                    </sc-if>
-                    <button onClick="{{ selectedPipeline.onDownloadComposition }}" style="width:100%; box-sizing:border-box; background:#0A0A0A; color:#FFF; border:none; border-radius:999px; padding:10px; font-size:12.5px; font-weight:600; cursor:pointer; margin-top:18px;">Download CSV</button>
+                    <div style="display:flex; gap:22px; margin-top:8px;">
+                      <sc-for list="{{ selectedPipeline.trendChart.weeks }}" as="wk" hint-placeholder-count="4">
+                        <div style="display:flex; flex-direction:column; align-items:center; gap:4px; flex:1; min-width:0;">
+                          <div style="font-size:10.5px; color:#6B6B6B; text-align:center;">{{ wk.dateLabel }}</div>
+                          <div style="font-size:11px; font-weight:600; text-align:center;">{{ wk.totalLabel }}</div>
+                        </div>
+                      </sc-for>
+                    </div>
+                    <div style="display:flex; flex-direction:column; gap:6px; margin-top:14px;">
+                      <sc-for list="{{ selectedPipeline.trendChart.legend }}" as="lg" hint-placeholder-count="3">
+                        <div style="display:flex; align-items:center; gap:6px; font-size:12px; color:#6B6B6B;">
+                          <span style="width:9px; height:9px; border-radius:2px; background:{{ lg.color }}; display:inline-block; flex-shrink:0;"></span>{{ lg.label }}
+                        </div>
+                      </sc-for>
+                    </div>
+                    <button onClick="{{ selectedPipeline.onDownloadTrend }}" style="width:100%; box-sizing:border-box; background:#0A0A0A; color:#FFF; border:none; border-radius:999px; padding:10px; font-size:12.5px; font-weight:600; cursor:pointer; margin-top:18px;">Download CSV</button>
                   </div>
+                </sc-if>
+
+                <sc-if value="{{ isDetailEvent }}" hint-placeholder-val="{{ false }}">
+                  <sc-if value="{{ selectedEntry.trendChart }}" hint-placeholder-val="{{ false }}">
+                    <div style="background:#FFFFFF; border:1px solid #E5E5E5; border-radius:12px; padding:18px; margin-bottom:20px;">
+                      <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#6B6B6B; margin-bottom:22px;">4-week trend</div>
+                      <div style="display:flex; align-items:flex-end; gap:22px; height:130px; border-bottom:1px solid #E5E5E5;">
+                        <sc-for list="{{ selectedEntry.trendChart.weeks }}" as="wk" hint-placeholder-count="4">
+                          <div style="display:flex; align-items:flex-end; justify-content:center; flex:1; min-width:0; height:100%;">
+                            <div style="width:100%; max-width:70px; display:flex; flex-direction:column-reverse; {{ wk.barWrapStyle }} border-radius:4px 4px 0 0; overflow:hidden;">
+                              <sc-for list="{{ wk.segments }}" as="seg" hint-placeholder-count="3">
+                                <div style="{{ seg.barStyle }}"></div>
+                              </sc-for>
+                            </div>
+                          </div>
+                        </sc-for>
+                      </div>
+                      <div style="display:flex; gap:22px; margin-top:8px;">
+                        <sc-for list="{{ selectedEntry.trendChart.weeks }}" as="wk" hint-placeholder-count="4">
+                          <div style="display:flex; flex-direction:column; align-items:center; gap:4px; flex:1; min-width:0;">
+                            <div style="font-size:10.5px; color:#6B6B6B; text-align:center;">{{ wk.dateLabel }}</div>
+                            <div style="font-size:11px; font-weight:600; text-align:center;">{{ wk.totalLabel }}</div>
+                          </div>
+                        </sc-for>
+                      </div>
+                      <button onClick="{{ selectedEntry.onDownloadTrend }}" style="width:100%; box-sizing:border-box; background:#0A0A0A; color:#FFF; border:none; border-radius:999px; padding:10px; font-size:12.5px; font-weight:600; cursor:pointer; margin-top:18px;">Download CSV</button>
+                    </div>
+                  </sc-if>
                 </sc-if>
 
                 <sc-if value="{{ isDetailEvent }}" hint-placeholder-val="{{ false }}">
@@ -2411,6 +2453,12 @@ class Component extends DCLogic {
       statusChipStyle: statusChipStyle(rawSelected.status),
       lobChipStyle: lobChipStyle(rawSelected.lob),
       onDownload: () => this.downloadSample(rawSelected),
+      trendChart: rawSelected.weeklyTrend ? buildWeeklyStackedChart([{ label: rawSelected.name, values: rawSelected.weeklyTrend }]) : null,
+      onDownloadTrend: rawSelected.weeklyTrend ? (() => downloadCSV(
+        rawSelected.id+'_weekly_trend.csv',
+        ['week','weekly_volume'],
+        TREND_WEEK_LABELS.map((wk,i) => [wk, rawSelected.weeklyTrend[i]])
+      )) : null,
       pipelineName: entryPipeline ? entryPipeline.name : null,
       onViewPipeline: entryPipeline ? (() => this.openDetail('pipeline', entryPipeline.id)) : null,
       onViewPipelineKeyDown: entryPipeline ? this.onRowKeyDown(() => this.openDetail('pipeline', entryPipeline.id)) : null,
@@ -2754,23 +2802,29 @@ class Component extends DCLogic {
         onSelect: () => this.openDetail('event', e.id),
         onKeyDown: this.onRowKeyDown(() => this.openDetail('event', e.id))
       })),
-      composition: (() => {
+      trendChart: (() => {
         const events = pipelineEvents(rawSelectedPipeline.id);
-        const total = pipelineVolume(rawSelectedPipeline.id);
-        const top = events.slice(0, 6).map((e,i) => ({
-          name: e.name,
-          weeklyVolumeLabel: e.weeklyVolume.toFixed(1)+'M',
-          pct: total > 0 ? (e.weeklyVolume/total*100) : 0,
-          barStyle: 'height:100%;border-radius:4px;width:'+(total > 0 ? (e.weeklyVolume/total*100) : 0).toFixed(1)+'%;background:'+TREND_CHART_SHADES[i % TREND_CHART_SHADES.length]+';'
-        }));
-        const remainder = events.length - top.length;
-        return { top, remainderCount: remainder > 0 ? remainder : 0, hasRemainder: remainder > 0 };
+        if (!events.length) return null;
+        const top = events.slice(0, 3);
+        const rest = events.slice(3);
+        const categories = top.map(e => ({ label: e.name, values: e.weeklyTrend || [0,0,0,0] }));
+        if (rest.length) {
+          const otherValues = TREND_WEEK_LABELS.map((_, w) => rest.reduce((sum,e) => sum + ((e.weeklyTrend && e.weeklyTrend[w]) || 0), 0));
+          categories.push({ label: 'Other events', values: otherValues });
+        }
+        return buildWeeklyStackedChart(categories);
       })(),
-      onDownloadComposition: () => downloadCSV(
-        rawSelectedPipeline.id+'_event_composition.csv',
-        ['event','weekly_volume_millions'],
-        pipelineEvents(rawSelectedPipeline.id).map(e => [e.name, e.weeklyVolume])
-      )
+      onDownloadTrend: () => {
+        const events = pipelineEvents(rawSelectedPipeline.id);
+        const top = events.slice(0, 3);
+        const rest = events.slice(3);
+        const categories = top.map(e => ({ label: e.name, values: e.weeklyTrend || [0,0,0,0] }));
+        if (rest.length) {
+          const otherValues = TREND_WEEK_LABELS.map((_, w) => rest.reduce((sum,e) => sum + ((e.weeklyTrend && e.weeklyTrend[w]) || 0), 0));
+          categories.push({ label: 'Other events', values: otherValues });
+        }
+        downloadCSV(rawSelectedPipeline.id+'_weekly_trend_by_event.csv', ['event', ...TREND_WEEK_LABELS], categories.map(c => [c.label, ...c.values]));
+      }
     } : null;
 
     const activeChatSession = s.chatSessions.find(sess => sess.id === s.activeChatId) || null;
