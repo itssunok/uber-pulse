@@ -1948,6 +1948,37 @@
     <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
       <div style="position:fixed; bottom:24px; right:24px; background:#0A0A0A; color:#FFF; font-size:var(--font-size-sm); padding:12px 18px; border-radius:9px; box-shadow:0 8px 24px rgba(0,0,0,0.10); z-index:50; max-width:320px;">{{ toast }}</div>
     </sc-if>
+
+    <sc-if value="{{ showWelcome }}" hint-placeholder-val="{{ false }}">
+      <div style="position:fixed; inset:0; background:rgba(10,10,10,0.45); z-index:60; display:flex; align-items:center; justify-content:center; padding:20px; box-sizing:border-box;">
+        <div style="position:relative; width:100%; max-width:440px; background:#FFFFFF; border:1px solid #E5E5E5; border-radius:16px; padding:28px; box-sizing:border-box; box-shadow:0 20px 48px rgba(0,0,0,0.18);">
+          <button onClick="{{ closeWelcome }}" aria-label="Close" style="position:absolute; top:16px; right:16px; background:none; border:none; cursor:pointer; color:var(--color-gray-600); padding:4px; line-height:0;">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          </button>
+          <div style="width:40px; height:40px; border-radius:12px; background:#EDE3F7; display:flex; align-items:center; justify-content:center; margin-bottom:16px;">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#6B3FA0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2-7 4 14 2-7h6"/></svg>
+          </div>
+          <h2 class="title-h2" style="margin:0 0 10px 0;">Welcome to Pulse for Uber</h2>
+          <p style="font-size:var(--font-size-sm); color:var(--color-gray-600); line-height:1.5; margin:0 0 16px 0;">Today, "conversion," "session," and "active user" mean something slightly different in every LOB's dashboard — definitions live in stale docs or in people's heads, pipeline health is invisible until something breaks, and onboarding a new app team takes weeks of back-and-forth. Pulse exists to close that gap.</p>
+          <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:18px;">
+            <div style="display:flex; gap:10px; align-items:flex-start;">
+              <span style="color:var(--color-status-green-fg); font-weight:var(--font-weight-bold); flex-shrink:0;">✓</span>
+              <span style="font-size:var(--font-size-sm); color:var(--color-black);">One trusted catalog for what data means and who owns it</span>
+            </div>
+            <div style="display:flex; gap:10px; align-items:flex-start;">
+              <span style="color:var(--color-status-green-fg); font-weight:var(--font-weight-bold); flex-shrink:0;">✓</span>
+              <span style="font-size:var(--font-size-sm); color:var(--color-black);">Pipeline health and SLA status visible before it becomes a fire drill</span>
+            </div>
+            <div style="display:flex; gap:10px; align-items:flex-start;">
+              <span style="color:var(--color-status-green-fg); font-weight:var(--font-weight-bold); flex-shrink:0;">✓</span>
+              <span style="font-size:var(--font-size-sm); color:var(--color-black);">A self-serve way to ask questions, propose changes, and report issues</span>
+            </div>
+          </div>
+          <p style="font-size:var(--font-size-xs); color:var(--color-gray-600); font-style:italic; margin:0 0 20px 0;">The thesis: get this trust layer right once, and every AI-driven build that comes after it — inherits it for free.</p>
+          <button onClick="{{ closeWelcome }}" style="width:100%; box-sizing:border-box; background:#0A0A0A; color:#FFF; border:none; border-radius:999px; padding:12px; font-size:var(--font-size-sm); font-weight:var(--font-weight-semibold); cursor:pointer;">Got it</button>
+        </div>
+      </div>
+    </sc-if>
   </sc-if>
 </div>
 
@@ -1987,6 +2018,16 @@ const SEED_CHAT_SESSIONS = [
     {role:'assistant', text:"Here's a draft measurement plan for scheduled rides, aligned to existing naming conventions:", plan:{ featureName:'Scheduled Rides', events:['scheduled_ride_booked','scheduled_ride_confirmed','scheduled_ride_cancelled'], metrics:['Scheduled Ride Booking Rate','GTV from Scheduled Rides','Pre-pickup Cancellation Rate'], similarNote:'scheduled_ride_booked is already in review (v0.1, submitted 07/27) — new events built as its lifecycle companions rather than a duplicate definition.' }}
   ]}
 ];
+
+const WELCOME_SEEN_STORAGE_KEY = 'pulse.welcomeSeen';
+
+function hasSeenWelcome() {
+  try { return localStorage.getItem(WELCOME_SEEN_STORAGE_KEY) === '1'; } catch (err) { return false; }
+}
+
+function markWelcomeSeen() {
+  try { localStorage.setItem(WELCOME_SEEN_STORAGE_KEY, '1'); } catch (err) {}
+}
 
 const CHAT_SESSIONS_STORAGE_KEY = 'pulse.chatSessions';
 
@@ -2272,7 +2313,8 @@ class Component extends DCLogic {
     extraSubmissions:[],
     apiKeys: SEED_API_KEYS,
     showCreateKeyForm:false, newKeyName:'', justCreatedKey:null, confirmDeleteKeyId:null,
-    toast:null
+    toast:null,
+    showWelcome:false
   };
 
   onLoginEmailChange = (e) => this.setState({loginEmail:e.target.value});
@@ -2281,12 +2323,13 @@ class Component extends DCLogic {
   handleLogin = (e) => {
     e.preventDefault();
     if(this.state.loginEmail === 'pulse-demo@uber.com' && this.state.loginPassword === 'Pulse2026'){
-      this.setState({screen:'app', appScreen:'home', loginError:''});
+      this.setState({screen:'app', appScreen:'home', loginError:'', showWelcome:!hasSeenWelcome()});
     } else {
       this.setState({loginError:'Invalid email or password. Use the demo credentials below.'});
     }
   };
   logout = () => this.setState({screen:'login', loginEmail:'', loginPassword:'', loginError:''});
+  closeWelcome = () => { markWelcomeSeen(); this.setState({showWelcome:false}); };
 
   goHome = () => this.setState({appScreen:'home', selectedEntryId:null, selectedPipelineId:null, selectedMetricId:null, selectedDetailRef:null, detailReturnScreen:null, mobileMoreOpen:false});
   goCatalog = () => this.setState({appScreen:'catalog', selectedEntryId:null, selectedPipelineId:null, selectedDetailRef:null, detailReturnScreen:null, catalogTab:'data', catalogPage:1, pipelineLogPage:1, mobileMoreOpen:false});
@@ -3284,6 +3327,8 @@ class Component extends DCLogic {
       closeDetailToOrigin: this.closeDetailToOrigin,
       nextPlanningMeetingLabel,
       toast: s.toast,
+      showWelcome: s.showWelcome,
+      closeWelcome: this.closeWelcome,
       stopClick: this.stopClick
     };
   }
