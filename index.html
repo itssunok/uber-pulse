@@ -317,7 +317,10 @@
                   </sc-if>
                   <div style="font-size:32px; font-weight:800; letter-spacing:-0.4px; margin-bottom:4px;">{{ selectedMetric.value }}</div>
                   <span style="{{ selectedMetric.deltaStyle }}">{{ selectedMetric.delta }}</span>
-                  <p style="font-size:14px; line-height:1.6; color:#0A0A0A; margin:14px 0 24px 0;">{{ selectedMetric.tooltip }}</p>
+                  <p style="font-size:14px; line-height:1.6; color:#0A0A0A; margin:14px 0 20px 0;">{{ selectedMetric.tooltip }}</p>
+                  <sc-if value="{{ selectedMetric.freshnessLabel }}" hint-placeholder-val="{{ false }}">
+                    <div style="display:flex; align-items:center; gap:5px; font-size:11px; color:#067A3E; margin-bottom:20px;"><span style="width:6px; height:6px; border-radius:50%; background:#06C167; flex-shrink:0;"></span>Live · pipeline data as of {{ selectedMetric.freshnessLabel }}</div>
+                  </sc-if>
                 </sc-if>
 
                 <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:16px; margin-bottom:32px;">
@@ -362,6 +365,20 @@
 
                 <sc-if value="{{ isDetailPipeline }}" hint-placeholder-val="{{ false }}">
                   <div style="margin-bottom:32px;">
+                    <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#6B6B6B; margin-bottom:10px;">Quality checks</div>
+                    <div style="display:flex; flex-direction:column; gap:8px;">
+                      <sc-for list="{{ selectedPipeline.checks }}" as="c" hint-placeholder-count="3">
+                        <div style="display:flex; align-items:center; justify-content:space-between; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px;">
+                          <div style="font-size:13px;">{{ c.name }}</div>
+                          <span style="{{ c.chipStyle }}">{{ c.status }}</span>
+                        </div>
+                      </sc-for>
+                    </div>
+                  </div>
+                </sc-if>
+
+                <sc-if value="{{ isDetailPipeline }}" hint-placeholder-val="{{ false }}">
+                  <div style="margin-bottom:32px;">
                     <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#6B6B6B; margin-bottom:10px;">Health history</div>
                     <div style="display:flex; flex-direction:column; gap:8px;">
                       <sc-for list="{{ selectedPipeline.history }}" as="h" hint-placeholder-count="5">
@@ -376,6 +393,20 @@
                           <sc-if value="{{ h.expanded }}" hint-placeholder-val="{{ false }}">
                             <div style="margin-top:6px; font-size:12px; color:#6B6B6B; line-height:1.5;">{{ h.note }}</div>
                           </sc-if>
+                        </div>
+                      </sc-for>
+                    </div>
+                  </div>
+                </sc-if>
+
+                <sc-if value="{{ isDetailEvent }}" hint-placeholder-val="{{ false }}">
+                  <div style="margin-bottom:32px;">
+                    <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#6B6B6B; margin-bottom:10px;">Version history</div>
+                    <div style="display:flex; flex-direction:column; gap:12px;">
+                      <sc-for list="{{ selectedEntry.changelog }}" as="c" hint-placeholder-count="3">
+                        <div style="border-left:2px solid #E5E5E5; padding-left:12px;">
+                          <div style="font-size:12px; font-weight:600;">{{ c.version }} · <span style="color:#9B9B9B; font-weight:400;">{{ c.date }}</span></div>
+                          <div style="font-size:12px; color:#6B6B6B; margin-top:2px;">{{ c.change }}</div>
                         </div>
                       </sc-for>
                     </div>
@@ -425,6 +456,49 @@
                             </sc-if>
                           </div>
                         </sc-for>
+                      </div>
+                    </div>
+                  </sc-if>
+                </sc-if>
+
+                <sc-if value="{{ isDetailEvent }}" hint-placeholder-val="{{ false }}">
+                  <sc-if value="{{ selectedEntry.hasRelationships }}" hint-placeholder-val="{{ false }}">
+                    <div style="margin-bottom:32px;">
+                      <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#6B6B6B; margin-bottom:10px;">Relationships</div>
+                      <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                        <sc-if value="{{ selectedEntry.pipelineName }}" hint-placeholder-val="{{ false }}">
+                          <div role="button" tabindex="0" onClick="{{ selectedEntry.onViewPipeline }}" onKeyDown="{{ selectedEntry.onViewPipelineKeyDown }}" style="display:inline-flex; align-items:center; gap:6px; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:7px; padding:6px 10px; font-size:12.5px; cursor:pointer;">Pipeline: {{ selectedEntry.pipelineName }} →</div>
+                        </sc-if>
+                        <sc-for list="{{ selectedEntry.relatedMetrics }}" as="rm" hint-placeholder-count="2">
+                          <div role="button" tabindex="0" onClick="{{ rm.onSelect }}" onKeyDown="{{ rm.onKeyDown }}" style="display:inline-flex; align-items:center; gap:6px; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:7px; padding:6px 10px; font-size:12.5px; cursor:pointer;">Metric: {{ rm.label }} →</div>
+                        </sc-for>
+                      </div>
+                    </div>
+                  </sc-if>
+                </sc-if>
+
+                <sc-if value="{{ isDetailPipeline }}" hint-placeholder-val="{{ false }}">
+                  <div style="margin-bottom:32px;">
+                    <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#6B6B6B; margin-bottom:10px;">Relationships</div>
+                    <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                      <sc-for list="{{ selectedPipeline.events }}" as="re" hint-placeholder-count="4">
+                        <div role="button" tabindex="0" onClick="{{ re.onSelect }}" onKeyDown="{{ re.onKeyDown }}" style="display:inline-flex; align-items:center; gap:6px; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:7px; padding:6px 10px; font-size:12.5px; font-family:ui-monospace,monospace; cursor:pointer;">{{ re.name }} →</div>
+                      </sc-for>
+                    </div>
+                  </div>
+                </sc-if>
+
+                <sc-if value="{{ isDetailMetric }}" hint-placeholder-val="{{ false }}">
+                  <sc-if value="{{ selectedMetric.hasRelationships }}" hint-placeholder-val="{{ false }}">
+                    <div style="margin-bottom:32px;">
+                      <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#6B6B6B; margin-bottom:10px;">Relationships</div>
+                      <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                        <sc-if value="{{ selectedMetric.sourceEventName }}" hint-placeholder-val="{{ false }}">
+                          <div role="button" tabindex="0" onClick="{{ selectedMetric.onViewSourceEvent }}" onKeyDown="{{ selectedMetric.onViewSourceEventKeyDown }}" style="display:inline-flex; align-items:center; gap:6px; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:7px; padding:6px 10px; font-size:12.5px; cursor:pointer;">Event: {{ selectedMetric.sourceEventName }} →</div>
+                        </sc-if>
+                        <sc-if value="{{ selectedMetric.sourcePipelineName }}" hint-placeholder-val="{{ false }}">
+                          <div role="button" tabindex="0" onClick="{{ selectedMetric.onViewSourcePipeline }}" onKeyDown="{{ selectedMetric.onViewSourcePipelineKeyDown }}" style="display:inline-flex; align-items:center; gap:6px; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:7px; padding:6px 10px; font-size:12.5px; cursor:pointer;">Pipeline: {{ selectedMetric.sourcePipelineName }} →</div>
+                        </sc-if>
                       </div>
                     </div>
                   </sc-if>
@@ -1277,149 +1351,6 @@
       </div>
     </sc-if>
 
-    <sc-if value="{{ showEntrySheet }}" hint-placeholder-val="{{ false }}">
-      <div style="position:fixed; inset:0; background:rgba(10,10,10,0.35); z-index:30;" onClick="{{ closeEntry }}"></div>
-      <div class="pulse-side-sheet" style="position:fixed; top:0; right:0; bottom:0; width:440px; background:#FFFFFF; box-shadow:-8px 0 30px rgba(0,0,0,0.12); z-index:31; overflow-y:auto; padding:28px;">
-        <div style="display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:16px;">
-          <div style="display:flex; align-items:center; gap:10px; min-width:0;">
-            <sc-if value="{{ showEntryBack }}" hint-placeholder-val="{{ false }}">
-              <button onClick="{{ backFromEntry }}" style="background:none; border:none; font-size:16px; cursor:pointer; color:#6B6B6B; flex-shrink:0; padding:2px;">←</button>
-            </sc-if>
-            <div style="font-size:16px; font-weight:700; font-family:ui-monospace,monospace;">{{ selectedEntry.name }}</div>
-          </div>
-          <button onClick="{{ closeEntry }}" style="background:none; border:none; font-size:18px; cursor:pointer; color:#9B9B9B;">✕</button>
-        </div>
-        <div style="display:flex; gap:8px; margin-bottom:16px;">
-          <span style="{{ selectedEntry.statusChipStyle }}">{{ selectedEntry.statusLabel }}</span>
-          <span style="{{ selectedEntry.lobChipStyle }}">{{ selectedEntry.lob }}</span>
-          <span style="font-size:12px; color:#6B6B6B; background:#F6F6F6; border-radius:6px; padding:3px 8px;">{{ selectedEntry.version }}</span>
-        </div>
-        <sc-if value="{{ selectedEntry.warning }}" hint-placeholder-val="{{ false }}">
-          <div style="background:#FBE9E6; border:1px solid #F0C4BC; color:#8C332A; font-size:12px; border-radius:8px; padding:10px 12px; margin-bottom:16px;">⚠ {{ selectedEntry.warningText }}</div>
-        </sc-if>
-        <div style="font-size:13px; line-height:1.6; color:#0A0A0A; margin-bottom:18px;">{{ selectedEntry.definition }}</div>
-        <div class="pulse-wizard-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:20px;">
-          <div><div style="font-size:11px; color:#9B9B9B; font-weight:600; text-transform:uppercase; margin-bottom:3px;">Implementing team</div><div style="font-size:13px;">{{ selectedEntry.implementingTeam }}</div></div>
-          <div><div style="font-size:11px; color:#9B9B9B; font-weight:600; text-transform:uppercase; margin-bottom:3px;">Definition owner</div><div style="font-size:13px;">{{ selectedEntry.definitionOwner }}</div></div>
-          <div><div style="font-size:11px; color:#9B9B9B; font-weight:600; text-transform:uppercase; margin-bottom:3px;">Last updated</div><div style="font-size:13px;">{{ selectedEntry.lastUpdated }}</div></div>
-        </div>
-        <sc-if value="{{ selectedEntry.pipelineName }}" hint-placeholder-val="{{ false }}">
-          <div style="margin-bottom:20px;">
-            <div style="font-size:11px; color:#9B9B9B; font-weight:600; text-transform:uppercase; margin-bottom:6px;">Carried by pipeline</div>
-            <div role="button" tabindex="0" onClick="{{ selectedEntry.onViewPipeline }}" onKeyDown="{{ selectedEntry.onViewPipelineKeyDown }}" style="display:inline-flex; align-items:center; gap:6px; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:7px; padding:6px 10px; font-size:12.5px; cursor:pointer;">{{ selectedEntry.pipelineName }} →</div>
-          </div>
-        </sc-if>
-        <button onClick="{{ selectedEntry.onDownload }}" style="width:100%; box-sizing:border-box; background:#0A0A0A; color:#FFF; border:none; border-radius:999px; padding:11px; font-size:13px; font-weight:600; cursor:pointer; margin-bottom:22px;">Download sample CSV</button>
-
-        <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#6B6B6B; margin-bottom:10px;">Version history</div>
-        <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:22px;">
-          <sc-for list="{{ selectedEntry.changelog }}" as="c" hint-placeholder-count="3">
-            <div style="border-left:2px solid #E5E5E5; padding-left:12px;">
-              <div style="font-size:12px; font-weight:600;">{{ c.version }} · <span style="color:#9B9B9B; font-weight:400;">{{ c.date }}</span></div>
-              <div style="font-size:12px; color:#6B6B6B; margin-top:2px;">{{ c.change }}</div>
-            </div>
-          </sc-for>
-        </div>
-
-        <sc-if value="{{ selectedEntry.pipelineHistory }}" hint-placeholder-val="{{ false }}">
-          <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#6B6B6B; margin-bottom:10px;">Pipeline quality history</div>
-          <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:22px;">
-            <sc-for list="{{ selectedEntry.pipelineHistory }}" as="h" hint-placeholder-count="5">
-              <div role="button" tabindex="0" onClick="{{ h.onToggle }}" onKeyDown="{{ h.onToggleKeyDown }}" style="border:1px solid #E5E5E5; border-radius:8px; padding:9px 12px; cursor:pointer;">
-                <div style="display:flex; align-items:center; justify-content:space-between;">
-                  <span style="font-size:12.5px; color:#6B6B6B;">{{ h.date }}</span>
-                  <div style="display:flex; align-items:center; gap:8px;">
-                    <span style="font-size:12.5px; font-weight:600;">Quality {{ h.quality }}</span>
-                    <span style="width:8px; height:8px; border-radius:50%; background:{{ h.dotColor }};"></span>
-                  </div>
-                </div>
-                <sc-if value="{{ h.expanded }}" hint-placeholder-val="{{ false }}">
-                  <div style="margin-top:6px; font-size:12px; color:#6B6B6B; line-height:1.5;">{{ h.note }}</div>
-                </sc-if>
-              </div>
-            </sc-for>
-          </div>
-        </sc-if>
-
-        <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#6B6B6B; margin-bottom:10px;">Sample payload</div>
-        <div style="background:#F6F6F6; border-radius:8px; padding:12px; font-family:ui-monospace,monospace; font-size:12px; line-height:1.7;">
-          <sc-for list="{{ selectedEntry.payload }}" as="f" hint-placeholder-count="4">
-            <div><span style="color:#6B6B6B;">{{ f.field }}:</span> {{ f.value }}</div>
-          </sc-for>
-        </div>
-      </div>
-    </sc-if>
-
-    <sc-if value="{{ showPipelineSheet }}" hint-placeholder-val="{{ false }}">
-      <div style="position:fixed; inset:0; background:rgba(10,10,10,0.35); z-index:30;" onClick="{{ closePipeline }}"></div>
-      <div class="pulse-side-sheet" style="position:fixed; top:0; right:0; bottom:0; width:440px; background:#FFFFFF; box-shadow:-8px 0 30px rgba(0,0,0,0.12); z-index:31; overflow-y:auto; padding:28px;">
-        <div style="display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:16px;">
-          <div style="display:flex; align-items:center; gap:10px; min-width:0;">
-            <sc-if value="{{ showPipelineBack }}" hint-placeholder-val="{{ false }}">
-              <button onClick="{{ backFromPipeline }}" style="background:none; border:none; font-size:16px; cursor:pointer; color:#6B6B6B; flex-shrink:0; padding:2px;">←</button>
-            </sc-if>
-            <div style="font-size:16px; font-weight:700;">{{ selectedPipeline.name }}</div>
-          </div>
-          <button onClick="{{ closePipeline }}" style="background:none; border:none; font-size:18px; cursor:pointer; color:#9B9B9B;">✕</button>
-        </div>
-        <div style="display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap;">
-          <span style="{{ selectedPipeline.statusChipStyle }}">{{ selectedPipeline.statusLabel }}</span>
-          <span style="{{ selectedPipeline.lobChipStyle }}">{{ selectedPipeline.lob }}</span>
-          <span style="font-size:12px; color:#6B6B6B; background:#F6F6F6; border-radius:6px; padding:3px 8px;">{{ selectedPipeline.weeklyVolumeLabel }}/wk</span>
-        </div>
-        <div style="font-size:13px; line-height:1.6; color:#0A0A0A; margin-bottom:18px;">{{ selectedPipeline.description }}</div>
-        <div class="pulse-wizard-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:20px;">
-          <div><div style="font-size:11px; color:#9B9B9B; font-weight:600; text-transform:uppercase; margin-bottom:3px;">Owning team</div><div style="font-size:13px;">{{ selectedPipeline.owningTeam }}</div></div>
-          <div><div style="font-size:11px; color:#9B9B9B; font-weight:600; text-transform:uppercase; margin-bottom:3px;">Freshness</div><div style="font-size:13px;">{{ selectedPipeline.freshness }}</div></div>
-          <div><div style="font-size:11px; color:#9B9B9B; font-weight:600; text-transform:uppercase; margin-bottom:3px;">SLA target / actual</div><div style="font-size:13px;">{{ selectedPipeline.slaTarget }} / <span style="{{ selectedPipeline.slaActualStyle }}">{{ selectedPipeline.slaActual }}</span></div></div>
-          <div><div style="font-size:11px; color:#9B9B9B; font-weight:600; text-transform:uppercase; margin-bottom:3px;">Quality score</div><div style="font-size:13px;">{{ selectedPipeline.quality }} / 100</div></div>
-        </div>
-
-        <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#6B6B6B; margin-bottom:10px;">Quality checks</div>
-        <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:22px;">
-          <sc-for list="{{ selectedPipeline.checks }}" as="c" hint-placeholder-count="3">
-            <div style="display:flex; align-items:center; justify-content:space-between; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px;">
-              <div style="font-size:13px;">{{ c.name }}</div>
-              <span style="{{ c.chipStyle }}">{{ c.status }}</span>
-            </div>
-          </sc-for>
-        </div>
-
-        <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#6B6B6B; margin-bottom:10px;">History</div>
-        <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:22px;">
-          <sc-for list="{{ selectedPipeline.history }}" as="h" hint-placeholder-count="5">
-            <div role="button" tabindex="0" onClick="{{ h.onToggle }}" onKeyDown="{{ h.onToggleKeyDown }}" style="border:1px solid #E5E5E5; border-radius:8px; padding:9px 12px; cursor:pointer;">
-              <div style="display:flex; align-items:center; justify-content:space-between;">
-                <span style="font-size:12.5px; color:#6B6B6B;">{{ h.date }}</span>
-                <div style="display:flex; align-items:center; gap:8px;">
-                  <span style="font-size:12.5px; font-weight:600;">Quality {{ h.quality }}</span>
-                  <span style="width:8px; height:8px; border-radius:50%; background:{{ h.dotColor }};"></span>
-                </div>
-              </div>
-              <sc-if value="{{ h.expanded }}" hint-placeholder-val="{{ false }}">
-                <div style="margin-top:6px; font-size:12px; color:#6B6B6B; line-height:1.5;">{{ h.note }}</div>
-              </sc-if>
-            </div>
-          </sc-for>
-        </div>
-
-        <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#6B6B6B; margin-bottom:10px;">Events in this pipeline</div>
-        <div style="display:flex; flex-direction:column; gap:8px;">
-          <sc-for list="{{ selectedPipeline.events }}" as="e" hint-placeholder-count="4">
-            <div role="button" tabindex="0" onClick="{{ e.onSelect }}" onKeyDown="{{ e.onKeyDown }}" style="display:flex; align-items:center; justify-content:space-between; border:1px solid #E5E5E5; border-radius:8px; padding:10px 12px; cursor:pointer;">
-              <div style="display:flex; align-items:center; gap:8px; min-width:0;">
-                <span style="font-size:12.5px; font-family:ui-monospace,monospace; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ e.name }}</span>
-              </div>
-              <div style="display:flex; align-items:center; gap:8px; flex-shrink:0;">
-                <span style="font-size:12px; color:#6B6B6B;">{{ e.weeklyVolumeLabel }}</span>
-                <span style="{{ e.statusChipStyle }}">{{ e.statusLabel }}</span>
-              </div>
-            </div>
-          </sc-for>
-        </div>
-      </div>
-    </sc-if>
-
     <sc-if value="{{ selectedRoadmapItem }}" hint-placeholder-val="{{ false }}">
       <div style="position:fixed; inset:0; background:rgba(10,10,10,0.35); z-index:30;" onClick="{{ closeRoadmapItem }}"></div>
       <div class="pulse-side-sheet" style="position:fixed; top:0; right:0; bottom:0; width:440px; background:#FFFFFF; box-shadow:-8px 0 30px rgba(0,0,0,0.12); z-index:31; overflow-y:auto; padding:28px;">
@@ -1511,52 +1442,6 @@
           <div style="background:#F6F6F6; border-radius:8px; padding:12px; font-family:ui-monospace,monospace; font-size:12px; line-height:1.7;">
             <sc-for list="{{ selectedRoadmapItem.payloadRows }}" as="pr" hint-placeholder-count="3">
               <div><span style="color:#6B6B6B;">{{ pr.field }}:</span> {{ pr.value }}</div>
-            </sc-for>
-          </div>
-        </sc-if>
-      </div>
-    </sc-if>
-
-    <sc-if value="{{ showMetricSheet }}" hint-placeholder-val="{{ false }}">
-      <div style="position:fixed; inset:0; background:rgba(10,10,10,0.35); z-index:30;" onClick="{{ closeMetric }}"></div>
-      <div class="pulse-side-sheet" style="position:fixed; top:0; right:0; bottom:0; width:440px; background:#FFFFFF; box-shadow:-8px 0 30px rgba(0,0,0,0.12); z-index:31; overflow-y:auto; padding:28px;">
-        <div style="display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:16px;">
-          <div style="font-size:16px; font-weight:700;">{{ selectedMetric.label }}</div>
-          <button onClick="{{ closeMetric }}" style="background:none; border:none; font-size:18px; cursor:pointer; color:#9B9B9B;">✕</button>
-        </div>
-
-        <sc-if value="{{ selectedMetric.hasWarning }}" hint-placeholder-val="{{ false }}">
-          <div style="background:#FBE9E6; border:1px solid #F0C4BC; color:#8C332A; font-size:12px; border-radius:8px; padding:10px 12px; margin-bottom:16px;">⚠ {{ selectedMetric.warningText }}</div>
-        </sc-if>
-
-        <div style="font-size:28px; font-weight:800; letter-spacing:-0.4px; margin-bottom:4px;">{{ selectedMetric.value }}</div>
-        <span style="{{ selectedMetric.deltaStyle }}">{{ selectedMetric.delta }}</span>
-        <svg viewBox="0 0 100 30" style="width:100%; height:60px; margin:14px 0 20px 0; display:block;">
-          <polyline points="{{ selectedMetric.sparkPoints }}" fill="none" stroke="{{ selectedMetric.sparkColor }}" stroke-width="2"></polyline>
-        </svg>
-
-        <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#6B6B6B; margin-bottom:10px;">Definition</div>
-        <div style="font-size:13px; line-height:1.6; color:#0A0A0A; margin-bottom:20px;">{{ selectedMetric.tooltip }}</div>
-
-        <sc-if value="{{ selectedMetric.sourceEventName }}" hint-placeholder-val="{{ false }}">
-          <div style="margin-bottom:20px;">
-            <div style="font-size:11px; color:#9B9B9B; font-weight:600; text-transform:uppercase; margin-bottom:6px;">Source event</div>
-            <div role="button" tabindex="0" onClick="{{ selectedMetric.onViewSourceEvent }}" onKeyDown="{{ selectedMetric.onViewSourceEventKeyDown }}" style="display:inline-flex; align-items:center; gap:6px; background:#F6F6F6; border:1px solid #E5E5E5; border-radius:7px; padding:6px 10px; font-size:12px; cursor:pointer;"><span style="font-family:ui-monospace,monospace;">{{ selectedMetric.sourceEventName }}</span> → open in catalog</div>
-          </div>
-        </sc-if>
-
-        <sc-if value="{{ selectedMetric.freshnessLabel }}" hint-placeholder-val="{{ false }}">
-          <div style="display:flex; align-items:center; gap:5px; font-size:11px; color:#067A3E; margin-bottom:20px;"><span style="width:6px; height:6px; border-radius:50%; background:#06C167; flex-shrink:0;"></span>Live · pipeline data as of {{ selectedMetric.freshnessLabel }}</div>
-        </sc-if>
-
-        <sc-if value="{{ selectedMetric.verticalBreakdown }}" hint-placeholder-val="{{ false }}">
-          <div style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:#6B6B6B; margin-bottom:10px;">Vertical breakdown</div>
-          <div style="display:flex; flex-direction:column; gap:10px;">
-            <sc-for list="{{ selectedMetric.verticalBreakdown }}" as="vb" hint-placeholder-count="3">
-              <div>
-                <div style="display:flex; justify-content:space-between; font-size:12.5px; margin-bottom:4px;"><span>{{ vb.label }}</span><span style="color:#6B6B6B;">{{ vb.value }}M · {{ vb.pct }}%</span></div>
-                <div style="background:#F0F0F0; border-radius:4px; height:6px; overflow:hidden;"><div style="{{ vb.barStyle }}"></div></div>
-              </div>
             </sc-for>
           </div>
         </sc-if>
@@ -1952,7 +1837,7 @@ class Component extends DCLogic {
     appScreen:'home',
     catalogQuery:'', catalogLob:'All', catalogStatus:'All', selectedEntryId:null, catalogTab:'data',
     pipelineQuery:'', pipelineLob:'All', pipelineHealth:'All', selectedPipelineId:null, selectedRoadmapItemId:null, selectedMetricId:null,
-    expandedHistoryKey:null, sheetOrigin:null,
+    expandedHistoryKey:null,
     selectedDetailRef:null, detailReturnScreen:null,
     catalogPage:1, pipelineLogPage:1, selectedDocTopicId:null, docsQuery:'', docsCategory:'All',
     chatSessions: loadChatSessions(),
@@ -2073,37 +1958,21 @@ class Component extends DCLogic {
   onPipelineHealthChange = (e) => this.setState({pipelineHealth:e.target.value, pipelineLogPage:1});
   setCatalogPage = (page) => this.setState({catalogPage:page});
   setPipelineLogPage = (page) => this.setState({pipelineLogPage:page});
-  selectEntry = (id) => this.setState({selectedEntryId:id, sheetOrigin:null});
-  closeEntry = () => this.setState({selectedEntryId:null, sheetOrigin:null});
-  selectPipeline = (id) => this.setState({selectedPipelineId:id, sheetOrigin:null});
-  closePipeline = () => this.setState({selectedPipelineId:null, sheetOrigin:null});
   selectRoadmapItem = (id) => this.setState({selectedRoadmapItemId:id});
   closeRoadmapItem = () => this.setState({selectedRoadmapItemId:null});
-  selectMetric = (id) => this.setState({selectedMetricId:id});
-  closeMetric = () => this.setState({selectedMetricId:null});
   openDetail = (type, id) => this.setState(s => ({
     appScreen:'detail',
     selectedDetailRef:{type, id},
     detailReturnScreen: s.appScreen === 'detail' ? s.detailReturnScreen : s.appScreen,
     selectedEntryId: type === 'event' ? id : null,
     selectedPipelineId: type === 'pipeline' ? id : null,
-    selectedMetricId: type === 'metric' ? id : null,
-    sheetOrigin:null
+    selectedMetricId: type === 'metric' ? id : null
   }));
   closeDetailToOrigin = () => this.setState(s => ({
     appScreen: s.detailReturnScreen || 'home',
     selectedDetailRef:null, detailReturnScreen:null,
     selectedEntryId:null, selectedPipelineId:null, selectedMetricId:null
   }));
-  viewCatalogRef = (id) => this.setState({appScreen:'catalog', catalogQuery:'', catalogLob:'All', catalogStatus:'All', selectedEntryId:id, catalogTab:'data', sheetOrigin:null, selectedMetricId:null});
-  viewCatalogEntryFromPipeline = (id) => this.setState(s => ({appScreen:'catalog', catalogQuery:'', catalogLob:'All', catalogStatus:'All', selectedEntryId:id, catalogTab:'data', selectedPipelineId:null, sheetOrigin:{type:'pipeline', id:s.selectedPipelineId}}));
-  viewPipelineFromCatalog = (id) => this.setState(s => ({selectedEntryId:null, selectedPipelineId:id, sheetOrigin:{type:'catalog', id:s.selectedEntryId}}));
-  backFromEntry = () => this.setState(s => s.sheetOrigin && s.sheetOrigin.type==='pipeline'
-    ? {selectedEntryId:null, selectedPipelineId:s.sheetOrigin.id, sheetOrigin:null}
-    : {selectedEntryId:null, sheetOrigin:null});
-  backFromPipeline = () => this.setState(s => s.sheetOrigin && s.sheetOrigin.type==='catalog'
-    ? {selectedPipelineId:null, selectedEntryId:s.sheetOrigin.id, sheetOrigin:null}
-    : {selectedPipelineId:null, sheetOrigin:null});
   toggleHistoryRow = (key) => this.setState(s => ({expandedHistoryKey: s.expandedHistoryKey === key ? null : key}));
 
   onContextInstructionsChange = (e) => this.setState(s => {
@@ -2358,8 +2227,12 @@ class Component extends DCLogic {
       sparkPoints: sparkPoints(rawSelectedMetric.points),
       sparkColor: rawSelectedMetric.positive ? '#06C167' : '#A93327',
       sourceEventName: metricSourceEvent ? metricSourceEvent.name : null,
-      onViewSourceEvent: metricSourceEvent ? (() => this.viewCatalogRef(metricSourceEvent.id)) : null,
-      onViewSourceEventKeyDown: metricSourceEvent ? this.onRowKeyDown(() => this.viewCatalogRef(metricSourceEvent.id)) : null,
+      onViewSourceEvent: metricSourceEvent ? (() => this.openDetail('event', metricSourceEvent.id)) : null,
+      onViewSourceEventKeyDown: metricSourceEvent ? this.onRowKeyDown(() => this.openDetail('event', metricSourceEvent.id)) : null,
+      sourcePipelineName: metricSourcePipeline ? metricSourcePipeline.name : null,
+      onViewSourcePipeline: metricSourcePipeline ? (() => this.openDetail('pipeline', metricSourcePipeline.id)) : null,
+      onViewSourcePipelineKeyDown: metricSourcePipeline ? this.onRowKeyDown(() => this.openDetail('pipeline', metricSourcePipeline.id)) : null,
+      hasRelationships: !!(metricSourceEvent || metricSourcePipeline),
       freshnessLabel: metricSourcePipeline ? metricSourcePipeline.freshness : null,
       hasWarning: !!(metricSourceEvent && metricSourceEvent.warning),
       warningText: metricSourceEvent ? metricSourceEvent.warningText : null,
@@ -2380,7 +2253,7 @@ class Component extends DCLogic {
     return {
       isHome: s.appScreen === 'home',
       criticalPipeline, metrics, homePipelines,
-      selectedMetric, showMetricSheet: s.appScreen === 'home' && !!selectedMetric, closeMetric: this.closeMetric
+      selectedMetric
     };
   }
 
@@ -2445,17 +2318,22 @@ class Component extends DCLogic {
       lobChipStyle: lobChipStyle(rawSelected.lob),
       onDownload: () => this.downloadSample(rawSelected),
       pipelineName: entryPipeline ? entryPipeline.name : null,
-      onViewPipeline: entryPipeline ? (() => this.viewPipelineFromCatalog(entryPipeline.id)) : null,
-      onViewPipelineKeyDown: entryPipeline ? this.onRowKeyDown(() => this.viewPipelineFromCatalog(entryPipeline.id)) : null,
+      onViewPipeline: entryPipeline ? (() => this.openDetail('pipeline', entryPipeline.id)) : null,
+      onViewPipelineKeyDown: entryPipeline ? this.onRowKeyDown(() => this.openDetail('pipeline', entryPipeline.id)) : null,
       pipelineHistory: entryPipeline ? entryPipeline.history.map((h,i,arr) => {
         const key = entryPipeline.id+'|'+h.date;
         const toggle = () => this.toggleHistoryRow(key);
         return { ...h, dotColor: healthDotColor(h.health), note: historyNote(arr,i), expanded: s.expandedHistoryKey===key, onToggle: toggle, onToggleKeyDown: this.onRowKeyDown(toggle) };
-      }) : null
+      }) : null,
+      relatedMetrics: METRICS_BASE.filter(m => m.sourceEventId === rawSelected.id).map(m => ({
+        label: m.label,
+        onSelect: () => this.openDetail('metric', m.id),
+        onKeyDown: this.onRowKeyDown(() => this.openDetail('metric', m.id))
+      })),
+      hasRelationships: !!entryPipeline || METRICS_BASE.some(m => m.sourceEventId === rawSelected.id)
     } : null;
 
     return {
-      showEntrySheet: !!selectedEntry && s.appScreen !== 'detail',
       isCatalog: s.appScreen === 'catalog',
       pipelineQuery: s.pipelineQuery, pipelineLob: s.pipelineLob, pipelineHealth: s.pipelineHealth,
       onPipelineQueryChange: this.onPipelineQueryChange, onPipelineLobChange: this.onPipelineLobChange, onPipelineHealthChange: this.onPipelineHealthChange,
@@ -2467,7 +2345,7 @@ class Component extends DCLogic {
       onCatalogTabData, onCatalogTabPipeline,
       onCatalogQueryChange: this.onCatalogQueryChange, onCatalogLobChange: this.onCatalogLobChange, onCatalogStatusChange: this.onCatalogStatusChange,
       catalogCountLabel: filteredCatalog.length + (filteredCatalog.length===1 ? ' result' : ' results'),
-      filteredCatalog, selectedEntry, closeEntry: this.closeEntry
+      filteredCatalog, selectedEntry
     };
   }
 
@@ -2482,7 +2360,7 @@ class Component extends DCLogic {
         rowStyle: 'display:flex;'+(m.role==='user' ? 'justify-content:flex-end;' : 'justify-content:flex-start;'),
         bubbleStyle: 'max-width:78%;padding:12px 14px;border-radius:12px;font-size:13px;line-height:1.55;'+(m.role==='user' ? 'background:#0A0A0A;color:#FFFFFF;' : 'background:#F6F6F6;color:#0A0A0A;'),
         catalogRefLabel: m.catalogRefLabel || null,
-        onViewCatalog: m.catalogRefId ? (() => this.viewCatalogRef(m.catalogRefId)) : null,
+        onViewCatalog: m.catalogRefId ? (() => this.openDetail('event', m.catalogRefId)) : null,
         onDownloadCsv: m.csv ? (() => this.downloadChatCsv(m.csvData)) : null,
         plan: m.plan || null,
         onSubmitPlan: m.plan ? (() => this.submitPlanForReview(m.plan)) : null,
@@ -2698,7 +2576,7 @@ class Component extends DCLogic {
   renderDeveloperVals(s) {
     return {
       isDeveloper: s.appScreen === 'developer', goDeveloper: this.goDeveloper,
-      sampleEndpoints: CATALOG.slice(0,3).map(e => ({ name:e.name, onSelect: () => this.viewCatalogRef(e.id) })),
+      sampleEndpoints: CATALOG.slice(0,3).map(e => ({ name:e.name, onSelect: () => this.openDetail('event', e.id) })),
       showCreateKeyForm: s.showCreateKeyForm, newKeyName: s.newKeyName,
       openCreateKeyForm: this.openCreateKeyForm, closeCreateKeyForm: this.closeCreateKeyForm,
       onNewKeyNameChange: this.onNewKeyNameChange, createApiKey: this.createApiKey,
@@ -2795,8 +2673,8 @@ class Component extends DCLogic {
         weeklyVolumeLabel: e.weeklyVolume.toFixed(1)+'M',
         statusChipStyle: statusChipStyle(e.status),
         statusLabel: e.status.charAt(0).toUpperCase()+e.status.slice(1),
-        onSelect: () => this.viewCatalogEntryFromPipeline(e.id),
-        onKeyDown: this.onRowKeyDown(() => this.viewCatalogEntryFromPipeline(e.id))
+        onSelect: () => this.openDetail('event', e.id),
+        onKeyDown: this.onRowKeyDown(() => this.openDetail('event', e.id))
       })),
       checks: pipelineChecks(rawSelectedPipeline.health).map(c => ({ ...c, chipStyle: checkStyle(c.status) })),
       composition: (() => {
@@ -2834,10 +2712,7 @@ class Component extends DCLogic {
       ...this.renderReportVals(s),
       ...this.renderDeveloperVals(s),
       ...this.renderDocsVals(s),
-      pipelines, selectedPipeline, closePipeline: this.closePipeline,
-      showPipelineSheet: !!selectedPipeline && s.appScreen !== 'detail',
-      showEntryBack: !!(s.selectedEntryId && s.sheetOrigin && s.sheetOrigin.type==='pipeline'), backFromEntry: this.backFromEntry,
-      showPipelineBack: !!(s.selectedPipelineId && s.sheetOrigin && s.sheetOrigin.type==='catalog'), backFromPipeline: this.backFromPipeline,
+      pipelines, selectedPipeline,
       isDetail: s.appScreen === 'detail',
       isDetailEvent: s.appScreen === 'detail' && !!s.selectedDetailRef && s.selectedDetailRef.type === 'event',
       isDetailPipeline: s.appScreen === 'detail' && !!s.selectedDetailRef && s.selectedDetailRef.type === 'pipeline',

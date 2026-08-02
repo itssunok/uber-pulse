@@ -7,10 +7,9 @@ Prioritized MoSCoW-style following the full UX/UI/Brand design audit (Aug 2026),
 
 ---
 
-## In Progress — Data Detail Page
+## Recently Shipped — Data Detail Page
 
-- `[done]` Detail page — Health/History, Owned by, and Downstream consumers sections — ported the pipeline/catalog quality-history block onto the new detail page (event/pipeline/metric, with metrics resolving through their source pipeline where one exists), and rendered `implementingTeam`, `definitionOwner`, and `downstreamConsumers` as dedicated sections.
-- `[open]` Detail page — Relationships section, then cleanup — add event ↔ pipeline ↔ metric cross-links on the detail page using the existing chip pattern, navigating to the new page instead of the old sidesheets; once those cross-links are migrated, remove the now-unused sidesheet markup/state for catalog entries, metrics, and pipelines (currently gated off but still present), and retune any layout offsets affected by the removal. Medium effort.
+- `[done]` Full-page data detail screen (event/pipeline/metric), reached from catalog rows, Home KPI tiles, and pipeline rows: header/summary, owned-by facts, downstream consumers, health/version history, 4-week trend chart or event-composition breakdown with CSV export, and event ↔ pipeline ↔ metric relationship cross-links. All cross-link entry points (Assistant chat catalog references, Dev Tools sample endpoints) now route through the same page. The old catalog/pipeline/metric sidesheets and their dead navigation state (`sheetOrigin`, `viewCatalogRef`, etc.) have been removed.
 
 ---
 
