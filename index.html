@@ -9,6 +9,12 @@
 <script src="./data/catalog.js"></script>
 <script src="./data/roadmap.js"></script>
 <script src="./data/metrics.js"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  gtag('consent', 'default', { analytics_storage: 'denied' });
+  gtag('js', new Date());
+</script>
 <script src="./scripts/support.js"></script>
 </head>
 <body>
@@ -212,6 +218,9 @@
               <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="flex-shrink-0"><path d="M6.5 4h9.5a1 1 0 0 1 1 1v15l-5.5-3-5.5 3V5a1 1 0 0 1 1-1z"/></svg>
               <span>Documentation</span>
             </button>
+          </div>
+          <div style="margin-top:auto; padding:14px 12px 4px 12px;">
+            <span onClick="{{ openPrivacyNotice }}" style="font-size:var(--font-size-xs); color:var(--color-gray-600); cursor:pointer;">Privacy Notice</span>
           </div>
         </div>
 
@@ -1979,6 +1988,7 @@
           <button onClick="{{ goReport }}" class="flex-row gap-12" style="width:100%; box-sizing:border-box; text-align:left; background:none; border:none; padding:12px 8px; font-size:var(--font-size-base); font-weight:var(--font-weight-semibold); color:var(--color-black); cursor:pointer;">Report Issue</button>
           <button onClick="{{ goContribute }}" class="flex-row gap-12" style="width:100%; box-sizing:border-box; text-align:left; background:none; border:none; padding:12px 8px; font-size:var(--font-size-base); font-weight:var(--font-weight-semibold); color:var(--color-black); cursor:pointer;">Contribute</button>
           <div style="height:1px; background:#EFEFEF; margin:8px 0;"></div>
+          <button onClick="{{ openPrivacyNotice }}" class="flex-row gap-12" style="width:100%; box-sizing:border-box; text-align:left; background:none; border:none; padding:12px 8px; font-size:var(--font-size-sm); font-weight:var(--font-weight-medium); color:var(--color-gray-600); cursor:pointer;">Privacy Notice</button>
           <button onClick="{{ logout }}" class="flex-row gap-12" style="width:100%; box-sizing:border-box; text-align:left; background:none; border:none; padding:12px 8px; font-size:var(--font-size-base); font-weight:var(--font-weight-semibold); color:var(--color-status-red-fg); cursor:pointer;">Log out</button>
         </div>
       </div>
@@ -2018,6 +2028,53 @@
         </div>
       </div>
     </sc-if>
+  </sc-if>
+
+  <sc-if value="{{ showPrivacyNotice }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed; inset:0; background:rgba(10,10,10,0.45); z-index:80; display:flex; align-items:center; justify-content:center; padding:20px; box-sizing:border-box;" onClick="{{ closePrivacyNotice }}">
+      <div onClick="{{ stopClick }}" style="position:relative; width:100%; max-width:560px; max-height:80vh; overflow-y:auto; background:#FFFFFF; border:1px solid #E5E5E5; border-radius:16px; padding:28px; box-sizing:border-box; box-shadow:0 20px 48px rgba(0,0,0,0.18);">
+        <button onClick="{{ closePrivacyNotice }}" aria-label="Close" style="position:absolute; top:16px; right:16px; background:none; border:none; cursor:pointer; color:var(--color-gray-600); padding:4px; line-height:0;">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+        <h2 class="title-h2" style="margin:0 0 14px 0;">Privacy Notice</h2>
+        <div style="font-size:var(--font-size-sm); color:var(--color-gray-700); line-height:1.7;">
+          <p><strong>What this is.</strong> Pulse for Uber is a frontend product prototype built as a portfolio piece. There's no real backend, account system, or data pipeline behind it — nothing you type into a form (chat questions, contribution details, issue reports) is stored on a server or sent anywhere. It stays in your browser only, via <code>localStorage</code>.</p>
+
+          <p><strong>Necessary cookies/storage (always on).</strong> Used only to keep the app itself working: remembering that you've seen the welcome message, your cookie choice, your local chat history, and mocked in-app data (API keys, submissions) you create during your session. Nothing here leaves your browser.</p>
+
+          <p><strong>Analytics — only if you choose "Accept all."</strong> We use Google Analytics (Google Ireland Ltd., an EU-based processor) to understand how this prototype is used. Analytics cookies are not set until you actively consent, and no analytics cookie or request fires if you choose "Necessary only." <strong>Legal basis: your explicit, opt-in consent</strong> (Art. 6(1)(a) GDPR) — not legitimate interest, since this isn't essential to the site functioning.</p>
+
+          <p><strong>What analytics tracks — and what it never does.</strong> A fixed list of interaction events, always describing the <em>type</em> of action, never its content:</p>
+          <ul style="margin:6px 0 12px 0; padding-left:20px;">
+            <li>Screen views and navigation clicks (which section — Home, Catalog, Assistant, etc.)</li>
+            <li>Demo login success</li>
+            <li>Catalog entry, roadmap item, and documentation topic views (which one, not what you typed to find it)</li>
+            <li>Catalog/documentation search and filter usage — that a search or filter was used, and how many results it returned, never the search text itself</li>
+            <li>Ask Pulse usage — categorized by question type ("definition lookup," "measurement plan," etc.), never the question text</li>
+            <li>Measurement plan drafted, schema/issue submitted, API key created, quality-alert toggled — that the action happened, with non-identifying metadata (e.g. issue category, submission type)</li>
+          </ul>
+          <p>We never send the text of anything you type, your name, or your email to Google Analytics. Analytics data is pseudonymous (an anonymous browser identifier), not tied to your Pulse login.</p>
+
+          <p><strong>Retention.</strong> Analytics events are retained in Google Analytics for 14 months, then automatically deleted. Necessary <code>localStorage</code> data persists only in your own browser until you clear it.</p>
+
+          <p><strong>Your rights.</strong> You can withdraw consent at any time — clear this site's data in your browser, or revisit this notice, and analytics stops. Since no server-side account or profile exists, there's no separate erasure request needed: clearing local storage and analytics cookies removes everything tied to you.</p>
+
+          <p><strong>Contact.</strong> This is a personal portfolio project, not an official Uber product — reach out to the author directly with any questions.</p>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ showCookieBanner }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed; left:0; right:0; bottom:0; z-index:70; background:#0A0A0A; padding:16px 24px; box-sizing:border-box; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;">
+      <div style="font-size:var(--font-size-sm); line-height:1.5; max-width:640px; color:#E5E5E5;">
+        Pulse uses cookies to understand how the platform is used. Choose what you're comfortable with — see the <span onClick="{{ openPrivacyNotice }}" style="color:#FFFFFF; text-decoration:underline; cursor:pointer;">Privacy Notice</span> for details.
+      </div>
+      <div class="flex-row gap-10" style="flex-shrink:0;">
+        <button onClick="{{ acceptNecessaryCookies }}" style="background:none; border:1px solid #4A4A4A; color:#FFFFFF; border-radius:999px; padding:9px 18px; font-size:var(--font-size-sm); font-weight:var(--font-weight-semibold); cursor:pointer;">Necessary only</button>
+        <button onClick="{{ acceptAllCookies }}" style="background:#06C167; border:none; color:#0A0A0A; border-radius:999px; padding:9px 18px; font-size:var(--font-size-sm); font-weight:var(--font-weight-bold); cursor:pointer;">Accept all</button>
+      </div>
+    </div>
   </sc-if>
 </div>
 
@@ -2066,6 +2123,46 @@ function hasSeenWelcome() {
 
 function markWelcomeSeen() {
   try { localStorage.setItem(WELCOME_SEEN_STORAGE_KEY, '1'); } catch (err) {}
+}
+
+const COOKIE_CONSENT_STORAGE_KEY = 'pulse.cookieConsent';
+const GA_MEASUREMENT_ID = 'G-QFVBJFVJNP';
+
+function loadCookieConsent() {
+  try { return localStorage.getItem(COOKIE_CONSENT_STORAGE_KEY); } catch (err) { return null; }
+}
+
+function saveCookieConsent(value) {
+  try { localStorage.setItem(COOKIE_CONSENT_STORAGE_KEY, value); } catch (err) {}
+}
+
+function loadGoogleAnalytics() {
+  if (window.__pulseGaLoaded) return;
+  window.__pulseGaLoaded = true;
+  gtag('consent', 'update', { analytics_storage: 'granted' });
+  const script = document.createElement('script');
+  script.async = true;
+  script.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_MEASUREMENT_ID;
+  document.head.appendChild(script);
+  gtag('config', GA_MEASUREMENT_ID);
+}
+
+if (loadCookieConsent() === 'all') loadGoogleAnalytics();
+
+function trackEvent(name, params) {
+  if (!window.__pulseGaLoaded) return;
+  gtag('event', name, params || {});
+}
+
+const APP_SCREEN_TITLES = {
+  home:'Home', catalog:'Data & Pipeline Catalog', assistant:'AI Assistant', roadmap:'Roadmap',
+  developer:'Developer Tools', report:'Report Issue', contribute:'Contribute', docs:'Documentation', detail:'Detail'
+};
+
+function trackScreenView(screen) {
+  const title = APP_SCREEN_TITLES[screen] || screen;
+  trackEvent('page_view', { page_title:title, page_location: location.href + '#' + screen });
+  trackEvent('nav_click', { destination:screen });
 }
 
 const CHAT_SESSIONS_STORAGE_KEY = 'pulse.chatSessions';
@@ -2354,7 +2451,9 @@ class Component extends DCLogic {
     showCreateKeyForm:false, newKeyName:'', justCreatedKey:null, confirmDeleteKeyId:null,
     toast:null,
     showWelcome:false,
-    alertPrefs:{}
+    alertPrefs:{},
+    cookieConsent: loadCookieConsent(),
+    showPrivacyNotice:false
   };
 
   onLoginEmailChange = (e) => this.setState({loginEmail:e.target.value});
@@ -2363,6 +2462,8 @@ class Component extends DCLogic {
   handleLogin = (e) => {
     e.preventDefault();
     if(this.state.loginEmail === 'pulse-demo@uber.com' && this.state.loginPassword === 'Pulse2026'){
+      trackEvent('login_success', {});
+      trackScreenView('home');
       this.setState({screen:'app', appScreen:'home', loginError:'', showWelcome:!hasSeenWelcome()});
     } else {
       this.setState({loginError:'Invalid email or password. Use the demo credentials below.'});
@@ -2371,15 +2472,20 @@ class Component extends DCLogic {
   logout = () => this.setState({screen:'login', loginEmail:'', loginPassword:'', loginError:''});
   closeWelcome = () => { markWelcomeSeen(); this.setState({showWelcome:false}); };
 
-  goHome = () => this.setState({appScreen:'home', selectedEntryId:null, selectedPipelineId:null, selectedMetricId:null, selectedDetailRef:null, detailReturnScreen:null, mobileMoreOpen:false});
-  goCatalog = () => this.setState({appScreen:'catalog', selectedEntryId:null, selectedPipelineId:null, selectedDetailRef:null, detailReturnScreen:null, catalogTab:'data', catalogPage:1, pipelineLogPage:1, mobileMoreOpen:false});
-  goAssistant = () => this.setState({appScreen:'assistant', selectedEntryId:null, selectedPipelineId:null, selectedDetailRef:null, detailReturnScreen:null, attachMenuOpen:false, chatSearchQuery:'', askPulseSheetOpen:false, mobileMoreOpen:false});
+  acceptAllCookies = () => { saveCookieConsent('all'); loadGoogleAnalytics(); this.setState({cookieConsent:'all'}); };
+  acceptNecessaryCookies = () => { saveCookieConsent('necessary'); this.setState({cookieConsent:'necessary'}); };
+  openPrivacyNotice = () => this.setState({showPrivacyNotice:true, mobileMoreOpen:false});
+  closePrivacyNotice = () => this.setState({showPrivacyNotice:false});
+
+  goHome = () => { trackScreenView('home'); this.setState({appScreen:'home', selectedEntryId:null, selectedPipelineId:null, selectedMetricId:null, selectedDetailRef:null, detailReturnScreen:null, mobileMoreOpen:false}); };
+  goCatalog = () => { trackScreenView('catalog'); this.setState({appScreen:'catalog', selectedEntryId:null, selectedPipelineId:null, selectedDetailRef:null, detailReturnScreen:null, catalogTab:'data', catalogPage:1, pipelineLogPage:1, mobileMoreOpen:false}); };
+  goAssistant = () => { trackScreenView('assistant'); this.setState({appScreen:'assistant', selectedEntryId:null, selectedPipelineId:null, selectedDetailRef:null, detailReturnScreen:null, attachMenuOpen:false, chatSearchQuery:'', askPulseSheetOpen:false, mobileMoreOpen:false}); };
   openAskPulseSheet = () => this.setState({askPulseSheetOpen:true, attachMenuOpen:false, mobileMoreOpen:false});
   closeAskPulseSheet = () => this.setState({askPulseSheetOpen:false, attachMenuOpen:false});
   expandAskPulseSheet = () => this.setState({appScreen:'assistant', selectedEntryId:null, selectedPipelineId:null, selectedDetailRef:null, detailReturnScreen:null, askPulseSheetOpen:false, attachMenuOpen:false});
   openMobileMore = () => this.setState({mobileMoreOpen:true});
   closeMobileMore = () => this.setState({mobileMoreOpen:false});
-  goRoadmap = () => this.setState({appScreen:'roadmap', selectedEntryId:null, selectedPipelineId:null, selectedDetailRef:null, detailReturnScreen:null, selectedRoadmapItemId:null, mobileMoreOpen:false, roadmapActiveCol:0});
+  goRoadmap = () => { trackScreenView('roadmap'); this.setState({appScreen:'roadmap', selectedEntryId:null, selectedPipelineId:null, selectedDetailRef:null, detailReturnScreen:null, selectedRoadmapItemId:null, mobileMoreOpen:false, roadmapActiveCol:0}); };
   onRoadmapScroll = (e) => {
     const w = e.target.clientWidth || 1;
     const idx = Math.round(e.target.scrollLeft / w);
@@ -2390,26 +2496,30 @@ class Component extends DCLogic {
     if (el) el.scrollTo({ left: i * el.clientWidth, behavior: 'smooth' });
     this.setState({roadmapActiveCol: i});
   };
-  goReport = () => this.setState({
+  goReport = () => { trackScreenView('report'); this.setState({
     appScreen:'report', selectedEntryId:null, selectedPipelineId:null, selectedDetailRef:null, detailReturnScreen:null, reportStep:1, reportDataPointQuery:'', reportAttachMenuOpen:false, reportErrors:{},
     reportForm:{title:'',description:'',severity:'Medium',category:'Data Quality',generalIssue:false,linkedDataPointId:null,linkedDataPointType:null,jiraLink:'',prLink:'',attachedFileName:null},
     mobileMoreOpen:false
-  });
-  goContribute = () => this.setState({
+  }); };
+  goContribute = () => { trackScreenView('contribute'); this.setState({
     appScreen:'contribute', selectedEntryId:null, selectedPipelineId:null, selectedDetailRef:null, detailReturnScreen:null, contributeStep:1, contributeErrors:{},
     contributeForm:{name:'',lob:'Ridesharing',owningTeam:OWNING_TEAMS[0],description:'',repoLink:'',jiraLink:'',expectedVolume:'',payloadRows:[{field:'',value:''}]},
     mobileMoreOpen:false
-  });
-  goDeveloper = () => this.setState({
+  }); };
+  goDeveloper = () => { trackScreenView('developer'); this.setState({
     appScreen:'developer', selectedEntryId:null, selectedPipelineId:null, selectedDetailRef:null, detailReturnScreen:null,
     showCreateKeyForm:false, newKeyName:'', justCreatedKey:null, confirmDeleteKeyId:null,
     mobileMoreOpen:false
-  });
-  goDocs = () => this.setState({appScreen:'docs', selectedEntryId:null, selectedPipelineId:null, selectedDetailRef:null, detailReturnScreen:null, selectedDocTopicId:null, docsQuery:'', docsCategory:'All', mobileMoreOpen:false});
+  }); };
+  goDocs = () => { trackScreenView('docs'); this.setState({appScreen:'docs', selectedEntryId:null, selectedPipelineId:null, selectedDetailRef:null, detailReturnScreen:null, selectedDocTopicId:null, docsQuery:'', docsCategory:'All', mobileMoreOpen:false}); };
   openApiReferenceDoc = () => this.setState({appScreen:'docs', selectedEntryId:null, selectedPipelineId:null, selectedDetailRef:null, detailReturnScreen:null, docsQuery:'', docsCategory:'All', selectedDocTopicId:'api-reference'});
-  selectDocTopic = (id) => this.setState({selectedDocTopicId:id});
+  selectDocTopic = (id) => { trackEvent('docs_topic_viewed', { topic_id:id }); this.setState({selectedDocTopicId:id}); };
   closeDocTopic = () => this.setState({selectedDocTopicId:null});
-  onDocsQueryChange = (e) => this.setState({docsQuery:e.target.value});
+  onDocsQueryChange = (e) => {
+    const v = e.target.value;
+    if (v.trim() && !this.state.docsQuery.trim()) trackEvent('docs_search_used', {});
+    this.setState({docsQuery:v});
+  };
   onDocsCategoryChange = (e) => this.setState({docsCategory:e.target.value});
 
   openCreateKeyForm = () => this.setState({showCreateKeyForm:true, newKeyName:''});
@@ -2419,6 +2529,7 @@ class Component extends DCLogic {
     const name = this.state.newKeyName.trim() || 'Untitled key';
     const key = generateApiKey();
     const newKey = { id:'key-'+Date.now(), name, key, createdLabel:'Just now', lastUsedLabel:'Never' };
+    trackEvent('api_key_created', {});
     this.setState(s => ({ apiKeys:[newKey, ...s.apiKeys], showCreateKeyForm:false, newKeyName:'', justCreatedKey:newKey }));
   };
   dismissJustCreatedKey = () => this.setState({justCreatedKey:null});
@@ -2451,25 +2562,29 @@ class Component extends DCLogic {
   };
 
   setCatalogTab = (tab) => this.setState({catalogTab:tab, catalogPage:1, pipelineLogPage:1});
-  onCatalogSearchQueryChange = (e) => this.setState({catalogSearchQuery:e.target.value, catalogPage:1, pipelineLogPage:1});
-  onCatalogLobChange = (e) => this.setState({catalogLob:e.target.value, catalogPage:1});
-  onCatalogStatusChange = (e) => this.setState({catalogStatus:e.target.value, catalogPage:1});
-  onPipelineLobChange = (e) => this.setState({pipelineLob:e.target.value, pipelineLogPage:1});
-  onPipelineHealthChange = (e) => this.setState({pipelineHealth:e.target.value, pipelineLogPage:1});
+  onCatalogSearchQueryChange = (e) => {
+    const v = e.target.value;
+    if (v.trim() && !this.state.catalogSearchQuery.trim()) trackEvent('catalog_search_used', {});
+    this.setState({catalogSearchQuery:v, catalogPage:1, pipelineLogPage:1});
+  };
+  onCatalogLobChange = (e) => { trackEvent('catalog_filter_used', { filter_type:'lob' }); this.setState({catalogLob:e.target.value, catalogPage:1}); };
+  onCatalogStatusChange = (e) => { trackEvent('catalog_filter_used', { filter_type:'status' }); this.setState({catalogStatus:e.target.value, catalogPage:1}); };
+  onPipelineLobChange = (e) => { trackEvent('catalog_filter_used', { filter_type:'pipeline_lob' }); this.setState({pipelineLob:e.target.value, pipelineLogPage:1}); };
+  onPipelineHealthChange = (e) => { trackEvent('catalog_filter_used', { filter_type:'pipeline_health' }); this.setState({pipelineHealth:e.target.value, pipelineLogPage:1}); };
   setCatalogPage = (page) => this.setState({catalogPage:page});
   setPipelineLogPage = (page) => this.setState({pipelineLogPage:page});
   selectRoadmapItem = (id) => this.setState({selectedRoadmapItemId:id});
-  openRoadmapItem = (id) => this.setState({appScreen:'roadmap', selectedRoadmapItemId:id, selectedEntryId:null, selectedPipelineId:null, selectedMetricId:null, selectedDetailRef:null, detailReturnScreen:null, mobileMoreOpen:false, roadmapActiveCol:0});
+  openRoadmapItem = (id) => { trackEvent('roadmap_item_viewed', {}); this.setState({appScreen:'roadmap', selectedRoadmapItemId:id, selectedEntryId:null, selectedPipelineId:null, selectedMetricId:null, selectedDetailRef:null, detailReturnScreen:null, mobileMoreOpen:false, roadmapActiveCol:0}); };
   closeRoadmapItem = () => this.setState({selectedRoadmapItemId:null});
   openRoadmapLinkedDetail = (type, id) => { this.setState({selectedRoadmapItemId:null}); this.openDetail(type, id); };
-  openDetail = (type, id) => this.setState(s => ({
+  openDetail = (type, id) => { trackEvent('catalog_entry_viewed', { entry_type:type }); this.setState(s => ({
     appScreen:'detail',
     selectedDetailRef:{type, id},
     detailReturnScreen: s.appScreen === 'detail' ? s.detailReturnScreen : s.appScreen,
     selectedEntryId: type === 'event' ? id : null,
     selectedPipelineId: type === 'pipeline' ? id : null,
     selectedMetricId: type === 'metric' ? id : null
-  }));
+  })); };
   closeDetailToOrigin = () => this.setState(s => ({
     appScreen: s.detailReturnScreen || 'home',
     selectedDetailRef:null, detailReturnScreen:null,
@@ -2520,6 +2635,7 @@ class Component extends DCLogic {
   toggleQualityAlert = (id) => {
     const prev = this.state.alertPrefs[id] || { enabled:false, channel:'slack' };
     const enabled = !prev.enabled;
+    trackEvent('quality_alert_toggled', { enabled });
     this.setState({ alertPrefs: { ...this.state.alertPrefs, [id]: { ...prev, enabled } } });
     this.showToast(enabled ? 'Alerts on — you\'ll be notified via '+(prev.channel==='email'?'email':'Slack')+' if quality drops below threshold.' : 'Alerts turned off.');
   };
@@ -2550,29 +2666,31 @@ class Component extends DCLogic {
   getAssistantResponse = (text) => {
     const lower = text.toLowerCase();
     if(lower.includes('completed_trip') || (lower.includes('completed') && lower.includes('trip'))){
-      return { text:'A completed_trip fires when the rider is dropped off at the confirmed destination and payment is captured successfully. Owned by Maya Chen (Data Science); currently v3.2.', catalogRefLabel:'completed_trip', catalogRefId:'completed_trip', dataWarning:'Active data quality flag: duplicate completion events observed in the EU region.' };
+      return { text:'A completed_trip fires when the rider is dropped off at the confirmed destination and payment is captured successfully. Owned by Maya Chen (Data Science); currently v3.2.', catalogRefLabel:'completed_trip', catalogRefId:'completed_trip', dataWarning:'Active data quality flag: duplicate completion events observed in the EU region.', queryType:'definition_lookup' };
     }
     if((lower.includes('netherlands') || lower.includes('amsterdam')) && (lower.includes('rid') || lower.includes('trip'))){
-      return { text:'Completed rides in the Netherlands, last 7 days: 1,284,930 rides — up 3.1% week-over-week. Sourced from completed_trip, filtered to country=NL.', csv:true, csvData:{ header:['date','city','completed_rides'], rows:[['2026-07-23','Amsterdam',201422],['2026-07-24','Amsterdam',198310],['2026-07-25','Rotterdam',94211],['2026-07-26','Amsterdam',205993],['2026-07-27','The Hague',61204],['2026-07-28','Amsterdam',210881],['2026-07-29','Amsterdam',312899]] }, catalogRefLabel:'completed_trip', catalogRefId:'completed_trip' };
+      return { text:'Completed rides in the Netherlands, last 7 days: 1,284,930 rides — up 3.1% week-over-week. Sourced from completed_trip, filtered to country=NL.', csv:true, csvData:{ header:['date','city','completed_rides'], rows:[['2026-07-23','Amsterdam',201422],['2026-07-24','Amsterdam',198310],['2026-07-25','Rotterdam',94211],['2026-07-26','Amsterdam',205993],['2026-07-27','The Hague',61204],['2026-07-28','Amsterdam',210881],['2026-07-29','Amsterdam',312899]] }, catalogRefLabel:'completed_trip', catalogRefId:'completed_trip', queryType:'ad_hoc_query' };
     }
     if(lower.includes('surge')){
-      return { text:'Surge pricing is tracked via surge_multiplier_applied, implemented by Pricing Engineering. Table location: web_data.pricing.surge_multiplier_applied.', catalogRefLabel:'surge_multiplier_applied', catalogRefId:'surge_multiplier_applied' };
+      return { text:'Surge pricing is tracked via surge_multiplier_applied, implemented by Pricing Engineering. Table location: web_data.pricing.surge_multiplier_applied.', catalogRefLabel:'surge_multiplier_applied', catalogRefId:'surge_multiplier_applied', queryType:'definition_lookup' };
     }
     if(lower.includes('scheduled') || lower.includes('30 days') || lower.includes('advance') || lower.includes('book a ride')){
       return { text:"Here's a draft measurement plan for scheduled rides, aligned to existing naming conventions:",
-        plan:{ featureName:'Scheduled Rides', events:['scheduled_ride_booked','scheduled_ride_confirmed','scheduled_ride_cancelled'], metrics:['Scheduled Ride Booking Rate','GTV from Scheduled Rides','Pre-pickup Cancellation Rate'], similarNote:'scheduled_ride_booked is already in review (v0.1, submitted 07/27) — new events built as its lifecycle companions rather than a duplicate definition.' } };
+        plan:{ featureName:'Scheduled Rides', events:['scheduled_ride_booked','scheduled_ride_confirmed','scheduled_ride_cancelled'], metrics:['Scheduled Ride Booking Rate','GTV from Scheduled Rides','Pre-pickup Cancellation Rate'], similarNote:'scheduled_ride_booked is already in review (v0.1, submitted 07/27) — new events built as its lifecycle companions rather than a duplicate definition.' }, queryType:'measurement_plan' };
     }
     if(lower.includes('check my implementation') || lower.includes('check implementation')){
-      return { text:'Checked scheduled_ride_booked (v0.1, in review) against its approved measurement plan. 2 of 3 events are implemented and match spec — scheduled_ride_booked and scheduled_ride_confirmed. scheduled_ride_cancelled hasn\'t shipped yet. Payload fields on the implemented events align with the plan.', catalogRefLabel:'scheduled_ride_booked', catalogRefId:'scheduled_ride_booked', implementationCheck:{ matched:['scheduled_ride_booked','scheduled_ride_confirmed'], missing:['scheduled_ride_cancelled'] } };
+      return { text:'Checked scheduled_ride_booked (v0.1, in review) against its approved measurement plan. 2 of 3 events are implemented and match spec — scheduled_ride_booked and scheduled_ride_confirmed. scheduled_ride_cancelled hasn\'t shipped yet. Payload fields on the implemented events align with the plan.', catalogRefLabel:'scheduled_ride_booked', catalogRefId:'scheduled_ride_booked', implementationCheck:{ matched:['scheduled_ride_booked','scheduled_ride_confirmed'], missing:['scheduled_ride_cancelled'] }, queryType:'implementation_check' };
     }
     if(lower.includes('teach me')){
-      return { text:"Start with the Data & Pipeline Catalog to see what's already tracked — search before proposing anything new. The Home page tells you if today's numbers are trustworthy (pipeline health, freshness, quality score). I can answer plain-English questions about any event, pull a quick metric as CSV, or draft a measurement plan for something you're building — just ask.", catalogRefLabel:null };
+      return { text:"Start with the Data & Pipeline Catalog to see what's already tracked — search before proposing anything new. The Home page tells you if today's numbers are trustworthy (pipeline health, freshness, quality score). I can answer plain-English questions about any event, pull a quick metric as CSV, or draft a measurement plan for something you're building — just ask.", catalogRefLabel:null, queryType:'guidance' };
     }
-    return { text:"I can help with data definitions, quick metric pulls, measurement plans, or checking an implementation against its plan. Try asking about a specific event, or describe what you're building." };
+    return { text:"I can help with data definitions, quick metric pulls, measurement plans, or checking an implementation against its plan. Try asking about a specific event, or describe what you're building.", queryType:'unmatched' };
   };
 
   pushChatExchange = (text) => {
     const response = this.getAssistantResponse(text);
+    trackEvent('assistant_message_sent', { query_type:response.queryType || 'unmatched' });
+    if (response.plan) trackEvent('measurement_plan_drafted', {});
     this.setState(s => {
       let sessions = s.chatSessions;
       let activeId = s.activeChatId;
@@ -2657,6 +2775,7 @@ class Component extends DCLogic {
       description:f.description, repoLink:f.repoLink, jiraLink:f.jiraLink, expectedVolume:f.expectedVolume,
       payloadRows: f.payloadRows.filter(r => r.field || r.value)
     };
+    trackEvent('contribute_submitted', { submission_type:'schema' });
     this.setState(s => ({ extraSubmissions:[newItem, ...s.extraSubmissions], appScreen:'roadmap', selectedEntryId:null }));
     this.showToast('Submitted for review — track status on the Roadmap.');
   };
@@ -2669,6 +2788,7 @@ class Component extends DCLogic {
       description:plan.similarNote || ('Draft measurement plan for '+plan.featureName+'.'),
       events:plan.events, metrics:plan.metrics
     };
+    trackEvent('contribute_submitted', { submission_type:'measurement_plan' });
     this.setState(s => ({ extraSubmissions:[newItem, ...s.extraSubmissions], appScreen:'roadmap', selectedEntryId:null }));
     this.showToast('Measurement plan submitted for review.');
   };
@@ -2705,6 +2825,7 @@ class Component extends DCLogic {
     reportDataPointQuery:'', reportErrors:{...s.reportErrors, dataPoint:null}
   }));
   submitReport = () => {
+    trackEvent('report_submitted', { category:this.state.reportForm.category, severity:this.state.reportForm.severity });
     this.setState({
       appScreen:'home', reportStep:1, reportDataPointQuery:'',
       reportForm:{title:'',description:'',severity:'Medium',category:'Data Quality',generalIssue:false,linkedDataPointId:null,linkedDataPointType:null,jiraLink:'',prLink:'',attachedFileName:null}
@@ -3400,6 +3521,12 @@ class Component extends DCLogic {
       toast: s.toast,
       showWelcome: s.showWelcome,
       closeWelcome: this.closeWelcome,
+      showCookieBanner: s.cookieConsent === null,
+      acceptAllCookies: this.acceptAllCookies,
+      acceptNecessaryCookies: this.acceptNecessaryCookies,
+      showPrivacyNotice: s.showPrivacyNotice,
+      openPrivacyNotice: this.openPrivacyNotice,
+      closePrivacyNotice: this.closePrivacyNotice,
       stopClick: this.stopClick
     };
   }
