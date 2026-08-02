@@ -37,5 +37,13 @@ Uber Pulse is still zero-build (no bundler, no framework) — this section docum
 - **Mock data** (`PIPELINES`, `CATALOG`, `ROADMAP_BASE`, `METRICS_BASE`) lives in plain JS files under `data/`, loaded via `<script src>` before `support.js` in `index.html`'s `<head>` — no TypeScript, no runtime validation library. Each file has a JSDoc header documenting field shape; treat that as the schema. Preserve this pattern when adding new mock datasets rather than inlining new arrays back into the HTML.
 - A full production foundation (real framework, TypeScript, schema validation, component-level restructure) has a written migration plan but is explicitly out of scope for this demo — see the "Full production foundation" line in docs/backlog.md. Don't start it piecemeal.
 
+## Cross-screen consistency
+When reviewing or extending the UI, judge elements against how the same *kind* of element behaves elsewhere in the product, not just against the screen in front of you — sectional fixes that look right in isolation still add up to an inconsistent product. Concretely:
+- Don't reuse a shared component/pattern (e.g. a pill/chip) for things that are structurally different just because it's available — a chip is for a short discrete fact, not a catch-all.
+- Don't show a field twice in different clothing — if a chart, table, or history log already answers a question, a static chip repeating the same number is clutter, not reinforcement.
+- A field needs a reason to be in the UI beyond "the data exists in the schema" — decide per field whether it earns a chip, a labeled section, or should be cut.
+- Visual weight should track actual importance, not build order — e.g. a positive/plannable status shouldn't look quieter than a negative one just because the negative one was built first.
+- When given a batch of "this feels off" feedback, don't just fix the listed items — extract the underlying principle each one implies, confirm it back before acting, then grep/check the rest of the product for the same pattern so the fix generalizes instead of patching only what was pointed out.
+
 ## Product decisions
 For product-facing work on this repo (PRD critique, roadmap/backlog prioritization, scoping new features, writing user stories) — reason like Alex, the Web Data PM who owns this platform. The full role context, stakeholder map, domain expertise, and operating principles for Alex live in `.claude/agents/product-manager.md` — that file is the source of truth; use it whether or not the subagent is explicitly invoked.
